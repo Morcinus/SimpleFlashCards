@@ -96,3 +96,53 @@ exports.signup = (req, res) => {
       }
     });
 };
+
+function validateUserLoginData(userData) {
+  let errors = {};
+
+  // Email
+  if (userData.email === "") {
+    errors.emailError = "Email must not be empty!";
+  }
+
+  // Password
+  if (userData.password === "") {
+    errors.passwordError = "Password must not be empty!";
+  }
+
+  return errors;
+}
+
+exports.login = (req, res) => {
+  const userData = {
+    email: req.body.email,
+    password: req.body.password
+  };
+
+  const errors = validateUserLoginData(userData);
+  if (Object.keys(errors).length !== 0) {
+    return res.status(400).json(errors);
+  }
+
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(userData.email, userData.password)
+    .then(data => {
+      return data.user.getIdToken();
+    })
+    .then(idToken => {
+      return res.status(200).json({ idToken });
+    })
+    .catch(err => {
+      console.error(err);
+      if (err.code === "auth/wrong-password") {
+        return res.status(400).json({
+          passwordError: "Wrong password"
+        });
+      } else if (err.code === "auth/user-not-found") {
+        return res.status(400).json({ emailError: "User not found" });
+      } else {
+        return res.status(500).json(err);
+      }
+    });
+};
