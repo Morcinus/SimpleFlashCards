@@ -1,0 +1,98 @@
+const { db } = require("../util/admin");
+const config = require("../util/firebaseConfig");
+const firebase = require("firebase");
+firebase.initializeApp(config);
+
+function validateUserSignupData(userData) {
+  let errors = {};
+
+  // Email
+  if (userData.email !== "") {
+    // Regex source: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+    let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!userData.email.match(regex)) {
+      errors.emailError = "Must be a valid email!";
+    }
+  } else {
+    errors.emailError = "Email must not be empty!";
+  }
+
+  // Username
+  if (userData.email !== "") {
+    db.collection("users")
+      .doc(`${userData.username}`)
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          errors.usernameError = "This username is already taken!";
+        }
+      });
+  } else {
+    errors.usernameError = "Username must not be empty!";
+  }
+
+  // Password
+  if (userData.password !== "" && userData.confirmPassword !== "") {
+    if (userData.password !== userData.confirmPassword) {
+      errors.passwordError = "Passwords don't match!";
+    }
+  } else {
+    errors.passwordError = "Password must not be empty!";
+  }
+
+  return errors;
+}
+
+exports.signup = (req, res) => {
+  const userData = {
+    email: req.body.email,
+    username: req.body.username,
+    password: req.body.password,
+    confirmPassword: req.body.confirmPassword
+  };
+
+  const errors = validateUserSignupData(userData);
+  if (Object.keys(errors).length !== 0) {
+    return res.status(400).json(errors);
+  }
+
+  db.collection("users")
+    .doc(`${userData.username}`)
+    .get()
+    .then(doc => {
+      if (!doc.exists) {
+        return firebase
+          .auth()
+          .createUserWithEmailAndPassword(userData.email, userData.password);
+      }
+    })
+    .then(data => {
+      const userInfo = {
+        email: userData.email,
+        username: userData.username,
+        userId: data.user.uid
+      };
+
+      db.collection("users")
+        .doc(`${userData.username}`)
+        .set(userInfo);
+
+      return data.user.getIdToken();
+    })
+    .then(idToken => {
+      return res.status(201).json({ idToken });
+    })
+    .catch(err => {
+      console.error(err);
+      if (err.code === "auth/weak-password") {
+        return res.status(400).json({
+          passwordError:
+            "Weak password! Passwords must be at least 6 characters long"
+        });
+      } else if (err.code === "auth/email-already-in-use") {
+        return res.status(400).json({ emailError: "Email is already in use" });
+      } else {
+        return res.status(500).json({ error: err });
+      }
+    });
+};
