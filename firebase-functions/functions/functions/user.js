@@ -18,15 +18,11 @@ function validateUserSignupData(userData) {
   }
 
   // Username
-  if (userData.email !== "") {
-    db.collection("users")
-      .doc(`${userData.username}`)
-      .get()
-      .then(doc => {
-        if (doc.exists) {
-          errors.usernameError = "This username is already taken!";
-        }
-      });
+  if (userData.username !== "") {
+    let usernameRegex = /^[a-zA-Z0-9]+$/;
+    if (!userData.username.match(usernameRegex)) {
+      errors.usernameError = "Username is invalid!";
+    }
   } else {
     errors.usernameError = "Username must not be empty!";
   }
@@ -43,6 +39,7 @@ function validateUserSignupData(userData) {
   return errors;
 }
 
+// NEEDS CODE POLISH AND TESTING
 exports.signup = (req, res) => {
   const userData = {
     email: req.body.email,
@@ -57,24 +54,29 @@ exports.signup = (req, res) => {
   }
 
   db.collection("users")
-    .doc(`${userData.username}`)
+    .where("username", "==", `${userData.username}`)
     .get()
-    .then(doc => {
-      if (!doc.exists) {
+    .then(querySnapshot => {
+      if (querySnapshot.empty) {
         return firebase
           .auth()
           .createUserWithEmailAndPassword(userData.email, userData.password);
+      } else {
+        return res
+          .status(400)
+          .json({ error: "This username is already taken!" });
       }
     })
     .then(data => {
       const userInfo = {
         email: userData.email,
         username: userData.username,
-        userId: data.user.uid
+        bio: "",
+        profileImg: ""
       };
 
       db.collection("users")
-        .doc(`${userData.username}`)
+        .doc(`${data.user.uid}`)
         .set(userInfo);
 
       return data.user.getIdToken();
@@ -113,6 +115,7 @@ function validateUserLoginData(userData) {
   return errors;
 }
 
+// NEEDS CODE POLISH AND TESTING
 exports.login = (req, res) => {
   const userData = {
     email: req.body.email,
