@@ -14,6 +14,8 @@ const {
   unpinDeck
 } = require("./functions/deck");
 
+const { getDeckCards } = require("./functions/cards");
+
 // User routes
 app.post("/signup", signup);
 app.post("/login", login);
@@ -25,6 +27,9 @@ app.post("/updateDeck", updateDeck);
 app.post("/deleteDeck", deleteDeck);
 app.post("/pinDeck", pinDeck);
 app.post("/unpinDeck", unpinDeck);
+
+// Card routes
+app.get("/getDeckCards/:deckId", getDeckCards);
 
 // Api
 exports.api = functions.region("europe-west1").https.onRequest(app);
