@@ -4,7 +4,7 @@ const functions = require("firebase-functions");
 const express = require("express");
 const app = express();
 
-const { signup, login } = require("./functions/user");
+const { signup, login, updateUserProfile } = require("./functions/user");
 
 const {
   createDeck,
@@ -17,6 +17,7 @@ const {
 // User routes
 app.post("/signup", signup);
 app.post("/login", login);
+app.post("/updateUserProfile", updateUserProfile);
 
 // Deck routes
 app.post("/createDeck", createDeck);
