@@ -14,7 +14,12 @@ const {
   unpinDeck
 } = require("./functions/deck");
 
-const { getDeckCards } = require("./functions/cards");
+const {
+  getDeckCards,
+  setDeckCardsProgress,
+  getCardsToReview,
+  getDeckUnknownCards
+} = require("./functions/cards");
 
 // User routes
 app.post("/signup", signup);
@@ -30,6 +35,9 @@ app.post("/unpinDeck", unpinDeck);
 
 // Card routes
 app.get("/getDeckCards/:deckId", getDeckCards);
+app.get("/getCardsToReview/:userId/:deckId", getCardsToReview);
+app.get("/getDeckUnknownCards/:userId/:deckId", getDeckUnknownCards);
+app.post("/setDeckCardsProgress", setDeckCardsProgress);
 
 // Api
 exports.api = functions.region("europe-west1").https.onRequest(app);
