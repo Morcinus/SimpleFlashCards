@@ -18,7 +18,8 @@ const {
   getDeckCards,
   setDeckCardsProgress,
   getCardsToReview,
-  getDeckUnknownCards
+  getDeckUnknownCards,
+  getCardsToLearnAndReview
 } = require("./functions/cards");
 
 // User routes
@@ -37,6 +38,7 @@ app.post("/unpinDeck", unpinDeck);
 app.get("/getDeckCards/:deckId", getDeckCards);
 app.get("/getCardsToReview/:userId/:deckId", getCardsToReview);
 app.get("/getDeckUnknownCards/:userId/:deckId", getDeckUnknownCards);
+app.get("/getCardsToLearnAndReview/:userId/:deckId", getCardsToLearnAndReview);
 app.post("/setDeckCardsProgress", setDeckCardsProgress);
 
 // Api
