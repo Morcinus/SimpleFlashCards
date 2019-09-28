@@ -3,6 +3,7 @@ import {
   LOADING_UI,
   SET_ERRORS,
   CLEAR_ERRORS,
+  SET_AUTHENTICATED,
   SET_UNAUTHENTICATED
 } from "../types";
 import axios from "axios";
@@ -14,6 +15,7 @@ export const loginUser = (userData, history) => dispatch => {
     .post("/login", userData)
     .then(res => {
       setAuthorizationHeader(res.data.idToken);
+      dispatch({ type: SET_AUTHENTICATED });
       //dispatch(getUserData());
       dispatch({ type: CLEAR_ERRORS });
       history.push("/");
@@ -30,6 +32,7 @@ export const signupUser = (newUserData, history) => dispatch => {
     .post("/signup", newUserData)
     .then(res => {
       setAuthorizationHeader(res.data.idToken);
+      dispatch({ type: SET_AUTHENTICATED });
       //dispatch(getUserData());
       dispatch({ type: CLEAR_ERRORS });
       history.push("/");

@@ -29,7 +29,7 @@ export class login extends Component {
   }
 
   // zdroj https://www.youtube.com/watch?v=fjWk7cZFxoM&list=PLMhAeHCz8S38ryyeMiBPPUnFAiWnoPvWP&index=18
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.UI.errors) {
       this.setState({ errors: nextProps.UI.errors });
     }
@@ -59,10 +59,9 @@ export class login extends Component {
     } = this.props;
     const { errors } = this.state;
     return (
-      <div>
-        <Grid container className={classes.form}>
-          <Grid item sm />
-          <Grid item sm>
+      <div className="rootContainer">
+        <Grid container className={classes.form} justify="center">
+          <Grid item sm={5} lg={4} xl={3}>
             <Paper>
               <div style={{ padding: "15px 15px 15px 15px" }}>
                 <Typography variant="h2" className={classes.pageTitle}>
@@ -122,7 +121,6 @@ export class login extends Component {
               </div>
             </Paper>
           </Grid>
-          <Grid item sm />
         </Grid>
       </div>
     );

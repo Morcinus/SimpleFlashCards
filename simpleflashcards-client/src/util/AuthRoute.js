@@ -22,6 +22,7 @@ AuthRoute.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  user: state.user,
   authenticated: state.user.authenticated
 });
 

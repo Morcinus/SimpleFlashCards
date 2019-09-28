@@ -63,10 +63,9 @@ export class signup extends Component {
     } = this.props;
     const { errors } = this.state;
     return (
-      <div>
-        <Grid container className={classes.form}>
-          <Grid item sm />
-          <Grid item sm>
+      <div className="rootContainer">
+        <Grid container className={classes.form} justify="center">
+          <Grid item sm={5} lg={4} xl={3}>
             <Paper>
               <div style={{ padding: "15px 15px 15px 15px" }}>
                 <Typography variant="h2" className={classes.pageTitle}>
@@ -148,7 +147,6 @@ export class signup extends Component {
               </div>
             </Paper>
           </Grid>
-          <Grid item sm />
         </Grid>
       </div>
     );
