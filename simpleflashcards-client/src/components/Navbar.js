@@ -10,8 +10,19 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import IconButton from "@material-ui/core/IconButton";
+import ExitToApp from "@material-ui/icons/ExitToApp";
+import Settings from "@material-ui/icons/Settings";
+import Face from "@material-ui/icons/Face";
+import Home from "@material-ui/icons/Home";
+import Queue from "@material-ui/icons/Queue";
+
 // Redux
 import { connect } from "react-redux";
+import { logoutUser } from "../redux/actions/userActions";
 
 const styles = theme => ({
   tab: {
@@ -23,7 +34,8 @@ export class Navbar extends Component {
   constructor() {
     super();
     this.state = {
-      selectedTabIndex: 0
+      selectedTabIndex: undefined,
+      anchorEl: null
     };
   }
 
@@ -31,6 +43,23 @@ export class Navbar extends Component {
     this.setState({
       selectedTabIndex: newValue
     });
+  };
+
+  handleClick = event => {
+    this.setState({
+      anchorEl: event.currentTarget
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      anchorEl: null
+    });
+  };
+
+  handleLogout = () => {
+    this.handleClose();
+    this.props.logoutUser();
   };
 
   render() {
@@ -76,10 +105,79 @@ export class Navbar extends Component {
                     value={this.state.selectedTabIndex}
                     onChange={this.handleChange}
                   >
-                    <Tab label="Home" component={Link} to="/" />
-                    <Tab label="Create" component={Link} to="/" />
-                    <Tab label="My Account" component={Link} to="/" />
+                    <Tab
+                      label={
+                        <div>
+                          <Home
+                            item
+                            style={{
+                              display: "inline-block",
+                              marginBottom: "-5px",
+                              marginRight: 5
+                            }}
+                          />
+                          Home
+                        </div>
+                      }
+                      component={Link}
+                      to="/"
+                    />
+                    <Tab
+                      label={
+                        <div>
+                          <Queue
+                            item
+                            style={{
+                              display: "inline-block",
+                              marginBottom: "-5px",
+                              marginRight: 5
+                            }}
+                          />
+                          Create
+                        </div>
+                      }
+                      component={Link}
+                      to="/create"
+                    />
                   </Tabs>
+                </Box>
+                <Box>
+                  <IconButton onClick={this.handleClick} color="inherit">
+                    <AccountCircle />
+                  </IconButton>
+
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={this.state.anchorEl}
+                    keepMounted
+                    open={Boolean(this.state.anchorEl)}
+                    onClose={this.handleClose}
+                  >
+                    <MenuItem
+                      onClick={this.handleClose}
+                      component={Link}
+                      to="/myprofile"
+                    >
+                      <Face style={{ marginRight: 5 }} />
+                      My Profile
+                    </MenuItem>
+                    <MenuItem
+                      onClick={this.handleClose}
+                      component={Link}
+                      to="/settings"
+                    >
+                      <Settings style={{ marginRight: 5 }} />
+                      Settings
+                    </MenuItem>
+                    <MenuItem
+                      onClick={this.handleLogout}
+                      component={Link}
+                      to="/login"
+                    >
+                      <ExitToApp style={{ marginRight: 5 }} />
+                      Logout
+                    </MenuItem>
+                  </Menu>
                 </Box>
               </Box>
             </Grid>
@@ -91,11 +189,19 @@ export class Navbar extends Component {
 }
 
 Navbar.propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  logoutUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   user: state.user
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(Navbar));
+const mapActionsToProps = {
+  logoutUser
+};
+
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withStyles(styles)(Navbar));
