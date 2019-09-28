@@ -3,6 +3,11 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "./App.css";
 import jwtDecode from "jwt-decode";
 
+// Redux
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import { SET_AUTHENTICATED } from "./redux/types";
+import { logoutUser } from "./redux/actions/userActions";
 // Material UI
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
@@ -19,44 +24,37 @@ import themeFile from "./util/theme";
 import home from "./pages/home";
 import signup from "./pages/signup";
 import login from "./pages/login";
+import axios from "axios";
 
 const theme = createMuiTheme(themeFile);
 
-let authenticated;
 const token = localStorage.FBIdToken;
 if (token) {
   const decodedToken = jwtDecode(token);
   console.log(decodedToken);
   if (decodedToken.exp * 1000 < Date.now()) {
     window.location.href = "/login";
-    authenticated = false;
+    store.dispatch(logoutUser);
   } else {
-    authenticated = true;
+    store.dispatch({ type: SET_AUTHENTICATED });
+    axios.defaults.headers.common["Authorization"] = token;
   }
 }
 
 function App() {
   return (
-    <MuiThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Navbar />
-        <Switch>
-          <Route exact path="/" component={home} />
-          <AuthRoute
-            exact
-            path="/signup"
-            component={signup}
-            authenticated={authenticated}
-          />
-          <AuthRoute
-            exact
-            path="/login"
-            component={login}
-            authenticated={authenticated}
-          />
-        </Switch>
-      </BrowserRouter>
-    </MuiThemeProvider>
+    <Provider store={store}>
+      <MuiThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Navbar />
+          <Switch>
+            <Route exact path="/" component={home} />
+            <AuthRoute exact path="/signup" component={signup} />
+            <AuthRoute exact path="/login" component={login} />
+          </Switch>
+        </BrowserRouter>
+      </MuiThemeProvider>
+    </Provider>
   );
 }
 

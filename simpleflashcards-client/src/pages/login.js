@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 // Material UI
 import Grid from "@material-ui/core/Grid";
@@ -11,6 +10,10 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import CircularProgress from "@material-ui/core/CircularProgress";
+
+// Redux
+import { connect } from "react-redux";
+import { loginUser } from "../redux/actions/userActions";
 
 const styles = theme => ({
   ...theme.loginAndSignup
@@ -21,9 +24,15 @@ export class login extends Component {
     this.state = {
       errors: {},
       email: "",
-      password: "",
-      loading: false
+      password: ""
     };
+  }
+
+  // zdroj https://www.youtube.com/watch?v=fjWk7cZFxoM&list=PLMhAeHCz8S38ryyeMiBPPUnFAiWnoPvWP&index=18
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.UI.errors) {
+      this.setState({ errors: nextProps.UI.errors });
+    }
   }
 
   handleSubmit = event => {
@@ -32,25 +41,7 @@ export class login extends Component {
       email: this.state.email,
       password: this.state.password
     };
-    this.setState({
-      loading: true
-    });
-    //this.props.loginUser(userData, this.props.history);
-    axios
-      .post("/login", userData)
-      .then(res => {
-        console.log(res.data);
-        localStorage.setItem("FBIdToken", `Bearer ${res.data.idToken}`);
-        this.setState({ loading: false });
-        this.props.history.push("/");
-      })
-      .catch(err => {
-        console.log(err.response.data);
-        this.setState({
-          errors: err.response.data,
-          loading: false
-        });
-      });
+    this.props.loginUser(userData, this.props.history);
   };
 
   handleChange = event => {
@@ -62,8 +53,11 @@ export class login extends Component {
   // TODO prepsat errory na jiny jmena erroru (ty co mam v cloud functions)
 
   render() {
-    const { classes } = this.props;
-    const { loading, errors } = this.state;
+    const {
+      classes,
+      UI: { loading }
+    } = this.props;
+    const { errors } = this.state;
     return (
       <div>
         <Grid container className={classes.form}>
@@ -135,6 +129,23 @@ export class login extends Component {
   }
 }
 
-login.propTypes = { classes: PropTypes.object.isRequired };
+login.propTypes = {
+  classes: PropTypes.object.isRequired,
+  loginUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  UI: PropTypes.object.isRequired
+};
 
-export default withStyles(styles)(login);
+const mapStateToProps = state => ({
+  user: state.user,
+  UI: state.UI
+});
+
+const mapActionsToProps = {
+  loginUser
+};
+
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withStyles(styles)(login));
