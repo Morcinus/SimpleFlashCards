@@ -28,7 +28,7 @@ function validateUserSignupData(userData) {
   }
 
   // Password
-  if (userData.password !== "" && userData.confirmPassword !== "") {
+  if (userData.password !== "") {
     if (userData.password !== userData.confirmPassword) {
       errors.passwordError = "Passwords don't match!";
     }
@@ -64,7 +64,7 @@ exports.signup = (req, res) => {
       } else {
         return res
           .status(400)
-          .json({ error: "This username is already taken!" });
+          .json({ usernameError: "This username is already taken!" });
       }
     })
     .then(data => {
