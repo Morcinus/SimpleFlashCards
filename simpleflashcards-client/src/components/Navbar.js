@@ -19,6 +19,7 @@ import Settings from "@material-ui/icons/Settings";
 import Face from "@material-ui/icons/Face";
 import Home from "@material-ui/icons/Home";
 import Queue from "@material-ui/icons/Queue";
+import PersonAdd from "@material-ui/icons/PersonAdd";
 
 // Redux
 import { connect } from "react-redux";
@@ -81,9 +82,57 @@ export class Navbar extends Component {
                     value={this.state.selectedTabIndex}
                     onChange={this.handleChange}
                   >
-                    <Tab label="Home" component={Link} to="/" />
-                    <Tab label="Signup" component={Link} to="/signup" />
-                    <Tab label="Login" component={Link} to="/login" />
+                    <Tab
+                      label={
+                        <div>
+                          <Home
+                            item
+                            style={{
+                              display: "inline-block",
+                              marginBottom: "-5px",
+                              marginRight: 5
+                            }}
+                          />
+                          Home
+                        </div>
+                      }
+                      component={Link}
+                      to="/"
+                    />
+                    <Tab
+                      label={
+                        <div>
+                          <PersonAdd
+                            item
+                            style={{
+                              display: "inline-block",
+                              marginBottom: "-5px",
+                              marginRight: 5
+                            }}
+                          />
+                          Signup
+                        </div>
+                      }
+                      component={Link}
+                      to="/signup"
+                    />
+                    <Tab
+                      label={
+                        <div>
+                          <ExitToApp
+                            item
+                            style={{
+                              display: "inline-block",
+                              marginBottom: "-5px",
+                              marginRight: 5
+                            }}
+                          />
+                          Login
+                        </div>
+                      }
+                      component={Link}
+                      to="/login"
+                    />
                   </Tabs>
                 </Box>
               </Box>
