@@ -15,13 +15,16 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 const styles = theme => ({
   ...theme.loginAndSignup
 });
-export class login extends Component {
+
+export class signup extends Component {
   constructor() {
     super();
     this.state = {
       errors: {},
       email: "",
       password: "",
+      confirmPassword: "",
+      username: "",
       loading: false
     };
   }
@@ -30,14 +33,16 @@ export class login extends Component {
     event.preventDefault();
     const userData = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      confirmPassword: this.state.confirmPassword,
+      username: this.state.username
     };
     this.setState({
       loading: true
     });
     //this.props.loginUser(userData, this.props.history);
     axios
-      .post("/login", userData)
+      .post("/signup", userData)
       .then(res => {
         console.log(res.data);
         localStorage.setItem("FBIdToken", `Bearer ${res.data.idToken}`);
@@ -72,9 +77,21 @@ export class login extends Component {
             <Paper>
               <div style={{ padding: "15px 15px 15px 15px" }}>
                 <Typography variant="h2" className={classes.pageTitle}>
-                  Login
+                  Signup
                 </Typography>
                 <form noValidate onSubmit={this.handleSubmit}>
+                  <TextField
+                    id="username"
+                    name="username"
+                    type="text"
+                    label="Username"
+                    className={classes.textField}
+                    helperText={errors.usernameError}
+                    error={errors.usernameError ? true : false}
+                    value={this.state.username}
+                    onChange={this.handleChange}
+                    fullWidth
+                  />
                   <TextField
                     id="email"
                     name="email"
@@ -99,6 +116,16 @@ export class login extends Component {
                     onChange={this.handleChange}
                     fullWidth
                   />
+                  <TextField
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    label="Confirm Password"
+                    className={classes.textField}
+                    value={this.state.confirmPassword}
+                    onChange={this.handleChange}
+                    fullWidth
+                  />
                   {errors.err && (
                     <Typography variant="body2" className={classes.customError}>
                       {errors.err}
@@ -111,7 +138,7 @@ export class login extends Component {
                     className={classes.button}
                     disabled={loading}
                   >
-                    Login
+                    Signup
                     {loading && (
                       <CircularProgress
                         size={30}
@@ -121,8 +148,8 @@ export class login extends Component {
                   </Button>
                   <br />
                   <small>
-                    Don't have an account? Sign up{" "}
-                    <Link to="/signup">here</Link>.
+                    Already have an account? Log in{" "}
+                    <Link to="/login">here</Link>.
                   </small>
                 </form>
               </div>
@@ -135,6 +162,6 @@ export class login extends Component {
   }
 }
 
-login.propTypes = { classes: PropTypes.object.isRequired };
+signup.propTypes = { classes: PropTypes.object.isRequired };
 
-export default withStyles(styles)(login);
+export default withStyles(styles)(signup);

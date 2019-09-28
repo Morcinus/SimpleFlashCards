@@ -25,5 +25,31 @@ export default {
   },
   shape: {
     borderRadius: 12
+  },
+  loginAndSignup: {
+    form: {
+      textAlign: "center"
+    },
+    image: {
+      maxWidth: 50,
+      margin: "20px auto 20px auto"
+    },
+    pageTitle: {
+      margin: "10px auto 20px auto"
+    },
+    textField: {
+      margin: "10px auto 20px auto"
+    },
+    button: {
+      marginTop: 20,
+      position: "relative"
+    },
+    customError: {
+      color: "red",
+      fontSize: "0.8rem"
+    },
+    progress: {
+      position: "absolute"
+    }
   }
 };
