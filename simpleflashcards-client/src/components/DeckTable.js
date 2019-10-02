@@ -10,11 +10,6 @@ export class DeckTable extends Component {
         { title: "Index", field: "index", editable: "never" },
         { title: "Front Page", field: "frontPage" },
         { title: "Back Page", field: "backPage" }
-      ],
-      data: [
-        { index: 1, frontPage: "zvire", backPage: "animal" },
-        { index: 2, frontPage: "kaktus", backPage: "cactus" },
-        { index: 3, frontPage: "clovek", backPage: "human" }
       ]
     };
 
@@ -26,7 +21,7 @@ export class DeckTable extends Component {
         tableRef={this.tableRef}
         title="Cards"
         columns={this.state.columns}
-        data={this.state.data}
+        data={this.props.data}
         options={{
           search: false,
           actionsColumnIndex: -1,
@@ -38,8 +33,8 @@ export class DeckTable extends Component {
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
-                  const data = this.state.data;
-                  newData.index = this.state.data.length + 1;
+                  const data = this.props.data;
+                  newData.index = this.props.data.length + 1;
                   data.push(newData);
                   this.setState({ data }, () => resolve());
                 }
@@ -50,7 +45,7 @@ export class DeckTable extends Component {
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
-                  const data = this.state.data;
+                  const data = this.props.data;
                   const index = data.indexOf(oldData);
                   data[index] = newData;
                   this.setState({ data }, () => resolve());
@@ -62,10 +57,11 @@ export class DeckTable extends Component {
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 {
-                  let data = this.state.data;
+                  let data = this.props.data;
                   const index = data.indexOf(oldData);
                   data.splice(index, 1);
-                  this.setState({ data }, () => resolve());
+                  this.props.updateDeckCards(data);
+                  resolve();
                 }
                 resolve();
               }, 1000);
@@ -76,7 +72,7 @@ export class DeckTable extends Component {
             icon: "arrow_upward",
             tooltip: "Move Up",
             onClick: (event, rowData) => {
-              const data = this.state.data;
+              const data = this.props.data;
               const index = data.indexOf(rowData);
               if (index - 1 >= 0) {
                 let rowData2 = data[index - 1];
@@ -88,14 +84,14 @@ export class DeckTable extends Component {
                 data[index - 1] = rowData;
                 data[index] = rowData2;
               }
-              this.setState({ data });
+              this.props.updateDeckCards(data);
             }
           },
           {
             icon: "arrow_downward",
             tooltip: "Move Down",
             onClick: (event, rowData) => {
-              const data = this.state.data;
+              const data = this.props.data;
               const index = data.indexOf(rowData);
               if (index + 1 < data.length) {
                 let rowData2 = data[index + 1];
@@ -107,7 +103,7 @@ export class DeckTable extends Component {
                 data[index + 1] = rowData;
                 data[index] = rowData2;
               }
-              this.setState({ data });
+              this.props.updateDeckCards(data);
             }
           }
         ]}

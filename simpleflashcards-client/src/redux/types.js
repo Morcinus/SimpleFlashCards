@@ -8,3 +8,6 @@ export const LOADING_USER = "LOADING_USER";
 export const LOADING_UI = "LOADING_UI";
 export const SET_ERRORS = "SET_ERRORS";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
+
+// DeckEdit reducer types
+export const UPDATE_DECK_DATA = "UPDATE_DECK_DATA";
