@@ -33,14 +33,9 @@ export const uploadDeck = deckData => dispatch => {
 
     console.log(exportDeckData);
 
-    axios
-      .post("/createDeck", exportDeckData)
-      .then(res => {
-        dispatch({ type: DELETE_DECK_DATA });
-      })
-      .catch(err => {
-        console.log(err.response.data);
-      });
+    axios.post("/createDeck", exportDeckData).catch(err => {
+      console.log(err.response.data);
+    });
 
     dispatch({ type: CLEAR_ERRORS });
     return false;

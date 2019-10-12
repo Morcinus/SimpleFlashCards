@@ -19,8 +19,6 @@ import Delete from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
 // Redux
@@ -31,20 +29,18 @@ import {
   uploadDeck
 } from "../redux/actions/createDeckActions";
 
-const initialState = {
-  errors: {},
-  deckName: "",
-  deckDescription: "",
-  deckImage: null,
-  deckCards: [],
-  imageUrl: null,
-  dialogOpen: false
-};
-
 export class create extends Component {
   constructor(props) {
     super(props);
-    this.state = initialState;
+    this.state = {
+      errors: {},
+      deckName: "",
+      deckDescription: "",
+      deckImage: null,
+      deckCards: [],
+      imageUrl: null,
+      dialogOpen: false
+    };
     this.updateDeckCards = this.updateDeckCards.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
     this.deleteDeckDraft = this.deleteDeckDraft.bind(this);
@@ -85,13 +81,22 @@ export class create extends Component {
   }
 
   updateDeckCards(cards) {
+    console.log("updating cards");
     this.setState({
       deckCards: cards
     });
   }
 
   deleteDeckDraft() {
-    this.setState(initialState);
+    this.setState({
+      errors: {},
+      deckName: "",
+      deckDescription: "",
+      deckImage: null,
+      deckCards: [],
+      imageUrl: null,
+      dialogOpen: false
+    });
     this.props.deleteDeckDraft();
     this.handleDialogClose();
   }
@@ -106,10 +111,24 @@ export class create extends Component {
     };
 
     const failed = this.props.uploadDeck(deckData);
+    console.log(failed);
     if (!failed) {
-      this.setState(initialState);
+      console.log("Failed false");
+      console.log("Initial state:");
+      this.setState({
+        errors: {},
+        deckName: "",
+        deckDescription: "",
+        deckImage: null,
+        deckCards: [],
+        imageUrl: null,
+        dialogOpen: false,
+        uploadSucceeded: true
+      });
+      this.props.deleteDeckDraft();
     } else {
-      this.setState({ uploadSucceeded: true });
+      console.log("Failed true");
+      this.setState({ uploadSucceeded: false });
     }
   }
 
@@ -273,7 +292,7 @@ export class create extends Component {
                         <Typography align="right" color="error">
                           {this.state.errors.deckCardsError}
                         </Typography>
-                      ) : this.state.uploadSucceeded ? ( // NEEDS UPDATE!!! to disappear after few secs
+                      ) : this.state.uploadSucceeded === true ? ( // NEEDS UPDATE!!! to disappear after few secs
                         <Typography align="right">
                           Upload was successful
                         </Typography>

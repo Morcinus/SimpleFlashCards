@@ -20,7 +20,13 @@ export default function(state = initialState, action) {
         imageUrl: action.payload.imageUrl
       };
     case DELETE_DECK_DATA:
-      return initialState;
+      return {
+        deckName: "",
+        deckDescription: "",
+        deckImage: null,
+        deckCards: [],
+        imageUrl: null
+      };
     default:
       return state;
   }
