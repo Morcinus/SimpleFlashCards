@@ -3,10 +3,19 @@ const { db, admin } = require("../util/admin");
 //#region Deck Editing
 exports.createDeck = (req, res) => {
   console.log("Creating deck");
+
+  // Generates custom ID for each card
+  let cardArray = [];
+  req.body.deckCards.forEach(card => {
+    let newCard = card;
+    newCard.cardId = newId();
+    cardArray.push(newCard);
+  });
+
   const deckData = {
     creatorId: req.user.uid,
     deckName: req.body.deckName,
-    cardArray: req.body.deckCards
+    cardArray: cardArray
   };
 
   db.collection("decks")
@@ -66,6 +75,18 @@ exports.deleteDeck = (req, res) => {
     res.status(400).json();
   }
 };
+
+function newId() {
+  // Alphanumeric characters
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let autoId = "";
+  for (let i = 0; i < 20; i++) {
+    autoId += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return autoId;
+}
+
 //#endregion
 
 //#region Deck Pinning
