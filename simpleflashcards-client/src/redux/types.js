@@ -11,3 +11,4 @@ export const CLEAR_ERRORS = "CLEAR_ERRORS";
 
 // DeckEdit reducer types
 export const UPDATE_DECK_DATA = "UPDATE_DECK_DATA";
+export const DELETE_DECK_DATA = "DELETE_DECK_DATA";

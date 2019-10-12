@@ -15,23 +15,40 @@ import {
   Button
 } from "@material-ui/core";
 import Photo from "@material-ui/icons/Photo";
+import Delete from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
 
 // Redux
 import { connect } from "react-redux";
-import { saveDeckDraft } from "../redux/actions/createDeckActions";
+import {
+  saveDeckDraft,
+  deleteDeckDraft,
+  uploadDeck
+} from "../redux/actions/createDeckActions";
+
+const initialState = {
+  errors: {},
+  deckName: "",
+  deckDescription: "",
+  deckImage: null,
+  deckCards: [],
+  imageUrl: null,
+  dialogOpen: false
+};
 
 export class create extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      deckName: "",
-      deckDescription: "",
-      deckImage: null,
-      deckCards: [],
-      imageUrl: null
-    };
+    this.state = initialState;
     this.updateDeckCards = this.updateDeckCards.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
+    this.deleteDeckDraft = this.deleteDeckDraft.bind(this);
+    this.uploadDeck = this.uploadDeck.bind(this);
   }
 
   handleChange = event => {
@@ -39,6 +56,12 @@ export class create extends Component {
       [event.target.name]: event.target.value
     });
   };
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.UI.errors) {
+      this.setState({ errors: nextProps.UI.errors });
+    }
+  }
 
   componentDidMount() {
     this.setState({
@@ -67,6 +90,29 @@ export class create extends Component {
     });
   }
 
+  deleteDeckDraft() {
+    this.setState(initialState);
+    this.props.deleteDeckDraft();
+    this.handleDialogClose();
+  }
+
+  uploadDeck() {
+    let deckData = {
+      deckName: this.state.deckName,
+      deckDescription: this.state.deckDescription,
+      deckImage: this.state.deckImage,
+      deckCards: this.state.deckCards,
+      imageUrl: this.state.imageUrl
+    };
+
+    const failed = this.props.uploadDeck(deckData);
+    if (!failed) {
+      this.setState(initialState);
+    } else {
+      this.setState({ uploadSucceeded: true });
+    }
+  }
+
   handleImageChange = event => {
     this.setState({
       deckImage: event.target.files[0],
@@ -77,6 +123,18 @@ export class create extends Component {
   handleImageUpload() {
     document.getElementById("imageInput").click();
   }
+
+  handleDialogOpen = () => {
+    this.setState({
+      dialogOpen: true
+    });
+  };
+
+  handleDialogClose = () => {
+    this.setState({
+      dialogOpen: false
+    });
+  };
 
   render() {
     return (
@@ -89,26 +147,8 @@ export class create extends Component {
                 <Divider></Divider>
                 <br />
                 <Grid container>
-                  <Grid item sm={10} lg={10} xl={10} container direction="row">
+                  <Grid item sm={9} lg={9} xl={9} container direction="row">
                     <Grid>
-                      {/* <Card
-                        style={{
-                          width: "110px",
-                          height: "130px",
-                          marginRight: "20px"
-                        }}
-                      >
-                        <CardContent>
-                          <Typography
-                            style={{ textAlign: "center" }}
-                            variant="body2"
-                          >
-                            <Photo></Photo>
-                            CHOOSE COVER (OPTIONAL)
-                          </Typography>
-                        </CardContent>
-                      </Card> */}
-
                       {this.state.deckImage ? (
                         <Button
                           style={{
@@ -156,16 +196,31 @@ export class create extends Component {
                     </Grid>
                     <Grid>
                       <Box style={{ marginBottom: "20px" }}>
-                        <TextField
-                          variant="outlined"
-                          label="Enter Title"
-                          name="deckName"
-                          value={this.state.deckName}
-                          onChange={this.handleChange}
-                          InputLabelProps={{
-                            shrink: true
-                          }}
-                        ></TextField>
+                        {this.state.errors.deckNameError ? (
+                          <TextField
+                            error
+                            variant="outlined"
+                            label="Enter Title"
+                            name="deckName"
+                            value={this.state.deckName}
+                            onChange={this.handleChange}
+                            helperText={this.state.errors.deckNameError}
+                            InputLabelProps={{
+                              shrink: true
+                            }}
+                          ></TextField>
+                        ) : (
+                          <TextField
+                            variant="outlined"
+                            label="Enter Title"
+                            name="deckName"
+                            value={this.state.deckName}
+                            onChange={this.handleChange}
+                            InputLabelProps={{
+                              shrink: true
+                            }}
+                          ></TextField>
+                        )}
                       </Box>
                       <Box>
                         <TextField
@@ -183,16 +238,49 @@ export class create extends Component {
                   </Grid>
                   <Grid
                     item
-                    sm={2}
-                    lg={2}
-                    xl={2}
+                    sm={3}
+                    lg={3}
+                    xl={3}
                     container
-                    justify="flex-end"
-                    alignItems="flex-start"
+                    direction="column"
+                    justify="flex-start"
+                    alignItems="flex-end"
                   >
-                    <Button size="large" color="secondary" variant="contained">
-                      Create
-                    </Button>
+                    <Grid
+                      item
+                      container
+                      justify="flex-end"
+                      alignItems="flex-start"
+                    >
+                      <IconButton
+                        color="primary"
+                        variant="contained"
+                        onClick={this.handleDialogOpen}
+                      >
+                        <Delete></Delete>
+                      </IconButton>
+                      <Button
+                        size="large"
+                        color="secondary"
+                        variant="contained"
+                        onClick={this.uploadDeck}
+                      >
+                        Create
+                      </Button>
+                    </Grid>
+                    <Grid>
+                      {this.state.errors.deckCardsError ? (
+                        <Typography align="right" color="error">
+                          {this.state.errors.deckCardsError}
+                        </Typography>
+                      ) : this.state.uploadSucceeded ? ( // NEEDS UPDATE!!! to disappear after few secs
+                        <Typography align="right">
+                          Upload was successful
+                        </Typography>
+                      ) : (
+                        <div></div>
+                      )}
+                    </Grid>
                   </Grid>
                 </Grid>
                 <br />
@@ -204,6 +292,28 @@ export class create extends Component {
             </Paper>
           </Grid>
         </Grid>
+        <Dialog open={this.state.dialogOpen} onClose={this.handleDialogClose}>
+          <DialogTitle>
+            {"Are you sure you want to delete this draft?"}
+          </DialogTitle>
+          <DialogActions style={{ justifyContent: "center" }}>
+            <Button
+              onClick={this.handleDialogClose}
+              color="primary"
+              variant="outlined"
+              autoFocus
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={this.deleteDeckDraft}
+              color="primary"
+              variant="contained"
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }
@@ -211,15 +321,21 @@ export class create extends Component {
 
 create.propTypes = {
   saveDeckDraft: PropTypes.func.isRequired,
-  deckCreation: PropTypes.object.isRequired
+  deleteDeckDraft: PropTypes.func.isRequired,
+  uploadDeck: PropTypes.func.isRequired,
+  deckCreation: PropTypes.object.isRequired,
+  UI: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  deckCreation: state.deckCreation
+  deckCreation: state.deckCreation,
+  UI: state.UI
 });
 
 const mapActionsToProps = {
-  saveDeckDraft
+  saveDeckDraft,
+  deleteDeckDraft,
+  uploadDeck
 };
 
 export default connect(

@@ -1,4 +1,4 @@
-import { UPDATE_DECK_DATA } from "../types";
+import { UPDATE_DECK_DATA, DELETE_DECK_DATA } from "../types";
 
 const initialState = {
   deckName: "",
@@ -19,6 +19,8 @@ export default function(state = initialState, action) {
         deckCards: action.payload.deckCards,
         imageUrl: action.payload.imageUrl
       };
+    case DELETE_DECK_DATA:
+      return initialState;
     default:
       return state;
   }
