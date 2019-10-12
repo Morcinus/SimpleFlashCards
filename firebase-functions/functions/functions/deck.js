@@ -2,17 +2,18 @@ const { db, admin } = require("../util/admin");
 
 //#region Deck Editing
 exports.createDeck = (req, res) => {
+  console.log("Creating deck");
   const deckData = {
-    creatorId: req.body.userId,
+    creatorId: req.user.uid,
     deckName: req.body.deckName,
-    cardArray: req.body.cardArray
+    cardArray: req.body.deckCards
   };
 
   db.collection("decks")
     .add(deckData)
     .then(docReference => {
       db.collection("users")
-        .doc(req.body.userId)
+        .doc(req.user.uid)
         .update({
           createdDecks: admin.firestore.FieldValue.arrayUnion(docReference.id)
         });
@@ -42,13 +43,15 @@ exports.updateDeck = (req, res) => {
 exports.deleteDeck = (req, res) => {
   // TO-DO Unpin all users - udelat v transaction!!!
 
-  if (req.body.deckId && req.body.userId) {
+  // OSETRIT ABY MOHL NICIT JEN SVOJE DECKY (ted muze i decky ostatnich kdyz ma id)
+
+  if (req.body.deckId && req.user.uid) {
     db.collection("decks")
       .doc(req.body.deckId)
       .delete()
       .then(() => {
         db.collection("users")
-          .doc(req.body.userId)
+          .doc(req.user.uid)
           .update({
             createdDecks: admin.firestore.FieldValue.arrayRemove(
               req.body.deckId
