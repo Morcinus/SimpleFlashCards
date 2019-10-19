@@ -24,6 +24,7 @@ import themeFile from "./util/theme";
 import home from "./pages/home";
 import signup from "./pages/signup";
 import login from "./pages/login";
+import decks from "./pages/decks";
 import create from "./pages/create";
 import axios from "axios";
 
@@ -52,6 +53,7 @@ function App() {
             <Route exact path="/" component={home} />
             <AuthRoute exact path="/signup" component={signup} />
             <AuthRoute exact path="/login" component={login} />
+            <Route exact path="/decks" component={decks} />
             <Route exact path="/create" component={create} />
           </Switch>
         </BrowserRouter>

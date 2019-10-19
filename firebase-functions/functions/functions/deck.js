@@ -122,3 +122,74 @@ exports.unpinDeck = (req, res) => {
   }
 };
 //#endregion
+
+//#region Deck UI
+exports.getUserDecks = (req, res) => {
+  if (req.user.uid) {
+    db.collection("decks")
+      .where("creatorId", "==", req.user.uid)
+      .get()
+      .then(querySnapshot => {
+        let userDecks = [];
+        querySnapshot.forEach(doc => {
+          exportDeck = {
+            deckName: doc.data().deckName,
+            deckImage: doc.data().deckImage,
+            deckId: doc.id
+          };
+          userDecks.push(exportDeck);
+        });
+        return userDecks;
+      })
+      .then(userDecks => {
+        res.status(200).json(userDecks);
+      })
+      .catch(error => res.status(500).json({ error: error.code }));
+  } else {
+    res.status(400).json();
+  }
+};
+
+exports.getPinnedDecks = (req, res) => {
+  if (req.user.uid) {
+    let exportDecks = [];
+
+    db.collection("users")
+      .doc(req.user.uid)
+      .get()
+      .then(doc => {
+        console.log(doc);
+        let pinnedDecks = doc.data().pinnedDecks;
+        let promises = [];
+
+        if (pinnedDecks) {
+          pinnedDecks.forEach(deckId => {
+            promises.push(
+              db
+                .collection("decks")
+                .doc(deckId)
+                .get()
+                .then(doc => {
+                  let exportDeck = {
+                    deckName: doc.data().deckName,
+                    deckImage: doc.data().deckImage,
+                    deckId: doc.id
+                  };
+
+                  exportDecks.push(exportDeck);
+                })
+            );
+          });
+        }
+
+        return Promise.all(promises); // Waits for the forEach loop to finish
+      })
+      .then(() => {
+        res.status(200).json(exportDecks);
+      })
+      .catch(error => res.status(500).json({ error: error.code }));
+  } else {
+    res.status(400).json();
+  }
+};
+//#endregion

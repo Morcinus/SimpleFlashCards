@@ -169,7 +169,7 @@ export class Navbar extends Component {
                         </div>
                       }
                       component={Link}
-                      to="/"
+                      to="/decks"
                     />
                     <Tab
                       label={

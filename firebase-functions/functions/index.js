@@ -13,7 +13,9 @@ const {
   updateDeck,
   deleteDeck,
   pinDeck,
-  unpinDeck
+  unpinDeck,
+  getUserDecks,
+  getPinnedDecks
 } = require("./functions/deck");
 
 const {
@@ -29,12 +31,17 @@ app.post("/signup", signup);
 app.post("/login", login);
 app.post("/updateUserProfile", updateUserProfile);
 
-// Deck routes
+// DECK ROUTES
+// Deck Editing
 app.post("/createDeck", authMiddleware, createDeck);
 app.post("/updateDeck", updateDeck);
 app.post("/deleteDeck", authMiddleware, deleteDeck);
+// Deck Pinning
 app.post("/pinDeck", pinDeck);
 app.post("/unpinDeck", unpinDeck);
+// Deck UI
+app.get("/getUserDecks", authMiddleware, getUserDecks);
+app.get("/getPinnedDecks", authMiddleware, getPinnedDecks);
 
 // Card routes
 app.get("/getDeckCards/:deckId", getDeckCards);

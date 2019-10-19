@@ -5,6 +5,7 @@ import thunk from "redux-thunk";
 import userReducer from "./reducers/userReducer";
 import uiReducer from "./reducers/uiReducer";
 import createDeckReducer from "./reducers/createDeckReducer";
+import deckUi from "./reducers/deckUiReducer";
 
 const initialState = {};
 
@@ -13,7 +14,8 @@ const middleware = [thunk];
 const reducers = combineReducers({
   user: userReducer,
   UI: uiReducer,
-  deckCreation: createDeckReducer
+  deckCreation: createDeckReducer,
+  deckUi: deckUi
 });
 
 const store = createStore(

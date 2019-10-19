@@ -76,7 +76,7 @@ exports.signup = (req, res) => {
       };
 
       db.collection("users")
-        .doc(`${data.user.uid}`)
+        .doc(`${data.user.uid}`) // This should be done differently ! https://firebase.google.com/docs/auth/web/manage-users#get_a_users_profile
         .set(userInfo);
 
       return data.user.getIdToken();
