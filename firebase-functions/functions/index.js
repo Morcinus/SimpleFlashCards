@@ -15,7 +15,8 @@ const {
   pinDeck,
   unpinDeck,
   getUserDecks,
-  getPinnedDecks
+  getPinnedDecks,
+  getDeck
 } = require("./functions/deck");
 
 const {
@@ -42,6 +43,7 @@ app.post("/unpinDeck", unpinDeck);
 // Deck UI
 app.get("/getUserDecks", authMiddleware, getUserDecks);
 app.get("/getPinnedDecks", authMiddleware, getPinnedDecks);
+app.get("/getDeck/:deckId", getDeck);
 
 // Card routes
 app.get("/getDeckCards/:deckId", getDeckCards);

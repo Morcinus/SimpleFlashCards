@@ -28,7 +28,8 @@ export const uploadDeck = deckData => dispatch => {
     // Osetrit jestli neni prazdny
     const exportDeckData = {
       deckName: deckData.deckName,
-      deckCards: exportDeckCards
+      deckCards: exportDeckCards,
+      deckDescription: deckData.deckDescription
     };
 
     console.log(exportDeckData);

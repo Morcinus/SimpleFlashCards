@@ -26,6 +26,8 @@ import signup from "./pages/signup";
 import login from "./pages/login";
 import decks from "./pages/decks";
 import create from "./pages/create";
+import Deck from "./pages/deck";
+//Axios
 import axios from "axios";
 
 const theme = createMuiTheme(themeFile);
@@ -55,6 +57,11 @@ function App() {
             <AuthRoute exact path="/login" component={login} />
             <Route exact path="/decks" component={decks} />
             <Route exact path="/create" component={create} />
+            <Route
+              exact
+              path="/deck/:deckId"
+              render={props => <Deck {...props} />}
+            />
           </Switch>
         </BrowserRouter>
       </MuiThemeProvider>

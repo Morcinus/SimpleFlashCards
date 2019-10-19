@@ -18,3 +18,5 @@ export const SET_USER_DECKS = "SET_USER_DECKS";
 export const CLEAR_USER_DECKS = "CLEAR_USER_DECKS";
 export const SET_PINNED_DECKS = "SET_PINNED_DECKS";
 export const CLEAR_PINNED_DECKS = "CLEAR_PINNED_DECKS";
+export const SET_DECK = "SET_DECK";
+export const CLEAR_DECK = "CLEAR_DECK";

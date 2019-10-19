@@ -15,6 +15,7 @@ exports.createDeck = (req, res) => {
   const deckData = {
     creatorId: req.user.uid,
     deckName: req.body.deckName,
+    deckDescription: req.body.deckDescription ? req.body.deckDescription : null,
     cardArray: cardArray
   };
 
@@ -33,10 +34,12 @@ exports.createDeck = (req, res) => {
     .catch(error => console.error(error));
 };
 
+// NEEDS UPDATE
 exports.updateDeck = (req, res) => {
   const deckData = {
     creatorId: req.body.userId,
     deckName: req.body.deckName,
+    deckDescription: req.body.deckDescription ? req.body.deckDescription : null,
     cardArray: req.body.cardArray
   };
 
@@ -191,5 +194,29 @@ exports.getPinnedDecks = (req, res) => {
   } else {
     res.status(400).json();
   }
+};
+
+// Gets everything in deck doc
+exports.getDeck = (req, res) => {
+  db.collection("decks")
+    .doc(`${req.params.deckId}`)
+    .get()
+    .then(deckDoc => {
+      let deck = deckDoc.data();
+
+      return db
+        .collection("users")
+        .doc(deck.creatorId)
+        .get()
+        .then(userDoc => {
+          deck.creatorName = userDoc.data().username;
+          return deck;
+        })
+        .catch(err => console.log(err));
+    })
+    .then(deck => {
+      res.status(200).json({ deck });
+    })
+    .catch(error => console.error(error));
 };
 //#endregion

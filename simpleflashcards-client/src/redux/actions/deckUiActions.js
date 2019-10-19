@@ -2,7 +2,9 @@ import {
   SET_USER_DECKS,
   SET_PINNED_DECKS,
   CLEAR_PINNED_DECKS,
-  CLEAR_USER_DECKS
+  CLEAR_USER_DECKS,
+  SET_DECK,
+  CLEAR_DECK
 } from "../types";
 import axios from "axios";
 
@@ -27,10 +29,24 @@ export const getPinnedDecks = () => dispatch => {
     .catch(err => console.log(err));
 };
 
+export const getDeck = deckId => dispatch => {
+  axios
+    .get(`/getDeck/${deckId}`)
+    .then(res => {
+      console.log(res.data);
+      dispatch({ type: SET_DECK, payload: res.data });
+    })
+    .catch(err => console.log(err));
+};
+
 export const clearPinnedDecks = () => dispatch => {
   dispatch({ type: CLEAR_PINNED_DECKS });
 };
 
 export const clearUserDecks = () => dispatch => {
   dispatch({ type: CLEAR_USER_DECKS });
+};
+
+export const clearDeck = () => dispatch => {
+  dispatch({ type: CLEAR_DECK });
 };

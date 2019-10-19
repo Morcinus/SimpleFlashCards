@@ -2,12 +2,15 @@ import {
   SET_USER_DECKS,
   SET_PINNED_DECKS,
   CLEAR_PINNED_DECKS,
-  CLEAR_USER_DECKS
+  CLEAR_USER_DECKS,
+  SET_DECK,
+  CLEAR_DECK
 } from "../types";
 
 const initialState = {
   userDecks: [],
-  pinnedDecks: []
+  pinnedDecks: [],
+  deck: null
 };
 
 export default function(state = initialState, action) {
@@ -31,6 +34,16 @@ export default function(state = initialState, action) {
       return {
         ...state,
         userDecks: []
+      };
+    case SET_DECK:
+      return {
+        ...state,
+        deck: action.payload.deck
+      };
+    case CLEAR_DECK:
+      return {
+        ...state,
+        deck: null
       };
     default:
       return state;
