@@ -27,6 +27,7 @@ import login from "./pages/login";
 import decks from "./pages/decks";
 import create from "./pages/create";
 import deck from "./pages/deck";
+import study from "./pages/study";
 //Axios
 import axios from "axios";
 
@@ -58,6 +59,7 @@ function App() {
             <Route exact path="/decks" component={decks} />
             <Route exact path="/create" component={create} />
             <Route exact path="/deck/:deckId" component={deck} />
+            <Route exact path="/study/:deckId" component={study} />
           </Switch>
         </BrowserRouter>
       </MuiThemeProvider>
