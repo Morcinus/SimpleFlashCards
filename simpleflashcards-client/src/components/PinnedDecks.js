@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Material UI
@@ -55,7 +56,11 @@ function RenderDecks({ deckArray }) {
             marginRight: "20px"
           }}
         >
-          <CardActionArea style={{ width: "100%", height: "100%" }}>
+          <CardActionArea
+            style={{ width: "100%", height: "100%" }}
+            component={Link}
+            to={`/deck/${deckArray[i].deckId}`}
+          >
             <CardMedia
               style={{ width: "100%", height: "100%" }}
               image={
