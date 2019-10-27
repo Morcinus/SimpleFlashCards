@@ -26,7 +26,7 @@ import signup from "./pages/signup";
 import login from "./pages/login";
 import decks from "./pages/decks";
 import create from "./pages/create";
-import Deck from "./pages/deck";
+import deck from "./pages/deck";
 //Axios
 import axios from "axios";
 
@@ -38,7 +38,7 @@ if (token) {
   console.log(decodedToken);
   if (decodedToken.exp * 1000 < Date.now()) {
     window.location.href = "/login";
-    store.dispatch(logoutUser);
+    store.dispatch(logoutUser());
   } else {
     store.dispatch({ type: SET_AUTHENTICATED });
     axios.defaults.headers.common["Authorization"] = token;
@@ -57,11 +57,7 @@ function App() {
             <AuthRoute exact path="/login" component={login} />
             <Route exact path="/decks" component={decks} />
             <Route exact path="/create" component={create} />
-            <Route
-              exact
-              path="/deck/:deckId"
-              render={props => <Deck {...props} />}
-            />
+            <Route exact path="/deck/:deckId" component={deck} />
           </Switch>
         </BrowserRouter>
       </MuiThemeProvider>
