@@ -20,3 +20,7 @@ export const SET_PINNED_DECKS = "SET_PINNED_DECKS";
 export const CLEAR_PINNED_DECKS = "CLEAR_PINNED_DECKS";
 export const SET_DECK = "SET_DECK";
 export const CLEAR_DECK = "CLEAR_DECK";
+
+// Study deck reducer types
+export const SET_STUDY_DECK = "SET_STUDY_DECK";
+export const CLEAR_STUDY_DECK = "CLEAR_STUDY_DECK";

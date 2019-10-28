@@ -6,6 +6,7 @@ import userReducer from "./reducers/userReducer";
 import uiReducer from "./reducers/uiReducer";
 import createDeckReducer from "./reducers/createDeckReducer";
 import deckUi from "./reducers/deckUiReducer";
+import deckStudy from "./reducers/deckStudyReducer";
 
 const initialState = {};
 
@@ -15,7 +16,8 @@ const reducers = combineReducers({
   user: userReducer,
   UI: uiReducer,
   deckCreation: createDeckReducer,
-  deckUi: deckUi
+  deckUi: deckUi,
+  deckStudy: deckStudy
 });
 
 const store = createStore(
