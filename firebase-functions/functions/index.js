@@ -49,8 +49,12 @@ app.get("/getDeck/:deckId", getDeck);
 app.get("/getDeckCards/:deckId", getDeckCards);
 app.get("/getCardsToReview/:userId/:deckId", getCardsToReview);
 app.get("/getDeckUnknownCards/:userId/:deckId", getDeckUnknownCards);
-app.get("/getCardsToLearnAndReview/:userId/:deckId", getCardsToLearnAndReview);
-app.post("/setDeckCardsProgress", setDeckCardsProgress);
+app.get(
+  "/getCardsToLearnAndReview/:deckId",
+  authMiddleware,
+  getCardsToLearnAndReview
+);
+app.post("/setDeckCardsProgress", authMiddleware, setDeckCardsProgress);
 
 // Api
 exports.api = functions.region("europe-west1").https.onRequest(app);

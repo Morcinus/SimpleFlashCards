@@ -13,12 +13,11 @@ exports.getDeckCards = (req, res) => {
 
 // Sets card progress
 exports.setDeckCardsProgress = (req, res) => {
-  let userId = req.body.uid;
   let cardArray = req.body.cardArray;
   let deckId = req.body.deckId;
 
   db.collection("users")
-    .doc(`${userId}`)
+    .doc(`${req.user.uid}`)
     .collection("deckProgress")
     .doc(`${deckId}`)
     .set(
@@ -130,8 +129,8 @@ function findUnknownCards(cardArray, progressCardArray) {
   return unknownCardArray;
 }
 
+// NEFUNGUJE TAK JAK BY MELO
 exports.getCardsToLearnAndReview = (req, res) => {
-  let userId = req.params.userId;
   let deckId = req.params.deckId;
   let cardArray;
   let cardLimit = 20;
@@ -147,38 +146,44 @@ exports.getCardsToLearnAndReview = (req, res) => {
 
       return db
         .collection("users")
-        .doc(`${userId}`)
+        .doc(`${req.user.uid}`)
         .collection("deckProgress")
         .doc(`${deckId}`)
         .get();
     })
     .then(doc => {
-      let progressCardsArray = doc.data().cardArray;
-      let unknownCardsArray = findUnknownCards(cardArray, progressCardsArray);
-      console.log("CARDS 2 =>", cardArray);
-      console.log("PROGRESS CARDS =>", progressCardsArray);
-      console.log("UNKNOWN CARDS =>", unknownCardsArray);
-
-      // Sorts the array
-      progressCardsArray = progressCardsArray.sort(compareUnderstandingLevels);
-
-      // Fills the output array
       let outputArray = [];
+      let progressCardsArray = [];
+      if (doc.exists)
+        progressCardsArray = doc.data().cardArray ? doc.data().cardArray : [];
 
-      // Pushes 10 progress cards into the outputArray
-      for (let i = 0; i < progressCardsArray.length; i++) {
-        if (
-          progressCardsArray[i].understandingLevel < 5 &&
-          outputArray.length < cardLimit / 2
-        ) {
-          let exportCard = cardArray.find(function(element) {
-            return element.cardId === progressCardsArray[i].cardId;
-          });
-          if (exportCard) outputArray.push(exportCard);
-        } else break;
+      // console.log("CARDS 2 =>", cardArray);
+      // console.log("PROGRESS CARDS =>", progressCardsArray);
+
+      if (progressCardsArray.length > 0) {
+        // Sorts the array
+        progressCardsArray = progressCardsArray.sort(
+          compareUnderstandingLevels
+        );
+
+        // Pushes 10 progress cards into the outputArray
+        for (let i = 0; i < progressCardsArray.length; i++) {
+          if (
+            progressCardsArray[i].understandingLevel < 5 &&
+            outputArray.length < cardLimit / 2
+          ) {
+            let exportCard = cardArray.find(function(element) {
+              return element.cardId === progressCardsArray[i].cardId;
+            });
+            if (exportCard) outputArray.push(exportCard);
+          } else break;
+        }
       }
 
-      // Fills the remaning space with unknown cards
+      let unknownCardsArray = findUnknownCards(cardArray, progressCardsArray);
+      console.log("UNKNOWN CARDS =>", unknownCardsArray);
+
+      // Fills the remaning space of outputArray with unknown cards
       for (let i = 0; i < unknownCardsArray.length; i++) {
         if (outputArray.length < cardLimit) {
           outputArray.push(unknownCardsArray[i]);
