@@ -96,7 +96,6 @@ function compareUnderstandingLevels(card1, card2) {
 // TO-DO: Needs error handling if card is no longer in deck !! if the owner changed deck
 // Gets cards that the user doesn't know yet
 exports.getDeckUnknownCards = (req, res) => {
-  let userId = req.params.userId;
   let deckId = req.params.deckId;
   let cardArray;
   let cardLimit = 20;
@@ -109,13 +108,14 @@ exports.getDeckUnknownCards = (req, res) => {
 
       return db
         .collection("users")
-        .doc(`${userId}`)
+        .doc(`${req.user.uid}`)
         .collection("deckProgress")
         .doc(`${deckId}`)
         .get();
     })
     .then(doc => {
-      let unknownCards = findUnknownCards(cardArray, doc.data().cardArray);
+      let progressCards = doc.data().cardArray;
+      let unknownCards = findUnknownCards(cardArray, progressCards);
       return unknownCards.slice(0, cardLimit);
     })
     .then(unknownCards => {
@@ -124,25 +124,26 @@ exports.getDeckUnknownCards = (req, res) => {
     .catch(error => console.error(error));
 };
 
-// TO-DO: searching through array can be done more effectively (maybe with find())
-function findUnknownCards(cardArray, progressCardArray) {
+// Finds cards the user doesn't know
+function findUnknownCards(cardArrayRef, progressCardArray) {
   let unknownCardArray = [];
-  // Clones array so that the original array does not get modified
-  let cardArrayClone = cardArray.slice();
 
-  // Deletes cards that the user already knows
+  // Clones array so that the original array does not get modified
+  let cardArray = cardArrayRef.slice();
+
+  // Deletes cards in cardArray that the user already knows
   progressCardArray.forEach(progressCard => {
-    for (let i = 0; i < cardArrayClone.length; i++) {
+    for (let i = 0; i < cardArray.length; i++) {
       // If the card is not already deleted
-      if (cardArrayClone[i])
-        if (cardArrayClone[i].cardId === progressCard.cardId) {
-          delete cardArrayClone[i];
+      if (cardArray[i])
+        if (cardArray[i].cardId === progressCard.cardId) {
+          delete cardArray[i];
         }
     }
   });
 
-  // Pushes the remaining cards
-  cardArrayClone.forEach(card => {
+  // Pushes the remaining cards (=unknown cards)
+  cardArray.forEach(card => {
     // If the card was not deleted
     if (card !== undefined) {
       unknownCardArray.push(card);

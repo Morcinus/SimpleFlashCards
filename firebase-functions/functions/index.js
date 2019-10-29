@@ -48,7 +48,7 @@ app.get("/getDeck/:deckId", getDeck);
 // Card routes
 app.get("/getDeckCards/:deckId", getDeckCards);
 app.get("/getCardsToReview/:deckId", authMiddleware, getCardsToReview);
-app.get("/getDeckUnknownCards/:userId/:deckId", getDeckUnknownCards);
+app.get("/getDeckUnknownCards/:deckId", authMiddleware, getDeckUnknownCards);
 app.get(
   "/getCardsToLearnAndReview/:deckId",
   authMiddleware,
