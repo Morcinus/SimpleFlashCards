@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Material UI
@@ -101,9 +102,11 @@ export class deck extends Component {
                 <br />
 
                 {this.state.selectedTabIndex === 1 ? (
-                  <div>ta1</div>
+                  <div>tab 2</div>
+                ) : !this.props.deckUi.loading ? (
+                  learnButtons(this.props.match.params.deckId)
                 ) : (
-                  learnButtons()
+                  <h4>Loading...</h4>
                 )}
 
                 <br />
@@ -116,7 +119,7 @@ export class deck extends Component {
   }
 }
 
-function learnButtons() {
+function learnButtons(deckId) {
   return (
     <Grid container direction="row" justify="space-evenly" alignItems="center">
       <Card
@@ -129,14 +132,24 @@ function learnButtons() {
           alignItems: "center"
         }}
       >
-        <CardActionArea
-          style={{ width: "100%", height: "100%", textAlign: "center" }}
+        <Link
+          to={`/study/${deckId}?lessonType=learn`}
+          style={{ textDecoration: "none" }}
         >
-          <MenuBook style={{ fontSize: 75, color: "#37474f" }}></MenuBook>
-          <Typography style={{ fontWeight: "bold", color: "#37474f" }}>
-            LEARN NEW
-          </Typography>
-        </CardActionArea>
+          <CardActionArea
+            style={{ width: "100%", height: "100%", textAlign: "center" }}
+          >
+            <MenuBook style={{ fontSize: 75, color: "#37474f" }}></MenuBook>
+            <Typography
+              style={{
+                fontWeight: "bold",
+                color: "#37474f"
+              }}
+            >
+              LEARN NEW
+            </Typography>
+          </CardActionArea>
+        </Link>
       </Card>
       <Card
         variant="outlined"
@@ -147,17 +160,22 @@ function learnButtons() {
           backgroundColor: "#91cc47"
         }}
       >
-        <CardActionArea
-          style={{ width: "100%", height: "100%", textAlign: "center" }}
+        <Link
+          to={`/study/${deckId}?lessonType=study`}
+          style={{ textDecoration: "none" }}
         >
-          <MenuBook style={{ fontSize: 75, color: "#37474f" }}></MenuBook>
-          <FitnessCenter
-            style={{ fontSize: 75, color: "#37474f" }}
-          ></FitnessCenter>
-          <Typography style={{ fontWeight: "bold", color: "#37474f" }}>
-            LEARN & REVIEW
-          </Typography>
-        </CardActionArea>
+          <CardActionArea
+            style={{ width: "100%", height: "100%", textAlign: "center" }}
+          >
+            <MenuBook style={{ fontSize: 75, color: "#37474f" }}></MenuBook>
+            <FitnessCenter
+              style={{ fontSize: 75, color: "#37474f" }}
+            ></FitnessCenter>
+            <Typography style={{ fontWeight: "bold", color: "#37474f" }}>
+              LEARN & REVIEW
+            </Typography>
+          </CardActionArea>
+        </Link>
       </Card>
       <Card
         variant="outlined"
@@ -168,16 +186,21 @@ function learnButtons() {
           backgroundColor: "#bff27e"
         }}
       >
-        <CardActionArea
-          style={{ width: "100%", height: "100%", textAlign: "center" }}
+        <Link
+          to={`/study/${deckId}?lessonType=review`}
+          style={{ textDecoration: "none" }}
         >
-          <FitnessCenter
-            style={{ fontSize: 75, color: "#37474f" }}
-          ></FitnessCenter>
-          <Typography style={{ fontWeight: "bold", color: "#37474f" }}>
-            REVIEW OLD
-          </Typography>
-        </CardActionArea>
+          <CardActionArea
+            style={{ width: "100%", height: "100%", textAlign: "center" }}
+          >
+            <FitnessCenter
+              style={{ fontSize: 75, color: "#37474f" }}
+            ></FitnessCenter>
+            <Typography style={{ fontWeight: "bold", color: "#37474f" }}>
+              REVIEW OLD
+            </Typography>
+          </CardActionArea>
+        </Link>
       </Card>
     </Grid>
   );

@@ -4,12 +4,14 @@ import {
   CLEAR_PINNED_DECKS,
   CLEAR_USER_DECKS,
   SET_DECK,
-  CLEAR_DECK
+  CLEAR_DECK,
+  LOADING_DECK_UI
 } from "../types";
 import axios from "axios";
 
 // Neni SET_ERRORS ?
 export const getUserDecks = () => dispatch => {
+  dispatch({ type: LOADING_DECK_UI });
   axios
     .get(`/getUserDecks`)
     .then(res => {
@@ -20,6 +22,7 @@ export const getUserDecks = () => dispatch => {
 };
 
 export const getPinnedDecks = () => dispatch => {
+  dispatch({ type: LOADING_DECK_UI });
   axios
     .get(`/getPinnedDecks`)
     .then(res => {
@@ -30,6 +33,7 @@ export const getPinnedDecks = () => dispatch => {
 };
 
 export const getDeck = deckId => dispatch => {
+  dispatch({ type: LOADING_DECK_UI });
   axios
     .get(`/getDeck/${deckId}`)
     .then(res => {
