@@ -88,7 +88,10 @@ exports.getCardsToReview = (req, res) => {
         );
 
         // Pushes the card to the export array
-        if (exportCard) exportCards.push(exportCard);
+        if (exportCard) {
+          exportCard.understandingLevel = progressCard.understandingLevel;
+          exportCards.push(exportCard);
+        }
       });
 
       return exportCards;
@@ -210,10 +213,16 @@ exports.getCardsToLearnAndReview = (req, res) => {
             exportCards.length < cardLimit / 2
           ) {
             // Finds the card in cardArray
-            let exportCard = cardArray.find(function(element) {
-              return element.cardId === progressCardsArray[i].cardId;
-            });
-            if (exportCard) exportCards.push(exportCard);
+            let exportCard = cardArray.find(
+              ({ cardId }) => cardId === progressCardsArray[i].cardId
+            );
+
+            // Pushes the card to the export array
+            if (exportCard) {
+              exportCard.understandingLevel =
+                progressCardsArray[i].understandingLevel;
+              exportCards.push(exportCard);
+            }
           } else break;
         }
       }
