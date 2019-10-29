@@ -1,7 +1,8 @@
-import { SET_STUDY_DECK, CLEAR_STUDY_DECK } from "../types";
+import { SET_STUDY_DECK, CLEAR_STUDY_DECK, LOADING_DECK } from "../types";
 import axios from "axios";
 
 export const getLearnDeck = deckId => dispatch => {
+  dispatch({ type: LOADING_DECK });
   axios
     .get(`/getDeckUnknownCards/${deckId}`)
     .then(res => {
@@ -12,6 +13,7 @@ export const getLearnDeck = deckId => dispatch => {
 };
 
 export const getLearnAndReviewDeck = deckId => dispatch => {
+  dispatch({ type: LOADING_DECK });
   axios
     .get(`/getCardsToLearnAndReview/${deckId}`)
     .then(res => {
@@ -22,6 +24,7 @@ export const getLearnAndReviewDeck = deckId => dispatch => {
 };
 
 export const getReviewDeck = deckId => dispatch => {
+  dispatch({ type: LOADING_DECK });
   axios
     .get(`/getCardsToReview/${deckId}`)
     .then(res => {

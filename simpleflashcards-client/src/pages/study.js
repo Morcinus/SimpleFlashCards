@@ -198,86 +198,92 @@ export class study extends Component {
                   </Box>
                 </Box>
 
+                {/* !this.props.deckStudy.loading ? */}
+
                 <br />
                 {this.state.deckFinished ? (
                   <h4>Congratulations! Studying finished.</h4>
-                ) : this.props.deckStudy.currentDeck.length > 0 ? (
-                  <Grid
-                    container
-                    direction="column"
-                    justify="center"
-                    alignItems="center"
-                  >
-                    {flashCard(
-                      this.props.deckStudy.currentDeck[
-                        this.state.cardArrayIndex
-                      ],
-                      this.state.cardSide,
-                      this.flipCard
-                    )}
-                    {this.state.cardSide === true ? (
-                      <div style={{ minHeight: "85px" }}>
-                        <Grid
-                          container
-                          direction="row"
-                          justify="center"
-                          alignItems="center"
-                          style={{
-                            marginTop: "20px"
-                          }}
-                        >
-                          <Button
-                            size="large"
-                            onClick={() => this.setCardProgress(0)}
+                ) : !this.props.deckStudy.loading ? (
+                  this.props.deckStudy.currentDeck.length > 0 ? (
+                    <Grid
+                      container
+                      direction="column"
+                      justify="center"
+                      alignItems="center"
+                    >
+                      {flashCard(
+                        this.props.deckStudy.currentDeck[
+                          this.state.cardArrayIndex
+                        ],
+                        this.state.cardSide,
+                        this.flipCard
+                      )}
+                      {this.state.cardSide === true ? (
+                        <div style={{ minHeight: "85px" }}>
+                          <Grid
+                            container
+                            direction="row"
+                            justify="center"
+                            alignItems="center"
                             style={{
-                              margin: "10px",
-                              backgroundColor: "#D32F2F",
-                              color: "#ffffff"
+                              marginTop: "20px"
                             }}
                           >
-                            <strong>Wrong</strong>
-                          </Button>
-                          <Button
-                            size="large"
-                            onClick={() => this.setCardProgress(1)}
-                            style={{
-                              margin: "10px",
-                              backgroundColor: "#455A64",
-                              color: "#ffffff"
-                            }}
-                          >
-                            <strong>Hard</strong>
-                          </Button>
-                          <Button
-                            size="large"
-                            onClick={() => this.setCardProgress(2)}
-                            style={{
-                              margin: "10px",
-                              backgroundColor: "#4CAF50",
-                              color: "#ffffff"
-                            }}
-                          >
-                            <strong>Good</strong>
-                          </Button>
-                          <Button
-                            size="large"
-                            onClick={() => this.setCardProgress(3)}
-                            style={{
-                              margin: "10px",
-                              backgroundColor: "#03A9F4",
-                              color: "#ffffff"
-                            }}
-                          >
-                            <strong>Easy</strong>
-                          </Button>
-                        </Grid>
-                      </div>
-                    ) : (
-                      <div style={{ minHeight: "85px" }}></div>
-                    )}
-                  </Grid>
+                            <Button
+                              size="large"
+                              onClick={() => this.setCardProgress(0)}
+                              style={{
+                                margin: "10px",
+                                backgroundColor: "#D32F2F",
+                                color: "#ffffff"
+                              }}
+                            >
+                              <strong>Wrong</strong>
+                            </Button>
+                            <Button
+                              size="large"
+                              onClick={() => this.setCardProgress(1)}
+                              style={{
+                                margin: "10px",
+                                backgroundColor: "#455A64",
+                                color: "#ffffff"
+                              }}
+                            >
+                              <strong>Hard</strong>
+                            </Button>
+                            <Button
+                              size="large"
+                              onClick={() => this.setCardProgress(2)}
+                              style={{
+                                margin: "10px",
+                                backgroundColor: "#4CAF50",
+                                color: "#ffffff"
+                              }}
+                            >
+                              <strong>Good</strong>
+                            </Button>
+                            <Button
+                              size="large"
+                              onClick={() => this.setCardProgress(3)}
+                              style={{
+                                margin: "10px",
+                                backgroundColor: "#03A9F4",
+                                color: "#ffffff"
+                              }}
+                            >
+                              <strong>Easy</strong>
+                            </Button>
+                          </Grid>
+                        </div>
+                      ) : (
+                        <div style={{ minHeight: "85px" }}></div>
+                      )}
+                    </Grid>
+                  ) : (
+                    <h4>There is nothing to learn! Try again later...</h4>
+                  )
                 ) : (
-                  <h4>There is nothing to learn! Try again later...</h4>
+                  <h4>Loading...</h4>
                 )}
 
                 <br />
