@@ -13,19 +13,37 @@ exports.getDeckCards = (req, res) => {
 
 // Sets card progress
 exports.setDeckCardsProgress = (req, res) => {
-  let cardArray = req.body.cardArray;
-  let deckId = req.body.deckId;
+  let newCardArray = req.body.cardArray;
+  let deckId = req.params.deckId;
 
-  db.collection("users")
+  let progressDocRef = db
+    .collection("users")
     .doc(`${req.user.uid}`)
     .collection("deckProgress")
-    .doc(`${deckId}`)
-    .set(
-      {
-        cardArray: cardArray
-      },
-      { merge: true }
-    )
+    .doc(`${deckId}`);
+
+  db.runTransaction(t => {
+    return t.get(progressDocRef).then(doc => {
+      let cardArray = doc.data().cardArray;
+      console.log(cardArray);
+
+      // Update the cardArray
+      newCardArray.forEach(newCard => {
+        console.log("Looping with: ", newCard);
+        for (let i = 0; i < cardArray.length; i++) {
+          if (cardArray[i].cardId === newCard.cardId) {
+            // Update the existing card
+            cardArray[i] = newCard;
+            return;
+          }
+        }
+        // Push the new card
+        cardArray.push(newCard);
+      });
+
+      t.update(progressDocRef, { cardArray: cardArray });
+    });
+  })
     .then(() => {
       res.status(200).json();
     })

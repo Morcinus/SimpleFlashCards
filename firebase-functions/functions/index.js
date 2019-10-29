@@ -54,7 +54,7 @@ app.get(
   authMiddleware,
   getCardsToLearnAndReview
 );
-app.post("/setDeckCardsProgress", authMiddleware, setDeckCardsProgress);
+app.post("/setDeckCardsProgress/:deckId", authMiddleware, setDeckCardsProgress);
 
 // Api
 exports.api = functions.region("europe-west1").https.onRequest(app);
