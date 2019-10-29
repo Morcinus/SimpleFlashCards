@@ -21,9 +21,14 @@ import DialogActions from "@material-ui/core/DialogActions";
 import { connect } from "react-redux";
 import {
   getLearnAndReviewDeck,
+  getLearnDeck,
+  getReviewDeck,
   pushDeckProgress,
   clearStudyDeck
 } from "../redux/actions/deckStudyActions";
+
+// QueryString
+const queryString = require("query-string");
 
 export class study extends Component {
   constructor(props) {
@@ -119,7 +124,23 @@ export class study extends Component {
   }
 
   componentDidMount() {
-    this.props.getLearnAndReviewDeck(this.props.match.params.deckId);
+    // Parse query string
+    let parsedQueryString = queryString.parse(this.props.location.search);
+
+    // Gets deck from the database
+    switch (parsedQueryString.lessonType) {
+      case "study":
+        this.props.getLearnAndReviewDeck(this.props.match.params.deckId);
+        break;
+      case "learn":
+        this.props.getLearnDeck(this.props.match.params.deckId);
+        break;
+      case "review":
+        this.props.getReviewDeck(this.props.match.params.deckId);
+        break;
+      default:
+        this.props.getLearnAndReviewDeck(this.props.match.params.deckId);
+    }
   }
 
   handleDialogOpen = () => {
@@ -180,7 +201,7 @@ export class study extends Component {
                 <br />
                 {this.state.deckFinished ? (
                   <h4>Congratulations! Studying finished.</h4>
-                ) : (
+                ) : this.props.deckStudy.currentDeck.length > 0 ? (
                   <Grid
                     container
                     direction="column"
@@ -255,6 +276,8 @@ export class study extends Component {
                       <div style={{ minHeight: "85px" }}></div>
                     )}
                   </Grid>
+                ) : (
+                  <h4>There is nothing to learn! Try again later...</h4>
                 )}
 
                 <br />
@@ -324,6 +347,8 @@ function flashCard(card, cardSide, cardFlipFunciton) {
 
 study.propTypes = {
   getLearnAndReviewDeck: PropTypes.func.isRequired,
+  getLearnDeck: PropTypes.func.isRequired,
+  getReviewDeck: PropTypes.func.isRequired,
   pushDeckProgress: PropTypes.func.isRequired,
   clearStudyDeck: PropTypes.func.isRequired,
   deckUi: PropTypes.object.isRequired,
@@ -338,6 +363,8 @@ const mapStateToProps = state => ({
 const mapActionsToProps = {
   pushDeckProgress,
   getLearnAndReviewDeck,
+  getLearnDeck,
+  getReviewDeck,
   clearStudyDeck
 };
 
