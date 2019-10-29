@@ -153,10 +153,11 @@ function findUnknownCards(cardArrayRef, progressCardArray) {
   return unknownCardArray;
 }
 
-// NEFUNGUJE TAK JAK BY MELO
+// Gets array of cards the user doesn't know and cards to review
+// NEEDS UPDATE: To include cards that are over understandingLevel 5 if user knows all the cards <- Rethinkg the whole algorithm
 exports.getCardsToLearnAndReview = (req, res) => {
   let deckId = req.params.deckId;
-  let cardArray;
+  let cardArray = [];
   let cardLimit = 20;
 
   db.collection("decks")
@@ -164,9 +165,6 @@ exports.getCardsToLearnAndReview = (req, res) => {
     .get()
     .then(doc => {
       cardArray = doc.data().cardArray;
-
-      console.log("Cards =>", doc.data().cardArray);
-      console.log("CARDS 1 =>", cardArray);
 
       return db
         .collection("users")
@@ -176,13 +174,10 @@ exports.getCardsToLearnAndReview = (req, res) => {
         .get();
     })
     .then(doc => {
-      let outputArray = [];
+      let exportCards = [];
       let progressCardsArray = [];
       if (doc.exists)
         progressCardsArray = doc.data().cardArray ? doc.data().cardArray : [];
-
-      // console.log("CARDS 2 =>", cardArray);
-      // console.log("PROGRESS CARDS =>", progressCardsArray);
 
       if (progressCardsArray.length > 0) {
         // Sorts the array
@@ -190,34 +185,35 @@ exports.getCardsToLearnAndReview = (req, res) => {
           compareUnderstandingLevels
         );
 
-        // Pushes 10 progress cards into the outputArray
+        // Pushes 10 (=cardLimit/2) progress cards into the exportCards array
         for (let i = 0; i < progressCardsArray.length; i++) {
           if (
             progressCardsArray[i].understandingLevel < 5 &&
-            outputArray.length < cardLimit / 2
+            exportCards.length < cardLimit / 2
           ) {
+            // Finds the card in cardArray
             let exportCard = cardArray.find(function(element) {
               return element.cardId === progressCardsArray[i].cardId;
             });
-            if (exportCard) outputArray.push(exportCard);
+            if (exportCard) exportCards.push(exportCard);
           } else break;
         }
       }
 
+      // Finds unknown cards
       let unknownCardsArray = findUnknownCards(cardArray, progressCardsArray);
-      console.log("UNKNOWN CARDS =>", unknownCardsArray);
 
-      // Fills the remaning space of outputArray with unknown cards
+      // Fills the remaning space of exportCards with unknown cards
       for (let i = 0; i < unknownCardsArray.length; i++) {
-        if (outputArray.length < cardLimit) {
-          outputArray.push(unknownCardsArray[i]);
+        if (exportCards.length < cardLimit) {
+          exportCards.push(unknownCardsArray[i]);
         } else break;
       }
 
-      return outputArray;
+      return exportCards;
     })
-    .then(outputArray => {
-      res.status(200).json(outputArray);
+    .then(exportCards => {
+      res.status(200).json(exportCards);
     })
     .catch(error => console.error(error));
 };
