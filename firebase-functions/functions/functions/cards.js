@@ -33,27 +33,50 @@ exports.setDeckCardsProgress = (req, res) => {
 };
 
 // Gets the cards for review
-// NEFUNGUJE - PUSHUJE PROGRESS CARDS MISTO NORMAL CARDS
 exports.getCardsToReview = (req, res) => {
   const cardLimit = 20;
-  let userId = req.params.userId;
   let deckId = req.params.deckId;
+  let progressCards = [];
 
   db.collection("users")
-    .doc(`${userId}`)
+    .doc(`${req.user.uid}`)
     .collection("deckProgress")
     .doc(`${deckId}`)
     .get()
     .then(doc => {
-      let cardArray = doc.data().cardArray;
+      progressCards = doc.data().cardArray;
 
-      // Sorts the array
-      cardArray = cardArray.sort(compareUnderstandingLevels);
+      // Sorts the array by understandingLevel
+      progressCards = progressCards.sort(compareUnderstandingLevels);
 
-      return cardArray.slice(0, cardLimit);
+      // Limits the array
+      progressCards = progressCards.slice(0, cardLimit);
+
+      return db
+        .collection("decks")
+        .doc(`${deckId}`)
+        .get();
     })
-    .then(cardArray => {
-      res.status(200).json(cardArray);
+    .then(doc => {
+      let cardArray = doc.data().cardArray;
+      let exportCards = [];
+
+      progressCards.forEach(progressCard => {
+        let progressCardId = progressCard.cardId;
+
+        // Finds the card in cardArray
+        let exportCard = cardArray.find(
+          ({ cardId }) => cardId === progressCardId
+        );
+
+        // Pushes the card to the export array
+        if (exportCard) exportCards.push(exportCard);
+      });
+
+      return exportCards;
+    })
+    .then(exportCards => {
+      res.status(200).json(exportCards);
     })
     .catch(error => console.error(error));
 };
@@ -69,7 +92,7 @@ function compareUnderstandingLevels(card1, card2) {
   return 0;
 }
 
-// TO-DO: needs error handling - if deck doesnt exist etc..
+// TO-DO: needs error handling - if deck doesnt exist etc.. - EVERY FB FUNCTION
 // TO-DO: Needs error handling if card is no longer in deck !! if the owner changed deck
 // Gets cards that the user doesn't know yet
 exports.getDeckUnknownCards = (req, res) => {
