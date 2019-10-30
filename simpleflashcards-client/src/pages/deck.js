@@ -17,6 +17,7 @@ import MenuBook from "@material-ui/icons/MenuBook";
 import FitnessCenter from "@material-ui/icons/FitnessCenter";
 
 import DeckInfo from "../components/DeckInfo";
+import DeckCards from "../components/DeckCards";
 
 // Redux
 import { connect } from "react-redux";
@@ -102,7 +103,11 @@ export class deck extends Component {
                 <br />
 
                 {this.state.selectedTabIndex === 1 ? (
-                  <div>tab 2</div>
+                  !this.props.deckUi.loading ? (
+                    <DeckCards />
+                  ) : (
+                    <h4>Loading...</h4>
+                  )
                 ) : !this.props.deckUi.loading ? (
                   learnButtons(this.props.match.params.deckId)
                 ) : (
