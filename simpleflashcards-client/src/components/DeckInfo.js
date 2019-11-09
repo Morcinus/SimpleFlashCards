@@ -14,6 +14,7 @@ import Box from "@material-ui/core/Box";
 import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
 import Bookmark from "@material-ui/icons/Bookmark";
 import Share from "@material-ui/icons/Share";
+import Edit from "@material-ui/icons/Edit";
 
 // Redux
 import { connect } from "react-redux";
@@ -213,6 +214,19 @@ export class DeckInfo extends Component {
               </Grid>
             </Box>
           </Popover>
+        </Grid>
+        <Grid container justify="center" style={{ marginTop: "20px" }}>
+          {this.props.deckUi.deck ? (
+            this.props.deckUi.deck.isCreator ? (
+              <Button item variant="text" color="primary" size="large">
+                <Edit /> <Typography> Edit Deck</Typography>
+              </Button>
+            ) : (
+              ""
+            )
+          ) : (
+            "Loading..."
+          )}
         </Grid>
       </Grid>
     );
