@@ -94,9 +94,9 @@ function newId() {
 
 //#region Deck Pinning
 exports.pinDeck = (req, res) => {
-  if (req.body.deckId && req.body.userId) {
+  if (req.body.deckId) {
     db.collection("users")
-      .doc(req.body.userId)
+      .doc(req.user.uid)
       .update({
         pinnedDecks: admin.firestore.FieldValue.arrayUnion(req.body.deckId)
       })
@@ -110,9 +110,9 @@ exports.pinDeck = (req, res) => {
 };
 
 exports.unpinDeck = (req, res) => {
-  if (req.body.deckId && req.body.userId) {
+  if (req.body.deckId) {
     db.collection("users")
-      .doc(req.body.userId)
+      .doc(req.user.uid)
       .update({
         pinnedDecks: admin.firestore.FieldValue.arrayRemove(req.body.deckId)
       })

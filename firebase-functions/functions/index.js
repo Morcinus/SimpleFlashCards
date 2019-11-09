@@ -38,8 +38,8 @@ app.post("/createDeck", authMiddleware, createDeck);
 app.post("/updateDeck", updateDeck);
 app.post("/deleteDeck", authMiddleware, deleteDeck);
 // Deck Pinning
-app.post("/pinDeck", pinDeck);
-app.post("/unpinDeck", unpinDeck);
+app.post("/pinDeck", authMiddleware, pinDeck);
+app.post("/unpinDeck", authMiddleware, unpinDeck);
 // Deck UI
 app.get("/getUserDecks", authMiddleware, getUserDecks);
 app.get("/getPinnedDecks", authMiddleware, getPinnedDecks);
