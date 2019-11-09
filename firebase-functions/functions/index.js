@@ -6,6 +6,10 @@ const app = express();
 
 const authMiddleware = require("./util/authMiddleware");
 
+// Cors
+const cors = require("cors");
+app.use(cors());
+
 const { signup, login, updateUserProfile } = require("./functions/user");
 
 const {
