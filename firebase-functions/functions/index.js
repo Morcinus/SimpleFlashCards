@@ -43,7 +43,7 @@ app.post("/unpinDeck", authMiddleware, unpinDeck);
 // Deck UI
 app.get("/getUserDecks", authMiddleware, getUserDecks);
 app.get("/getPinnedDecks", authMiddleware, getPinnedDecks);
-app.get("/getDeck/:deckId", getDeck);
+app.get("/getDeck/:deckId", authMiddleware, getDeck);
 
 // Card routes
 app.get("/getDeckCards/:deckId", getDeckCards);

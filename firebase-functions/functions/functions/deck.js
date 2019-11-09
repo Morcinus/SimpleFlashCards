@@ -215,6 +215,31 @@ exports.getDeck = (req, res) => {
         .catch(err => console.log(err));
     })
     .then(deck => {
+      return db
+        .collection("users")
+        .doc(req.user.uid)
+        .get()
+        .then(userDoc => {
+          let pinnedDecks = userDoc.data().pinnedDecks;
+
+          // Checks if deck is pinned by user
+          let isPinned = false;
+          pinnedDecks.forEach(pinnedDeck => {
+            if (pinnedDeck === req.params.deckId) {
+              isPinned = true;
+            }
+          });
+          deck.isPinned = isPinned;
+
+          // Check if the user is the deck creator
+          let isCreator = deck.creatorId === req.user.uid ? true : false;
+          deck.isCreator = isCreator;
+
+          return deck;
+        })
+        .catch(err => console.log(err));
+    })
+    .then(deck => {
       res.status(200).json({ deck });
     })
     .catch(error => console.error(error));
