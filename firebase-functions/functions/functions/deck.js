@@ -94,11 +94,11 @@ function newId() {
 
 //#region Deck Pinning
 exports.pinDeck = (req, res) => {
-  if (req.body.deckId) {
+  if (req.params.deckId) {
     db.collection("users")
       .doc(req.user.uid)
       .update({
-        pinnedDecks: admin.firestore.FieldValue.arrayUnion(req.body.deckId)
+        pinnedDecks: admin.firestore.FieldValue.arrayUnion(req.params.deckId)
       })
       .then(() => {
         res.status(200).json();
@@ -110,11 +110,11 @@ exports.pinDeck = (req, res) => {
 };
 
 exports.unpinDeck = (req, res) => {
-  if (req.body.deckId) {
+  if (req.params.deckId) {
     db.collection("users")
       .doc(req.user.uid)
       .update({
-        pinnedDecks: admin.firestore.FieldValue.arrayRemove(req.body.deckId)
+        pinnedDecks: admin.firestore.FieldValue.arrayRemove(req.params.deckId)
       })
       .then(() => {
         res.status(200).json();
