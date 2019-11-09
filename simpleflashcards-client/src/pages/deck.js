@@ -55,7 +55,7 @@ export class deck extends Component {
           style={{ marginLeft: "20px" }}
         >
           <Grid item sm={3} lg={3} xl={3}>
-            <DeckInfo deck={this.props.deckUi.deck}></DeckInfo>
+            <DeckInfo deckId={this.props.match.params.deckId}></DeckInfo>
           </Grid>
           <Grid item sm={9} lg={9} xl={9}>
             <Paper>

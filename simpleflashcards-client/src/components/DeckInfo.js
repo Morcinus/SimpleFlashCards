@@ -1,5 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
 
+// Material UI
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
@@ -10,7 +12,12 @@ import Card from "@material-ui/core/Card";
 import Input from "@material-ui/core/Input";
 import Box from "@material-ui/core/Box";
 import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
+import Bookmark from "@material-ui/icons/Bookmark";
 import Share from "@material-ui/icons/Share";
+
+// Redux
+import { connect } from "react-redux";
+import { pinDeck, unpinDeck } from "../redux/actions/deckUiActions";
 
 export class DeckInfo extends Component {
   constructor(props) {
@@ -18,8 +25,10 @@ export class DeckInfo extends Component {
     this.state = {
       popoverOpen: false,
       anchorEl: null,
-      copiedLink: false
+      copiedLink: false,
+      isPinned: null
     };
+    this.handlePinButtonClick = this.handlePinButtonClick.bind(this);
   }
 
   handleCopyClick = elementId => {
@@ -50,6 +59,33 @@ export class DeckInfo extends Component {
     });
   };
 
+  handlePinButtonClick() {
+    let prevIsPinned = this.state.isPinned;
+    this.setState({
+      isPinned: !prevIsPinned
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.deckUi.deck) {
+      if (this.props.deckUi.deck !== prevProps.deckUi.deck) {
+        this.setState({
+          isPinned: this.props.deckUi.deck.isPinned
+        });
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.deckUi.deck.isPinned !== this.state.isPinned) {
+      if (this.state.isPinned) {
+        this.props.pinDeck(this.props.deckId);
+      } else {
+        this.props.unpinDeck(this.props.deckId);
+      }
+    }
+  }
+
   render() {
     return (
       <Grid container direction="column">
@@ -67,20 +103,24 @@ export class DeckInfo extends Component {
         </Card>
         <br />
         <Typography variant="h5">
-          {this.props.deck ? `${this.props.deck.deckName}` : "Loading..."}
+          {this.props.deckUi.deck
+            ? `${this.props.deckUi.deck.deckName}`
+            : "Loading..."}
         </Typography>
 
         <Typography>
-          {this.props.deck
-            ? this.props.deck.deckDescription
-              ? `${this.props.deck.deckDescription}`
+          {this.props.deckUi.deck
+            ? this.props.deckUi.deck.deckDescription
+              ? `${this.props.deckUi.deck.deckDescription}`
               : ""
             : "Loading..."}
         </Typography>
         <br />
         <Typography>
           Created by:{" "}
-          {this.props.deck ? `${this.props.deck.creatorName}` : "Loading..."}
+          {this.props.deckUi.deck
+            ? `${this.props.deckUi.deck.creatorName}`
+            : "Loading..."}
         </Typography>
         <br />
         <Divider></Divider>
@@ -93,12 +133,31 @@ export class DeckInfo extends Component {
         >
           <Button
             item
-            variant="outlined"
+            variant={
+              this.state.isPinned !== null
+                ? this.state.isPinned
+                  ? "contained"
+                  : "outlined"
+                : "text"
+            }
             color="primary"
             style={{ marginRight: "20px" }}
             size="large"
+            onClick={this.handlePinButtonClick}
           >
-            <BookmarkBorder /> <Typography> Pin</Typography>
+            {this.state.isPinned !== null ? (
+              this.state.isPinned ? (
+                <Fragment>
+                  <Bookmark /> <Typography> Pinned</Typography>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <BookmarkBorder /> <Typography> Pin</Typography>
+                </Fragment>
+              )
+            ) : (
+              "Loading..."
+            )}
           </Button>
 
           <Button
@@ -160,4 +219,22 @@ export class DeckInfo extends Component {
   }
 }
 
-export default DeckInfo;
+DeckInfo.propTypes = {
+  pinDeck: PropTypes.func.isRequired,
+  unpinDeck: PropTypes.func.isRequired,
+  deckUi: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  deckUi: state.deckUi
+});
+
+const mapActionsToProps = {
+  pinDeck,
+  unpinDeck
+};
+
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(DeckInfo);

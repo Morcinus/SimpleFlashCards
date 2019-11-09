@@ -54,3 +54,17 @@ export const clearUserDecks = () => dispatch => {
 export const clearDeck = () => dispatch => {
   dispatch({ type: CLEAR_DECK });
 };
+
+export const pinDeck = deckId => dispatch => {
+  console.log("Pinning deck");
+  axios.post(`/pinDeck/${deckId}`).catch(err => {
+    console.log(err.response.data);
+  });
+};
+
+export const unpinDeck = deckId => dispatch => {
+  console.log("Unpinning deck");
+  axios.post(`/unpinDeck/${deckId}`).catch(err => {
+    console.log(err.response.data);
+  });
+};
