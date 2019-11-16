@@ -24,7 +24,10 @@ exports.setDeckCardsProgress = (req, res) => {
 
   db.runTransaction(t => {
     return t.get(progressDocRef).then(doc => {
-      let cardArray = doc.data().cardArray;
+      let cardArray = [];
+      if (doc.exists) {
+        cardArray = doc.data().cardArray ? doc.data().cardArray : [];
+      }
       console.log(cardArray);
 
       // Update the cardArray
@@ -41,7 +44,11 @@ exports.setDeckCardsProgress = (req, res) => {
         cardArray.push(newCard);
       });
 
-      t.update(progressDocRef, { cardArray: cardArray });
+      if (doc.exists) {
+        t.update(progressDocRef, { cardArray: cardArray });
+      } else {
+        t.set(progressDocRef, { cardArray: cardArray });
+      }
     });
   })
     .then(() => {
@@ -135,8 +142,14 @@ exports.getDeckUnknownCards = (req, res) => {
         .get();
     })
     .then(doc => {
-      let progressCards = doc.data().cardArray;
-      let unknownCards = findUnknownCards(cardArray, progressCards);
+      let unknownCards = [];
+      if (doc.exists) {
+        let progressCards = doc.data().cardArray;
+        unknownCards = findUnknownCards(cardArray, progressCards);
+      } else {
+        unknownCards = cardArray;
+      }
+
       return unknownCards.slice(0, cardLimit);
     })
     .then(unknownCards => {

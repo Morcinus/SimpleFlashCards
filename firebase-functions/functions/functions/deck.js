@@ -224,11 +224,13 @@ exports.getDeck = (req, res) => {
 
           // Checks if deck is pinned by user
           let isPinned = false;
-          pinnedDecks.forEach(pinnedDeck => {
-            if (pinnedDeck === req.params.deckId) {
-              isPinned = true;
-            }
-          });
+          if (pinnedDecks) {
+            pinnedDecks.forEach(pinnedDeck => {
+              if (pinnedDeck === req.params.deckId) {
+                isPinned = true;
+              }
+            });
+          }
           deck.isPinned = isPinned;
 
           // Check if the user is the deck creator
