@@ -27,7 +27,8 @@ const {
   unpinDeck,
   getUserDecks,
   getPinnedDecks,
-  getDeck
+  getDeck,
+  uploadDeckImage
 } = require("./functions/deck");
 
 const {
@@ -51,6 +52,7 @@ app.post("/setUserPersonalData", authMiddleware, setUserPersonalData);
 app.post("/createDeck", authMiddleware, createDeck);
 app.post("/updateDeck", updateDeck);
 app.post("/deleteDeck", authMiddleware, deleteDeck);
+app.post("/uploadDeckImage/:deckId", authMiddleware, uploadDeckImage);
 // Deck Pinning
 app.post("/pinDeck/:deckId", authMiddleware, pinDeck);
 app.post("/unpinDeck/:deckId", authMiddleware, unpinDeck);
