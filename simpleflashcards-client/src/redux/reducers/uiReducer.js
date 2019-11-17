@@ -1,8 +1,15 @@
-import { SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from "../types";
+import {
+  SET_ERRORS,
+  CLEAR_ERRORS,
+  LOADING_UI,
+  SET_SUCCESS,
+  CLEAR_SUCCESS
+} from "../types";
 
 const initialState = {
   loading: false,
-  errors: null
+  errors: null,
+  success: null
 };
 
 export default function(state = initialState, action) {
@@ -18,6 +25,18 @@ export default function(state = initialState, action) {
         ...state,
         loading: false,
         errors: null
+      };
+    case SET_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: action.payload
+      };
+    case CLEAR_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: null
       };
     case LOADING_UI:
       return {
