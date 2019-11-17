@@ -16,6 +16,9 @@ import Bookmark from "@material-ui/icons/Bookmark";
 import Share from "@material-ui/icons/Share";
 import Edit from "@material-ui/icons/Edit";
 
+// Other
+import defaultDeckImageUrl from "../util/other";
+
 // Redux
 import { connect } from "react-redux";
 import { pinDeck, unpinDeck } from "../redux/actions/deckUiActions";
@@ -99,7 +102,13 @@ export class DeckInfo extends Component {
         >
           <CardMedia
             style={{ width: "100%", height: "100%" }}
-            image="https://firebasestorage.googleapis.com/v0/b/simpleflashcards-4aea0.appspot.com/o/deckDefaultImg.png?alt=media"
+            image={
+              this.props.deckUi.deck
+                ? this.props.deckUi.deck.deckImage
+                  ? this.props.deckUi.deck.deckImage
+                  : defaultDeckImageUrl
+                : defaultDeckImageUrl
+            }
           ></CardMedia>
         </Card>
         <br />
@@ -248,7 +257,4 @@ const mapActionsToProps = {
   unpinDeck
 };
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(DeckInfo);
+export default connect(mapStateToProps, mapActionsToProps)(DeckInfo);
