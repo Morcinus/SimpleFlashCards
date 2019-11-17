@@ -1,4 +1,4 @@
-const { db } = require("../util/admin");
+const { db, admin } = require("../util/admin");
 const config = require("../util/firebaseConfig");
 const firebase = require("firebase");
 firebase.initializeApp(config);
@@ -230,5 +230,123 @@ exports.updateUserProfile = (req, res) => {
       .catch(error => res.status(500).json({ error: error.code }));
   } else {
     res.status(400).json();
+  }
+};
+
+exports.resetPassword = (req, res) => {
+  admin
+    .auth()
+    .getUser(req.user.uid)
+    .then(userRecord => {
+      let email = userRecord.toJSON().email;
+
+      return firebase.auth().sendPasswordResetEmail(email);
+    })
+    .then(() => {
+      return res
+        .status(200)
+        .json({ passwordSuccess: "The reset link was sent to your email!" });
+    })
+    .catch(error => {
+      return res.status(500).json({ passwordError: error.code });
+    });
+};
+
+exports.getUserPersonalData = (req, res) => {
+  db.collection("users")
+    .doc(req.user.uid)
+    .get()
+    .then(doc => {
+      let userData = {
+        username: doc.data().username,
+        bio: doc.data().bio,
+        email: doc.data().email
+      };
+
+      return userData;
+    })
+    .then(userData => {
+      res.status(200).json(userData);
+    })
+    .catch(error => console.error(error));
+};
+
+exports.setUserPersonalData = (req, res) => {
+  // NEED TO VALIDATE USERNAME - ON BACKEND AND ON FRONDEND + for all other stuff
+  if (req.body.username) {
+    db.collection("users")
+      .where("username", "==", `${req.body.username}`)
+      .get()
+      .then(querySnapshot => {
+        if (querySnapshot.empty) {
+          return db
+            .collection("users")
+            .doc(req.user.uid)
+            .update({ username: req.body.username });
+        } else {
+          return res
+            .status(400)
+            .json({ usernameError: "This username is already taken!" });
+        }
+      })
+      .then(() => {
+        return res
+          .status(200)
+          .json({ usernameSuccess: "Username changed successfully!" });
+      })
+      .catch(error => {
+        return res.status(500).json({ usernameError: error.code });
+      });
+  } else if (req.body.bio) {
+    db.collection("users")
+      .doc(req.user.uid)
+      .update({ bio: req.body.bio })
+      .then(() => {
+        return res
+          .status(200)
+          .json({ bioSuccess: "Description updated successfully!" });
+      })
+      .catch(error => {
+        return res.status(500).json({ bioError: error.code });
+      });
+  } else if (req.body.email && req.body.password) {
+    const userData = {
+      email: req.user.email,
+      password: req.body.password
+    };
+
+    // NEED TO VALIDATE EMAIL
+    const errors = validateUserLoginData(userData);
+    if (Object.keys(errors).length !== 0) {
+      return res.status(400).json(errors);
+    }
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(req.user.email, req.body.password)
+      .then(userCredential => {
+        userCredential.user.updateEmail(req.body.email);
+        return;
+      })
+      .then(() => {
+        return db
+          .collection("users")
+          .doc(req.user.uid)
+          .update({ email: req.body.email });
+      })
+      .then(() => {
+        return res
+          .status(200)
+          .json({ emailSuccess: "Email changed successfully!" });
+      })
+      .catch(error => {
+        if (error.code === "auth/wrong-password") {
+          return res.status(400).json({
+            passwordError: "Wrong password"
+          });
+        } else {
+          return res.status(500).json({ emailError: error.code });
+        }
+      });
   }
 };

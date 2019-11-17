@@ -10,7 +10,14 @@ const authMiddleware = require("./util/authMiddleware");
 const cors = require("cors");
 app.use(cors());
 
-const { signup, login, updateUserProfile } = require("./functions/user");
+const {
+  signup,
+  login,
+  updateUserProfile,
+  resetPassword,
+  getUserPersonalData,
+  setUserPersonalData
+} = require("./functions/user");
 
 const {
   createDeck,
@@ -35,6 +42,9 @@ const {
 app.post("/signup", signup);
 app.post("/login", login);
 app.post("/updateUserProfile", updateUserProfile);
+app.post("/resetPassword", authMiddleware, resetPassword);
+app.get("/getUserPersonalData", authMiddleware, getUserPersonalData);
+app.post("/setUserPersonalData", authMiddleware, setUserPersonalData);
 
 // DECK ROUTES
 // Deck Editing
