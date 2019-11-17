@@ -42,7 +42,7 @@ export class create extends Component {
       dialogOpen: false
     };
     this.updateDeckCards = this.updateDeckCards.bind(this);
-    this.handleImageUpload = this.handleImageUpload.bind(this);
+    this.handleUploadButtonClick = this.handleUploadButtonClick.bind(this);
     this.deleteDeckDraft = this.deleteDeckDraft.bind(this);
     this.uploadDeck = this.uploadDeck.bind(this);
   }
@@ -102,12 +102,18 @@ export class create extends Component {
   }
 
   uploadDeck() {
+    const imageFormData = new FormData();
+    imageFormData.append(
+      "deckImage",
+      this.state.deckImage,
+      this.state.deckImage.name
+    );
+
     let deckData = {
       deckName: this.state.deckName,
       deckDescription: this.state.deckDescription,
-      deckImage: this.state.deckImage,
       deckCards: this.state.deckCards,
-      imageUrl: this.state.imageUrl
+      imageFormData: imageFormData
     };
 
     const failed = this.props.uploadDeck(deckData);
@@ -139,7 +145,7 @@ export class create extends Component {
     });
   };
 
-  handleImageUpload() {
+  handleUploadButtonClick() {
     document.getElementById("imageInput").click();
   }
 
@@ -178,7 +184,7 @@ export class create extends Component {
                             backgroundSize: "cover",
                             backgroundPosition: "center"
                           }}
-                          onClick={this.handleImageUpload}
+                          onClick={this.handleUploadButtonClick}
                         >
                           <input
                             type="file"
@@ -195,7 +201,7 @@ export class create extends Component {
                             height: "130px",
                             marginRight: "20px"
                           }}
-                          onClick={this.handleImageUpload}
+                          onClick={this.handleUploadButtonClick}
                         >
                           <input
                             type="file"
@@ -357,7 +363,4 @@ const mapActionsToProps = {
   uploadDeck
 };
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(create);
+export default connect(mapStateToProps, mapActionsToProps)(create);

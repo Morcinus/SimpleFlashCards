@@ -28,9 +28,11 @@ exports.createDeck = (req, res) => {
         .update({
           createdDecks: admin.firestore.FieldValue.arrayUnion(docReference.id)
         });
+
+      return docReference.id;
     })
-    .then(() => {
-      res.status(200).json();
+    .then(deckId => {
+      res.status(200).json({ deckId: deckId });
     })
     .catch(error => console.error(error));
 };

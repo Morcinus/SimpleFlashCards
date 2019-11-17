@@ -32,11 +32,28 @@ export const uploadDeck = deckData => dispatch => {
       deckDescription: deckData.deckDescription
     };
 
+    const imageFormData = deckData.imageFormData;
+
     console.log(exportDeckData);
 
-    axios.post("/createDeck", exportDeckData).catch(err => {
-      console.log(err.response.data);
-    });
+    axios
+      .post("/createDeck", exportDeckData)
+      .then(res => {
+        console.log("Uploading image: ");
+        console.log(res);
+        // Upload deck image
+        if (imageFormData) {
+          console.log("Uploading image");
+          axios
+            .post(`/uploadDeckImage/${res.data.deckId}`, imageFormData)
+            .catch(err => {
+              if (err.response) console.log(err.response.data);
+            });
+        }
+      })
+      .catch(err => {
+        if (err.response) console.log(err.response.data);
+      });
 
     dispatch({ type: CLEAR_ERRORS });
     return false;
