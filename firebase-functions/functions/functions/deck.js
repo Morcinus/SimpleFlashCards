@@ -1,6 +1,8 @@
 const { db, admin } = require("../util/admin");
 const config = require("../util/firebaseConfig");
 
+const { Storage } = require("@google-cloud/storage");
+
 //#region Deck Editing
 exports.createDeck = (req, res) => {
   console.log("Creating deck");
@@ -70,28 +72,66 @@ exports.updateDeck = (req, res) => {
 exports.deleteDeck = (req, res) => {
   // TO-DO Unpin all users - udelat v transaction!!!
 
-  // OSETRIT ABY MOHL NICIT JEN SVOJE DECKY (ted muze i decky ostatnich kdyz ma id)
+  let userDocRef = db.collection("users").doc(req.user.uid);
+  let deckDocRef = db.collection("decks").doc(req.params.deckId);
+  let authorized;
 
-  if (req.body.deckId && req.user.uid) {
-    db.collection("decks")
-      .doc(req.body.deckId)
-      .delete()
-      .then(() => {
-        db.collection("users")
-          .doc(req.user.uid)
-          .update({
-            createdDecks: admin.firestore.FieldValue.arrayRemove(
-              req.body.deckId
-            )
-          });
-      })
-      .then(() => {
-        res.status(200).json();
-      })
-      .catch(error => console.error(error));
-  } else {
-    res.status(400).json();
-  }
+  db.runTransaction(t => {
+    return t.get(deckDocRef).then(doc => {
+      // Authorization check
+      let creatorId = doc.data().creatorId;
+      if (creatorId !== req.user.uid) {
+        console.log("CreatorId: ", creatorId);
+        console.log("userid: ", req.user.uid);
+        authorized = false;
+        return res.status(401).json();
+      } else {
+        authorized = true;
+        // Deck deletion
+        t.delete(deckDocRef);
+
+        // Deck deletion in user (creator) doc
+        t.update(userDocRef, {
+          createdDecks: admin.firestore.FieldValue.arrayRemove(
+            req.params.deckId
+          )
+        });
+      }
+    });
+  })
+    .then(() => {
+      // Deck image deletion
+      if (authorized === true) {
+        // CHECK IF THE PNG/JPG FILE EXISTS AND DELETE IT
+        const storage = new Storage();
+        const bucket = storage.bucket(config.storageBucket);
+        const pngFile = bucket.file(`${req.params.deckId}.png`);
+        const jpgFile = bucket.file(`${req.params.deckId}.jpg`);
+
+        pngFile.exists().then(data => {
+          const exists = data[0];
+          if (exists) {
+            console.log("DELETING PNG");
+            pngFile.delete();
+          } else {
+            console.log("PNG DOES NOT EXIST");
+            jpgFile.exists().then(data => {
+              const exists = data[0];
+              if (exists) {
+                console.log("DELETING JPG");
+                jpgFile.delete();
+              } else {
+                console.log("FILE DOES NOT EXIST");
+              }
+            });
+          }
+        });
+      }
+    })
+    .then(() => {
+      res.status(200).json();
+    })
+    .catch(error => console.error(error));
 };
 
 function newId() {
@@ -124,12 +164,8 @@ exports.uploadDeckImage = (req, res) => {
     if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
       return res.status(400).json({ error: "Wrong file type submitted" });
     }
-    // my.image.png => ['my', 'image', 'png']
     const imageExtension = filename.split(".")[filename.split(".").length - 1];
-    // 32756238461724837.png
-    imageFileName = `${Math.round(
-      Math.random() * 1000000000000
-    ).toString()}.${imageExtension}`;
+    imageFileName = `${req.params.deckId}.${imageExtension}`;
     const filepath = path.join(os.tmpdir(), imageFileName);
     imageToBeUploaded = { filepath, mimetype };
     file.pipe(fs.createWriteStream(filepath));

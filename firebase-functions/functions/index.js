@@ -51,7 +51,7 @@ app.post("/setUserPersonalData", authMiddleware, setUserPersonalData);
 // Deck Editing
 app.post("/createDeck", authMiddleware, createDeck);
 app.post("/updateDeck/:deckId", authMiddleware, updateDeck);
-app.post("/deleteDeck", authMiddleware, deleteDeck);
+app.post("/deleteDeck/:deckId", authMiddleware, deleteDeck);
 app.post("/uploadDeckImage/:deckId", authMiddleware, uploadDeckImage);
 // Deck Pinning
 app.post("/pinDeck/:deckId", authMiddleware, pinDeck);
