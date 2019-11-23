@@ -13,9 +13,13 @@ export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const SET_SUCCESS = "SET_SUCCESS";
 export const CLEAR_SUCCESS = "CLEAR_SUCCESS";
 
-// DeckEdit reducer types
+// Create Deck reducer types
 export const UPDATE_DECK_DATA = "UPDATE_DECK_DATA";
 export const DELETE_DECK_DATA = "DELETE_DECK_DATA";
+
+// Edit Deck reducer types
+export const SET_EDIT_DECK_DATA = "SET_EDIT_DECK_DATA";
+export const DELETE_EDIT_DECK_DATA = "DELETE_DECK_DATA";
 
 // Deck Ui reducer types
 export const SET_USER_DECKS = "SET_USER_DECKS";

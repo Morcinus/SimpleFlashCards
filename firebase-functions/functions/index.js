@@ -50,7 +50,7 @@ app.post("/setUserPersonalData", authMiddleware, setUserPersonalData);
 // DECK ROUTES
 // Deck Editing
 app.post("/createDeck", authMiddleware, createDeck);
-app.post("/updateDeck", updateDeck);
+app.post("/updateDeck/:deckId", authMiddleware, updateDeck);
 app.post("/deleteDeck", authMiddleware, deleteDeck);
 app.post("/uploadDeckImage/:deckId", authMiddleware, uploadDeckImage);
 // Deck Pinning

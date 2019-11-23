@@ -29,6 +29,7 @@ import create from "./pages/create";
 import deck from "./pages/deck";
 import study from "./pages/study";
 import settings from "./pages/settings";
+import edit from "./pages/edit";
 //Axios
 import axios from "axios";
 
@@ -62,6 +63,7 @@ function App() {
             <AuthRoute exact path="/login" component={login} />
             <Route exact path="/decks" component={decks} />
             <Route exact path="/create" component={create} />
+            <Route exact path="/edit/:deckId" component={edit} />
             <Route exact path="/deck/:deckId" component={deck} />
             <Route exact path="/study/:deckId" component={study} />
             <Route exact path="/settings" component={settings} />

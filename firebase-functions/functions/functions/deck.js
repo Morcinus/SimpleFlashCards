@@ -37,18 +37,30 @@ exports.createDeck = (req, res) => {
     .catch(error => console.error(error));
 };
 
-// NEEDS UPDATE
 exports.updateDeck = (req, res) => {
+  console.log("Updating deck");
+
+  // Generates custom ID for each new card
+  let cardArray = [];
+  req.body.deckCards.forEach(card => {
+    if (!card.cardId) {
+      let newCard = card;
+      newCard.cardId = newId();
+      cardArray.push(newCard);
+    } else {
+      cardArray.push(card);
+    }
+  });
+
   const deckData = {
-    creatorId: req.body.userId,
     deckName: req.body.deckName,
     deckDescription: req.body.deckDescription ? req.body.deckDescription : null,
-    cardArray: req.body.cardArray
+    cardArray: cardArray
   };
 
   db.collection("decks")
-    .doc(req.body.deckId)
-    .set(deckData)
+    .doc(req.params.deckId)
+    .update(deckData)
     .then(() => {
       res.status(200).json();
     })

@@ -5,6 +5,7 @@ import thunk from "redux-thunk";
 import userReducer from "./reducers/userReducer";
 import uiReducer from "./reducers/uiReducer";
 import createDeckReducer from "./reducers/createDeckReducer";
+import editDeckReducer from "./reducers/editDeckReducer";
 import deckUi from "./reducers/deckUiReducer";
 import deckStudy from "./reducers/deckStudyReducer";
 
@@ -16,6 +17,7 @@ const reducers = combineReducers({
   user: userReducer,
   UI: uiReducer,
   deckCreation: createDeckReducer,
+  deckEdit: editDeckReducer,
   deckUi: deckUi,
   deckStudy: deckStudy
 });

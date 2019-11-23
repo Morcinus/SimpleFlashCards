@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Material UI
@@ -227,7 +228,14 @@ export class DeckInfo extends Component {
         <Grid container justify="center" style={{ marginTop: "20px" }}>
           {this.props.deckUi.deck ? (
             this.props.deckUi.deck.isCreator ? (
-              <Button item variant="text" color="primary" size="large">
+              <Button
+                item
+                variant="text"
+                color="primary"
+                size="large"
+                component={Link}
+                to={`/edit/${this.props.deckId}`}
+              >
                 <Edit /> <Typography> Edit Deck</Typography>
               </Button>
             ) : (
