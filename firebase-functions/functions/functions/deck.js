@@ -1,6 +1,5 @@
 const { db, admin } = require("../util/admin");
 const config = require("../util/firebaseConfig");
-const firebase = require("firebase");
 
 const { Storage } = require("@google-cloud/storage");
 
@@ -43,32 +42,108 @@ exports.createDeck = (req, res) => {
 exports.updateDeck = (req, res) => {
   console.log("Updating deck");
 
-  // Generates custom ID for each new card
-  let cardArray = [];
-  req.body.deckCards.forEach(card => {
-    if (!card.cardId) {
-      let newCard = card;
-      newCard.cardId = newId();
-      cardArray.push(newCard);
-    } else {
-      cardArray.push(card);
-    }
-  });
+  let deckDocRef = db.collection("decks").doc(req.params.deckId);
+  let deletedCards = [];
 
-  const deckData = {
-    deckName: req.body.deckName,
-    deckDescription: req.body.deckDescription ? req.body.deckDescription : null,
-    cardArray: cardArray
-  };
+  db.runTransaction(t => {
+    return t
+      .get(deckDocRef)
+      .then(doc => {
+        // Authorization check
+        let creatorId = doc.data().creatorId;
+        if (creatorId !== req.user.uid) {
+          console.log("CreatorId: ", creatorId);
+          console.log("userid: ", req.user.uid);
+          authorized = false;
+          return res.status(401).json();
+        } else {
+          authorized = true;
 
-  db.collection("decks")
-    .doc(req.params.deckId)
-    .update(deckData)
+          // Generates custom ID for each new card
+          let cardArray = [];
+          req.body.deckCards.forEach(card => {
+            if (!card.cardId) {
+              let newCard = card;
+              newCard.cardId = newId();
+              cardArray.push(newCard);
+            } else {
+              cardArray.push(card);
+            }
+          });
+
+          // Creates new docData
+          let deckData = {
+            deckName: req.body.deckName,
+            deckDescription: req.body.deckDescription
+              ? req.body.deckDescription
+              : null,
+            cardArray: cardArray
+          };
+
+          // Updates deck
+          t.update(deckDocRef, deckData);
+
+          // Find deleted cards
+          let oldCardArray = doc.data().cardArray;
+          let newCardArray = req.body.deckCards;
+          deletedCards = findDeletedCards(oldCardArray, newCardArray);
+
+          // Find all user deck progress
+          return db
+            .collectionGroup("deckProgress")
+            .where("deckId", "==", req.params.deckId)
+            .get();
+        }
+      })
+      .then(querySnapshot => {
+        // Remove all deleted cards in user progess
+        querySnapshot.forEach(progressDoc => {
+          let progressCards = progressDoc.data().cardArray;
+
+          // Remove deleted cards from progressCard array
+          deletedCards.forEach(deletedCard => {
+            for (let i = 0; i < progressCards.length; i++) {
+              // If the card is not already deleted
+              if (progressCards[i])
+                if (progressCards[i].cardId === deletedCard.cardId) {
+                  delete progressCards[i];
+                }
+            }
+          });
+
+          // Push the remaining cards
+          let newProgressCards = [];
+          progressCards.forEach(card => {
+            // If the card was not deleted
+            if (card !== undefined) {
+              newProgressCards.push(card);
+            }
+          });
+
+          // Save updated array
+          t.update(progressDoc.ref, { cardArray: newProgressCards });
+        });
+      });
+  })
     .then(() => {
       res.status(200).json();
     })
     .catch(error => console.error(error));
 };
+
+// Finds which cards from firstArray are not in the secondArray (=which cards were deleted)
+function findDeletedCards(firstArray, secondArray) {
+  let newArray = firstArray.filter(function checkInSecondArray(card1) {
+    // Search for card1 in the secondArray
+    let foundCard = secondArray.find(function isWantedCard(card2) {
+      return card1.cardId === card2.cardId;
+    });
+
+    return foundCard ? false : true;
+  });
+
+  return newArray;
+}
 
 exports.deleteDeck = (req, res) => {
   // TO-DO Unpin all users - udelat v transaction!!!
@@ -119,14 +194,6 @@ exports.deleteDeck = (req, res) => {
           });
         });
 
-        // return db
-        //   .collectionGroup("deckProgress")
-        //   .where(
-        //     firebase.firestore.FieldPath.documentId(),
-        //     "==",
-        //     req.params.deckId
-        //   )
-        //   .get();req.params.deckId
         return db
           .collectionGroup("deckProgress")
           .where("deckId", "==", req.params.deckId)
