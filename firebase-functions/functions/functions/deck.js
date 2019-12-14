@@ -1,5 +1,6 @@
 const { db, admin } = require("../util/admin");
 const config = require("../util/firebaseConfig");
+const firebase = require("firebase");
 
 const { Storage } = require("@google-cloud/storage");
 
@@ -74,30 +75,70 @@ exports.deleteDeck = (req, res) => {
 
   let userDocRef = db.collection("users").doc(req.user.uid);
   let deckDocRef = db.collection("decks").doc(req.params.deckId);
+  let pinsRefs = db
+    .collection("users")
+    .where("pinnedDecks", "array-contains", req.params.deckId);
   let authorized;
 
   db.runTransaction(t => {
-    return t.get(deckDocRef).then(doc => {
-      // Authorization check
-      let creatorId = doc.data().creatorId;
-      if (creatorId !== req.user.uid) {
-        console.log("CreatorId: ", creatorId);
-        console.log("userid: ", req.user.uid);
-        authorized = false;
-        return res.status(401).json();
-      } else {
-        authorized = true;
-        // Deck deletion
-        t.delete(deckDocRef);
+    return t
+      .get(deckDocRef)
+      .then(doc => {
+        // Authorization check
+        let creatorId = doc.data().creatorId;
+        if (creatorId !== req.user.uid) {
+          console.log("CreatorId: ", creatorId);
+          console.log("userid: ", req.user.uid);
+          authorized = false;
+          return res.status(401).json();
+        } else {
+          authorized = true;
+          // Deck deletion
+          t.delete(deckDocRef);
 
-        // Deck deletion in user (creator) doc
-        t.update(userDocRef, {
-          createdDecks: admin.firestore.FieldValue.arrayRemove(
-            req.params.deckId
-          )
+          // Deck deletion in user (creator) doc
+          t.update(userDocRef, {
+            createdDecks: admin.firestore.FieldValue.arrayRemove(
+              req.params.deckId
+            )
+          });
+
+          return db
+            .collection("users")
+            .where("pinnedDecks", "array-contains", req.params.deckId)
+            .get();
+        }
+      })
+      .then(querySnapshot => {
+        // Remove all deck pins
+        querySnapshot.forEach(userDoc => {
+          t.update(userDoc.ref, {
+            pinnedDecks: admin.firestore.FieldValue.arrayRemove(
+              req.params.deckId
+            )
+          });
         });
-      }
-    });
+
+        // return db
+        //   .collectionGroup("deckProgress")
+        //   .where(
+        //     firebase.firestore.FieldPath.documentId(),
+        //     "==",
+        //     req.params.deckId
+        //   )
+        //   .get();req.params.deckId
+        return db
+          .collectionGroup("deckProgress")
+          .where("deckId", "==", req.params.deckId)
+          .get();
+      })
+      .then(querySnapshot => {
+        // Remove all saved deck progress
+        querySnapshot.forEach(progressDoc => {
+          console.log("Deleting ", progressDoc.id);
+          t.delete(progressDoc.ref);
+        });
+      });
   })
     .then(() => {
       // Deck image deletion

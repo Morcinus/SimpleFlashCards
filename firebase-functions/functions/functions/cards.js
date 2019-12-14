@@ -47,7 +47,10 @@ exports.setDeckCardsProgress = (req, res) => {
       if (doc.exists) {
         t.update(progressDocRef, { cardArray: cardArray });
       } else {
-        t.set(progressDocRef, { cardArray: cardArray });
+        t.set(progressDocRef, {
+          deckId: req.params.deckId, // Is needed for collectionGroup - progress removing
+          cardArray: cardArray
+        });
       }
     });
   })
