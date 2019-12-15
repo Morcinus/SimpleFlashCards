@@ -80,6 +80,19 @@ const validateUploadDeckData = deckData => {
   return errors;
 };
 
+export const deleteDeck = deckId => dispatch => {
+  axios
+      .post(`/deleteDeck/${deckId}`)
+      .then(() => {
+        console.log("Deck Deleted!");
+        dispatch({ type: DELETE_EDIT_DECK_DATA });
+      })
+      .catch(err => {
+        if (err.response) console.log(err.response.data);
+      });
+};
+
 export const deleteDeckDraft = () => dispatch => {
   dispatch({ type: DELETE_EDIT_DECK_DATA });
 };
+

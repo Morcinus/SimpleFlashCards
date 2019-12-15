@@ -8,8 +8,6 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import {
   Divider,
-  Card,
-  CardContent,
   TextField,
   Box,
   Button
@@ -19,12 +17,15 @@ import Delete from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
 // Redux
 import { connect } from "react-redux";
 import {
   saveDeckDraft,
+  deleteDeck,
   deleteDeckDraft,
   uploadDeck,
   getDeck
@@ -44,7 +45,7 @@ export class edit extends Component {
     };
     this.updateDeckCards = this.updateDeckCards.bind(this);
     this.handleUploadButtonClick = this.handleUploadButtonClick.bind(this);
-    this.deleteDeckDraft = this.deleteDeckDraft.bind(this);
+    this.deleteDeck = this.deleteDeck.bind(this);
     this.uploadDeck = this.uploadDeck.bind(this);
   }
 
@@ -108,7 +109,7 @@ export class edit extends Component {
     });
   }
 
-  deleteDeckDraft() {
+  deleteDeck() {
     this.setState({
       errors: {},
       deckName: "",
@@ -118,7 +119,7 @@ export class edit extends Component {
       imageUrl: null,
       dialogOpen: false
     });
-    this.props.deleteDeckDraft();
+    this.props.deleteDeck(this.props.match.params.deckId);
     this.handleDialogClose();
   }
 
@@ -326,7 +327,7 @@ export class edit extends Component {
                         <Typography align="right" color="error">
                           {this.state.errors.deckCardsError}
                         </Typography>
-                      ) : this.state.uploadSucceeded === true ? ( // NEEDS UPDATE!!! to disappear after few secs
+                      ) : this.state.uploadSucceeded === true ? ( // NEEDS UPDATE!!! to disappear after few secs + Add delete deck success
                         <Typography align="right">
                           Upload was successful
                         </Typography>
@@ -347,8 +348,14 @@ export class edit extends Component {
         </Grid>
         <Dialog open={this.state.dialogOpen} onClose={this.handleDialogClose}>
           <DialogTitle>
-            {"Are you sure you want to delete this draft?"}
+            Delete Deck
           </DialogTitle>
+          <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this deck forever?  <br />
+            You can't undo this action.
+          </DialogContentText>
+        </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <Button
               onClick={this.handleDialogClose}
@@ -359,7 +366,7 @@ export class edit extends Component {
               Cancel
             </Button>
             <Button
-              onClick={this.deleteDeckDraft}
+              onClick={this.deleteDeck}
               color="primary"
               variant="contained"
             >
@@ -374,6 +381,7 @@ export class edit extends Component {
 
 edit.propTypes = {
   saveDeckDraft: PropTypes.func.isRequired,
+  deleteDeck: PropTypes.func.isRequired,
   deleteDeckDraft: PropTypes.func.isRequired,
   uploadDeck: PropTypes.func.isRequired,
   getDeck: PropTypes.func.isRequired,
@@ -388,6 +396,7 @@ const mapStateToProps = state => ({
 
 const mapActionsToProps = {
   saveDeckDraft,
+  deleteDeck,
   deleteDeckDraft,
   uploadDeck,
   getDeck
