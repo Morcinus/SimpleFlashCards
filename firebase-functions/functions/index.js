@@ -36,7 +36,10 @@ const {
   updateCollection,
   deleteCollection,
   pinCollection,
-  unpinCollection
+  unpinCollection,
+  getUserCollections,
+  getPinnedCollections,
+  getCollection
 } = require("./functions/collection");
 
 const {
@@ -74,14 +77,13 @@ app.get("/getDeck/:deckId", authMiddleware, getDeck);
 app.post("/createCollection", authMiddleware, createCollection);
 app.post("/updateCollection/:colId", authMiddleware, updateCollection);
 app.post("/deleteCollection/:colId", authMiddleware, deleteCollection);
-// app.post("/uploadDeckImage/:colId", authMiddleware, uploadDeckImage);
 // Collection Pinning
 app.post("/pinCollection/:colId", authMiddleware, pinCollection);
 app.post("/unpinCollection/:colId", authMiddleware, unpinCollection);
-// // Deck UI
-// app.get("/getUserDecks", authMiddleware, getUserDecks);
-// app.get("/getPinnedDecks", authMiddleware, getPinnedDecks);
-// app.get("/getDeck/:colId", authMiddleware, getDeck);
+// Deck UI
+app.get("/getUserCollections", authMiddleware, getUserCollections);
+app.get("/getPinnedCollections", authMiddleware, getPinnedCollections);
+app.get("/getCollection/:colId", authMiddleware, getCollection);
 
 // Card routes
 app.get("/getDeckCards/:deckId", getDeckCards);
