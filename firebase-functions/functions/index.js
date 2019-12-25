@@ -32,6 +32,14 @@ const {
 } = require("./functions/deck");
 
 const {
+  createCollection,
+  updateCollection,
+  deleteCollection,
+  pinCollection,
+  unpinCollection
+} = require("./functions/collection");
+
+const {
   getDeckCards,
   setDeckCardsProgress,
   getCardsToReview,
@@ -60,6 +68,20 @@ app.post("/unpinDeck/:deckId", authMiddleware, unpinDeck);
 app.get("/getUserDecks", authMiddleware, getUserDecks);
 app.get("/getPinnedDecks", authMiddleware, getPinnedDecks);
 app.get("/getDeck/:deckId", authMiddleware, getDeck);
+
+// COLLECTION ROUTES
+// Collection Editing
+app.post("/createCollection", authMiddleware, createCollection);
+app.post("/updateCollection/:colId", authMiddleware, updateCollection);
+app.post("/deleteCollection/:colId", authMiddleware, deleteCollection);
+// app.post("/uploadDeckImage/:colId", authMiddleware, uploadDeckImage);
+// Collection Pinning
+app.post("/pinCollection/:colId", authMiddleware, pinCollection);
+app.post("/unpinCollection/:colId", authMiddleware, unpinCollection);
+// // Deck UI
+// app.get("/getUserDecks", authMiddleware, getUserDecks);
+// app.get("/getPinnedDecks", authMiddleware, getPinnedDecks);
+// app.get("/getDeck/:colId", authMiddleware, getDeck);
 
 // Card routes
 app.get("/getDeckCards/:deckId", getDeckCards);
