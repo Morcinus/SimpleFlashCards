@@ -50,6 +50,8 @@ const {
   getCardsToLearnAndReview
 } = require("./functions/cards");
 
+const { getColCardsToReview } = require("./functions/collectionCards");
+
 // User routes
 app.post("/signup", signup);
 app.post("/login", login);
@@ -85,7 +87,7 @@ app.get("/getUserCollections", authMiddleware, getUserCollections);
 app.get("/getPinnedCollections", authMiddleware, getPinnedCollections);
 app.get("/getCollection/:colId", authMiddleware, getCollection);
 
-// Card routes
+// Deck card routes
 app.get("/getDeckCards/:deckId", getDeckCards);
 app.get("/getCardsToReview/:deckId", authMiddleware, getCardsToReview);
 app.get("/getDeckUnknownCards/:deckId", authMiddleware, getDeckUnknownCards);
@@ -95,6 +97,17 @@ app.get(
   getCardsToLearnAndReview
 );
 app.post("/setDeckCardsProgress/:deckId", authMiddleware, setDeckCardsProgress);
+
+// Collection Card routes
+// app.get("/getDeckCards/:colId", getDeckCards);
+app.get("/getColCardsToReview/:colId", authMiddleware, getColCardsToReview);
+// app.get("/getDeckUnknownCards/:colId", authMiddleware, getDeckUnknownCards);
+// app.get(
+//   "/getCardsToLearnAndReview/:colId",
+//   authMiddleware,
+//   getCardsToLearnAndReview
+// );
+// app.post("/setDeckCardsProgress/:colId", authMiddleware, setDeckCardsProgress);
 
 // Api
 exports.api = functions.region("europe-west1").https.onRequest(app);
