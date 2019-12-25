@@ -50,7 +50,10 @@ const {
   getCardsToLearnAndReview
 } = require("./functions/cards");
 
-const { getColCardsToReview } = require("./functions/collectionCards");
+const {
+  getColCardsToReview,
+  getColUnknownCards
+} = require("./functions/collectionCards");
 
 // User routes
 app.post("/signup", signup);
@@ -101,7 +104,7 @@ app.post("/setDeckCardsProgress/:deckId", authMiddleware, setDeckCardsProgress);
 // Collection Card routes
 // app.get("/getDeckCards/:colId", getDeckCards);
 app.get("/getColCardsToReview/:colId", authMiddleware, getColCardsToReview);
-// app.get("/getDeckUnknownCards/:colId", authMiddleware, getDeckUnknownCards);
+app.get("/getColUnknownCards/:colId", authMiddleware, getColUnknownCards);
 // app.get(
 //   "/getCardsToLearnAndReview/:colId",
 //   authMiddleware,

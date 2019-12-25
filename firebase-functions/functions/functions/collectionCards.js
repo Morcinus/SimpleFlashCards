@@ -128,7 +128,7 @@ exports.getColCardsToReview = (req, res) => {
   const cardLimit = 5;
 
   db.collection("collections")
-    .doc(req.params.colId) // !!!
+    .doc(req.params.colId)
     .get()
     .then(colDoc => {
       let deckArray = colDoc.data().deckArray;
@@ -154,3 +154,123 @@ exports.getColCardsToReview = (req, res) => {
     })
     .catch(error => console.error(error));
 };
+
+exports.getColUnknownCards = (req, res) => {
+  const cardLimit = 5;
+  let exportCardsArray = [];
+
+  //Get the collection doc
+  db.collection("collections")
+    .doc(req.params.colId)
+    .get()
+    .then(async colDoc => {
+      // Get the array of deckIds
+      let deckArray = colDoc.data().deckArray;
+
+      let breakLoop = false;
+      // Loop through decks until cardLimit reached
+      for (let i = 0; i < deckArray.length; i++) {
+        if (breakLoop) {
+          break;
+        } else {
+          let progressCards = [];
+
+          // Find user deck progress
+          await db
+            .collection("users")
+            .doc(req.user.uid)
+            .collection("deckProgress")
+            .doc(deckArray[i])
+            .get()
+            .then(doc => {
+              if (doc.exists) {
+                // If user has some progress, find unknown cards
+                progressCards = doc.data().cardArray;
+                return db
+                  .collection("decks")
+                  .doc(deckArray[i])
+                  .get()
+                  .then(doc => {
+                    let cardArray = doc.data().cardArray;
+                    let unknownCards = findUnknownCards(
+                      cardArray,
+                      progressCards
+                    );
+                    return unknownCards;
+                  })
+                  .catch(error => console.error(error));
+              } else {
+                // Else all cards are unknown => just return all cards
+                return db
+                  .collection("decks")
+                  .doc(deckArray[i])
+                  .get()
+                  .then(doc => {
+                    let cardArray = doc.data().cardArray;
+                    return cardArray;
+                  })
+                  .catch(error => console.error(error));
+              }
+            })
+            .then(cardArray => {
+              // Fill exportCardsArray until cardLimit reached
+              if (cardArray.length + exportCardsArray.length < cardLimit) {
+                // Push all cards from card array
+                for (let i = 0; i < cardArray.length; i++) {
+                  exportCardsArray.push(cardArray[i]);
+                }
+                // Continue the loop
+                return;
+              } else if (
+                cardArray.length + exportCardsArray.length >=
+                cardLimit
+              ) {
+                for (let i = 0; i <= cardLimit - exportCardsArray.length; i++) {
+                  // Finished, push cards & break loop
+                  exportCardsArray.push(cardArray[i]);
+                }
+                // Break the loop
+                breakLoop = true;
+                return;
+              }
+            })
+            .catch(error => console.error(error));
+        }
+      }
+
+      return exportCardsArray;
+    })
+    .then(exportCards => {
+      res.status(200).json({ cardArray: exportCards });
+    })
+    .catch(error => console.error(error));
+};
+
+// Finds cards the user doesn't know
+function findUnknownCards(cardArrayRef, progressCardArray) {
+  let unknownCardArray = [];
+
+  // Clones array so that the original array does not get modified
+  let cardArray = cardArrayRef.slice();
+
+  // Deletes cards in cardArray that the user already knows
+  progressCardArray.forEach(progressCard => {
+    for (let i = 0; i < cardArray.length; i++) {
+      // If the card is not already deleted
+      if (cardArray[i])
+        if (cardArray[i].cardId === progressCard.cardId) {
+          delete cardArray[i];
+        }
+    }
+  });
+
+  // Pushes the remaining cards (=unknown cards)
+  cardArray.forEach(card => {
+    // If the card was not deleted
+    if (card !== undefined) {
+      unknownCardArray.push(card);
+    }
+  });
+
+  return unknownCardArray;
+}
