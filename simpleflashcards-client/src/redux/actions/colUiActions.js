@@ -32,16 +32,16 @@ export const getPinnedCollections = () => dispatch => {
     .catch(err => console.log(err));
 };
 
-// export const getDeck = deckId => dispatch => {
-//   dispatch({ type: LOADING_DECK_UI });
-//   axios
-//     .get(`/getDeck/${deckId}`)
-//     .then(res => {
-//       console.log(res.data);
-//       dispatch({ type: SET_DECK, payload: res.data });
-//     })
-//     .catch(err => console.log(err));
-// };
+export const getCollection = colId => dispatch => {
+  dispatch({ type: LOADING_COLLECTION_UI });
+  axios
+    .get(`/getCollection/${colId}`)
+    .then(res => {
+      console.log(res.data);
+      dispatch({ type: SET_COLLECTION, payload: res.data });
+    })
+    .catch(err => console.log(err));
+};
 
 export const clearPinnedCollections = () => dispatch => {
   dispatch({ type: CLEAR_PINNED_COLLECTIONS });
@@ -51,20 +51,20 @@ export const clearUserCollections = () => dispatch => {
   dispatch({ type: CLEAR_USER_COLLECTIONS });
 };
 
-// export const clearDeck = () => dispatch => {
-//   dispatch({ type: CLEAR_DECK });
-// };
+export const clearCollection = () => dispatch => {
+  dispatch({ type: CLEAR_COLLECTION });
+};
 
-// export const pinDeck = deckId => dispatch => {
-//   console.log("Pinning deck");
-//   axios.post(`/pinDeck/${deckId}`).catch(err => {
-//     console.log(err.response.data);
-//   });
-// };
+export const pinCollection = colId => dispatch => {
+  console.log("Pinning collection");
+  axios.post(`/pinCollection/${colId}`).catch(err => {
+    console.log(err.response.data);
+  });
+};
 
-// export const unpinDeck = deckId => dispatch => {
-//   console.log("Unpinning deck");
-//   axios.post(`/unpinDeck/${deckId}`).catch(err => {
-//     console.log(err.response.data);
-//   });
-// };
+export const unpinCollection = colId => dispatch => {
+  console.log("Unpinning collection");
+  axios.post(`/unpinCollection/${colId}`).catch(err => {
+    console.log(err.response.data);
+  });
+};

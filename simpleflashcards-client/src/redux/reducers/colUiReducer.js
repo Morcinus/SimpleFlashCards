@@ -40,18 +40,18 @@ export default function(state = initialState, action) {
         loading: false,
         userCollections: []
       };
-    //   case SET_DECK:
-    //     return {
-    //       ...state,
-    //       loading: false,
-    //       deck: action.payload.deck
-    //     };
-    //   case CLEAR_DECK:
-    //     return {
-    //       ...state,
-    //       loading: false,
-    //       deck: null
-    //     };
+    case SET_COLLECTION:
+      return {
+        ...state,
+        loading: false,
+        collection: action.payload.collection
+      };
+    case CLEAR_COLLECTION:
+      return {
+        ...state,
+        loading: false,
+        collection: null
+      };
     case LOADING_COLLECTION_UI:
       return {
         ...state,

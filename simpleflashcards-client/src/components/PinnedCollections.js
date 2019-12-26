@@ -8,7 +8,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
-import collectionDefaultImgUrl from "../util/other";
+import { collectionDefaultImgUrl } from "../util/other";
 
 // Redux
 import { connect } from "react-redux";

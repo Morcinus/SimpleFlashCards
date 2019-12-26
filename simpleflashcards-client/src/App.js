@@ -30,6 +30,7 @@ import deck from "./pages/deck";
 import study from "./pages/study";
 import settings from "./pages/settings";
 import edit from "./pages/edit";
+import collection from "./pages/collection";
 //Axios
 import axios from "axios";
 
@@ -66,6 +67,7 @@ function App() {
             <Route exact path="/edit/:deckId" component={edit} />
             <Route exact path="/deck/:deckId" component={deck} />
             <Route exact path="/study/:deckId" component={study} />
+            <Route exact path="/collection/:colId" component={collection} />
             <Route exact path="/settings" component={settings} />
           </Switch>
         </BrowserRouter>
