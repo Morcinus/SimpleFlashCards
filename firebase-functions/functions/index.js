@@ -16,7 +16,8 @@ const {
   updateUserProfile,
   resetPassword,
   getUserPersonalData,
-  setUserPersonalData
+  setUserPersonalData,
+  getUserData
 } = require("./functions/user");
 
 const {
@@ -64,6 +65,7 @@ app.post("/updateUserProfile", updateUserProfile);
 app.post("/resetPassword", authMiddleware, resetPassword);
 app.get("/getUserPersonalData", authMiddleware, getUserPersonalData);
 app.post("/setUserPersonalData", authMiddleware, setUserPersonalData);
+app.get("/getUserData/:username", getUserData);
 
 // DECK ROUTES
 // Deck Editing
