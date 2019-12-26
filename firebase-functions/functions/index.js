@@ -53,7 +53,8 @@ const {
 const {
   getColCardsToReview,
   getColUnknownCards,
-  getColCardsToLearnAndReview
+  getColCardsToLearnAndReview,
+  setColCardsProgress
 } = require("./functions/collectionCards");
 
 // User routes
@@ -111,7 +112,7 @@ app.get(
   authMiddleware,
   getColCardsToLearnAndReview
 );
-// app.post("/setDeckCardsProgress/:colId", authMiddleware, setDeckCardsProgress);
+app.post("/setColCardsProgress", authMiddleware, setColCardsProgress);
 
 // Api
 exports.api = functions.region("europe-west1").https.onRequest(app);

@@ -446,3 +446,61 @@ exports.getColCardsToLearnAndReview = (req, res) => {
     })
     .catch(error => console.error(error));
 };
+
+// Sets card progress
+exports.setColCardsProgress = (req, res) => {
+  let newCardArray = req.body.cardArray;
+
+  let deckIds = Object.keys(newCardArray);
+
+  new Promise(async (resolve, reject) => {
+    let batch = db.batch();
+    for (let i = 0; i < deckIds.length; i++) {
+      let progressDocRef = db
+        .collection("users")
+        .doc(req.user.uid)
+        .collection("deckProgress")
+        .doc(deckIds[i]);
+
+      await progressDocRef.get().then(doc => {
+        let cardArray = [];
+        if (doc.exists) {
+          cardArray = doc.data().cardArray ? doc.data().cardArray : [];
+        }
+        console.log(cardArray);
+
+        // Update the cardArray
+        newCardArray[deckIds[i]].forEach(newCard => {
+          console.log("Looping with: ", newCard);
+          for (let i = 0; i < cardArray.length; i++) {
+            if (cardArray[i].cardId === newCard.cardId) {
+              // Update the existing card
+              cardArray[i] = newCard;
+              return;
+            }
+          }
+          // Push the new card
+          cardArray.push(newCard);
+        });
+
+        if (doc.exists) {
+          batch.update(progressDocRef, { cardArray: cardArray });
+        } else {
+          batch.set(progressDocRef, {
+            deckId: deckIds[i], // Is needed for collectionGroup - progress removing
+            cardArray: cardArray
+          });
+        }
+      });
+    }
+
+    resolve(batch);
+  })
+    .then(batch => {
+      return batch.commit();
+    })
+    .then(() => {
+      res.status(200).json();
+    })
+    .catch(error => console.error(error));
+};
