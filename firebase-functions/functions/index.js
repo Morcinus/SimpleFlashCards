@@ -52,7 +52,8 @@ const {
 
 const {
   getColCardsToReview,
-  getColUnknownCards
+  getColUnknownCards,
+  getColCardsToLearnAndReview
 } = require("./functions/collectionCards");
 
 // User routes
@@ -105,11 +106,11 @@ app.post("/setDeckCardsProgress/:deckId", authMiddleware, setDeckCardsProgress);
 // app.get("/getDeckCards/:colId", getDeckCards);
 app.get("/getColCardsToReview/:colId", authMiddleware, getColCardsToReview);
 app.get("/getColUnknownCards/:colId", authMiddleware, getColUnknownCards);
-// app.get(
-//   "/getCardsToLearnAndReview/:colId",
-//   authMiddleware,
-//   getCardsToLearnAndReview
-// );
+app.get(
+  "/getColCardsToLearnAndReview/:colId",
+  authMiddleware,
+  getColCardsToLearnAndReview
+);
 // app.post("/setDeckCardsProgress/:colId", authMiddleware, setDeckCardsProgress);
 
 // Api
