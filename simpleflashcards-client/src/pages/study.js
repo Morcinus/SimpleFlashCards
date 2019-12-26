@@ -157,7 +157,7 @@ export class study extends Component {
 
   handleQuit = () => {
     this.props.clearStudyDeck();
-    this.props.history.push("/decks");
+    this.props.history.push("/home");
   };
 
   render() {
@@ -176,7 +176,7 @@ export class study extends Component {
                 <Box display="flex" flexWrap="nowrap">
                   <Box>
                     {this.state.deckFinished ? (
-                      <IconButton component={Link} to="/decks">
+                      <IconButton component={Link} to="/home">
                         <Close />
                       </IconButton>
                     ) : (
@@ -374,7 +374,4 @@ const mapActionsToProps = {
   clearStudyDeck
 };
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(study);
+export default connect(mapStateToProps, mapActionsToProps)(study);

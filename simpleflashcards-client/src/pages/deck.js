@@ -79,7 +79,7 @@ export class deck extends Component {
                           Learn
                         </div>
                       }
-                      to="/decks"
+                      to="/home"
                     />
                     <Tab
                       label={
@@ -226,7 +226,4 @@ const mapActionsToProps = {
   clearDeck
 };
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(deck);
+export default connect(mapStateToProps, mapActionsToProps)(deck);

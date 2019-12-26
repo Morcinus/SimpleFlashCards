@@ -8,19 +8,22 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
-import defaultDeckImageUrl from "../util/other";
+import { collectionDefaultImgUrl } from "../util/other";
 
 // Redux
 import { connect } from "react-redux";
-import { getUserDecks, clearUserDecks } from "../redux/actions/deckUiActions";
+import {
+  getUserCollections,
+  clearUserCollections
+} from "../redux/actions/colUiActions";
 
-export class MyDecks extends Component {
+export class MyCollections extends Component {
   componentDidMount() {
-    this.props.getUserDecks();
+    this.props.getUserCollections();
   }
 
   componentWillUnmount() {
-    this.props.clearUserDecks();
+    this.props.clearUserCollections();
   }
 
   render() {
@@ -32,17 +35,19 @@ export class MyDecks extends Component {
           justify="flex-start"
           alignItems="flex-start"
         >
-          <RenderDecks deckArray={this.props.deckUi.userDecks} />
+          <RenderCollections
+            collectionArray={this.props.colUi.userCollections}
+          />
         </Grid>
       </div>
     );
   }
 }
 
-function RenderDecks({ deckArray }) {
+function RenderCollections({ collectionArray }) {
   let markup = [];
 
-  for (let i = 0; i < deckArray.length; i++) {
+  for (let i = 0; i < collectionArray.length; i++) {
     markup.push(
       <Grid item>
         <Card
@@ -56,19 +61,15 @@ function RenderDecks({ deckArray }) {
           <CardActionArea
             style={{ width: "100%", height: "100%" }}
             component={Link}
-            to={`/deck/${deckArray[i].deckId}`}
+            to={`/collection/${collectionArray[i].colId}`}
           >
             <CardMedia
               style={{ width: "100%", height: "100%" }}
-              image={
-                deckArray[i].deckImage
-                  ? deckArray[i].deckImage
-                  : defaultDeckImageUrl
-              }
+              image={collectionDefaultImgUrl}
             ></CardMedia>
           </CardActionArea>
         </Card>
-        <Typography>{deckArray[i].deckName}</Typography>
+        <Typography>{collectionArray[i].colName}</Typography>
       </Grid>
     );
   }
@@ -76,19 +77,19 @@ function RenderDecks({ deckArray }) {
   return markup;
 }
 
-MyDecks.propTypes = {
-  getUserDecks: PropTypes.func.isRequired,
-  clearUserDecks: PropTypes.func.isRequired,
-  deckUi: PropTypes.object.isRequired
+MyCollections.propTypes = {
+  getUserCollections: PropTypes.func.isRequired,
+  clearUserCollections: PropTypes.func.isRequired,
+  colUi: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  deckUi: state.deckUi
+  colUi: state.colUi
 });
 
 const mapActionsToProps = {
-  getUserDecks,
-  clearUserDecks
+  getUserCollections,
+  clearUserCollections
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(MyDecks);
+export default connect(mapStateToProps, mapActionsToProps)(MyCollections);

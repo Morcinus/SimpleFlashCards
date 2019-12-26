@@ -21,10 +21,10 @@ import AuthRoute from "./util/AuthRoute";
 import themeFile from "./util/theme";
 
 //Pages
-import home from "./pages/home";
+import homePage from "./pages/homePage";
 import signup from "./pages/signup";
 import login from "./pages/login";
-import decks from "./pages/decks";
+import home from "./pages/home";
 import create from "./pages/create";
 import deck from "./pages/deck";
 import study from "./pages/study";
@@ -58,10 +58,10 @@ function App() {
         <BrowserRouter>
           <Navbar />
           <Switch>
-            <Route exact path="/" component={home} />
+            <Route exact path="/" component={homePage} />
             <AuthRoute exact path="/signup" component={signup} />
             <AuthRoute exact path="/login" component={login} />
-            <Route exact path="/decks" component={decks} />
+            <Route exact path="/home" component={home} />
             <Route exact path="/create" component={create} />
             <Route exact path="/edit/:deckId" component={edit} />
             <Route exact path="/deck/:deckId" component={deck} />

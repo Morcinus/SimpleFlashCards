@@ -8,6 +8,7 @@ import createDeckReducer from "./reducers/createDeckReducer";
 import editDeckReducer from "./reducers/editDeckReducer";
 import deckUi from "./reducers/deckUiReducer";
 import deckStudy from "./reducers/deckStudyReducer";
+import colUi from "./reducers/colUiReducer";
 
 const initialState = {};
 
@@ -19,7 +20,8 @@ const reducers = combineReducers({
   deckCreation: createDeckReducer,
   deckEdit: editDeckReducer,
   deckUi: deckUi,
-  deckStudy: deckStudy
+  deckStudy: deckStudy,
+  colUi: colUi
 });
 
 const store = createStore(
