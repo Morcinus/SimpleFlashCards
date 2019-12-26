@@ -8,7 +8,9 @@ import {
   CLEAR_USER_DATA,
   SET_SUCCESS,
   CLEAR_SUCCESS,
-  SET_ONE_USER_DATA
+  SET_ONE_USER_DATA,
+  SET_USER_PROFILE,
+  CLEAR_USER_PROFILE
 } from "../types";
 import axios from "axios";
 
@@ -114,4 +116,17 @@ const setAuthorizationHeader = token => {
   const FBIDToken = `Bearer ${token}`;
   localStorage.setItem("FBIdToken", FBIDToken);
   axios.defaults.headers.common["Authorization"] = FBIDToken;
+};
+
+export const getUserData = username => dispatch => {
+  axios
+    .get(`/getUserData/${username}`)
+    .then(res => {
+      dispatch({ type: SET_USER_PROFILE, payload: res.data });
+    })
+    .catch(err => console.log(err));
+};
+
+export const clearUserData = () => dispatch => {
+  dispatch({ type: CLEAR_USER_PROFILE });
 };

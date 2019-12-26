@@ -31,6 +31,7 @@ import study from "./pages/study";
 import settings from "./pages/settings";
 import edit from "./pages/edit";
 import collection from "./pages/collection";
+import userProfile from "./pages/userProfile";
 //Axios
 import axios from "axios";
 
@@ -69,6 +70,7 @@ function App() {
             <Route exact path="/study/:deckId" component={study} />
             <Route exact path="/collection/:colId" component={collection} />
             <Route exact path="/settings" component={settings} />
+            <Route exact path="/user/:username" component={userProfile} />
           </Switch>
         </BrowserRouter>
       </MuiThemeProvider>

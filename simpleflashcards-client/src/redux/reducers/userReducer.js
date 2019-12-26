@@ -3,12 +3,15 @@ import {
   SET_UNAUTHENTICATED,
   SET_USER_DATA,
   CLEAR_USER_DATA,
-  SET_ONE_USER_DATA
+  SET_ONE_USER_DATA,
+  SET_USER_PROFILE,
+  CLEAR_USER_PROFILE
 } from "../types";
 
 const initialState = {
   authenticated: false,
-  credentials: {}
+  credentials: {},
+  userProfile: {}
 };
 
 export default function(state = initialState, action) {
@@ -34,6 +37,16 @@ export default function(state = initialState, action) {
       return {
         ...state,
         credentials: {}
+      };
+    case SET_USER_PROFILE:
+      return {
+        ...state,
+        userProfile: action.payload
+      };
+    case CLEAR_USER_PROFILE:
+      return {
+        ...state,
+        userProfile: {}
       };
     default:
       return state;

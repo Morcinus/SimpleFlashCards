@@ -5,6 +5,8 @@ export const SET_USER_DATA = "SET_USER_DATA";
 export const SET_ONE_USER_DATA = "SET_ONE_USER_DATA";
 export const CLEAR_USER_DATA = "CLEAR_USER_DATA";
 export const LOADING_USER = "LOADING_USER";
+export const SET_USER_PROFILE = "SET_USER_PROFILE";
+export const CLEAR_USER_PROFILE = "CLEAR_USER_DATA";
 
 // UI reducer types
 export const LOADING_UI = "LOADING_UI";
