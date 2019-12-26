@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import MyDecks from "../components/MyDecks";
 import PinnedDecks from "../components/PinnedDecks";
 import MyCollections from "../components/MyCollections";
+import PinnedCollections from "../components/PinnedCollections";
 
 // Material UI
 import Grid from "@material-ui/core/Grid";
@@ -118,7 +119,7 @@ export class home extends Component {
                     case 2:
                       return <MyCollections />;
                     case 3:
-                      return <MyDecks />;
+                      return <PinnedCollections />;
                     default:
                       return <MyDecks />;
                   }

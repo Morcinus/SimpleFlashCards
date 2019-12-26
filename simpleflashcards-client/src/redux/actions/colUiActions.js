@@ -21,16 +21,16 @@ export const getUserCollections = () => dispatch => {
     .catch(err => console.log(err));
 };
 
-// export const getPinnedDecks = () => dispatch => {
-//   dispatch({ type: LOADING_DECK_UI });
-//   axios
-//     .get(`/getPinnedDecks`)
-//     .then(res => {
-//       console.log(res.data);
-//       dispatch({ type: SET_PINNED_DECKS, payload: res.data });
-//     })
-//     .catch(err => console.log(err));
-// };
+export const getPinnedCollections = () => dispatch => {
+  dispatch({ type: LOADING_COLLECTION_UI });
+  axios
+    .get(`/getPinnedCollections`)
+    .then(res => {
+      console.log(res.data);
+      dispatch({ type: SET_PINNED_COLLECTIONS, payload: res.data });
+    })
+    .catch(err => console.log(err));
+};
 
 // export const getDeck = deckId => dispatch => {
 //   dispatch({ type: LOADING_DECK_UI });
@@ -43,9 +43,9 @@ export const getUserCollections = () => dispatch => {
 //     .catch(err => console.log(err));
 // };
 
-// export const clearPinnedDecks = () => dispatch => {
-//   dispatch({ type: CLEAR_PINNED_DECKS });
-// };
+export const clearPinnedCollections = () => dispatch => {
+  dispatch({ type: CLEAR_PINNED_COLLECTIONS });
+};
 
 export const clearUserCollections = () => dispatch => {
   dispatch({ type: CLEAR_USER_COLLECTIONS });

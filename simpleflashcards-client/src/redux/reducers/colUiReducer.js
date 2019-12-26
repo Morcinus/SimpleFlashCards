@@ -10,6 +10,7 @@ import {
 
 const initialState = {
   userCollections: [],
+  pinnedCollections: [],
   loading: false
 };
 
@@ -21,18 +22,18 @@ export default function(state = initialState, action) {
         loading: false,
         userCollections: action.payload
       };
-    //   case SET_PINNED_DECKS:
-    //     return {
-    //       ...state,
-    //       loading: false,
-    //       pinnedDecks: action.payload
-    //     };
-    //   case CLEAR_PINNED_DECKS:
-    //     return {
-    //       ...state,
-    //       loading: false,
-    //       pinnedDecks: []
-    //     };
+    case SET_PINNED_COLLECTIONS:
+      return {
+        ...state,
+        loading: false,
+        pinnedCollections: action.payload
+      };
+    case CLEAR_PINNED_COLLECTIONS:
+      return {
+        ...state,
+        loading: false,
+        pinnedCollections: []
+      };
     case CLEAR_USER_COLLECTIONS:
       return {
         ...state,
