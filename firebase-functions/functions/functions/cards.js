@@ -192,6 +192,8 @@ function findUnknownCards(cardArrayRef, progressCardArray) {
 
 // Gets array of cards the user doesn't know and cards to review
 // NEEDS UPDATE: To include cards that are over understandingLevel 5 if user knows all the cards <- Rethinkg the whole algorithm
+// PREKOPAT: Aby nejdriv pushovalo unknown cards (cardlimit/2) a pak zbytek doplnilo progress
+// Aby porovnalo pocet unknown cards a progress cards... Pokud jedno neni vic jak pulka tak doplnit druhym
 exports.getCardsToLearnAndReview = (req, res) => {
   let deckId = req.params.deckId;
   let cardArray = [];
