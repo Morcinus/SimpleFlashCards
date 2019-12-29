@@ -35,6 +35,7 @@ const {
 const {
   createCollection,
   updateCollection,
+  addDeckToCollection,
   deleteCollection,
   pinCollection,
   unpinCollection,
@@ -85,6 +86,11 @@ app.get("/getDeck/:deckId", authMiddleware, getDeck);
 // Collection Editing
 app.post("/createCollection", authMiddleware, createCollection);
 app.post("/updateCollection/:colId", authMiddleware, updateCollection);
+app.post(
+  "/addDeckToCollection/:colId/:deckId",
+  authMiddleware,
+  addDeckToCollection
+);
 app.post("/deleteCollection/:colId", authMiddleware, deleteCollection);
 // Collection Pinning
 app.post("/pinCollection/:colId", authMiddleware, pinCollection);
@@ -106,7 +112,6 @@ app.get(
 app.post("/setDeckCardsProgress/:deckId", authMiddleware, setDeckCardsProgress);
 
 // Collection Card routes
-// app.get("/getDeckCards/:colId", getDeckCards);
 app.get("/getColCardsToReview/:colId", authMiddleware, getColCardsToReview);
 app.get("/getColUnknownCards/:colId", authMiddleware, getColUnknownCards);
 app.get(

@@ -48,6 +48,34 @@ exports.updateCollection = (req, res) => {
     .catch(error => console.error(error));
 };
 
+exports.addDeckToCollection = (req, res) => {
+  console.log("Adding deck to collection");
+
+  db.collection("collections")
+    .doc(req.params.colId)
+    .get()
+    .then(doc => {
+      // Authorization check
+      let creatorId = doc.data().creatorId;
+      if (creatorId !== req.user.uid) {
+        console.log("CreatorId: ", creatorId);
+        console.log("userid: ", req.user.uid);
+        return res.status(401).json();
+      } else {
+        // Collection update
+        db.collection("collections")
+          .doc(req.params.colId)
+          .update({
+            deckArray: admin.firestore.FieldValue.arrayUnion(req.params.deckId)
+          });
+      }
+    })
+    .then(() => {
+      res.status(200).json();
+    })
+    .catch(error => console.error(error));
+};
+
 exports.deleteCollection = (req, res) => {
   let userDocRef = db.collection("users").doc(req.user.uid);
   let colDocRef = db.collection("collections").doc(req.params.colId);
