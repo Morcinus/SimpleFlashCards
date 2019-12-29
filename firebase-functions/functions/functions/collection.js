@@ -41,7 +41,21 @@ exports.updateCollection = (req, res) => {
 
   db.collection("collections")
     .doc(req.params.colId)
-    .update(colData)
+    .get()
+    .then(doc => {
+      // Authorization check
+      let creatorId = doc.data().creatorId;
+      if (creatorId !== req.user.uid) {
+        console.log("CreatorId: ", creatorId);
+        console.log("userid: ", req.user.uid);
+        return res.status(401).json();
+      } else {
+        // Update collection
+        db.collection("collections")
+          .doc(req.params.colId)
+          .update(colData);
+      }
+    })
     .then(() => {
       res.status(200).json();
     })
@@ -62,7 +76,7 @@ exports.addDeckToCollection = (req, res) => {
         console.log("userid: ", req.user.uid);
         return res.status(401).json();
       } else {
-        // Collection update
+        // Update collection
         db.collection("collections")
           .doc(req.params.colId)
           .update({
