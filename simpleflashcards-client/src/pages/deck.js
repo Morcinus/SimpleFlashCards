@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -16,8 +16,10 @@ import Bookmarks from "@material-ui/icons/Bookmarks";
 import MenuBook from "@material-ui/icons/MenuBook";
 import FitnessCenter from "@material-ui/icons/FitnessCenter";
 
+// Components
 import DeckInfo from "../components/DeckInfo";
 import DeckCards from "../components/DeckCards";
+import CollectionDialog from "../components/CollectionDialog";
 
 // Redux
 import { connect } from "react-redux";
@@ -119,6 +121,7 @@ export class deck extends Component {
             </Paper>
           </Grid>
         </Grid>
+        <CollectionDialog deckId={this.props.match.params.deckId} />
       </div>
     );
   }

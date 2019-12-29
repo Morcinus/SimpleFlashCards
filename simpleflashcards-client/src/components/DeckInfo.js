@@ -16,13 +16,16 @@ import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
 import Bookmark from "@material-ui/icons/Bookmark";
 import Share from "@material-ui/icons/Share";
 import Edit from "@material-ui/icons/Edit";
+import LibraryAdd from "@material-ui/icons/LibraryAdd";
 
 // Other
 import defaultDeckImageUrl from "../util/other";
+import AddToCollection from "./CollectionDialog";
 
 // Redux
 import { connect } from "react-redux";
 import { pinDeck, unpinDeck } from "../redux/actions/deckUiActions";
+import { openCollectionDialog } from "../redux/actions/colUiActions";
 
 export class DeckInfo extends Component {
   constructor(props) {
@@ -34,6 +37,7 @@ export class DeckInfo extends Component {
       isPinned: null
     };
     this.handlePinButtonClick = this.handlePinButtonClick.bind(this);
+    this.handleAddToCollection = this.handleAddToCollection.bind(this);
   }
 
   handleCopyClick = elementId => {
@@ -69,6 +73,10 @@ export class DeckInfo extends Component {
     this.setState({
       isPinned: !prevIsPinned
     });
+  }
+
+  handleAddToCollection() {
+    this.props.openCollectionDialog();
   }
 
   componentDidUpdate(prevProps) {
@@ -225,18 +233,28 @@ export class DeckInfo extends Component {
             </Box>
           </Popover>
         </Grid>
-        <Grid container justify="center" style={{ marginTop: "20px" }}>
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          style={{ marginTop: "20px" }}
+        >
           {this.props.deckUi.deck ? (
             this.props.deckUi.deck.isCreator ? (
               <Button
                 item
                 variant="text"
                 color="primary"
-                size="large"
                 component={Link}
                 to={`/edit/${this.props.deckId}`}
+                style={{ marginRight: "20px" }}
               >
-                <Edit /> <Typography> Edit Deck</Typography>
+                <Edit style={{ marginRight: "5px" }} />
+                <Typography variant="body2">
+                  Edit
+                  <br /> Deck
+                </Typography>
               </Button>
             ) : (
               ""
@@ -244,6 +262,19 @@ export class DeckInfo extends Component {
           ) : (
             "Loading..."
           )}
+
+          <Button
+            item
+            variant="text"
+            color="primary"
+            onClick={this.handleAddToCollection}
+          >
+            <LibraryAdd style={{ marginRight: "5px" }} />
+            <Typography variant="body2">
+              Add to
+              <br /> Collection
+            </Typography>
+          </Button>
         </Grid>
       </Grid>
     );
@@ -253,6 +284,7 @@ export class DeckInfo extends Component {
 DeckInfo.propTypes = {
   pinDeck: PropTypes.func.isRequired,
   unpinDeck: PropTypes.func.isRequired,
+  openCollectionDialog: PropTypes.func.isRequired,
   deckUi: PropTypes.object.isRequired
 };
 
@@ -262,7 +294,8 @@ const mapStateToProps = state => ({
 
 const mapActionsToProps = {
   pinDeck,
-  unpinDeck
+  unpinDeck,
+  openCollectionDialog
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(DeckInfo);

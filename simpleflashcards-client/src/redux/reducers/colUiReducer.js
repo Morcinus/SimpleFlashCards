@@ -5,13 +5,16 @@ import {
   CLEAR_USER_COLLECTIONS,
   SET_COLLECTION,
   CLEAR_COLLECTION,
-  LOADING_COLLECTION_UI
+  LOADING_COLLECTION_UI,
+  OPEN_COLLECTION_DIALOG,
+  CLOSE_COLLECTION_DIALOG
 } from "../types";
 
 const initialState = {
   userCollections: [],
   pinnedCollections: [],
-  loading: false
+  loading: false,
+  collectionDialogOpen: false
 };
 
 export default function(state = initialState, action) {
@@ -56,6 +59,16 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: true
+      };
+    case OPEN_COLLECTION_DIALOG:
+      return {
+        ...state,
+        collectionDialogOpen: true
+      };
+    case CLOSE_COLLECTION_DIALOG:
+      return {
+        ...state,
+        collectionDialogOpen: false
       };
     default:
       return state;

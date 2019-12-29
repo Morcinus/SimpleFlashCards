@@ -5,7 +5,9 @@ import {
   CLEAR_USER_COLLECTIONS,
   SET_COLLECTION,
   CLEAR_COLLECTION,
-  LOADING_COLLECTION_UI
+  LOADING_COLLECTION_UI,
+  OPEN_COLLECTION_DIALOG,
+  CLOSE_COLLECTION_DIALOG
 } from "../types";
 import axios from "axios";
 
@@ -67,4 +69,24 @@ export const unpinCollection = colId => dispatch => {
   axios.post(`/unpinCollection/${colId}`).catch(err => {
     console.log(err.response.data);
   });
+};
+
+export const openCollectionDialog = () => dispatch => {
+  dispatch({ type: OPEN_COLLECTION_DIALOG });
+};
+
+export const closeCollectionDialog = () => dispatch => {
+  dispatch({ type: CLOSE_COLLECTION_DIALOG });
+};
+
+export const addDeckToCollection = (colId, deckId) => dispatch => {
+  console.log(`Adding ${colId} ; ${deckId}`);
+  axios
+    .post(`/addDeckToCollection/${colId}/${deckId}`)
+    .then(() => {
+      return false;
+    })
+    .catch(err => {
+      console.log(err.response.data);
+    });
 };
