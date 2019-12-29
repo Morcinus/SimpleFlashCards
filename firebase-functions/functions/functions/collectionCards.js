@@ -146,18 +146,17 @@ async function getExportCards_ungrouped(decksArray) {
 function groupIntoArrays(cards) {
   let deckArrays = {};
   cards.forEach(card => {
-    let cardData = {
-      cardId: card.cardId,
-      understandingLevel: card.understandingLevel
-    };
+    let deckId = card.deckId;
 
     // Check if the deckId is in the array already
-    if (deckArrays.hasOwnProperty(card.deckId)) {
+    if (deckArrays.hasOwnProperty(deckId)) {
       // Push card to the existing deck array
-      deckArrays[card.deckId].push(cardData);
+      delete card.deckId;
+      deckArrays[deckId].push(card);
     } else {
       // Create a new deck array
-      deckArrays[card.deckId] = [cardData];
+      delete card.deckId;
+      deckArrays[deckId] = [card];
     }
   });
   return deckArrays;
@@ -253,11 +252,13 @@ exports.getColUnknownCards = (req, res) => {
               }
             })
             .then(cardArray => {
-              // Fill exportCardsArray until cardLimit reached
+              // Fill exportCardsArray from cardArray until cardLimit reached
               if (cardArray.length + exportCardsArray.length < cardLimit) {
                 // Push all cards from card array
                 for (let i = 0; i < cardArray.length; i++) {
-                  exportCardsArray.push(cardArray[i]);
+                  let card = cardArray[i];
+                  card.deckId = deckArray[i];
+                  exportCardsArray.push(card);
                 }
                 // Continue the loop
                 return;
@@ -267,7 +268,9 @@ exports.getColUnknownCards = (req, res) => {
               ) {
                 for (let i = 0; i <= cardLimit - exportCardsArray.length; i++) {
                   // Finished, push cards & break loop
-                  exportCardsArray.push(cardArray[i]);
+                  let card = cardArray[i];
+                  card.deckId = deckArray[i];
+                  exportCardsArray.push(card);
                 }
                 // Break the loop
                 breakLoop = true;
@@ -278,7 +281,7 @@ exports.getColUnknownCards = (req, res) => {
         }
       }
 
-      return exportCardsArray;
+      return groupIntoArrays(exportCardsArray);
     })
     .then(exportCards => {
       res.status(200).json({ cardArray: exportCards });
