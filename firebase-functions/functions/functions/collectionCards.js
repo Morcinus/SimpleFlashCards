@@ -255,8 +255,8 @@ exports.getColUnknownCards = (req, res) => {
               // Fill exportCardsArray from cardArray until cardLimit reached
               if (cardArray.length + exportCardsArray.length < cardLimit) {
                 // Push all cards from card array
-                for (let i = 0; i < cardArray.length; i++) {
-                  let card = cardArray[i];
+                for (let j = 0; j < cardArray.length; j++) {
+                  let card = cardArray[j];
                   card.deckId = deckArray[i];
                   exportCardsArray.push(card);
                 }
@@ -266,9 +266,9 @@ exports.getColUnknownCards = (req, res) => {
                 cardArray.length + exportCardsArray.length >=
                 cardLimit
               ) {
-                for (let i = 0; i <= cardLimit - exportCardsArray.length; i++) {
+                for (let j = 0; j <= cardLimit - exportCardsArray.length; j++) {
                   // Finished, push cards & break loop
-                  let card = cardArray[i];
+                  let card = cardArray[j];
                   card.deckId = deckArray[i];
                   exportCardsArray.push(card);
                 }
