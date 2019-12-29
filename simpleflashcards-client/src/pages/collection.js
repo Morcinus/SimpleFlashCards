@@ -138,7 +138,7 @@ function learnButtons(colId) {
         }}
       >
         <Link
-          to={`/study/${colId}?lessonType=learn`}
+          to={`/studyCollection/${colId}?lessonType=learn`}
           style={{ textDecoration: "none" }}
         >
           <CardActionArea
@@ -166,7 +166,7 @@ function learnButtons(colId) {
         }}
       >
         <Link
-          to={`/study/${colId}?lessonType=study`}
+          to={`/studyCollection/${colId}?lessonType=study`}
           style={{ textDecoration: "none" }}
         >
           <CardActionArea
@@ -192,7 +192,7 @@ function learnButtons(colId) {
         }}
       >
         <Link
-          to={`/study/${colId}?lessonType=review`}
+          to={`/studyCollection/${colId}?lessonType=review`}
           style={{ textDecoration: "none" }}
         >
           <CardActionArea
