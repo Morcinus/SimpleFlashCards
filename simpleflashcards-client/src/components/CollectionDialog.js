@@ -31,7 +31,7 @@ import { collectionDefaultImgUrl } from "../util/other";
 import { connect } from "react-redux";
 import {
   closeCollectionDialog,
-  getUserCollections,
+  getUserCollectionsWithDeckInfo,
   clearUserCollections,
   addDeckToCollection
 } from "../redux/actions/colUiActions";
@@ -44,7 +44,7 @@ export class CollectionDialog extends Component {
   }
 
   componentDidMount() {
-    this.props.getUserCollections();
+    this.props.getUserCollectionsWithDeckInfo(this.props.deckId);
   }
 
   componentWillUnmount() {
@@ -55,9 +55,9 @@ export class CollectionDialog extends Component {
     this.props.closeCollectionDialog();
   };
 
-  handleAddToCollection(colId) {
+  handleAddToCollection(colId, i) {
     console.log(colId);
-    let failed = this.props.addDeckToCollection(colId, this.props.deckId);
+    let failed = this.props.addDeckToCollection(colId, this.props.deckId, i);
     if (!failed) {
       console.log("success");
     }
@@ -130,8 +130,9 @@ export class CollectionDialog extends Component {
                         edge="end"
                         id={collection.colId}
                         onClick={() =>
-                          this.handleAddToCollection(collection.colId)
+                          this.handleAddToCollection(collection.colId, i)
                         }
+                        disabled={collection.containsDeck}
                       >
                         <AddBox />
                       </IconButton>
@@ -150,7 +151,7 @@ export class CollectionDialog extends Component {
 CollectionDialog.propTypes = {
   colUi: PropTypes.object.isRequired,
   closeCollectionDialog: PropTypes.func.isRequired,
-  getUserCollections: PropTypes.func.isRequired,
+  getUserCollectionsWithDeckInfo: PropTypes.func.isRequired,
   clearUserCollections: PropTypes.func.isRequired,
   addDeckToCollection: PropTypes.func.isRequired
 };
@@ -161,7 +162,7 @@ const mapStateToProps = state => ({
 
 const mapActionsToProps = {
   closeCollectionDialog,
-  getUserCollections,
+  getUserCollectionsWithDeckInfo,
   clearUserCollections,
   addDeckToCollection
 };

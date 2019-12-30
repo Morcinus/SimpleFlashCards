@@ -7,7 +7,8 @@ import {
   CLEAR_COLLECTION,
   LOADING_COLLECTION_UI,
   OPEN_COLLECTION_DIALOG,
-  CLOSE_COLLECTION_DIALOG
+  CLOSE_COLLECTION_DIALOG,
+  ADD_DECK_TO_COLLECTION
 } from "../types";
 
 const initialState = {
@@ -69,6 +70,15 @@ export default function(state = initialState, action) {
       return {
         ...state,
         collectionDialogOpen: false
+      };
+    case ADD_DECK_TO_COLLECTION:
+      return {
+        ...state,
+        userCollections: state.userCollections.map((userCollections, i) =>
+          i === action.payload
+            ? { ...userCollections, containsDeck: true }
+            : userCollections
+        ) // Zdroj https://stackoverflow.com/questions/35628774/how-to-update-single-value-inside-specific-array-item-in-redux
       };
     default:
       return state;

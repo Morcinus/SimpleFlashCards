@@ -7,7 +7,8 @@ import {
   CLEAR_COLLECTION,
   LOADING_COLLECTION_UI,
   OPEN_COLLECTION_DIALOG,
-  CLOSE_COLLECTION_DIALOG
+  CLOSE_COLLECTION_DIALOG,
+  ADD_DECK_TO_COLLECTION
 } from "../types";
 import axios from "axios";
 
@@ -16,6 +17,17 @@ export const getUserCollections = () => dispatch => {
   dispatch({ type: LOADING_COLLECTION_UI });
   axios
     .get(`/getUserCollections`)
+    .then(res => {
+      console.log(res.data);
+      dispatch({ type: SET_USER_COLLECTIONS, payload: res.data });
+    })
+    .catch(err => console.log(err));
+};
+
+export const getUserCollectionsWithDeckInfo = deckId => dispatch => {
+  dispatch({ type: LOADING_COLLECTION_UI });
+  axios
+    .get(`/getUserCollectionsWithDeckInfo/${deckId}`)
     .then(res => {
       console.log(res.data);
       dispatch({ type: SET_USER_COLLECTIONS, payload: res.data });
@@ -79,14 +91,15 @@ export const closeCollectionDialog = () => dispatch => {
   dispatch({ type: CLOSE_COLLECTION_DIALOG });
 };
 
-export const addDeckToCollection = (colId, deckId) => dispatch => {
+export const addDeckToCollection = (colId, deckId, i) => dispatch => {
   console.log(`Adding ${colId} ; ${deckId}`);
   axios
     .post(`/addDeckToCollection/${colId}/${deckId}`)
     .then(() => {
+      dispatch({ type: ADD_DECK_TO_COLLECTION, payload: i });
       return false;
     })
     .catch(err => {
-      console.log(err.response.data);
+      console.log(err.response);
     });
 };
