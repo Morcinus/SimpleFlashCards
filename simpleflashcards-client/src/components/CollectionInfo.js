@@ -228,7 +228,7 @@ export class CollectionInfo extends Component {
                 color="primary"
                 size="large"
                 component={Link}
-                to={`/edit/${this.props.colId}`}
+                to={`/editCollection/${this.props.colId}`}
               >
                 <Edit /> <Typography> Edit Collection</Typography>
               </Button>

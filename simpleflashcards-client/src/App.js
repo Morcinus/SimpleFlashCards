@@ -32,6 +32,7 @@ import settings from "./pages/settings";
 import edit from "./pages/edit";
 import collection from "./pages/collection";
 import studyCollection from "./pages/studyCollection";
+import editCollection from "./pages/editCollection";
 import userProfile from "./pages/userProfile";
 //Axios
 import axios from "axios";
@@ -74,6 +75,11 @@ function App() {
               exact
               path="/studyCollection/:colId"
               component={studyCollection}
+            />
+            <Route
+              exact
+              path="/editCollection/:colId"
+              component={editCollection}
             />
             <Route exact path="/settings" component={settings} />
             <Route exact path="/user/:username" component={userProfile} />
