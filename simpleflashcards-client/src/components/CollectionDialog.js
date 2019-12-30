@@ -21,6 +21,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import DoneIcon from "@material-ui/icons/Done";
 import CloseIcon from "@material-ui/icons/Close";
 import AddBox from "@material-ui/icons/AddBox";
 
@@ -33,14 +34,19 @@ import {
   closeCollectionDialog,
   getUserCollectionsWithDeckInfo,
   clearUserCollections,
-  addDeckToCollection
+  addDeckToCollection,
+  createCollection
 } from "../redux/actions/colUiActions";
 
 export class CollectionDialog extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      newColName: ""
+    };
     this.handleClose = this.handleClose.bind(this);
     this.handleAddToCollection = this.handleAddToCollection.bind(this);
+    this.handleCreateCollection = this.handleCreateCollection.bind(this);
   }
 
   componentDidMount() {
@@ -56,12 +62,34 @@ export class CollectionDialog extends Component {
   };
 
   handleAddToCollection(colId, i) {
-    console.log(colId);
     let failed = this.props.addDeckToCollection(colId, this.props.deckId, i);
     if (!failed) {
       console.log("success");
     }
   }
+
+  handleCreateCollection() {
+    if (this.state.newColName && this.state.newColName != "") {
+      let failed = this.props.createCollection(
+        this.state.newColName,
+        this.props.deckId
+      );
+      if (!failed) {
+        console.log("Collection created");
+        this.setState({
+          collectionCreated: true
+        });
+      }
+    } else {
+      console.log("Collection name must not be empty");
+    }
+  }
+
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  };
 
   render() {
     return (
@@ -94,13 +122,28 @@ export class CollectionDialog extends Component {
                 </ListItemAvatar>
                 <ListItemText
                   primary={
-                    <TextField placeholder="Collection Name" margin="normal" />
+                    <TextField
+                      name="newColName"
+                      value={this.state.newColName}
+                      onChange={this.handleChange}
+                      placeholder="Collection Name"
+                      margin="normal"
+                    />
                   }
                 />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end">
-                    <AddBox />
-                  </IconButton>
+                  {this.state.collectionCreated ? (
+                    <IconButton edge="end">
+                      <DoneIcon />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      edge="end"
+                      onClick={this.handleCreateCollection}
+                    >
+                      <AddBox />
+                    </IconButton>
+                  )}
                 </ListItemSecondaryAction>
               </ListItem>
             </List>
@@ -153,7 +196,8 @@ CollectionDialog.propTypes = {
   closeCollectionDialog: PropTypes.func.isRequired,
   getUserCollectionsWithDeckInfo: PropTypes.func.isRequired,
   clearUserCollections: PropTypes.func.isRequired,
-  addDeckToCollection: PropTypes.func.isRequired
+  addDeckToCollection: PropTypes.func.isRequired,
+  createCollection: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -164,7 +208,8 @@ const mapActionsToProps = {
   closeCollectionDialog,
   getUserCollectionsWithDeckInfo,
   clearUserCollections,
-  addDeckToCollection
+  addDeckToCollection,
+  createCollection
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(CollectionDialog);

@@ -103,3 +103,19 @@ export const addDeckToCollection = (colId, deckId, i) => dispatch => {
       console.log(err.response);
     });
 };
+
+export const createCollection = (colName, deckId) => dispatch => {
+  let exportData = {
+    colName: colName,
+    deckArray: [deckId]
+  };
+  console.log(`Creating ${colName} with ${deckId}`);
+  axios
+    .post(`/createCollection`, exportData)
+    .then(() => {
+      return false;
+    })
+    .catch(err => {
+      console.log(err.response);
+    });
+};
