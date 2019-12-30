@@ -204,6 +204,36 @@ exports.getUserCollections = (req, res) => {
   }
 };
 
+exports.getUserCollectionsWithDeckInfo = (req, res) => {
+  if (req.user.uid) {
+    db.collection("collections")
+      .where("creatorId", "==", req.user.uid)
+      .get()
+      .then(querySnapshot => {
+        let userCollections = [];
+        querySnapshot.forEach(doc => {
+          colData = {
+            colName: doc.data().colName,
+            colId: doc.id
+          };
+          colData.containsDeck = doc
+            .data()
+            .deckArray.includes(req.params.deckId)
+            ? true
+            : false;
+          userCollections.push(colData);
+        });
+        return userCollections;
+      })
+      .then(userCollections => {
+        res.status(200).json(userCollections);
+      })
+      .catch(error => res.status(500).json({ error: error.code }));
+  } else {
+    res.status(400).json();
+  }
+};
+
 exports.getPinnedCollections = (req, res) => {
   if (req.user.uid) {
     let exportCollections = [];

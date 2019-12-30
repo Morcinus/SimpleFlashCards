@@ -40,6 +40,7 @@ const {
   pinCollection,
   unpinCollection,
   getUserCollections,
+  getUserCollectionsWithDeckInfo,
   getPinnedCollections,
   getCollection
 } = require("./functions/collection");
@@ -95,8 +96,13 @@ app.post("/deleteCollection/:colId", authMiddleware, deleteCollection);
 // Collection Pinning
 app.post("/pinCollection/:colId", authMiddleware, pinCollection);
 app.post("/unpinCollection/:colId", authMiddleware, unpinCollection);
-// Deck UI
+// Collection UI
 app.get("/getUserCollections", authMiddleware, getUserCollections);
+app.get(
+  "/getUserCollectionsWithDeckInfo/:deckId",
+  authMiddleware,
+  getUserCollectionsWithDeckInfo
+);
 app.get("/getPinnedCollections", authMiddleware, getPinnedCollections);
 app.get("/getCollection/:colId", authMiddleware, getCollection);
 
