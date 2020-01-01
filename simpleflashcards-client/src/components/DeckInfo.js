@@ -12,6 +12,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Card from "@material-ui/core/Card";
 import Input from "@material-ui/core/Input";
 import Box from "@material-ui/core/Box";
+import MUILink from "@material-ui/core/Link";
 import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
 import Bookmark from "@material-ui/icons/Bookmark";
 import Share from "@material-ui/icons/Share";
@@ -137,9 +138,16 @@ export class DeckInfo extends Component {
         <br />
         <Typography>
           Created by:{" "}
-          {this.props.deckUi.deck
-            ? `${this.props.deckUi.deck.creatorName}`
-            : "Loading..."}
+          {this.props.deckUi.deck ? (
+            <MUILink
+              to={`/user/${this.props.deckUi.deck.creatorName}`}
+              component={Link}
+            >
+              {this.props.deckUi.deck.creatorName}
+            </MUILink>
+          ) : (
+            "Loading..."
+          )}
         </Typography>
         <br />
         <Divider></Divider>

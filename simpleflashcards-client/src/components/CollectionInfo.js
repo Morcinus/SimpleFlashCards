@@ -12,6 +12,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Card from "@material-ui/core/Card";
 import Input from "@material-ui/core/Input";
 import Box from "@material-ui/core/Box";
+import MUILink from "@material-ui/core/Link";
 import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
 import Bookmark from "@material-ui/icons/Bookmark";
 import Share from "@material-ui/icons/Share";
@@ -123,9 +124,16 @@ export class CollectionInfo extends Component {
         <br />
         <Typography>
           Created by:{" "}
-          {this.props.colUi.collection
-            ? `${this.props.colUi.collection.creatorName}`
-            : "Loading..."}
+          {this.props.colUi.collection ? (
+            <MUILink
+              to={`/user/${this.props.colUi.collection.creatorName}`}
+              component={Link}
+            >
+              {this.props.colUi.collection.creatorName}
+            </MUILink>
+          ) : (
+            "Loading..."
+          )}
         </Typography>
         <br />
         <Divider></Divider>
