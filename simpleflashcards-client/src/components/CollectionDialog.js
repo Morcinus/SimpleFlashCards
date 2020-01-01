@@ -63,6 +63,7 @@ export class CollectionDialog extends Component {
 
   handleAddToCollection(colId, i) {
     let failed = this.props.addDeckToCollection(colId, this.props.deckId, i);
+    // Tohle nebude fungovat, musim to kontrolovat na updatu
     if (!failed) {
       console.log("success");
     }
@@ -74,6 +75,7 @@ export class CollectionDialog extends Component {
         this.state.newColName,
         this.props.deckId
       );
+      // Tohle nebude fungovat, musim to kontrolovat na updatu
       if (!failed) {
         console.log("Collection created");
         this.setState({

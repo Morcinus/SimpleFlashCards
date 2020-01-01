@@ -30,7 +30,10 @@ import { collectionDefaultImgUrl } from "../util/other";
 
 // Redux
 import { connect } from "react-redux";
-import { getUserData, clearUserData } from "../redux/actions/userActions";
+import {
+  getUserDataByUsername,
+  clearUserData
+} from "../redux/actions/userActions";
 
 export class userProfile extends Component {
   constructor() {
@@ -44,7 +47,14 @@ export class userProfile extends Component {
   }
 
   componentDidMount() {
-    this.props.getUserData(this.props.match.params.username);
+    if (this.props.location.state)
+      if (this.props.location.state.isCurrentUserProfile === true) {
+        // Remove isCurrentUserProfile from location state
+        const state = { ...this.props.location.state };
+        delete state.isCurrentUserProfile;
+        this.props.history.replace({ ...this.props.location, state });
+      } else this.props.getUserDataByUsername(this.props.match.params.username);
+    else this.props.getUserDataByUsername(this.props.match.params.username);
   }
 
   render() {
@@ -183,7 +193,7 @@ function RenderCollections({ collectionArray }) {
 }
 
 userProfile.propTypes = {
-  getUserData: PropTypes.func.isRequired,
+  getUserDataByUsername: PropTypes.func.isRequired,
   clearUserData: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   UI: PropTypes.object.isRequired
@@ -195,7 +205,7 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-  getUserData,
+  getUserDataByUsername,
   clearUserData
 };
 

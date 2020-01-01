@@ -6,12 +6,7 @@ import DeckTable from "../components/DeckTable";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import {
-  Divider,
-  TextField,
-  Box,
-  Button
-} from "@material-ui/core";
+import { Divider, TextField, Box, Button } from "@material-ui/core";
 import Photo from "@material-ui/icons/Photo";
 import Delete from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
@@ -145,6 +140,7 @@ export class edit extends Component {
       this.props.match.params.deckId
     );
     console.log(failed);
+    // Tohle nebude fungovat, musim to kontrolovat na updatu
     if (!failed) {
       console.log("Failed false");
       console.log("Initial state:");
@@ -347,15 +343,13 @@ export class edit extends Component {
           </Grid>
         </Grid>
         <Dialog open={this.state.dialogOpen} onClose={this.handleDialogClose}>
-          <DialogTitle>
-            Delete Deck
-          </DialogTitle>
+          <DialogTitle>Delete Deck</DialogTitle>
           <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete this deck forever?  <br />
-            You can't undo this action.
-          </DialogContentText>
-        </DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this deck forever? <br />
+              You can't undo this action.
+            </DialogContentText>
+          </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <Button
               onClick={this.handleDialogClose}

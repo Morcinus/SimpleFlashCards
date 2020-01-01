@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -23,7 +24,7 @@ import PersonAdd from "@material-ui/icons/PersonAdd";
 
 // Redux
 import { connect } from "react-redux";
-import { logoutUser } from "../redux/actions/userActions";
+import { logoutUser, getUserData } from "../redux/actions/userActions";
 
 const styles = theme => ({
   tab: {
@@ -32,12 +33,14 @@ const styles = theme => ({
 });
 
 export class Navbar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      selectedTabIndex: undefined,
-      anchorEl: null
+      selectedTabIndex: 0,
+      anchorEl: null,
+      myProfileClicked: false
     };
+    this.handleMyProfileClick = this.handleMyProfileClick.bind(this);
   }
 
   handleChange = (event, newValue) => {
@@ -57,6 +60,30 @@ export class Navbar extends Component {
       anchorEl: null
     });
   };
+
+  handleMyProfileClick = () => {
+    this.setState({
+      myProfileClicked: true
+    });
+    this.props.getUserData();
+    this.handleClose();
+  };
+
+  componentDidUpdate(prevProps) {
+    if (this.state.myProfileClicked) {
+      if (this.props.user) {
+        if (this.props.user.userProfile !== prevProps.user.userProfile) {
+          this.setState({
+            myProfileClicked: false
+          });
+          this.props.history.push({
+            pathname: `/user/${this.props.user.userProfile.username}`,
+            state: { isCurrentUserProfile: true }
+          });
+        }
+      }
+    }
+  }
 
   handleLogout = () => {
     this.handleClose();
@@ -202,11 +229,7 @@ export class Navbar extends Component {
                     open={Boolean(this.state.anchorEl)}
                     onClose={this.handleClose}
                   >
-                    <MenuItem
-                      onClick={this.handleClose}
-                      component={Link}
-                      to="/myprofile"
-                    >
+                    <MenuItem onClick={this.handleMyProfileClick}>
                       <Face style={{ marginRight: 5 }} />
                       My Profile
                     </MenuItem>
@@ -239,7 +262,8 @@ export class Navbar extends Component {
 
 Navbar.propTypes = {
   user: PropTypes.object.isRequired,
-  logoutUser: PropTypes.func.isRequired
+  logoutUser: PropTypes.func.isRequired,
+  getUserData: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -247,10 +271,11 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-  logoutUser
+  logoutUser,
+  getUserData
 };
 
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(withStyles(styles)(Navbar));
+)(withStyles(styles)(withRouter(Navbar)));

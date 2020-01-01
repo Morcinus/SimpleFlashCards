@@ -29,6 +29,7 @@ export class login extends Component {
   }
 
   // zdroj https://www.youtube.com/watch?v=fjWk7cZFxoM&list=PLMhAeHCz8S38ryyeMiBPPUnFAiWnoPvWP&index=18
+  // Tohle nebude fungovat, musim to kontrolovat na updatu
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.UI.errors) {
       this.setState({ errors: nextProps.UI.errors });

@@ -118,11 +118,25 @@ const setAuthorizationHeader = token => {
   axios.defaults.headers.common["Authorization"] = FBIDToken;
 };
 
-export const getUserData = username => dispatch => {
+export const getUserDataByUsername = username => dispatch => {
   axios
-    .get(`/getUserData/${username}`)
+    .get(`/getUserDataByUsername/${username}`)
     .then(res => {
+      dispatch({ type: CLEAR_USER_PROFILE });
       dispatch({ type: SET_USER_PROFILE, payload: res.data });
+    })
+    .catch(err => console.log(err));
+};
+
+export const getUserData = () => dispatch => {
+  console.log("Getting user Data");
+  axios
+    .get("/getUserData")
+    .then(res => {
+      console.log("Res data", res.data);
+      dispatch({ type: CLEAR_USER_PROFILE });
+      dispatch({ type: SET_USER_PROFILE, payload: res.data });
+      console.log("All saved");
     })
     .catch(err => console.log(err));
 };

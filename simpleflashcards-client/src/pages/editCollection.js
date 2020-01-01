@@ -110,6 +110,7 @@ export class editCollection extends Component {
       this.props.match.params.colId
     );
     console.log(failed);
+    // Tohle nebude fungovat, musim to kontrolovat na updatu
     if (!failed) {
       console.log("Failed false");
       console.log("Initial state:");
