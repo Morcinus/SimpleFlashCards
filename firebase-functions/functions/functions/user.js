@@ -351,7 +351,7 @@ exports.setUserPersonalData = (req, res) => {
   }
 };
 
-exports.getUserData = (req, res) => {
+exports.getUserDataByUsername = (req, res) => {
   let username = req.params.username;
   let doc;
   db.collection("users")
@@ -414,6 +414,76 @@ exports.getUserData = (req, res) => {
       }
     })
     .then(userData => {
+      res.status(200).json(userData);
+    })
+    .catch(error => console.error(error));
+};
+
+exports.getUserData = (req, res) => {
+  let doc;
+  db.collection("users")
+    .doc(req.user.uid)
+    .get()
+    .then(document => {
+      console.log("Jsem tu 1");
+      doc = document;
+      if (doc) {
+        let userData = {
+          username: doc.data().username,
+          bio: doc.data().bio,
+          createdCollections: doc.data().createdCollections
+        };
+
+        if (doc.data().createdDecks) {
+          return db
+            .collection("decks")
+            .where("creatorId", "==", doc.id)
+            .get()
+            .then(querySnapshot => {
+              let userDecks = [];
+              querySnapshot.forEach(doc => {
+                exportDeck = {
+                  deckName: doc.data().deckName,
+                  deckImage: doc.data().deckImage,
+                  deckId: doc.id
+                };
+                userDecks.push(exportDeck);
+              });
+              userData.createdDecks = userDecks;
+              return userData;
+            });
+        } else {
+          return userData;
+        }
+      } else {
+        res.status(404).json({ error: "User not found" });
+      }
+    })
+    .then(userData => {
+      console.log("Jsem tu 2");
+      if (doc.data().createdCollections) {
+        return db
+          .collection("collections")
+          .where("creatorId", "==", doc.id)
+          .get()
+          .then(querySnapshot => {
+            let userCollections = [];
+            querySnapshot.forEach(doc => {
+              colData = {
+                colName: doc.data().colName,
+                colId: doc.id
+              };
+              userCollections.push(colData);
+            });
+            userData.createdCollections = userCollections;
+            return userData;
+          });
+      } else {
+        return userData;
+      }
+    })
+    .then(userData => {
+      console.log("Jsem tu");
       res.status(200).json(userData);
     })
     .catch(error => console.error(error));
