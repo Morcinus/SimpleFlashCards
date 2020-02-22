@@ -14,6 +14,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 // Redux
 import { connect } from "react-redux";
 import { signupUser } from "../redux/actions/userActions";
+import { clearStatus } from "../redux/actions/uiStatusActions";
 
 const styles = theme => ({
   ...theme.loginAndSignup
@@ -23,18 +24,11 @@ export class signup extends Component {
   constructor() {
     super();
     this.state = {
-      errors: {},
       email: "",
       password: "",
       confirmPassword: "",
       username: ""
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.UI.errors) {
-      this.setState({ errors: nextProps.UI.errors });
-    }
   }
 
   handleSubmit = event => {
@@ -54,14 +48,15 @@ export class signup extends Component {
     });
   };
 
-  // TODO prepsat errory na jiny jmena erroru (ty co mam v cloud functions)
+  componentWillUnmount() {
+    this.props.clearStatus();
+  }
 
   render() {
     const {
       classes,
-      UI: { loading }
+      uiStatus: { status, errorCodes }
     } = this.props;
-    const { errors } = this.state;
     return (
       <div className="rootContainer">
         <Grid container className={classes.form} justify="center">
@@ -78,8 +73,14 @@ export class signup extends Component {
                     type="text"
                     label="Username"
                     className={classes.textField}
-                    helperText={errors.usernameError}
-                    error={errors.usernameError ? true : false}
+                    helperText={
+                      errorCodes.includes("auth/username-already-exists")
+                        ? "This username is already taken!"
+                        : errorCodes.includes("auth/invalid-username")
+                        ? "Must be a valid username!"
+                        : ""
+                    }
+                    error={errorCodes.includes("auth/username-already-exists") ? true : errorCodes.includes("auth/invalid-username") ? true : false}
                     value={this.state.username}
                     onChange={this.handleChange}
                     fullWidth
@@ -90,8 +91,14 @@ export class signup extends Component {
                     type="email"
                     label="Email"
                     className={classes.textField}
-                    helperText={errors.emailError}
-                    error={errors.emailError ? true : false}
+                    helperText={
+                      errorCodes.includes("auth/invalid-email")
+                        ? "Must be a valid email!"
+                        : errorCodes.includes("auth/email-already-in-use")
+                        ? "This email is already in use!"
+                        : ""
+                    }
+                    error={errorCodes.includes("auth/invalid-email") ? true : errorCodes.includes("auth/email-already-in-use") ? true : false}
                     value={this.state.email}
                     onChange={this.handleChange}
                     fullWidth
@@ -102,8 +109,16 @@ export class signup extends Component {
                     type="password"
                     label="Password"
                     className={classes.textField}
-                    helperText={errors.passwordError}
-                    error={errors.passwordError ? true : false}
+                    helperText={
+                      errorCodes.includes("auth/invalid-password")
+                        ? "Must be a valid password!"
+                        : errorCodes.includes("auth/weak-password")
+                        ? "Weak password! Passwords must be at least 6 characters long!"
+                        : errorCodes.includes("auth/passwords-dont-match")
+                        ? "Passwords don't match!"
+                        : ""
+                    }
+                    error={errorCodes.includes("auth/invalid-password") ? true : errorCodes.includes("auth/passwords-dont-match") ? true : false}
                     value={this.state.password}
                     onChange={this.handleChange}
                     fullWidth
@@ -118,30 +133,13 @@ export class signup extends Component {
                     onChange={this.handleChange}
                     fullWidth
                   />
-                  {errors.err && (
-                    <Typography variant="body2" className={classes.customError}>
-                      {errors.err}
-                    </Typography>
-                  )}
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    disabled={loading}
-                  >
+                  <Button type="submit" variant="contained" color="primary" className={classes.button} disabled={status == "BUSY" ? true : false}>
                     Signup
-                    {loading && (
-                      <CircularProgress
-                        size={30}
-                        className={classes.progress}
-                      />
-                    )}
+                    {status == "BUSY" && <CircularProgress size={30} className={classes.progress} />}
                   </Button>
                   <br />
                   <small>
-                    Already have an account? Log in{" "}
-                    <Link to="/login">here</Link>.
+                    Already have an account? Log in <Link to="/login">here</Link>.
                   </small>
                 </form>
               </div>
@@ -156,20 +154,19 @@ export class signup extends Component {
 signup.propTypes = {
   classes: PropTypes.object.isRequired,
   signupUser: PropTypes.func.isRequired,
+  clearStatus: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired
+  uiStatus: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   user: state.user,
-  UI: state.UI
+  uiStatus: state.uiStatus
 });
 
 const mapActionsToProps = {
-  signupUser
+  signupUser,
+  clearStatus
 };
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(signup));
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(signup));

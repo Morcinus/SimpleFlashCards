@@ -4,42 +4,42 @@ const firebase = require("firebase");
 firebase.initializeApp(config);
 
 function validateUserSignupData(userData) {
-  let errors = {};
+  let errors = [];
 
   // Email
   if (userData.email !== "") {
     // Regex source: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
     let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!userData.email.match(regex)) {
-      errors.emailError = "Must be a valid email!";
+      errors.push("auth/invalid-email");
     }
   } else {
-    errors.emailError = "Email must not be empty!";
+    errors.push("auth/invalid-email");
   }
 
   // Username
   if (userData.username !== "") {
     let usernameRegex = /^[a-zA-Z0-9]+$/;
     if (!userData.username.match(usernameRegex)) {
-      errors.usernameError = "Username is invalid!";
+      errors.push("auth/invalid-username");
     }
   } else {
-    errors.usernameError = "Username must not be empty!";
+    errors.push("auth/invalid-username");
   }
 
   // Password
   if (userData.password !== "") {
     if (userData.password !== userData.confirmPassword) {
-      errors.passwordError = "Passwords don't match!";
+      errors.push("auth/passwords-dont-match");
     }
   } else {
-    errors.passwordError = "Password must not be empty!";
+    errors.push("auth/invalid-password");
   }
 
   return errors;
 }
 
-// NEEDS CODE POLISH AND TESTING
+// Sign up the user
 exports.signup = (req, res) => {
   const userData = {
     email: req.body.email,
@@ -48,19 +48,21 @@ exports.signup = (req, res) => {
     confirmPassword: req.body.confirmPassword
   };
 
-  const errors = validateUserSignupData(userData);
-  if (Object.keys(errors).length !== 0) {
-    return res.status(400).json(errors);
+  // Validate user signup data
+  const errorCodes = validateUserSignupData(userData);
+  if (errorCodes.length > 0) {
+    return res.status(400).json({ errorCodes: errorCodes });
   }
 
   db.collection("users")
     .where("username", "==", `${userData.username}`)
     .get()
     .then(querySnapshot => {
+      // Create user
       if (querySnapshot.empty) {
         return firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password);
       } else {
-        return res.status(400).json({ usernameError: "This username is already taken!" });
+        return res.status(400).json({ errorCode: "auth/username-already-exists" });
       }
     })
     .then(data => {
@@ -71,8 +73,9 @@ exports.signup = (req, res) => {
         profileImg: ""
       };
 
+      // Add user info to database
       db.collection("users")
-        .doc(`${data.user.uid}`) // This should be done differently ! https://firebase.google.com/docs/auth/web/manage-users#get_a_users_profile
+        .doc(data.user.uid)
         .set(userInfo);
 
       return data.user.getIdToken();
@@ -82,15 +85,7 @@ exports.signup = (req, res) => {
     })
     .catch(err => {
       console.error(err);
-      if (err.code === "auth/weak-password") {
-        return res.status(400).json({
-          passwordError: "Weak password! Passwords must be at least 6 characters long"
-        });
-      } else if (err.code === "auth/email-already-in-use") {
-        return res.status(400).json({ emailError: "Email is already in use" });
-      } else {
-        return res.status(500).json({ error: err });
-      }
+      return res.status(400).json({ errorCode: err.code });
     });
 };
 
@@ -112,15 +107,6 @@ exports.login = (req, res) => {
     })
     .catch(error => {
       console.error(error);
-      // if (error.code === "auth/wrong-password") {
-      //   return res.status(400).json({
-      //     errorCode: "login/wrong-password"
-      //   });
-      // } else if (error.code === "auth/user-not-found") {
-      //   return res.status(400).json({ errorCode: "login/user-not-found" });
-      // } else if (error.code === "auth/invalid-email") {
-      //   return res.status(400).json({ errorCode: "login/invalid-email" });
-      // } else {
       return res.status(400).json({ errorCode: error.code });
     });
 };

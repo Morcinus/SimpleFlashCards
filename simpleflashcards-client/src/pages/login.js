@@ -14,6 +14,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 // Redux
 import { connect } from "react-redux";
 import { loginUser } from "../redux/actions/userActions";
+import { clearStatus } from "../redux/actions/uiStatusActions";
 
 const styles = theme => ({
   ...theme.loginAndSignup
@@ -41,6 +42,10 @@ export class login extends Component {
       [event.target.name]: event.target.value
     });
   };
+
+  componentWillUnmount() {
+    this.props.clearStatus();
+  }
 
   render() {
     const {
@@ -109,6 +114,7 @@ export class login extends Component {
 login.propTypes = {
   classes: PropTypes.object.isRequired,
   loginUser: PropTypes.func.isRequired,
+  clearStatus: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   uiStatus: PropTypes.object.isRequired
 };
@@ -119,7 +125,8 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-  loginUser
+  loginUser,
+  clearStatus
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(login));

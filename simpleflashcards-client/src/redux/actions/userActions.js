@@ -37,18 +37,25 @@ export const loginUser = (userData, history) => dispatch => {
 };
 
 export const signupUser = (newUserData, history) => dispatch => {
-  dispatch({ type: LOADING_UI });
+  dispatch({ type: SET_STATUS_BUSY });
   axios
     .post("/signup", newUserData)
     .then(res => {
       setAuthorizationHeader(res.data.idToken);
       dispatch({ type: SET_AUTHENTICATED });
-      dispatch({ type: CLEAR_ERRORS });
+      dispatch({ type: SET_STATUS_SUCCESS });
       history.push("/");
     })
     .catch(err => {
-      console.log(err.response.data);
-      dispatch({ type: SET_ERRORS, payload: err.response.data });
+      if (err.response.data.errorCodes) {
+        err.response.data.errorCodes.forEach(errorCode => {
+          console.error("Error:", errorCode);
+          dispatch({ type: SET_STATUS_ERROR, payload: errorCode });
+        });
+      } else {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      }
     });
 };
 
