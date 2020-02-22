@@ -1,9 +1,4 @@
-import {
-  SET_EDIT_COLLECTION_DATA,
-  DELETE_EDIT_COLLECTION_DATA,
-  SET_ERRORS,
-  CLEAR_ERRORS
-} from "../types";
+import { SET_EDIT_COLLECTION_DATA, DELETE_EDIT_COLLECTION_DATA, SET_ERRORS, CLEAR_ERRORS } from "../types";
 import axios from "axios";
 
 export const uploadCollection = (colData, colId) => dispatch => {
@@ -21,6 +16,7 @@ export const uploadCollection = (colData, colId) => dispatch => {
     // Osetrit jestli neni prazdny
     const exportDeckData = {
       colName: colData.colName,
+      private: colData.private,
       deckArray: exportDeckArray,
       colDescription: colData.colDescription
     };

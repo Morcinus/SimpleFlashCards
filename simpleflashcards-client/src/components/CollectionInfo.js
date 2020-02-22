@@ -17,6 +17,7 @@ import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
 import Bookmark from "@material-ui/icons/Bookmark";
 import Share from "@material-ui/icons/Share";
 import Edit from "@material-ui/icons/Edit";
+import Lock from "@material-ui/icons/Lock";
 
 // Other
 import { collectionDefaultImgUrl } from "../util/other";
@@ -102,33 +103,22 @@ export class CollectionInfo extends Component {
             height: "204px"
           }}
         >
-          <CardMedia
-            style={{ width: "100%", height: "100%" }}
-            image={collectionDefaultImgUrl}
-          ></CardMedia>
+          <CardMedia style={{ width: "100%", height: "100%" }} image={collectionDefaultImgUrl}></CardMedia>
         </Card>
         <br />
         <Typography variant="h5">
-          {this.props.colUi.collection
-            ? `${this.props.colUi.collection.colName}`
-            : "Loading..."}
+          {this.props.colUi.collection ? this.props.colUi.collection.private ? <Lock></Lock> : "" : ""}
+          {this.props.colUi.collection ? `${this.props.colUi.collection.colName}` : "Loading..."}
         </Typography>
 
         <Typography>
-          {this.props.colUi.collection
-            ? this.props.colUi.collection.colDescription
-              ? `${this.props.colUi.collection.colDescription}`
-              : ""
-            : "Loading..."}
+          {this.props.colUi.collection ? (this.props.colUi.collection.colDescription ? `${this.props.colUi.collection.colDescription}` : "") : "Loading..."}
         </Typography>
         <br />
         <Typography>
           Created by:{" "}
           {this.props.colUi.collection ? (
-            <MUILink
-              to={`/user/${this.props.colUi.collection.creatorName}`}
-              component={Link}
-            >
+            <MUILink to={`/user/${this.props.colUi.collection.creatorName}`} component={Link}>
               {this.props.colUi.collection.creatorName}
             </MUILink>
           ) : (
@@ -137,22 +127,10 @@ export class CollectionInfo extends Component {
         </Typography>
         <br />
         <Divider></Divider>
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          style={{ marginTop: "20px" }}
-        >
+        <Grid container direction="row" justify="center" alignItems="center" style={{ marginTop: "20px" }}>
           <Button
             item
-            variant={
-              this.state.isPinned !== null
-                ? this.state.isPinned
-                  ? "contained"
-                  : "outlined"
-                : "text"
-            }
+            variant={this.state.isPinned !== null ? (this.state.isPinned ? "contained" : "outlined") : "text"}
             color="primary"
             style={{ marginRight: "20px" }}
             size="large"
@@ -173,13 +151,7 @@ export class CollectionInfo extends Component {
             )}
           </Button>
 
-          <Button
-            onClick={this.handlePopoverOpen}
-            item
-            variant="outlined"
-            color="primary"
-            size="large"
-          >
+          <Button onClick={this.handlePopoverOpen} item variant="outlined" color="primary" size="large">
             <Share /> <Typography> Share</Typography>
           </Button>
           <Popover
@@ -196,31 +168,13 @@ export class CollectionInfo extends Component {
             }}
           >
             <Box style={{ margin: "20px" }} id="popover">
-              <Typography style={{ fontWeight: "bold", color: "#37474f" }}>
-                Share this collection
-              </Typography>
-              <Input
-                defaultValue={`${window.location.href}`}
-                readOnly={true}
-                style={{ color: "#808080" }}
-              />
-              <Grid
-                container
-                direction="row"
-                justify="flex-start"
-                alignItems="center"
-              >
+              <Typography style={{ fontWeight: "bold", color: "#37474f" }}>Share this collection</Typography>
+              <Input defaultValue={`${window.location.href}`} readOnly={true} style={{ color: "#808080" }} />
+              <Grid container direction="row" justify="flex-start" alignItems="center">
                 <Box item flexGrow={1}>
-                  <Typography style={{ color: "#37474f" }}>
-                    {this.state.copiedLink ? "Copied!" : ""}
-                  </Typography>
+                  <Typography style={{ color: "#37474f" }}>{this.state.copiedLink ? "Copied!" : ""}</Typography>
                 </Box>
-                <Button
-                  item
-                  color="secondary"
-                  style={{ fontWeight: "bold" }}
-                  onClick={() => this.handleCopyClick("popover")}
-                >
+                <Button item color="secondary" style={{ fontWeight: "bold" }} onClick={() => this.handleCopyClick("popover")}>
                   Copy link
                 </Button>
               </Grid>
@@ -230,14 +184,7 @@ export class CollectionInfo extends Component {
         <Grid container justify="center" style={{ marginTop: "20px" }}>
           {this.props.colUi.collection ? (
             this.props.colUi.collection.isCreator ? (
-              <Button
-                item
-                variant="text"
-                color="primary"
-                size="large"
-                component={Link}
-                to={`/editCollection/${this.props.colId}`}
-              >
+              <Button item variant="text" color="primary" size="large" component={Link} to={`/editCollection/${this.props.colId}`}>
                 <Edit /> <Typography> Edit Collection</Typography>
               </Button>
             ) : (

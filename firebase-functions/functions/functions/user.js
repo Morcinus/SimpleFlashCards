@@ -58,13 +58,9 @@ exports.signup = (req, res) => {
     .get()
     .then(querySnapshot => {
       if (querySnapshot.empty) {
-        return firebase
-          .auth()
-          .createUserWithEmailAndPassword(userData.email, userData.password);
+        return firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password);
       } else {
-        return res
-          .status(400)
-          .json({ usernameError: "This username is already taken!" });
+        return res.status(400).json({ usernameError: "This username is already taken!" });
       }
     })
     .then(data => {
@@ -88,8 +84,7 @@ exports.signup = (req, res) => {
       console.error(err);
       if (err.code === "auth/weak-password") {
         return res.status(400).json({
-          passwordError:
-            "Weak password! Passwords must be at least 6 characters long"
+          passwordError: "Weak password! Passwords must be at least 6 characters long"
         });
       } else if (err.code === "auth/email-already-in-use") {
         return res.status(400).json({ emailError: "Email is already in use" });
@@ -207,11 +202,7 @@ exports.updateUserProfile = (req, res) => {
               );
             } else {
               // Username is taken
-              reject(
-                res
-                  .status(400)
-                  .json({ error: "This username is already taken!" })
-              );
+              reject(res.status(400).json({ error: "This username is already taken!" }));
             }
           });
       } else {
@@ -243,9 +234,7 @@ exports.resetPassword = (req, res) => {
       return firebase.auth().sendPasswordResetEmail(email);
     })
     .then(() => {
-      return res
-        .status(200)
-        .json({ passwordSuccess: "The reset link was sent to your email!" });
+      return res.status(200).json({ passwordSuccess: "The reset link was sent to your email!" });
     })
     .catch(error => {
       return res.status(500).json({ passwordError: error.code });
@@ -284,15 +273,11 @@ exports.setUserPersonalData = (req, res) => {
             .doc(req.user.uid)
             .update({ username: req.body.username });
         } else {
-          return res
-            .status(400)
-            .json({ usernameError: "This username is already taken!" });
+          return res.status(400).json({ usernameError: "This username is already taken!" });
         }
       })
       .then(() => {
-        return res
-          .status(200)
-          .json({ usernameSuccess: "Username changed successfully!" });
+        return res.status(200).json({ usernameSuccess: "Username changed successfully!" });
       })
       .catch(error => {
         return res.status(500).json({ usernameError: error.code });
@@ -302,9 +287,7 @@ exports.setUserPersonalData = (req, res) => {
       .doc(req.user.uid)
       .update({ bio: req.body.bio })
       .then(() => {
-        return res
-          .status(200)
-          .json({ bioSuccess: "Description updated successfully!" });
+        return res.status(200).json({ bioSuccess: "Description updated successfully!" });
       })
       .catch(error => {
         return res.status(500).json({ bioError: error.code });
@@ -335,9 +318,7 @@ exports.setUserPersonalData = (req, res) => {
           .update({ email: req.body.email });
       })
       .then(() => {
-        return res
-          .status(200)
-          .json({ emailSuccess: "Email changed successfully!" });
+        return res.status(200).json({ emailSuccess: "Email changed successfully!" });
       })
       .catch(error => {
         if (error.code === "auth/wrong-password") {
@@ -374,12 +355,15 @@ exports.getUserDataByUsername = (req, res) => {
             .then(querySnapshot => {
               let userDecks = [];
               querySnapshot.forEach(doc => {
-                exportDeck = {
-                  deckName: doc.data().deckName,
-                  deckImage: doc.data().deckImage,
-                  deckId: doc.id
-                };
-                userDecks.push(exportDeck);
+                // If the deck is public
+                if (!doc.data().private) {
+                  exportDeck = {
+                    deckName: doc.data().deckName,
+                    deckImage: doc.data().deckImage,
+                    deckId: doc.id
+                  };
+                  userDecks.push(exportDeck);
+                }
               });
               userData.createdDecks = userDecks;
               return userData;
@@ -400,11 +384,14 @@ exports.getUserDataByUsername = (req, res) => {
           .then(querySnapshot => {
             let userCollections = [];
             querySnapshot.forEach(doc => {
-              colData = {
-                colName: doc.data().colName,
-                colId: doc.id
-              };
-              userCollections.push(colData);
+              // If the collection is public
+              if (!doc.data().private) {
+                colData = {
+                  colName: doc.data().colName,
+                  colId: doc.id
+                };
+                userCollections.push(colData);
+              }
             });
             userData.createdCollections = userCollections;
             return userData;
@@ -442,12 +429,15 @@ exports.getUserData = (req, res) => {
             .then(querySnapshot => {
               let userDecks = [];
               querySnapshot.forEach(doc => {
-                exportDeck = {
-                  deckName: doc.data().deckName,
-                  deckImage: doc.data().deckImage,
-                  deckId: doc.id
-                };
-                userDecks.push(exportDeck);
+                // If the deck is public
+                if (!doc.data().private) {
+                  exportDeck = {
+                    deckName: doc.data().deckName,
+                    deckImage: doc.data().deckImage,
+                    deckId: doc.id
+                  };
+                  userDecks.push(exportDeck);
+                }
               });
               userData.createdDecks = userDecks;
               return userData;
@@ -469,11 +459,14 @@ exports.getUserData = (req, res) => {
           .then(querySnapshot => {
             let userCollections = [];
             querySnapshot.forEach(doc => {
-              colData = {
-                colName: doc.data().colName,
-                colId: doc.id
-              };
-              userCollections.push(colData);
+              // If the collection is public
+              if (!doc.data().private) {
+                colData = {
+                  colName: doc.data().colName,
+                  colId: doc.id
+                };
+                userCollections.push(colData);
+              }
             });
             userData.createdCollections = userCollections;
             return userData;

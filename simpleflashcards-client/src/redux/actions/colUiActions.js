@@ -104,10 +104,11 @@ export const addDeckToCollection = (colId, deckId, i) => dispatch => {
     });
 };
 
-export const createCollection = (colName, deckId) => dispatch => {
+export const createCollection = (colName, deckId, privateCol) => dispatch => {
   let exportData = {
     colName: colName,
-    deckArray: [deckId]
+    deckArray: [deckId],
+    private: privateCol
   };
   console.log(`Creating ${colName} with ${deckId}`);
   axios

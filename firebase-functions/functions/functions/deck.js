@@ -19,7 +19,8 @@ exports.createDeck = (req, res) => {
     creatorId: req.user.uid,
     deckName: req.body.deckName,
     deckDescription: req.body.deckDescription ? req.body.deckDescription : null,
-    cardArray: cardArray
+    cardArray: cardArray,
+    private: req.body.private
   };
 
   db.collection("decks")
@@ -74,10 +75,9 @@ exports.updateDeck = (req, res) => {
           // Creates new docData
           let deckData = {
             deckName: req.body.deckName,
-            deckDescription: req.body.deckDescription
-              ? req.body.deckDescription
-              : null,
-            cardArray: cardArray
+            deckDescription: req.body.deckDescription ? req.body.deckDescription : null,
+            cardArray: cardArray,
+            private: req.body.private
           };
 
           // Updates deck
@@ -150,9 +150,7 @@ exports.deleteDeck = (req, res) => {
 
   let userDocRef = db.collection("users").doc(req.user.uid);
   let deckDocRef = db.collection("decks").doc(req.params.deckId);
-  let pinsRefs = db
-    .collection("users")
-    .where("pinnedDecks", "array-contains", req.params.deckId);
+  let pinsRefs = db.collection("users").where("pinnedDecks", "array-contains", req.params.deckId);
   let authorized;
 
   db.runTransaction(t => {
@@ -173,9 +171,7 @@ exports.deleteDeck = (req, res) => {
 
           // Deck deletion in user (creator) doc
           t.update(userDocRef, {
-            createdDecks: admin.firestore.FieldValue.arrayRemove(
-              req.params.deckId
-            )
+            createdDecks: admin.firestore.FieldValue.arrayRemove(req.params.deckId)
           });
 
           return db
@@ -188,9 +184,7 @@ exports.deleteDeck = (req, res) => {
         // Remove all deck pins
         querySnapshot.forEach(userDoc => {
           t.update(userDoc.ref, {
-            pinnedDecks: admin.firestore.FieldValue.arrayRemove(
-              req.params.deckId
-            )
+            pinnedDecks: admin.firestore.FieldValue.arrayRemove(req.params.deckId)
           });
         });
 
@@ -244,8 +238,7 @@ exports.deleteDeck = (req, res) => {
 
 function newId() {
   // Alphanumeric characters
-  const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let autoId = "";
   for (let i = 0; i < 20; i++) {
     autoId += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -293,9 +286,7 @@ exports.uploadDeckImage = (req, res) => {
       .then(() => {
         const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
 
-        return db
-          .doc(`/decks/${req.params.deckId}`)
-          .update({ deckImage: imageUrl });
+        return db.doc(`/decks/${req.params.deckId}`).update({ deckImage: imageUrl });
       })
       .then(() => {
         return res.status(200).json({ message: "image uploaded successfully" });
@@ -422,15 +413,23 @@ exports.getDeck = (req, res) => {
     .then(deckDoc => {
       let deck = deckDoc.data();
 
-      return db
-        .collection("users")
-        .doc(deck.creatorId)
-        .get()
-        .then(userDoc => {
-          deck.creatorName = userDoc.data().username;
-          return deck;
-        })
-        .catch(err => console.log(err));
+      let creatorId = deck.creatorId;
+      if (deck.private && creatorId !== req.user.uid) {
+        console.log("CreatorId: ", creatorId);
+        console.log("userid: ", req.user.uid);
+        authorized = false;
+        return res.status(403).json();
+      } else {
+        return db
+          .collection("users")
+          .doc(deck.creatorId)
+          .get()
+          .then(userDoc => {
+            deck.creatorName = userDoc.data().username;
+            return deck;
+          })
+          .catch(err => console.log(err));
+      }
     })
     .then(deck => {
       return db

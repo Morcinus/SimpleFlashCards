@@ -1,9 +1,4 @@
-import {
-  SET_EDIT_DECK_DATA,
-  DELETE_EDIT_DECK_DATA,
-  SET_ERRORS,
-  CLEAR_ERRORS
-} from "../types";
+import { SET_EDIT_DECK_DATA, DELETE_EDIT_DECK_DATA, SET_ERRORS, CLEAR_ERRORS } from "../types";
 import axios from "axios";
 
 export const saveDeckDraft = deckData => dispatch => {
@@ -29,7 +24,8 @@ export const uploadDeck = (deckData, deckId) => dispatch => {
     const exportDeckData = {
       deckName: deckData.deckName,
       deckCards: exportDeckCards,
-      deckDescription: deckData.deckDescription
+      deckDescription: deckData.deckDescription,
+      private: deckData.private
     };
     const imageFormData = deckData.imageFormData;
     console.log(exportDeckData);
@@ -82,17 +78,16 @@ const validateUploadDeckData = deckData => {
 
 export const deleteDeck = deckId => dispatch => {
   axios
-      .post(`/deleteDeck/${deckId}`)
-      .then(() => {
-        console.log("Deck Deleted!");
-        dispatch({ type: DELETE_EDIT_DECK_DATA });
-      })
-      .catch(err => {
-        if (err.response) console.log(err.response.data);
-      });
+    .post(`/deleteDeck/${deckId}`)
+    .then(() => {
+      console.log("Deck Deleted!");
+      dispatch({ type: DELETE_EDIT_DECK_DATA });
+    })
+    .catch(err => {
+      if (err.response) console.log(err.response.data);
+    });
 };
 
 export const deleteDeckDraft = () => dispatch => {
   dispatch({ type: DELETE_EDIT_DECK_DATA });
 };
-

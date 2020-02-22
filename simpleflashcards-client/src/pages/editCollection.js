@@ -15,15 +15,15 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormLabel from "@material-ui/core/FormLabel";
 
 // Redux
 import { connect } from "react-redux";
-import {
-  deleteCollection,
-  deleteCollectionDraft,
-  uploadCollection,
-  getCollection
-} from "../redux/actions/editColActions";
+import { deleteCollection, deleteCollectionDraft, uploadCollection, getCollection } from "../redux/actions/editColActions";
 
 export class editCollection extends Component {
   constructor(props) {
@@ -33,7 +33,8 @@ export class editCollection extends Component {
       colName: "",
       colDescription: "",
       deckArray: [],
-      dialogOpen: false
+      dialogOpen: false,
+      private: false
     };
     this.updateDeckArray = this.updateDeckArray.bind(this);
     this.deleteCollection = this.deleteCollection.bind(this);
@@ -73,7 +74,8 @@ export class editCollection extends Component {
         this.setState({
           colName: this.props.colEdit.colName,
           colDescription: this.props.colEdit.colDescription,
-          deckArray: deckArray
+          deckArray: deckArray,
+          private: this.props.colEdit.private
         });
       }
     }
@@ -92,7 +94,8 @@ export class editCollection extends Component {
       colName: "",
       colDescription: "",
       deckArray: [],
-      dialogOpen: false
+      dialogOpen: false,
+      private: false
     });
     this.props.deleteCollection(this.props.match.params.colId);
     this.handleDialogClose();
@@ -102,13 +105,11 @@ export class editCollection extends Component {
     let colData = {
       colName: this.state.colName,
       colDescription: this.state.colDescription,
-      deckArray: this.state.deckArray
+      deckArray: this.state.deckArray,
+      private: this.state.private
     };
 
-    const failed = this.props.uploadCollection(
-      colData,
-      this.props.match.params.colId
-    );
+    const failed = this.props.uploadCollection(colData, this.props.match.params.colId);
     console.log(failed);
     // Tohle nebude fungovat, musim to kontrolovat na updatu
     if (!failed) {
@@ -120,7 +121,8 @@ export class editCollection extends Component {
         colDescription: "",
         deckArray: [],
         dialogOpen: false,
-        uploadSucceeded: true
+        uploadSucceeded: true,
+        private: false
       });
       this.props.deleteCollectionDraft();
     } else {
@@ -151,23 +153,9 @@ export class editCollection extends Component {
                 <Typography variant="h4">Edit collection</Typography>
                 <Divider></Divider>
                 <br />
-                <Grid
-                  container
-                  direction="row"
-                  justify="center"
-                  alignItems="flex-start"
-                >
+                <Grid container direction="row" justify="center" alignItems="flex-start">
                   <Grid item sm={2} lg={2} xl={2}></Grid>
-                  <Grid
-                    item
-                    sm={8}
-                    lg={8}
-                    xl={8}
-                    container
-                    direction="column"
-                    justify="center"
-                    alignItems="center"
-                  >
+                  <Grid item sm={8} lg={8} xl={8} container direction="column" justify="center" alignItems="center">
                     <Grid item>
                       <Grid>
                         <Box style={{ marginBottom: "20px" }}>
@@ -213,41 +201,26 @@ export class editCollection extends Component {
                     </Grid>
                     <br />
                     <Grid item>
-                      <ColTable
-                        data={this.state.deckArray}
-                        updateDeckArray={this.updateDeckArray}
-                      ></ColTable>
+                      <ColTable data={this.state.deckArray} updateDeckArray={this.updateDeckArray}></ColTable>
                     </Grid>
                   </Grid>
                   <Grid item sm={2} lg={2} xl={2}>
-                    <Grid
-                      item
-                      container
-                      direction="column"
-                      justify="flex-start"
-                      alignItems="flex-end"
-                    >
-                      <Grid
-                        item
-                        container
-                        justify="flex-end"
-                        alignItems="flex-start"
-                      >
-                        <IconButton
-                          color="primary"
-                          variant="contained"
-                          onClick={this.handleDialogOpen}
-                        >
+                    <Grid item container direction="column" justify="flex-start" alignItems="flex-end">
+                      <Grid item container justify="flex-end" alignItems="flex-start">
+                        <IconButton color="primary" variant="contained" onClick={this.handleDialogOpen}>
                           <Delete></Delete>
                         </IconButton>
-                        <Button
-                          size="large"
-                          color="secondary"
-                          variant="contained"
-                          onClick={this.uploadCollection}
-                        >
+                        <Button size="large" color="secondary" variant="contained" onClick={this.uploadCollection}>
                           Save
                         </Button>
+
+                        <FormControl variant="outlined" fullWidth>
+                          <FormLabel>Collection visibility</FormLabel>
+                          <Select name="private" value={this.state.private} onChange={this.handleChange}>
+                            <MenuItem value={false}>Public</MenuItem>
+                            <MenuItem value={true}>Private</MenuItem>
+                          </Select>
+                        </FormControl>
                       </Grid>
                       <Grid>
                         {this.state.errors.deckArrayError ? (
@@ -255,9 +228,7 @@ export class editCollection extends Component {
                             {this.state.errors.deckArrayError}
                           </Typography>
                         ) : this.state.uploadSucceeded === true ? ( // NEEDS UPDATE!!! to disappear after few secs + Add delete deck success
-                          <Typography align="right">
-                            Upload was successful
-                          </Typography>
+                          <Typography align="right">Upload was successful</Typography>
                         ) : (
                           <div></div>
                         )}
@@ -278,19 +249,10 @@ export class editCollection extends Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
-            <Button
-              onClick={this.handleDialogClose}
-              color="primary"
-              variant="outlined"
-              autoFocus
-            >
+            <Button onClick={this.handleDialogClose} color="primary" variant="outlined" autoFocus>
               Cancel
             </Button>
-            <Button
-              onClick={this.deleteCollection}
-              color="primary"
-              variant="contained"
-            >
+            <Button onClick={this.deleteCollection} color="primary" variant="contained">
               Delete
             </Button>
           </DialogActions>

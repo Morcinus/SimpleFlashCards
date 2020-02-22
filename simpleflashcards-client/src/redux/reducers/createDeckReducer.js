@@ -5,7 +5,8 @@ const initialState = {
   deckDescription: "",
   deckImage: null,
   deckCards: [],
-  imageUrl: null
+  imageUrl: null,
+  private: false
 };
 
 export default function(state = initialState, action) {
@@ -17,7 +18,8 @@ export default function(state = initialState, action) {
         deckDescription: action.payload.deckDescription,
         deckImage: action.payload.deckImage,
         deckCards: action.payload.deckCards,
-        imageUrl: action.payload.imageUrl
+        imageUrl: action.payload.imageUrl,
+        private: action.payload.private
       };
     case DELETE_DECK_DATA:
       return {
@@ -25,7 +27,8 @@ export default function(state = initialState, action) {
         deckDescription: "",
         deckImage: null,
         deckCards: [],
-        imageUrl: null
+        imageUrl: null,
+        private: false
       };
     default:
       return state;

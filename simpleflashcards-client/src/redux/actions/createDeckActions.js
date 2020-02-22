@@ -1,9 +1,4 @@
-import {
-  UPDATE_DECK_DATA,
-  DELETE_DECK_DATA,
-  SET_ERRORS,
-  CLEAR_ERRORS
-} from "../types";
+import { UPDATE_DECK_DATA, DELETE_DECK_DATA, SET_ERRORS, CLEAR_ERRORS } from "../types";
 import axios from "axios";
 
 export const saveDeckDraft = deckData => dispatch => {
@@ -29,7 +24,8 @@ export const uploadDeck = deckData => dispatch => {
     const exportDeckData = {
       deckName: deckData.deckName,
       deckCards: exportDeckCards,
-      deckDescription: deckData.deckDescription
+      deckDescription: deckData.deckDescription,
+      private: deckData.private
     };
 
     const imageFormData = deckData.imageFormData;
@@ -44,11 +40,9 @@ export const uploadDeck = deckData => dispatch => {
         // Upload deck image
         if (imageFormData) {
           console.log("Uploading image");
-          axios
-            .post(`/uploadDeckImage/${res.data.deckId}`, imageFormData)
-            .catch(err => {
-              if (err.response) console.log(err.response.data);
-            });
+          axios.post(`/uploadDeckImage/${res.data.deckId}`, imageFormData).catch(err => {
+            if (err.response) console.log(err.response.data);
+          });
         }
       })
       .catch(err => {

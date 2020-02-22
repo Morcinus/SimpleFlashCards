@@ -18,6 +18,7 @@ import Bookmark from "@material-ui/icons/Bookmark";
 import Share from "@material-ui/icons/Share";
 import Edit from "@material-ui/icons/Edit";
 import LibraryAdd from "@material-ui/icons/LibraryAdd";
+import Lock from "@material-ui/icons/Lock";
 
 // Other
 import defaultDeckImageUrl from "../util/other";
@@ -112,37 +113,23 @@ export class DeckInfo extends Component {
         >
           <CardMedia
             style={{ width: "100%", height: "100%" }}
-            image={
-              this.props.deckUi.deck
-                ? this.props.deckUi.deck.deckImage
-                  ? this.props.deckUi.deck.deckImage
-                  : defaultDeckImageUrl
-                : defaultDeckImageUrl
-            }
+            image={this.props.deckUi.deck ? (this.props.deckUi.deck.deckImage ? this.props.deckUi.deck.deckImage : defaultDeckImageUrl) : defaultDeckImageUrl}
           ></CardMedia>
         </Card>
         <br />
         <Typography variant="h5">
-          {this.props.deckUi.deck
-            ? `${this.props.deckUi.deck.deckName}`
-            : "Loading..."}
+          {this.props.deckUi.deck ? this.props.deckUi.deck.private ? <Lock></Lock> : "" : ""}
+          {this.props.deckUi.deck ? `${this.props.deckUi.deck.deckName}` : "Loading..."}
         </Typography>
 
         <Typography>
-          {this.props.deckUi.deck
-            ? this.props.deckUi.deck.deckDescription
-              ? `${this.props.deckUi.deck.deckDescription}`
-              : ""
-            : "Loading..."}
+          {this.props.deckUi.deck ? (this.props.deckUi.deck.deckDescription ? `${this.props.deckUi.deck.deckDescription}` : "") : "Loading..."}
         </Typography>
         <br />
         <Typography>
           Created by:{" "}
           {this.props.deckUi.deck ? (
-            <MUILink
-              to={`/user/${this.props.deckUi.deck.creatorName}`}
-              component={Link}
-            >
+            <MUILink to={`/user/${this.props.deckUi.deck.creatorName}`} component={Link}>
               {this.props.deckUi.deck.creatorName}
             </MUILink>
           ) : (
@@ -151,22 +138,10 @@ export class DeckInfo extends Component {
         </Typography>
         <br />
         <Divider></Divider>
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          style={{ marginTop: "20px" }}
-        >
+        <Grid container direction="row" justify="center" alignItems="center" style={{ marginTop: "20px" }}>
           <Button
             item
-            variant={
-              this.state.isPinned !== null
-                ? this.state.isPinned
-                  ? "contained"
-                  : "outlined"
-                : "text"
-            }
+            variant={this.state.isPinned !== null ? (this.state.isPinned ? "contained" : "outlined") : "text"}
             color="primary"
             style={{ marginRight: "20px" }}
             size="large"
@@ -187,13 +162,7 @@ export class DeckInfo extends Component {
             )}
           </Button>
 
-          <Button
-            onClick={this.handlePopoverOpen}
-            item
-            variant="outlined"
-            color="primary"
-            size="large"
-          >
+          <Button onClick={this.handlePopoverOpen} item variant="outlined" color="primary" size="large">
             <Share /> <Typography> Share</Typography>
           </Button>
           <Popover
@@ -210,54 +179,23 @@ export class DeckInfo extends Component {
             }}
           >
             <Box style={{ margin: "20px" }} id="popover">
-              <Typography style={{ fontWeight: "bold", color: "#37474f" }}>
-                Share this deck
-              </Typography>
-              <Input
-                defaultValue={`${window.location.href}`}
-                readOnly={true}
-                style={{ color: "#808080" }}
-              />
-              <Grid
-                container
-                direction="row"
-                justify="flex-start"
-                alignItems="center"
-              >
+              <Typography style={{ fontWeight: "bold", color: "#37474f" }}>Share this deck</Typography>
+              <Input defaultValue={`${window.location.href}`} readOnly={true} style={{ color: "#808080" }} />
+              <Grid container direction="row" justify="flex-start" alignItems="center">
                 <Box item flexGrow={1}>
-                  <Typography style={{ color: "#37474f" }}>
-                    {this.state.copiedLink ? "Copied!" : ""}
-                  </Typography>
+                  <Typography style={{ color: "#37474f" }}>{this.state.copiedLink ? "Copied!" : ""}</Typography>
                 </Box>
-                <Button
-                  item
-                  color="secondary"
-                  style={{ fontWeight: "bold" }}
-                  onClick={() => this.handleCopyClick("popover")}
-                >
+                <Button item color="secondary" style={{ fontWeight: "bold" }} onClick={() => this.handleCopyClick("popover")}>
                   Copy link
                 </Button>
               </Grid>
             </Box>
           </Popover>
         </Grid>
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          style={{ marginTop: "20px" }}
-        >
+        <Grid container direction="row" justify="center" alignItems="center" style={{ marginTop: "20px" }}>
           {this.props.deckUi.deck ? (
             this.props.deckUi.deck.isCreator ? (
-              <Button
-                item
-                variant="text"
-                color="primary"
-                component={Link}
-                to={`/edit/${this.props.deckId}`}
-                style={{ marginRight: "20px" }}
-              >
+              <Button item variant="text" color="primary" component={Link} to={`/edit/${this.props.deckId}`} style={{ marginRight: "20px" }}>
                 <Edit style={{ marginRight: "5px" }} />
                 <Typography variant="body2">
                   Edit
@@ -271,12 +209,7 @@ export class DeckInfo extends Component {
             "Loading..."
           )}
 
-          <Button
-            item
-            variant="text"
-            color="primary"
-            onClick={this.handleAddToCollection}
-          >
+          <Button item variant="text" color="primary" onClick={this.handleAddToCollection}>
             <LibraryAdd style={{ marginRight: "5px" }} />
             <Typography variant="body2">
               Add to

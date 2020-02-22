@@ -6,28 +6,22 @@ import DeckTable from "../components/DeckTable";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import {
-  Divider,
-  Card,
-  CardContent,
-  TextField,
-  Box,
-  Button
-} from "@material-ui/core";
+import { Divider, Card, CardContent, TextField, Box, Button } from "@material-ui/core";
 import Photo from "@material-ui/icons/Photo";
 import Delete from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormLabel from "@material-ui/core/FormLabel";
 
 // Redux
 import { connect } from "react-redux";
-import {
-  saveDeckDraft,
-  deleteDeckDraft,
-  uploadDeck
-} from "../redux/actions/createDeckActions";
+import { saveDeckDraft, deleteDeckDraft, uploadDeck } from "../redux/actions/createDeckActions";
 
 export class create extends Component {
   constructor(props) {
@@ -39,7 +33,8 @@ export class create extends Component {
       deckImage: null,
       deckCards: [],
       imageUrl: null,
-      dialogOpen: false
+      dialogOpen: false,
+      private: false
     };
     this.updateDeckCards = this.updateDeckCards.bind(this);
     this.handleUploadButtonClick = this.handleUploadButtonClick.bind(this);
@@ -65,7 +60,8 @@ export class create extends Component {
       deckDescription: this.props.deckCreation.deckDescription,
       deckImage: this.props.deckCreation.deckImage,
       deckCards: this.props.deckCreation.deckCards,
-      imageUrl: this.props.deckCreation.imageUrl
+      imageUrl: this.props.deckCreation.imageUrl,
+      private: this.props.deckCreation.private
     });
   }
 
@@ -75,7 +71,8 @@ export class create extends Component {
       deckDescription: this.state.deckDescription,
       deckImage: this.state.deckImage,
       deckCards: this.state.deckCards,
-      imageUrl: this.state.imageUrl
+      imageUrl: this.state.imageUrl,
+      private: this.state.private
     };
     this.props.saveDeckDraft(deckData);
   }
@@ -95,7 +92,8 @@ export class create extends Component {
       deckImage: null,
       deckCards: [],
       imageUrl: null,
-      dialogOpen: false
+      dialogOpen: false,
+      private: false
     });
     this.props.deleteDeckDraft();
     this.handleDialogClose();
@@ -103,17 +101,14 @@ export class create extends Component {
 
   uploadDeck() {
     const imageFormData = new FormData();
-    imageFormData.append(
-      "deckImage",
-      this.state.deckImage,
-      this.state.deckImage.name
-    );
+    imageFormData.append("deckImage", this.state.deckImage, this.state.deckImage.name);
 
     let deckData = {
       deckName: this.state.deckName,
       deckDescription: this.state.deckDescription,
       deckCards: this.state.deckCards,
-      imageFormData: imageFormData
+      imageFormData: imageFormData,
+      private: this.state.private
     };
 
     const failed = this.props.uploadDeck(deckData);
@@ -129,7 +124,8 @@ export class create extends Component {
         deckCards: [],
         imageUrl: null,
         dialogOpen: false,
-        uploadSucceeded: true
+        uploadSucceeded: true,
+        private: false
       });
       this.props.deleteDeckDraft();
     } else {
@@ -186,12 +182,7 @@ export class create extends Component {
                           }}
                           onClick={this.handleUploadButtonClick}
                         >
-                          <input
-                            type="file"
-                            id="imageInput"
-                            hidden="hidden"
-                            onChange={this.handleImageChange}
-                          />
+                          <input type="file" id="imageInput" hidden="hidden" onChange={this.handleImageChange} />
                         </Button>
                       ) : (
                         <Button
@@ -203,16 +194,8 @@ export class create extends Component {
                           }}
                           onClick={this.handleUploadButtonClick}
                         >
-                          <input
-                            type="file"
-                            id="imageInput"
-                            hidden="hidden"
-                            onChange={this.handleImageChange}
-                          />
-                          <Typography
-                            style={{ textAlign: "center" }}
-                            variant="body2"
-                          >
+                          <input type="file" id="imageInput" hidden="hidden" onChange={this.handleImageChange} />
+                          <Typography style={{ textAlign: "center" }} variant="body2">
                             <Photo></Photo>
                             CHOOSE COVER (OPTIONAL)
                           </Typography>
@@ -261,37 +244,22 @@ export class create extends Component {
                       </Box>
                     </Grid>
                   </Grid>
-                  <Grid
-                    item
-                    sm={3}
-                    lg={3}
-                    xl={3}
-                    container
-                    direction="column"
-                    justify="flex-start"
-                    alignItems="flex-end"
-                  >
-                    <Grid
-                      item
-                      container
-                      justify="flex-end"
-                      alignItems="flex-start"
-                    >
-                      <IconButton
-                        color="primary"
-                        variant="contained"
-                        onClick={this.handleDialogOpen}
-                      >
+                  <Grid item sm={3} lg={3} xl={3} container direction="column" justify="flex-start" alignItems="flex-end">
+                    <Grid item container justify="flex-end" alignItems="flex-start">
+                      <IconButton color="primary" variant="contained" onClick={this.handleDialogOpen}>
                         <Delete></Delete>
                       </IconButton>
-                      <Button
-                        size="large"
-                        color="secondary"
-                        variant="contained"
-                        onClick={this.uploadDeck}
-                      >
+                      <Button size="large" color="secondary" variant="contained" onClick={this.uploadDeck}>
                         Create
                       </Button>
+
+                      <FormControl variant="outlined" fullWidth>
+                        <FormLabel>Deck visibility</FormLabel>
+                        <Select name="private" value={this.state.private} onChange={this.handleChange}>
+                          <MenuItem value={false}>Public</MenuItem>
+                          <MenuItem value={true}>Private</MenuItem>
+                        </Select>
+                      </FormControl>
                     </Grid>
                     <Grid>
                       {this.state.errors.deckCardsError ? (
@@ -299,9 +267,7 @@ export class create extends Component {
                           {this.state.errors.deckCardsError}
                         </Typography>
                       ) : this.state.uploadSucceeded === true ? ( // NEEDS UPDATE!!! to disappear after few secs
-                        <Typography align="right">
-                          Upload was successful
-                        </Typography>
+                        <Typography align="right">Upload was successful</Typography>
                       ) : (
                         <div></div>
                       )}
@@ -309,32 +275,18 @@ export class create extends Component {
                   </Grid>
                 </Grid>
                 <br />
-                <DeckTable
-                  data={this.state.deckCards}
-                  updateDeckCards={this.updateDeckCards}
-                ></DeckTable>
+                <DeckTable data={this.state.deckCards} updateDeckCards={this.updateDeckCards}></DeckTable>
               </div>
             </Paper>
           </Grid>
         </Grid>
         <Dialog open={this.state.dialogOpen} onClose={this.handleDialogClose}>
-          <DialogTitle>
-            {"Are you sure you want to delete this draft?"}
-          </DialogTitle>
+          <DialogTitle>{"Are you sure you want to delete this draft?"}</DialogTitle>
           <DialogActions style={{ justifyContent: "center" }}>
-            <Button
-              onClick={this.handleDialogClose}
-              color="primary"
-              variant="outlined"
-              autoFocus
-            >
+            <Button onClick={this.handleDialogClose} color="primary" variant="outlined" autoFocus>
               Cancel
             </Button>
-            <Button
-              onClick={this.deleteDeckDraft}
-              color="primary"
-              variant="contained"
-            >
+            <Button onClick={this.deleteDeckDraft} color="primary" variant="contained">
               Delete
             </Button>
           </DialogActions>

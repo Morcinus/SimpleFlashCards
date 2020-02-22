@@ -8,7 +8,8 @@ exports.createCollection = (req, res) => {
     creatorId: req.user.uid,
     colName: req.body.colName,
     colDescription: req.body.colDescription ? req.body.colDescription : null,
-    deckArray: req.body.deckArray
+    deckArray: req.body.deckArray,
+    private: req.body.private
   };
 
   db.collection("collections")
@@ -17,9 +18,7 @@ exports.createCollection = (req, res) => {
       db.collection("users")
         .doc(req.user.uid)
         .update({
-          createdCollections: admin.firestore.FieldValue.arrayUnion(
-            docReference.id
-          )
+          createdCollections: admin.firestore.FieldValue.arrayUnion(docReference.id)
         });
 
       return docReference.id;
@@ -36,7 +35,8 @@ exports.updateCollection = (req, res) => {
   const colData = {
     colName: req.body.colName,
     colDescription: req.body.colDescription ? req.body.colDescription : null,
-    deckArray: req.body.deckArray
+    deckArray: req.body.deckArray,
+    private: req.body.private
   };
 
   db.collection("collections")
@@ -110,9 +110,7 @@ exports.deleteCollection = (req, res) => {
 
           // Collection deletion in user (creator) doc
           t.update(userDocRef, {
-            createdCollections: admin.firestore.FieldValue.arrayRemove(
-              req.params.colId
-            )
+            createdCollections: admin.firestore.FieldValue.arrayRemove(req.params.colId)
           });
 
           return db
@@ -125,9 +123,7 @@ exports.deleteCollection = (req, res) => {
         // Remove all deck pins
         querySnapshot.forEach(userDoc => {
           t.update(userDoc.ref, {
-            pinnedCollections: admin.firestore.FieldValue.arrayRemove(
-              req.params.colId
-            )
+            pinnedCollections: admin.firestore.FieldValue.arrayRemove(req.params.colId)
           });
         });
       });
@@ -146,9 +142,7 @@ exports.pinCollection = (req, res) => {
     db.collection("users")
       .doc(req.user.uid)
       .update({
-        pinnedCollections: admin.firestore.FieldValue.arrayUnion(
-          req.params.colId
-        )
+        pinnedCollections: admin.firestore.FieldValue.arrayUnion(req.params.colId)
       })
       .then(() => {
         res.status(200).json();
@@ -164,9 +158,7 @@ exports.unpinCollection = (req, res) => {
     db.collection("users")
       .doc(req.user.uid)
       .update({
-        pinnedCollections: admin.firestore.FieldValue.arrayRemove(
-          req.params.colId
-        )
+        pinnedCollections: admin.firestore.FieldValue.arrayRemove(req.params.colId)
       })
       .then(() => {
         res.status(200).json();
@@ -216,11 +208,7 @@ exports.getUserCollectionsWithDeckInfo = (req, res) => {
             colName: doc.data().colName,
             colId: doc.id
           };
-          colData.containsDeck = doc
-            .data()
-            .deckArray.includes(req.params.deckId)
-            ? true
-            : false;
+          colData.containsDeck = doc.data().deckArray.includes(req.params.deckId) ? true : false;
           userCollections.push(colData);
         });
         return userCollections;
@@ -287,16 +275,24 @@ exports.getCollection = (req, res) => {
     .then(colDoc => {
       collection = colDoc.data();
 
-      // Find the creator username
-      return db
-        .collection("users")
-        .doc(collection.creatorId)
-        .get()
-        .then(userDoc => {
-          collection.creatorName = userDoc.data().username;
-          return collection;
-        })
-        .catch(err => console.log(err));
+      let creatorId = collection.creatorId;
+      if (collection.private && creatorId !== req.user.uid) {
+        console.log("CreatorId: ", creatorId);
+        console.log("userid: ", req.user.uid);
+        authorized = false;
+        return res.status(403).json();
+      } else {
+        // Find the creator username
+        return db
+          .collection("users")
+          .doc(collection.creatorId)
+          .get()
+          .then(userDoc => {
+            collection.creatorName = userDoc.data().username;
+            return collection;
+          })
+          .catch(err => console.log(err));
+      }
     })
     .then(collection => {
       return db

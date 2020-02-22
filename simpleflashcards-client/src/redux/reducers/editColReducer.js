@@ -1,12 +1,10 @@
-import {
-  SET_EDIT_COLLECTION_DATA,
-  DELETE_EDIT_COLLECTION_DATA
-} from "../types";
+import { SET_EDIT_COLLECTION_DATA, DELETE_EDIT_COLLECTION_DATA } from "../types";
 
 const initialState = {
   colName: "",
   colDescription: "",
-  deckArray: []
+  deckArray: [],
+  private: false
 };
 
 export default function(state = initialState, action) {
@@ -16,13 +14,15 @@ export default function(state = initialState, action) {
         ...state,
         colName: action.payload.colName,
         colDescription: action.payload.colDescription,
+        private: action.payload.private,
         deckArray: action.payload.deckArray
       };
     case DELETE_EDIT_COLLECTION_DATA:
       return {
         colName: "",
         colDescription: "",
-        deckArray: []
+        deckArray: [],
+        private: false
       };
     default:
       return state;
