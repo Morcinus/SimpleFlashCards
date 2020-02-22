@@ -266,7 +266,7 @@ export class create extends Component {
                         <Typography align="right" color="error">
                           {this.state.errors.deckCardsError}
                         </Typography>
-                      ) : this.state.uploadSucceeded === true ? ( // NEEDS UPDATE!!! to disappear after few secs
+                      ) : this.state.uploadSucceeded === true ? ( // NEEDS UPDATE!!! REDIRECT TO DECK PAGE
                         <Typography align="right">Upload was successful</Typography>
                       ) : (
                         <div></div>
