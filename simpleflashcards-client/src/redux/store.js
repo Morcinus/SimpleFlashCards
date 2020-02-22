@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 
 // Reducers
 import userReducer from "./reducers/userReducer";
-import uiReducer from "./reducers/uiReducer";
+import uiStatusReducer from "./reducers/uiStatusReducer";
 import createDeckReducer from "./reducers/createDeckReducer";
 import editDeckReducer from "./reducers/editDeckReducer";
 import deckUi from "./reducers/deckUiReducer";
@@ -18,7 +18,7 @@ const middleware = [thunk];
 
 const reducers = combineReducers({
   user: userReducer,
-  UI: uiReducer,
+  uiStatus: uiStatusReducer,
   deckCreation: createDeckReducer,
   deckEdit: editDeckReducer,
   deckUi: deckUi,
@@ -31,12 +31,7 @@ const reducers = combineReducers({
 const store = createStore(
   reducers,
   initialState,
-  compose(
-    applyMiddleware(...middleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__
-      ? window.__REDUX_DEVTOOLS_EXTENSION__()
-      : f => f
-  )
+  compose(applyMiddleware(...middleware), window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f)
 );
 
 export default store;

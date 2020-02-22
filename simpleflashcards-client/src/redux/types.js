@@ -9,11 +9,15 @@ export const SET_USER_PROFILE = "SET_USER_PROFILE";
 export const CLEAR_USER_PROFILE = "CLEAR_USER_DATA";
 
 // UI reducer types
-export const LOADING_UI = "LOADING_UI";
-export const SET_ERRORS = "SET_ERRORS";
-export const CLEAR_ERRORS = "CLEAR_ERRORS";
-export const SET_SUCCESS = "SET_SUCCESS";
-export const CLEAR_SUCCESS = "CLEAR_SUCCESS";
+export const SET_STATUS_BUSY = "SET_STATUS_BUSY";
+export const SET_STATUS_ERROR = "SET_STATUS_ERROR";
+export const SET_STATUS_SUCCESS = "SET_STATUS_SUCCESS";
+export const CLEAR_STATUS = "CLEAR_STATUS";
+export const SET_ERRORS = "SET_ERRORS"; //Not used
+export const SET_SUCCESS = "SET_SUCCESS"; //Not used
+export const LOADING_UI = "LOADING_UI"; //Not used
+export const CLEAR_ERRORS = "CLEAR_ERRORS"; //Not used
+export const CLEAR_SUCCESS = "CLEAR_SUCCESS"; //Not used
 
 // Create Deck reducer types
 export const UPDATE_DECK_DATA = "UPDATE_DECK_DATA";

@@ -10,25 +10,28 @@ import {
   CLEAR_SUCCESS,
   SET_ONE_USER_DATA,
   SET_USER_PROFILE,
-  CLEAR_USER_PROFILE
+  CLEAR_USER_PROFILE,
+  SET_STATUS_BUSY,
+  SET_STATUS_ERROR,
+  SET_STATUS_SUCCESS,
+  CLEAR_STATUS
 } from "../types";
 import axios from "axios";
 
-// ZDROJ https://www.youtube.com/watch?v=fjWk7cZFxoM&list=PLMhAeHCz8S38ryyeMiBPPUnFAiWnoPvWP&index=18
 export const loginUser = (userData, history) => dispatch => {
-  dispatch({ type: LOADING_UI });
+  dispatch({ type: SET_STATUS_BUSY });
   axios
     .post("/login", userData)
     .then(res => {
       setAuthorizationHeader(res.data.idToken);
       dispatch({ type: SET_AUTHENTICATED });
-      dispatch({ type: CLEAR_ERRORS });
+      dispatch({ type: SET_STATUS_SUCCESS });
       history.push("/");
     })
     .catch(err => {
       if (err.response) {
-        console.log(err.response.data);
-        dispatch({ type: SET_ERRORS, payload: err.response.data });
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
       }
     });
 };

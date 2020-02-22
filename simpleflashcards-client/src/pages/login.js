@@ -22,18 +22,9 @@ export class login extends Component {
   constructor() {
     super();
     this.state = {
-      errors: {},
       email: "",
       password: ""
     };
-  }
-
-  // zdroj https://www.youtube.com/watch?v=fjWk7cZFxoM&list=PLMhAeHCz8S38ryyeMiBPPUnFAiWnoPvWP&index=18
-  // Tohle nebude fungovat, musim to kontrolovat na updatu
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.UI.errors) {
-      this.setState({ errors: nextProps.UI.errors });
-    }
   }
 
   handleSubmit = event => {
@@ -51,12 +42,10 @@ export class login extends Component {
     });
   };
 
-  // TODO prepsat errory na jiny jmena erroru (ty co mam v cloud functions)
-
   render() {
     const {
       classes,
-      UI: { loading }
+      uiStatus: { status, errorCodes }
     } = this.props;
     const { errors } = this.state;
     return (
@@ -75,8 +64,14 @@ export class login extends Component {
                     type="email"
                     label="Email"
                     className={classes.textField}
-                    helperText={errors.emailError}
-                    error={errors.emailError ? true : false}
+                    helperText={
+                      errorCodes.includes("auth/invalid-email")
+                        ? "Must be a valid email adress!"
+                        : errorCodes.includes("auth/user-not-found")
+                        ? "User not found!"
+                        : ""
+                    }
+                    error={errorCodes.includes("auth/invalid-email") ? true : errorCodes.includes("auth/user-not-found") ? true : false}
                     value={this.state.email}
                     onChange={this.handleChange}
                     fullWidth
@@ -87,36 +82,19 @@ export class login extends Component {
                     type="password"
                     label="Password"
                     className={classes.textField}
-                    helperText={errors.passwordError}
-                    error={errors.passwordError ? true : false}
+                    helperText={errorCodes.includes("auth/wrong-password") ? "Wrong password!" : ""}
+                    error={errorCodes.includes("auth/wrong-password") ? true : false}
                     value={this.state.password}
                     onChange={this.handleChange}
                     fullWidth
                   />
-                  {errors.err && (
-                    <Typography variant="body2" className={classes.customError}>
-                      {errors.err}
-                    </Typography>
-                  )}
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    disabled={loading}
-                  >
+                  <Button type="submit" variant="contained" color="primary" className={classes.button} disabled={status == "BUSY" ? true : false}>
                     Login
-                    {loading && (
-                      <CircularProgress
-                        size={30}
-                        className={classes.progress}
-                      />
-                    )}
+                    {status == "BUSY" && <CircularProgress size={30} className={classes.progress} />}
                   </Button>
                   <br />
                   <small>
-                    Don't have an account? Sign up{" "}
-                    <Link to="/signup">here</Link>.
+                    Don't have an account? Sign up <Link to="/signup">here</Link>.
                   </small>
                 </form>
               </div>
@@ -132,19 +110,16 @@ login.propTypes = {
   classes: PropTypes.object.isRequired,
   loginUser: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired
+  uiStatus: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   user: state.user,
-  UI: state.UI
+  uiStatus: state.uiStatus
 });
 
 const mapActionsToProps = {
   loginUser
 };
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(login));
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(login));

@@ -94,33 +94,12 @@ exports.signup = (req, res) => {
     });
 };
 
-function validateUserLoginData(userData) {
-  let errors = {};
-
-  // Email
-  if (userData.email === "") {
-    errors.emailError = "Email must not be empty!";
-  }
-
-  // Password
-  if (userData.password === "") {
-    errors.passwordError = "Password must not be empty!";
-  }
-
-  return errors;
-}
-
-// NEEDS CODE POLISH AND TESTING
+// Log in the user
 exports.login = (req, res) => {
   const userData = {
     email: req.body.email,
     password: req.body.password
   };
-
-  const errors = validateUserLoginData(userData);
-  if (Object.keys(errors).length !== 0) {
-    return res.status(400).json(errors);
-  }
 
   firebase
     .auth()
@@ -131,17 +110,18 @@ exports.login = (req, res) => {
     .then(idToken => {
       return res.status(200).json({ idToken });
     })
-    .catch(err => {
-      console.error(err);
-      if (err.code === "auth/wrong-password") {
-        return res.status(400).json({
-          passwordError: "Wrong password"
-        });
-      } else if (err.code === "auth/user-not-found") {
-        return res.status(400).json({ emailError: "User not found" });
-      } else {
-        return res.status(500).json(err);
-      }
+    .catch(error => {
+      console.error(error);
+      // if (error.code === "auth/wrong-password") {
+      //   return res.status(400).json({
+      //     errorCode: "login/wrong-password"
+      //   });
+      // } else if (error.code === "auth/user-not-found") {
+      //   return res.status(400).json({ errorCode: "login/user-not-found" });
+      // } else if (error.code === "auth/invalid-email") {
+      //   return res.status(400).json({ errorCode: "login/invalid-email" });
+      // } else {
+      return res.status(400).json({ errorCode: error.code });
     });
 };
 
