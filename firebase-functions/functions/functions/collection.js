@@ -276,7 +276,7 @@ exports.getCollection = (req, res) => {
       collection = colDoc.data();
 
       let creatorId = collection.creatorId;
-      if (collection.private && creatorId !== req.user.uid) {
+      if (collection.private === true && creatorId !== req.user.uid) {
         console.log("CreatorId: ", creatorId);
         console.log("userid: ", req.user.uid);
         authorized = false;

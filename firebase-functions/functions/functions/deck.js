@@ -414,7 +414,7 @@ exports.getDeck = (req, res) => {
       let deck = deckDoc.data();
 
       let creatorId = deck.creatorId;
-      if (deck.private && creatorId !== req.user.uid) {
+      if (deck.private === true && creatorId !== req.user.uid) {
         console.log("CreatorId: ", creatorId);
         console.log("userid: ", req.user.uid);
         authorized = false;
