@@ -36,8 +36,15 @@ export const updateCollection = (colData, colId) => dispatch => {
         dispatch({ type: SET_STATUS_SUCCESS, payload: res.data.successCode });
       })
       .catch(err => {
-        console.error("Error:", err.response.data.errorCode);
-        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+        if (err.response.data.errorCodes) {
+          err.response.data.errorCodes.forEach(errorCode => {
+            console.error("Error:", errorCode);
+            dispatch({ type: SET_STATUS_ERROR, payload: errorCode });
+          });
+        } else {
+          console.error("Error:", err.response.data.errorCode);
+          dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+        }
       });
   }
 };
@@ -64,7 +71,7 @@ const validateUploadCollectionData = colData => {
 
   // DeckName validation
   if (colData.colName !== "") {
-    let colNameRegex = /^[a-zA-Z0-9]+$/;
+    let colNameRegex = /^[a-zA-Z0-9 ]+$/;
     if (!colData.colName.match(colNameRegex)) {
       errors.push("updateCollection/invalid-collection-name");
     }

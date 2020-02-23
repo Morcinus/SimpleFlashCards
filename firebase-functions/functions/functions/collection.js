@@ -34,7 +34,7 @@ const validateCollectionData = (colName, deckArray) => {
 
   // ColName validation
   if (colName !== "") {
-    let colNameRegex = /^[a-zA-Z0-9]+$/;
+    let colNameRegex = /^[a-zA-Z0-9 ]+$/;
     if (!colName.match(colNameRegex)) {
       errors.push("updateCollection/invalid-collection-name");
     }

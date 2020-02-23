@@ -78,7 +78,7 @@ const validateUploadDeckData = deckData => {
 
   // DeckName validation
   if (deckData.deckName !== "") {
-    let deckNameRegex = /^[a-zA-Z0-9]+$/;
+    let deckNameRegex = /^[a-zA-Z0-9 ]+$/;
     if (!deckData.deckName.match(deckNameRegex)) {
       errors.push("createDeck/empty-deck-name");
     }

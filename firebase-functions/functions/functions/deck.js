@@ -9,7 +9,7 @@ const validateDeckData = (deckName, cardArray) => {
 
   // DeckName validation
   if (deckName !== "") {
-    let deckNameRegex = /^[a-zA-Z0-9]+$/;
+    let deckNameRegex = /^[a-zA-Z0-9 ]+$/;
     if (!deckName.match(deckNameRegex)) {
       errors.push("createDeck/invalid-deck-name");
     }
