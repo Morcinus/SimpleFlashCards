@@ -22,14 +22,7 @@ export default function(state = initialState, action) {
         private: action.payload.private
       };
     case DELETE_DECK_DATA:
-      return {
-        deckName: "",
-        deckDescription: "",
-        deckImage: null,
-        deckCards: [],
-        imageUrl: null,
-        private: false
-      };
+      return initialState;
     default:
       return state;
   }

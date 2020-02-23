@@ -4,13 +4,13 @@ const config = require("../util/firebaseConfig");
 const { Storage } = require("@google-cloud/storage");
 
 //#region Deck Editing
-const validateDeckData = deckData => {
+const validateDeckData = (deckName, cardArray) => {
   let errors = [];
 
   // DeckName validation
-  if (deckData.deckName !== "") {
+  if (deckName !== "") {
     let deckNameRegex = /^[a-zA-Z0-9]+$/;
-    if (!deckData.deckName.match(deckNameRegex)) {
+    if (!deckName.match(deckNameRegex)) {
       errors.push("createDeck/invalid-deck-name");
     }
   } else {
@@ -18,7 +18,7 @@ const validateDeckData = deckData => {
   }
 
   // DeckCards validation
-  if (deckData.cardArray.length <= 0) {
+  if (cardArray.length <= 0) {
     errors.push("createDeck/empty-deck");
   }
 
@@ -26,6 +26,12 @@ const validateDeckData = deckData => {
 };
 
 exports.createDeck = (req, res) => {
+  // Validate deck data
+  const errorCodes = validateDeckData(req.body.deckName, req.body.deckCards);
+  if (errorCodes.length > 0) {
+    return res.status(400).json({ errorCodes: errorCodes });
+  }
+
   // Generates custom ID for each card
   let cardArray = [];
   req.body.deckCards.forEach(card => {
@@ -34,6 +40,7 @@ exports.createDeck = (req, res) => {
     cardArray.push(newCard);
   });
 
+  // Create deckData
   const deckData = {
     creatorId: req.user.uid,
     deckName: req.body.deckName,
@@ -42,13 +49,7 @@ exports.createDeck = (req, res) => {
     private: req.body.private
   };
 
-  // Validate deck data
-  const errorCodes = validateDeckData(deckData);
-  if (errorCodes.length > 0) {
-    return res.status(400).json({ errorCodes: errorCodes });
-  }
-
-  // Create deck
+  // Add deckData to database
   db.collection("decks")
     .add(deckData)
     .then(docReference => {
@@ -69,7 +70,11 @@ exports.createDeck = (req, res) => {
 };
 
 exports.updateDeck = (req, res) => {
-  console.log("Updating deck");
+  // Validate deck data
+  const errorCodes = validateDeckData(req.body.deckName, req.body.deckCards);
+  if (errorCodes.length > 0) {
+    return res.status(400).json({ errorCodes: errorCodes });
+  }
 
   let deckDocRef = db.collection("decks").doc(req.params.deckId);
   let deletedCards = [];
@@ -81,14 +86,10 @@ exports.updateDeck = (req, res) => {
         // Authorization check
         let creatorId = doc.data().creatorId;
         if (creatorId !== req.user.uid) {
-          console.log("CreatorId: ", creatorId);
-          console.log("userid: ", req.user.uid);
-          authorized = false;
+          // Unauthorized
           return res.status(401).json();
         } else {
-          authorized = true;
-
-          // Generates custom ID for each new card
+          // Generate custom ID for each new card
           let cardArray = [];
           req.body.deckCards.forEach(card => {
             if (!card.cardId) {
@@ -100,7 +101,7 @@ exports.updateDeck = (req, res) => {
             }
           });
 
-          // Creates new docData
+          // Create new docData
           let deckData = {
             deckName: req.body.deckName,
             deckDescription: req.body.deckDescription ? req.body.deckDescription : null,
@@ -108,7 +109,7 @@ exports.updateDeck = (req, res) => {
             private: req.body.private
           };
 
-          // Updates deck
+          // Update deck
           t.update(deckDocRef, deckData);
 
           // Find deleted cards
@@ -143,7 +144,7 @@ exports.updateDeck = (req, res) => {
           let newProgressCards = [];
           progressCards.forEach(card => {
             // If the card was not deleted
-            if (card !== undefined) {
+            if (typeof card !== undefined) {
               newProgressCards.push(card);
             }
           });
@@ -154,9 +155,12 @@ exports.updateDeck = (req, res) => {
       });
   })
     .then(() => {
-      res.status(200).json();
+      res.status(200).json({ successCode: "updateDeck/deck-updated" });
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 
 // Finds which cards from firstArray are not in the secondArray (=which cards were deleted)
@@ -174,11 +178,8 @@ function findDeletedCards(firstArray, secondArray) {
 }
 
 exports.deleteDeck = (req, res) => {
-  // TO-DO Unpin all users - udelat v transaction!!!
-
   let userDocRef = db.collection("users").doc(req.user.uid);
   let deckDocRef = db.collection("decks").doc(req.params.deckId);
-  let pinsRefs = db.collection("users").where("pinnedDecks", "array-contains", req.params.deckId);
   let authorized;
 
   db.runTransaction(t => {
@@ -188,8 +189,7 @@ exports.deleteDeck = (req, res) => {
         // Authorization check
         let creatorId = doc.data().creatorId;
         if (creatorId !== req.user.uid) {
-          console.log("CreatorId: ", creatorId);
-          console.log("userid: ", req.user.uid);
+          // Unauthorized
           authorized = false;
           return res.status(401).json();
         } else {
@@ -202,6 +202,7 @@ exports.deleteDeck = (req, res) => {
             createdDecks: admin.firestore.FieldValue.arrayRemove(req.params.deckId)
           });
 
+          // Get all userDocs with pins
           return db
             .collection("users")
             .where("pinnedDecks", "array-contains", req.params.deckId)
@@ -216,6 +217,7 @@ exports.deleteDeck = (req, res) => {
           });
         });
 
+        // Get all user deckProgress
         return db
           .collectionGroup("deckProgress")
           .where("deckId", "==", req.params.deckId)
@@ -224,13 +226,12 @@ exports.deleteDeck = (req, res) => {
       .then(querySnapshot => {
         // Remove all saved deck progress
         querySnapshot.forEach(progressDoc => {
-          console.log("Deleting ", progressDoc.id);
           t.delete(progressDoc.ref);
         });
       });
   })
     .then(() => {
-      // Deck image deletion
+      // Delete deck image
       if (authorized === true) {
         // CHECK IF THE PNG/JPG FILE EXISTS AND DELETE IT
         const storage = new Storage();
@@ -238,20 +239,19 @@ exports.deleteDeck = (req, res) => {
         const pngFile = bucket.file(`${req.params.deckId}.png`);
         const jpgFile = bucket.file(`${req.params.deckId}.jpg`);
 
+        // Find .PNG image
         pngFile.exists().then(data => {
           const exists = data[0];
           if (exists) {
-            console.log("DELETING PNG");
+            // Delete .PNG image
             pngFile.delete();
           } else {
-            console.log("PNG DOES NOT EXIST");
+            // Find .JPG image
             jpgFile.exists().then(data => {
               const exists = data[0];
               if (exists) {
-                console.log("DELETING JPG");
+                // Delete .JPG image
                 jpgFile.delete();
-              } else {
-                console.log("FILE DOES NOT EXIST");
               }
             });
           }
@@ -259,9 +259,12 @@ exports.deleteDeck = (req, res) => {
       }
     })
     .then(() => {
-      res.status(200).json();
+      res.status(200).json({ successCode: "updateDeck/deck-deleted" });
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 
 function newId() {
@@ -436,27 +439,31 @@ exports.getDeck = (req, res) => {
     .doc(`${req.params.deckId}`)
     .get()
     .then(deckDoc => {
-      let deck = deckDoc.data();
+      if (deckDoc.exists) {
+        let deck = deckDoc.data();
 
-      let creatorId = deck.creatorId;
-      if (deck.private === true && creatorId !== req.user.uid) {
-        console.log("CreatorId: ", creatorId);
-        console.log("userid: ", req.user.uid);
-        authorized = false;
-        return res.status(403).json();
+        // Authorization check
+        let creatorId = deck.creatorId;
+        if (deck.private === true && creatorId !== req.user.uid) {
+          // Unauthorized
+          return res.status(403).json();
+        } else {
+          // Get creator name
+          return db
+            .collection("users")
+            .doc(deck.creatorId)
+            .get()
+            .then(userDoc => {
+              deck.creatorName = userDoc.data().username;
+              return deck;
+            });
+        }
       } else {
-        return db
-          .collection("users")
-          .doc(deck.creatorId)
-          .get()
-          .then(userDoc => {
-            deck.creatorName = userDoc.data().username;
-            return deck;
-          })
-          .catch(err => console.log(err));
+        return res.status(404).json({ errorCode: "deck/deck-not-found" });
       }
     })
     .then(deck => {
+      // Checks whether the deck is pinned
       return db
         .collection("users")
         .doc(req.user.uid)
@@ -480,12 +487,14 @@ exports.getDeck = (req, res) => {
           deck.isCreator = isCreator;
 
           return deck;
-        })
-        .catch(err => console.log(err));
+        });
     })
     .then(deck => {
       res.status(200).json({ deck });
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 //#endregion

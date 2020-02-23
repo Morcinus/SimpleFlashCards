@@ -74,6 +74,7 @@ export class createDeck extends Component {
     this.props.clearStatus();
   }
 
+  // Used to communicate with DeckTable
   updateDeckCards(cards) {
     this.setState({
       deckCards: cards

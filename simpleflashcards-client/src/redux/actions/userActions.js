@@ -20,7 +20,7 @@ export const loginUser = (userData, history) => dispatch => {
       setAuthorizationHeader(res.data.idToken);
       dispatch({ type: SET_AUTHENTICATED });
       dispatch({ type: SET_STATUS_SUCCESS });
-      history.push("/");
+      history.push("/home");
     })
     .catch(err => {
       if (err.response) {

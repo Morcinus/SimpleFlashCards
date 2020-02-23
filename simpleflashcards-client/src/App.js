@@ -29,7 +29,7 @@ import createDeck from "./pages/createDeck";
 import deck from "./pages/deck";
 import study from "./pages/study";
 import settings from "./pages/settings";
-import edit from "./pages/edit";
+import editDeck from "./pages/editDeck";
 import collection from "./pages/collection";
 import studyCollection from "./pages/studyCollection";
 import editCollection from "./pages/editCollection";
@@ -66,7 +66,7 @@ function App() {
             <AuthRoute exact path="/login" component={login} />
             <Route exact path="/home" component={home} />
             <Route exact path="/createDeck" component={createDeck} />
-            <Route exact path="/edit/:deckId" component={edit} />
+            <Route exact path="/editDeck/:deckId" component={editDeck} />
             <Route exact path="/deck/:deckId" component={deck} />
             <Route exact path="/study/:deckId" component={study} />
             <Route exact path="/collection/:colId" component={collection} />

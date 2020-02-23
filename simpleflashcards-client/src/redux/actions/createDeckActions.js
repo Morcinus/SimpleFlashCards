@@ -1,4 +1,4 @@
-import { UPDATE_DECK_DATA, DELETE_DECK_DATA, SET_ERRORS, CLEAR_ERRORS, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS } from "../types";
+import { UPDATE_DECK_DATA, DELETE_DECK_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS } from "../types";
 import axios from "axios";
 
 export const saveDeckDraft = deckData => dispatch => {
@@ -11,6 +11,8 @@ export const deleteDeckDraft = () => dispatch => {
 
 export const uploadDeck = deckData => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
+
+  // Validate deckData
   const errorCodes = validateUploadDeckData(deckData);
   if (errorCodes.length > 0) {
     errorCodes.forEach(errorCode => {

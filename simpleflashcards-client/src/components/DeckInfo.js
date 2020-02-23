@@ -195,7 +195,7 @@ export class DeckInfo extends Component {
         <Grid container direction="row" justify="center" alignItems="center" style={{ marginTop: "20px" }}>
           {this.props.deckUi.deck ? (
             this.props.deckUi.deck.isCreator ? (
-              <Button item variant="text" color="primary" component={Link} to={`/edit/${this.props.deckId}`} style={{ marginRight: "20px" }}>
+              <Button item variant="text" color="primary" component={Link} to={`/editDeck/${this.props.deckId}`} style={{ marginRight: "20px" }}>
                 <Edit style={{ marginRight: "5px" }} />
                 <Typography variant="body2">
                   Edit
