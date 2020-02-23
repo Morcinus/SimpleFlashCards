@@ -15,16 +15,7 @@ app.use(cors);
 app.options("*", cors);
 //response.set("Access-Control-Allow-Origin", "*");
 
-const {
-  signup,
-  login,
-  updateUserProfile,
-  resetPassword,
-  getUserPersonalData,
-  setUserPersonalData,
-  getUserDataByUsername,
-  getUserData
-} = require("./functions/user");
+const { signup, login, resetPassword, getUserPersonalData, setUserPersonalData, getUserDataByUsername, getUserData } = require("./functions/user");
 
 const { createDeck, updateDeck, deleteDeck, pinDeck, unpinDeck, getUserDecks, getPinnedDecks, getDeck, uploadDeckImage } = require("./functions/deck");
 
@@ -48,7 +39,6 @@ const { getColCardsToReview, getColUnknownCards, getColCardsToLearnAndReview, se
 // User routes
 app.post("/signup", signup);
 app.post("/login", login);
-app.post("/updateUserProfile", updateUserProfile);
 app.post("/resetPassword", authMiddleware, resetPassword);
 app.get("/getUserPersonalData", authMiddleware, getUserPersonalData);
 app.post("/setUserPersonalData", authMiddleware, setUserPersonalData);
