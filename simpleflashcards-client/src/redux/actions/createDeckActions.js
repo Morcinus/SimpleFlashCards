@@ -1,16 +1,24 @@
-import { UPDATE_DECK_DATA, DELETE_DECK_DATA, SET_ERRORS, CLEAR_ERRORS } from "../types";
+import { UPDATE_DECK_DATA, DELETE_DECK_DATA, SET_ERRORS, CLEAR_ERRORS, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS } from "../types";
 import axios from "axios";
 
 export const saveDeckDraft = deckData => dispatch => {
   dispatch({ type: UPDATE_DECK_DATA, payload: deckData });
 };
 
+export const deleteDeckDraft = () => dispatch => {
+  dispatch({ type: DELETE_DECK_DATA });
+};
+
 export const uploadDeck = deckData => dispatch => {
-  const errors = validateUploadDeckData(deckData);
-  if (Object.keys(errors).length !== 0) {
-    dispatch({ type: SET_ERRORS, payload: errors });
-    return true;
+  dispatch({ type: SET_STATUS_BUSY });
+  const errorCodes = validateUploadDeckData(deckData);
+  if (errorCodes.length > 0) {
+    errorCodes.forEach(errorCode => {
+      console.error("Error:", errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: errorCode });
+    });
   } else {
+    // Push cards to export deck
     let exportDeckCards = [];
     deckData.deckCards.forEach(card => {
       let newCard = {
@@ -20,7 +28,7 @@ export const uploadDeck = deckData => dispatch => {
       exportDeckCards.push(newCard);
     });
 
-    // Osetrit jestli neni prazdny
+    // Create export deck data
     const exportDeckData = {
       deckName: deckData.deckName,
       deckCards: exportDeckCards,
@@ -28,48 +36,58 @@ export const uploadDeck = deckData => dispatch => {
       private: deckData.private
     };
 
-    const imageFormData = deckData.imageFormData;
-
-    console.log(exportDeckData);
+    const imageFormData = deckData.imageFormData ? deckData.imageFormData : null;
 
     axios
       .post("/createDeck", exportDeckData)
       .then(res => {
-        console.log("Uploading image: ");
-        console.log(res);
         // Upload deck image
         if (imageFormData) {
-          console.log("Uploading image");
-          axios.post(`/uploadDeckImage/${res.data.deckId}`, imageFormData).catch(err => {
-            if (err.response) console.log(err.response.data);
-          });
+          axios
+            .post(`/uploadDeckImage/${res.data.deckId}`, imageFormData)
+            .then(() => {
+              dispatch(deleteDeckDraft());
+              dispatch({ type: SET_STATUS_SUCCESS, payload: "createDeck/deck-created" });
+            })
+            .catch(err => {
+              console.error("Error:", err.response.data.errorCode);
+              dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+            });
+        } else {
+          dispatch({ type: SET_STATUS_SUCCESS, payload: "createDeck/deck-created" });
         }
       })
       .catch(err => {
-        if (err.response) console.log(err.response.data);
+        if (err.response.data.errorCodes) {
+          err.response.data.errorCodes.forEach(errorCode => {
+            console.error("Error:", errorCode);
+            dispatch({ type: SET_STATUS_ERROR, payload: errorCode });
+          });
+        } else {
+          console.error("Error:", err.response.data.errorCode);
+          dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+        }
       });
-
-    dispatch({ type: CLEAR_ERRORS });
-    return false;
   }
 };
 
 const validateUploadDeckData = deckData => {
-  let errors = {};
+  let errors = [];
 
-  // Email
-  if (deckData.deckName === "") {
-    errors.deckNameError = "Deck name must not be empty!";
+  // DeckName validation
+  if (deckData.deckName !== "") {
+    let deckNameRegex = /^[a-zA-Z0-9]+$/;
+    if (!deckData.deckName.match(deckNameRegex)) {
+      errors.push("createDeck/empty-deck-name");
+    }
+  } else {
+    errors.push("createDeck/empty-deck-name");
   }
 
-  // Password
+  // DeckCards validation
   if (deckData.deckCards.length <= 0) {
-    errors.deckCardsError = "There must be at least one card!";
+    errors.push("createDeck/empty-deck");
   }
 
   return errors;
-};
-
-export const deleteDeckDraft = () => dispatch => {
-  dispatch({ type: DELETE_DECK_DATA });
 };

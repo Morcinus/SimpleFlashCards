@@ -25,7 +25,7 @@ import homePage from "./pages/homePage";
 import signup from "./pages/signup";
 import login from "./pages/login";
 import home from "./pages/home";
-import create from "./pages/create";
+import createDeck from "./pages/createDeck";
 import deck from "./pages/deck";
 import study from "./pages/study";
 import settings from "./pages/settings";
@@ -39,8 +39,7 @@ import axios from "axios";
 
 const theme = createMuiTheme(themeFile);
 
-axios.defaults.baseURL =
-  "https://europe-west1-simpleflashcards-4aea0.cloudfunctions.net/api";
+axios.defaults.baseURL = "https://europe-west1-simpleflashcards-4aea0.cloudfunctions.net/api";
 
 const token = localStorage.FBIdToken;
 if (token) {
@@ -66,21 +65,13 @@ function App() {
             <AuthRoute exact path="/signup" component={signup} />
             <AuthRoute exact path="/login" component={login} />
             <Route exact path="/home" component={home} />
-            <Route exact path="/create" component={create} />
+            <Route exact path="/createDeck" component={createDeck} />
             <Route exact path="/edit/:deckId" component={edit} />
             <Route exact path="/deck/:deckId" component={deck} />
             <Route exact path="/study/:deckId" component={study} />
             <Route exact path="/collection/:colId" component={collection} />
-            <Route
-              exact
-              path="/studyCollection/:colId"
-              component={studyCollection}
-            />
-            <Route
-              exact
-              path="/editCollection/:colId"
-              component={editCollection}
-            />
+            <Route exact path="/studyCollection/:colId" component={studyCollection} />
+            <Route exact path="/editCollection/:colId" component={editCollection} />
             <Route exact path="/settings" component={settings} />
             <Route exact path="/user/:username" component={userProfile} />
           </Switch>

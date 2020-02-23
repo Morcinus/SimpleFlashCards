@@ -14,28 +14,30 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormLabel from "@material-ui/core/FormLabel";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 // Redux
 import { connect } from "react-redux";
 import { saveDeckDraft, deleteDeckDraft, uploadDeck } from "../redux/actions/createDeckActions";
+import { clearStatus } from "../redux/actions/uiStatusActions";
 
-export class create extends Component {
+const initialState = {
+  deckName: "",
+  deckDescription: "",
+  deckImage: null,
+  deckCards: [],
+  imageUrl: null,
+  dialogOpen: false,
+  private: false
+};
+
+export class createDeck extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      errors: {},
-      deckName: "",
-      deckDescription: "",
-      deckImage: null,
-      deckCards: [],
-      imageUrl: null,
-      dialogOpen: false,
-      private: false
-    };
+    this.state = initialState;
     this.updateDeckCards = this.updateDeckCards.bind(this);
     this.handleUploadButtonClick = this.handleUploadButtonClick.bind(this);
     this.deleteDeckDraft = this.deleteDeckDraft.bind(this);
@@ -47,12 +49,6 @@ export class create extends Component {
       [event.target.name]: event.target.value
     });
   };
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.UI.errors) {
-      this.setState({ errors: nextProps.UI.errors });
-    }
-  }
 
   componentDidMount() {
     this.setState({
@@ -75,62 +71,47 @@ export class create extends Component {
       private: this.state.private
     };
     this.props.saveDeckDraft(deckData);
+    this.props.clearStatus();
   }
 
   updateDeckCards(cards) {
-    console.log("updating cards");
     this.setState({
       deckCards: cards
     });
   }
 
   deleteDeckDraft() {
-    this.setState({
-      errors: {},
-      deckName: "",
-      deckDescription: "",
-      deckImage: null,
-      deckCards: [],
-      imageUrl: null,
-      dialogOpen: false,
-      private: false
-    });
+    this.setState(initialState);
     this.props.deleteDeckDraft();
     this.handleDialogClose();
   }
 
   uploadDeck() {
-    const imageFormData = new FormData();
-    imageFormData.append("deckImage", this.state.deckImage, this.state.deckImage.name);
-
     let deckData = {
       deckName: this.state.deckName,
       deckDescription: this.state.deckDescription,
       deckCards: this.state.deckCards,
-      imageFormData: imageFormData,
       private: this.state.private
     };
 
-    const failed = this.props.uploadDeck(deckData);
-    console.log(failed);
-    if (!failed) {
-      console.log("Failed false");
-      console.log("Initial state:");
-      this.setState({
-        errors: {},
-        deckName: "",
-        deckDescription: "",
-        deckImage: null,
-        deckCards: [],
-        imageUrl: null,
-        dialogOpen: false,
-        uploadSucceeded: true,
-        private: false
-      });
-      this.props.deleteDeckDraft();
-    } else {
-      console.log("Failed true");
-      this.setState({ uploadSucceeded: false });
+    // Add deck image
+    if (this.state.deckImage) {
+      const imageFormData = new FormData();
+      imageFormData.append("deckImage", this.state.deckImage, this.state.deckImage.name);
+      deckData.imageFormData = imageFormData;
+    }
+
+    this.props.uploadDeck(deckData);
+  }
+
+  componentDidUpdate(prevProps) {
+    // Remove data if the deck was created
+    if (this.props.uiStatus.status) {
+      if (this.props.uiStatus.successCodes !== prevProps.uiStatus.successCodes) {
+        if (this.props.uiStatus.successCodes.includes("createDeck/deck-created")) {
+          this.setState(initialState);
+        }
+      }
     }
   }
 
@@ -158,12 +139,23 @@ export class create extends Component {
   };
 
   render() {
+    const {
+      uiStatus: { status, errorCodes, successCodes }
+    } = this.props;
     return (
       <div className="rootContainer">
         <Grid container justify="center">
           <Grid item sm={10} lg={10} xl={10}>
             <Paper>
               <div style={{ padding: "25px 50px" }}>
+                {status == "BUSY" && (
+                  <React.Fragment>
+                    <LinearProgress color="secondary" />
+                    <Typography variant="h5" color="secondary" align="right">
+                      Loading...
+                    </Typography>
+                  </React.Fragment>
+                )}
                 <Typography variant="h4">Create new deck</Typography>
                 <Divider></Divider>
                 <br />
@@ -204,31 +196,24 @@ export class create extends Component {
                     </Grid>
                     <Grid>
                       <Box style={{ marginBottom: "20px" }}>
-                        {this.state.errors.deckNameError ? (
-                          <TextField
-                            error
-                            variant="outlined"
-                            label="Enter Title"
-                            name="deckName"
-                            value={this.state.deckName}
-                            onChange={this.handleChange}
-                            helperText={this.state.errors.deckNameError}
-                            InputLabelProps={{
-                              shrink: true
-                            }}
-                          ></TextField>
-                        ) : (
-                          <TextField
-                            variant="outlined"
-                            label="Enter Title"
-                            name="deckName"
-                            value={this.state.deckName}
-                            onChange={this.handleChange}
-                            InputLabelProps={{
-                              shrink: true
-                            }}
-                          ></TextField>
-                        )}
+                        <TextField
+                          variant="outlined"
+                          label="Enter Title"
+                          name="deckName"
+                          value={this.state.deckName}
+                          onChange={this.handleChange}
+                          helperText={
+                            errorCodes.includes("createDeck/empty-deck-name")
+                              ? "Deck name must not be empty!"
+                              : errorCodes.includes("createDeck/invalid-deck-name")
+                              ? "Invalid deck name!"
+                              : ""
+                          }
+                          error={errorCodes.includes("createDeck/empty-deck-name") ? true : errorCodes.includes("createDeck/invalid-deck-name") ? true : false}
+                          InputLabelProps={{
+                            shrink: true
+                          }}
+                        ></TextField>
                       </Box>
                       <Box>
                         <TextField
@@ -262,14 +247,16 @@ export class create extends Component {
                       </FormControl>
                     </Grid>
                     <Grid>
-                      {this.state.errors.deckCardsError ? (
+                      {errorCodes.includes("createDeck/empty-deck") ? (
                         <Typography align="right" color="error">
-                          {this.state.errors.deckCardsError}
+                          There must be at least 1 card!
                         </Typography>
-                      ) : this.state.uploadSucceeded === true ? ( // NEEDS UPDATE!!! REDIRECT TO DECK PAGE
-                        <Typography align="right">Upload was successful</Typography>
                       ) : (
-                        <div></div>
+                        successCodes.includes("createDeck/deck-created") && (
+                          <Typography variant="h6" align="right" color="secondary">
+                            Upload was successful!
+                          </Typography>
+                        )
                       )}
                     </Grid>
                   </Grid>
@@ -296,23 +283,25 @@ export class create extends Component {
   }
 }
 
-create.propTypes = {
+createDeck.propTypes = {
   saveDeckDraft: PropTypes.func.isRequired,
   deleteDeckDraft: PropTypes.func.isRequired,
   uploadDeck: PropTypes.func.isRequired,
   deckCreation: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired
+  uiStatus: PropTypes.object.isRequired,
+  clearStatus: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   deckCreation: state.deckCreation,
-  UI: state.UI
+  uiStatus: state.uiStatus
 });
 
 const mapActionsToProps = {
   saveDeckDraft,
   deleteDeckDraft,
-  uploadDeck
+  uploadDeck,
+  clearStatus
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(create);
+export default connect(mapStateToProps, mapActionsToProps)(createDeck);

@@ -4,9 +4,28 @@ const config = require("../util/firebaseConfig");
 const { Storage } = require("@google-cloud/storage");
 
 //#region Deck Editing
-exports.createDeck = (req, res) => {
-  console.log("Creating deck");
+const validateDeckData = deckData => {
+  let errors = [];
 
+  // DeckName validation
+  if (deckData.deckName !== "") {
+    let deckNameRegex = /^[a-zA-Z0-9]+$/;
+    if (!deckData.deckName.match(deckNameRegex)) {
+      errors.push("createDeck/invalid-deck-name");
+    }
+  } else {
+    errors.push("createDeck/empty-deck-name");
+  }
+
+  // DeckCards validation
+  if (deckData.cardArray.length <= 0) {
+    errors.push("createDeck/empty-deck");
+  }
+
+  return errors;
+};
+
+exports.createDeck = (req, res) => {
   // Generates custom ID for each card
   let cardArray = [];
   req.body.deckCards.forEach(card => {
@@ -23,6 +42,13 @@ exports.createDeck = (req, res) => {
     private: req.body.private
   };
 
+  // Validate deck data
+  const errorCodes = validateDeckData(deckData);
+  if (errorCodes.length > 0) {
+    return res.status(400).json({ errorCodes: errorCodes });
+  }
+
+  // Create deck
   db.collection("decks")
     .add(deckData)
     .then(docReference => {
@@ -37,7 +63,9 @@ exports.createDeck = (req, res) => {
     .then(deckId => {
       res.status(200).json({ deckId: deckId });
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 
 exports.updateDeck = (req, res) => {
@@ -248,8 +276,6 @@ function newId() {
 
 // ZDROJ: https://youtu.be/ecgAwgHXYos
 exports.uploadDeckImage = (req, res) => {
-  console.log(req.params.deckId);
-
   const BusBoy = require("busboy");
   const path = require("path");
   const os = require("os");
@@ -289,11 +315,10 @@ exports.uploadDeckImage = (req, res) => {
         return db.doc(`/decks/${req.params.deckId}`).update({ deckImage: imageUrl });
       })
       .then(() => {
-        return res.status(200).json({ message: "image uploaded successfully" });
+        return res.status(200).json({ successCode: "createDeck/image-uploaded" });
       })
       .catch(err => {
-        console.error(err);
-        return res.status(500).json({ error: "something went wrong" });
+        return res.status(500).json({ errorCode: err.code });
       });
   });
   busboy.end(req.rawBody);

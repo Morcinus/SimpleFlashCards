@@ -105,10 +105,7 @@ export class Navbar extends Component {
                   <Typography variant="h6">Simple Flashcards</Typography>
                 </Box>
                 <Box>
-                  <Tabs
-                    value={this.state.selectedTabIndex}
-                    onChange={this.handleChange}
-                  >
+                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleChange}>
                     <Tab
                       label={
                         <div>
@@ -177,10 +174,7 @@ export class Navbar extends Component {
                   <Typography variant="h6">Simple Flashcards</Typography>
                 </Box>
                 <Box>
-                  <Tabs
-                    value={this.state.selectedTabIndex}
-                    onChange={this.handleChange}
-                  >
+                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleChange}>
                     <Tab
                       label={
                         <div>
@@ -213,7 +207,7 @@ export class Navbar extends Component {
                         </div>
                       }
                       component={Link}
-                      to="/create"
+                      to="/createDeck"
                     />
                   </Tabs>
                 </Box>
@@ -222,30 +216,16 @@ export class Navbar extends Component {
                     <AccountCircle />
                   </IconButton>
 
-                  <Menu
-                    id="simple-menu"
-                    anchorEl={this.state.anchorEl}
-                    keepMounted
-                    open={Boolean(this.state.anchorEl)}
-                    onClose={this.handleClose}
-                  >
+                  <Menu id="simple-menu" anchorEl={this.state.anchorEl} keepMounted open={Boolean(this.state.anchorEl)} onClose={this.handleClose}>
                     <MenuItem onClick={this.handleMyProfileClick}>
                       <Face style={{ marginRight: 5 }} />
                       My Profile
                     </MenuItem>
-                    <MenuItem
-                      onClick={this.handleClose}
-                      component={Link}
-                      to="/settings"
-                    >
+                    <MenuItem onClick={this.handleClose} component={Link} to="/settings">
                       <Settings style={{ marginRight: 5 }} />
                       Settings
                     </MenuItem>
-                    <MenuItem
-                      onClick={this.handleLogout}
-                      component={Link}
-                      to="/login"
-                    >
+                    <MenuItem onClick={this.handleLogout} component={Link} to="/login">
                       <ExitToApp style={{ marginRight: 5 }} />
                       Logout
                     </MenuItem>
@@ -275,7 +255,4 @@ const mapActionsToProps = {
   getUserData
 };
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(withStyles(styles)(withRouter(Navbar)));
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(withRouter(Navbar)));
