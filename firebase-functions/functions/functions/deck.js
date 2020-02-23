@@ -202,12 +202,26 @@ exports.deleteDeck = (req, res) => {
             createdDecks: admin.firestore.FieldValue.arrayRemove(req.params.deckId)
           });
 
-          // Get all userDocs with pins
+          // Get all collections with this deck
           return db
-            .collection("users")
-            .where("pinnedDecks", "array-contains", req.params.deckId)
+            .collection("collections")
+            .where("deckArray", "array-contains", req.params.deckId)
             .get();
         }
+      })
+      .then(querySnapshot => {
+        // Remove deck from all collections
+        querySnapshot.forEach(colDoc => {
+          t.update(colDoc.ref, {
+            deckArray: admin.firestore.FieldValue.arrayRemove(req.params.deckId)
+          });
+        });
+
+        // Get all userDocs with pins
+        return db
+          .collection("users")
+          .where("pinnedDecks", "array-contains", req.params.deckId)
+          .get();
       })
       .then(querySnapshot => {
         // Remove all deck pins
@@ -448,7 +462,7 @@ exports.getDeck = (req, res) => {
           // Unauthorized
           return res.status(403).json();
         } else {
-          // Get creator name
+          // Find the creator username
           return db
             .collection("users")
             .doc(deck.creatorId)
