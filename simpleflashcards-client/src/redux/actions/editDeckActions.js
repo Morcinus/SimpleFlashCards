@@ -1,9 +1,5 @@
-import { SET_EDIT_DECK_DATA, DELETE_EDIT_DECK_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS } from "../types";
+import { SET_EDIT_DECK_DATA, DELETE_EDIT_DECK_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS } from "../types";
 import axios from "axios";
-
-export const saveDeckDraft = deckData => dispatch => {
-  dispatch({ type: SET_EDIT_DECK_DATA, payload: deckData });
-};
 
 export const deleteDeckDraft = () => dispatch => {
   dispatch({ type: DELETE_EDIT_DECK_DATA });

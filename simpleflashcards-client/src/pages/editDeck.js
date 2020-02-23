@@ -23,7 +23,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 
 // Redux
 import { connect } from "react-redux";
-import { saveDeckDraft, deleteDeck, deleteDeckDraft, updateDeck, getDeck } from "../redux/actions/editDeckActions";
+import { deleteDeck, deleteDeckDraft, updateDeck, getDeck } from "../redux/actions/editDeckActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
 const initialState = {
@@ -84,15 +84,6 @@ export class editDeck extends Component {
   }
 
   componentWillUnmount() {
-    let deckData = {
-      deckName: this.state.deckName,
-      deckDescription: this.state.deckDescription,
-      deckImage: this.state.deckImage,
-      deckCards: this.state.deckCards,
-      imageUrl: this.state.imageUrl,
-      private: this.state.private
-    };
-    this.props.saveDeckDraft(deckData);
     this.props.clearStatus();
   }
 
@@ -318,7 +309,6 @@ export class editDeck extends Component {
 }
 
 editDeck.propTypes = {
-  saveDeckDraft: PropTypes.func.isRequired,
   deleteDeck: PropTypes.func.isRequired,
   deleteDeckDraft: PropTypes.func.isRequired,
   updateDeck: PropTypes.func.isRequired,
@@ -334,7 +324,6 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-  saveDeckDraft,
   deleteDeck,
   deleteDeckDraft,
   updateDeck,

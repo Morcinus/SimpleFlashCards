@@ -16,26 +16,28 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormLabel from "@material-ui/core/FormLabel";
 
 // Redux
 import { connect } from "react-redux";
-import { deleteCollection, deleteCollectionDraft, uploadCollection, getCollection } from "../redux/actions/editColActions";
+import { deleteCollection, deleteCollectionDraft, updateCollection, getCollection } from "../redux/actions/editColActions";
+import { clearStatus } from "../redux/actions/uiStatusActions";
+
+const initialState = {
+  colName: "",
+  colDescription: "",
+  deckArray: [],
+  dialogOpen: false,
+  private: false
+};
 
 export class editCollection extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      errors: {},
-      colName: "",
-      colDescription: "",
-      deckArray: [],
-      dialogOpen: false,
-      private: false
-    };
+    this.state = initialState;
     this.updateDeckArray = this.updateDeckArray.bind(this);
     this.deleteCollection = this.deleteCollection.bind(this);
     this.uploadCollection = this.uploadCollection.bind(this);
@@ -47,18 +49,12 @@ export class editCollection extends Component {
     });
   };
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.UI.errors) {
-      this.setState({ errors: nextProps.UI.errors });
-    }
-  }
-
   componentDidMount() {
     this.props.getCollection(this.props.match.params.colId);
   }
 
   componentDidUpdate(prevProps) {
-    // Deck
+    // Load collection data after getCollection()
     if (this.props.colEdit) {
       if (this.props.colEdit !== prevProps.colEdit) {
         let deckArray = [];
@@ -81,6 +77,10 @@ export class editCollection extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.clearStatus();
+  }
+
   // Used to communicate with ColTable
   updateDeckArray(decks) {
     this.setState({
@@ -89,14 +89,7 @@ export class editCollection extends Component {
   }
 
   deleteCollection() {
-    this.setState({
-      errors: {},
-      colName: "",
-      colDescription: "",
-      deckArray: [],
-      dialogOpen: false,
-      private: false
-    });
+    this.setState(initialState);
     this.props.deleteCollection(this.props.match.params.colId);
     this.handleDialogClose();
   }
@@ -109,26 +102,7 @@ export class editCollection extends Component {
       private: this.state.private
     };
 
-    const failed = this.props.uploadCollection(colData, this.props.match.params.colId);
-    console.log(failed);
-    // Tohle nebude fungovat, musim to kontrolovat na updatu
-    if (!failed) {
-      console.log("Failed false");
-      console.log("Initial state:");
-      this.setState({
-        errors: {},
-        colName: "",
-        colDescription: "",
-        deckArray: [],
-        dialogOpen: false,
-        uploadSucceeded: true,
-        private: false
-      });
-      this.props.deleteCollectionDraft();
-    } else {
-      console.log("Failed true");
-      this.setState({ uploadSucceeded: false });
-    }
+    this.props.updateCollection(colData, this.props.match.params.colId);
   }
 
   handleDialogOpen = () => {
@@ -144,98 +118,122 @@ export class editCollection extends Component {
   };
 
   render() {
+    const {
+      uiStatus: { status, errorCodes, successCodes }
+    } = this.props;
     return (
       <div className="rootContainer">
         <Grid container justify="center">
           <Grid item sm={10} lg={10} xl={10}>
             <Paper>
               <div style={{ padding: "25px 50px" }}>
-                <Typography variant="h4">Edit collection</Typography>
-                <Divider></Divider>
-                <br />
-                <Grid container direction="row" justify="center" alignItems="flex-start">
-                  <Grid item sm={2} lg={2} xl={2}></Grid>
-                  <Grid item sm={8} lg={8} xl={8} container direction="column" justify="center" alignItems="center">
-                    <Grid item>
-                      <Grid>
-                        <Box style={{ marginBottom: "20px" }}>
-                          {this.state.errors.colNameError ? (
-                            <TextField
-                              error
-                              variant="outlined"
-                              label="Enter Title"
-                              name="colName"
-                              value={this.state.colName}
-                              onChange={this.handleChange}
-                              helperText={this.state.errors.colNameError}
-                              InputLabelProps={{
-                                shrink: true
-                              }}
-                            ></TextField>
-                          ) : (
-                            <TextField
-                              variant="outlined"
-                              label="Enter Title"
-                              name="colName"
-                              value={this.state.colName}
-                              onChange={this.handleChange}
-                              InputLabelProps={{
-                                shrink: true
-                              }}
-                            ></TextField>
-                          )}
-                        </Box>
-                        <Box>
-                          <TextField
-                            variant="outlined"
-                            label="Enter Description (optional)"
-                            name="colDescription"
-                            value={this.state.colDescription}
-                            onChange={this.handleChange}
-                            InputLabelProps={{
-                              shrink: true
-                            }}
-                          ></TextField>
-                        </Box>
-                      </Grid>
-                    </Grid>
+                {status == "BUSY" && (
+                  <React.Fragment>
+                    <LinearProgress color="secondary" />
+                    <Typography variant="h5" color="secondary" align="right">
+                      Loading...
+                    </Typography>
+                  </React.Fragment>
+                )}
+                {successCodes.includes("updateCollection/collection-deleted") ? (
+                  <Typography variant="h5" color="secondary" align="center">
+                    Collection was deleted!
+                  </Typography>
+                ) : errorCodes.includes("collection/collection-not-found") ? (
+                  <Typography variant="h5" color="error" align="center">
+                    Error 404: Collection not found!
+                  </Typography>
+                ) : (
+                  <React.Fragment>
+                    <Typography variant="h4">Edit collection</Typography>
+                    <Divider></Divider>
                     <br />
-                    <Grid item>
-                      <ColTable data={this.state.deckArray} updateDeckArray={this.updateDeckArray}></ColTable>
-                    </Grid>
-                  </Grid>
-                  <Grid item sm={2} lg={2} xl={2}>
-                    <Grid item container direction="column" justify="flex-start" alignItems="flex-end">
-                      <Grid item container justify="flex-end" alignItems="flex-start">
-                        <IconButton color="primary" variant="contained" onClick={this.handleDialogOpen}>
-                          <Delete></Delete>
-                        </IconButton>
-                        <Button size="large" color="secondary" variant="contained" onClick={this.uploadCollection}>
-                          Save
-                        </Button>
+                    <Grid container direction="row" justify="center" alignItems="flex-start">
+                      <Grid item sm={2} lg={2} xl={2}></Grid>
+                      <Grid item sm={8} lg={8} xl={8} container direction="column" justify="center" alignItems="center">
+                        <Grid item>
+                          <Grid>
+                            <Box style={{ marginBottom: "20px" }}>
+                              <TextField
+                                variant="outlined"
+                                label="Enter Title"
+                                name="colName"
+                                value={this.state.colName}
+                                onChange={this.handleChange}
+                                helperText={
+                                  errorCodes.includes("updateCollection/empty-collection-name")
+                                    ? "Collection name must not be empty!"
+                                    : errorCodes.includes("updateCollection/invalid-collection-name")
+                                    ? "Invalid collection name!"
+                                    : ""
+                                }
+                                error={
+                                  errorCodes.includes("updateCollection/empty-collection-name")
+                                    ? true
+                                    : errorCodes.includes("updateCollection/invalid-collection-name")
+                                    ? true
+                                    : false
+                                }
+                                InputLabelProps={{
+                                  shrink: true
+                                }}
+                              ></TextField>
+                            </Box>
+                            <Box>
+                              <TextField
+                                variant="outlined"
+                                label="Enter Description (optional)"
+                                name="colDescription"
+                                value={this.state.colDescription}
+                                onChange={this.handleChange}
+                                InputLabelProps={{
+                                  shrink: true
+                                }}
+                              ></TextField>
+                            </Box>
+                          </Grid>
+                        </Grid>
+                        <br />
+                        <Grid item>
+                          <ColTable data={this.state.deckArray} updateDeckArray={this.updateDeckArray}></ColTable>
+                        </Grid>
+                      </Grid>
+                      <Grid item sm={2} lg={2} xl={2}>
+                        <Grid item container direction="column" justify="flex-start" alignItems="flex-end">
+                          <Grid item container justify="flex-end" alignItems="flex-start">
+                            <IconButton color="primary" variant="contained" onClick={this.handleDialogOpen}>
+                              <Delete></Delete>
+                            </IconButton>
+                            <Button size="large" color="secondary" variant="contained" onClick={this.uploadCollection}>
+                              Save
+                            </Button>
 
-                        <FormControl variant="outlined" fullWidth>
-                          <FormLabel>Collection visibility</FormLabel>
-                          <Select name="private" value={this.state.private} onChange={this.handleChange}>
-                            <MenuItem value={false}>Public</MenuItem>
-                            <MenuItem value={true}>Private</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid>
-                        {this.state.errors.deckArrayError ? (
-                          <Typography align="right" color="error">
-                            {this.state.errors.deckArrayError}
-                          </Typography>
-                        ) : this.state.uploadSucceeded === true ? ( // NEEDS UPDATE!!! to disappear after few secs + Add delete deck success
-                          <Typography align="right">Upload was successful</Typography>
-                        ) : (
-                          <div></div>
-                        )}
+                            <FormControl variant="outlined" fullWidth>
+                              <FormLabel>Collection visibility</FormLabel>
+                              <Select name="private" value={this.state.private} onChange={this.handleChange}>
+                                <MenuItem value={false}>Public</MenuItem>
+                                <MenuItem value={true}>Private</MenuItem>
+                              </Select>
+                            </FormControl>
+                          </Grid>
+                          <Grid>
+                            {errorCodes.includes("updateCollection/empty-collection") ? (
+                              <Typography align="right" color="error">
+                                There must be at least 1 deck!
+                              </Typography>
+                            ) : (
+                              successCodes.includes("updateCollection/collection-updated") && (
+                                <Typography variant="h6" align="right" color="secondary">
+                                  Upload was successful!
+                                </Typography>
+                              )
+                            )}
+                          </Grid>
+                        </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                </Grid>
+                  </React.Fragment>
+                )}
               </div>
             </Paper>
           </Grid>
@@ -265,22 +263,24 @@ export class editCollection extends Component {
 editCollection.propTypes = {
   deleteCollection: PropTypes.func.isRequired,
   deleteCollectionDraft: PropTypes.func.isRequired,
-  uploadCollection: PropTypes.func.isRequired,
+  updateCollection: PropTypes.func.isRequired,
   getCollection: PropTypes.func.isRequired,
   colEdit: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired
+  uiStatus: PropTypes.object.isRequired,
+  clearStatus: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   colEdit: state.colEdit,
-  UI: state.UI
+  uiStatus: state.uiStatus
 });
 
 const mapActionsToProps = {
   deleteCollection,
   deleteCollectionDraft,
-  uploadCollection,
-  getCollection
+  updateCollection,
+  getCollection,
+  clearStatus
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(editCollection);

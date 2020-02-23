@@ -29,8 +29,33 @@ exports.createCollection = (req, res) => {
     .catch(error => console.error(error));
 };
 
+const validateCollectionData = (colName, deckArray) => {
+  let errors = [];
+
+  // ColName validation
+  if (colName !== "") {
+    let colNameRegex = /^[a-zA-Z0-9]+$/;
+    if (!colName.match(colNameRegex)) {
+      errors.push("updateCollection/invalid-collection-name");
+    }
+  } else {
+    errors.push("updateCollection/empty-collection-name");
+  }
+
+  // DeckCards validation
+  if (deckArray.length <= 0) {
+    errors.push("updateCollection/empty-collection");
+  }
+
+  return errors;
+};
+
 exports.updateCollection = (req, res) => {
-  console.log("Updating collection");
+  // Validate collection data
+  const errorCodes = validateCollectionData(req.body.colName, req.body.deckArray);
+  if (errorCodes.length > 0) {
+    return res.status(400).json({ errorCodes: errorCodes });
+  }
 
   const colData = {
     colName: req.body.colName,
@@ -46,8 +71,7 @@ exports.updateCollection = (req, res) => {
       // Authorization check
       let creatorId = doc.data().creatorId;
       if (creatorId !== req.user.uid) {
-        console.log("CreatorId: ", creatorId);
-        console.log("userid: ", req.user.uid);
+        // Unauthorized
         return res.status(401).json();
       } else {
         // Update collection
@@ -57,9 +81,12 @@ exports.updateCollection = (req, res) => {
       }
     })
     .then(() => {
-      res.status(200).json();
+      res.status(200).json({ successCode: "updateCollection/collection-updated" });
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 
 exports.addDeckToCollection = (req, res) => {
@@ -101,8 +128,7 @@ exports.deleteCollection = (req, res) => {
         // Authorization check
         let creatorId = doc.data().creatorId;
         if (creatorId !== req.user.uid) {
-          console.log("CreatorId: ", creatorId);
-          console.log("userid: ", req.user.uid);
+          // Unauthorized
           return res.status(401).json();
         } else {
           // Collection deletion
@@ -113,6 +139,7 @@ exports.deleteCollection = (req, res) => {
             createdCollections: admin.firestore.FieldValue.arrayRemove(req.params.colId)
           });
 
+          // Get all userDocs with pins
           return db
             .collection("users")
             .where("pinnedCollections", "array-contains", req.params.colId)
@@ -129,9 +156,12 @@ exports.deleteCollection = (req, res) => {
       });
   })
     .then(() => {
-      res.status(200).json();
+      res.status(200).json({ successCode: "updateCollection/collection-deleted" });
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 
 //#endregion
@@ -265,7 +295,6 @@ exports.getPinnedCollections = (req, res) => {
 };
 
 // Gets everything in deck doc
-// TO-DO POLISH CODE
 exports.getCollection = (req, res) => {
   let collection;
 
@@ -273,28 +302,31 @@ exports.getCollection = (req, res) => {
     .doc(req.params.colId)
     .get()
     .then(colDoc => {
-      collection = colDoc.data();
+      if (colDoc.exists) {
+        collection = colDoc.data();
 
-      let creatorId = collection.creatorId;
-      if (collection.private === true && creatorId !== req.user.uid) {
-        console.log("CreatorId: ", creatorId);
-        console.log("userid: ", req.user.uid);
-        authorized = false;
-        return res.status(403).json();
+        // Authorization check
+        let creatorId = collection.creatorId;
+        if (collection.private === true && creatorId !== req.user.uid) {
+          // Unauthorized
+          return res.status(403).json();
+        } else {
+          // Find the creator username
+          return db
+            .collection("users")
+            .doc(collection.creatorId)
+            .get()
+            .then(userDoc => {
+              collection.creatorName = userDoc.data().username;
+              return collection;
+            });
+        }
       } else {
-        // Find the creator username
-        return db
-          .collection("users")
-          .doc(collection.creatorId)
-          .get()
-          .then(userDoc => {
-            collection.creatorName = userDoc.data().username;
-            return collection;
-          })
-          .catch(err => console.log(err));
+        return res.status(404).json({ errorCode: "collection/collection-not-found" });
       }
     })
     .then(collection => {
+      // Checks whether the collection is pinned
       return db
         .collection("users")
         .doc(req.user.uid)
@@ -318,10 +350,10 @@ exports.getCollection = (req, res) => {
           collection.isCreator = isCreator;
 
           return collection;
-        })
-        .catch(err => console.log(err));
+        });
     })
     .then(collection => {
+      // Get collection decks data (deckName, deckImage, deckId)
       let deckArray = collection.deckArray;
       let promises = [];
 
@@ -347,11 +379,15 @@ exports.getCollection = (req, res) => {
         collection.deckArray = exportDecks;
       }
 
-      return Promise.all(promises); // Waits for the forEach loop to finish
+      // Wait for the forEach loop to finish
+      return Promise.all(promises);
     })
     .then(() => {
       res.status(200).json({ collection });
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 //#endregion

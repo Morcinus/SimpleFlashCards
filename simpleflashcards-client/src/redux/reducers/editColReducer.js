@@ -18,12 +18,7 @@ export default function(state = initialState, action) {
         deckArray: action.payload.deckArray
       };
     case DELETE_EDIT_COLLECTION_DATA:
-      return {
-        colName: "",
-        colDescription: "",
-        deckArray: [],
-        private: false
-      };
+      return initialState;
     default:
       return state;
   }
