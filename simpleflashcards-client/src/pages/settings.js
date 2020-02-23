@@ -18,16 +18,12 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ListItemText from "@material-ui/core/ListItemText";
-import Input from "@material-ui/core/Input";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 // Redux
 import { connect } from "react-redux";
-import {
-  getUserPersonalData,
-  setUserPersonalData,
-  resetPassword
-} from "../redux/actions/userActions";
+import { getUserPersonalData, setUserPersonalData, resetPassword } from "../redux/actions/userActions";
+import { clearStatus } from "../redux/actions/uiStatusActions";
 
 export class settings extends Component {
   constructor() {
@@ -59,26 +55,10 @@ export class settings extends Component {
         });
       }
     }
+  }
 
-    // Errors
-    if (this.props.UI.errors) {
-      if (this.props.UI.errors !== prevProps.UI.errors) {
-        this.setState({
-          errors: this.props.UI.errors,
-          success: {} // Sould be done better - nedelat pres state ale rovnou pres props
-        });
-      }
-    }
-
-    // Success
-    if (this.props.UI.success) {
-      if (this.props.UI.success !== prevProps.UI.success) {
-        this.setState({
-          errors: {}, // Sould be done better - nedelat pres state ale rovnou pres props
-          success: this.props.UI.success
-        });
-      }
-    }
+  componentWillUnmount() {
+    this.props.clearStatus();
   }
 
   handleChange = event => {
@@ -112,6 +92,9 @@ export class settings extends Component {
   }
 
   render() {
+    const {
+      uiStatus: { status, errorCodes, successCodes }
+    } = this.props;
     return (
       <div className="rootContainer">
         <Grid container justify="center">
@@ -122,14 +105,8 @@ export class settings extends Component {
                 <Divider></Divider>
 
                 <br />
-                {this.props.UI.loading ? (
-                  <LinearProgress color="secondary" />
-                ) : (
-                  <React.Fragment></React.Fragment>
-                )}
-                <List
-                  subheader={<ListSubheader>Profile Settings</ListSubheader>}
-                >
+                {status == "BUSY" && <LinearProgress color="secondary" />}
+                <List subheader={<ListSubheader>Profile Settings</ListSubheader>}>
                   <ListItem>
                     <ListItemIcon>
                       <Person />
@@ -145,12 +122,13 @@ export class settings extends Component {
                           name="username"
                           value={this.state.username}
                           helperText={
-                            this.state.success.usernameSuccess != null
-                              ? this.state.success.usernameSuccess
-                              : this.state.errors.usernameError
-                              ? this.state.errors.usernameError
+                            errorCodes.includes("settings/username-already-exists")
+                              ? "This username is already taken!"
+                              : successCodes.includes("settings/username-updated")
+                              ? "Username updated successfully!"
                               : ""
                           }
+                          error={errorCodes.includes("settings/username-already-exists") ? true : false}
                         />
                       }
                     ></ListItemText>
@@ -159,10 +137,7 @@ export class settings extends Component {
                       <Button
                         color="secondary"
                         variant="contained"
-                        disabled={
-                          this.state.username ===
-                          this.props.user.credentials.username
-                        }
+                        disabled={this.state.username === this.props.user.credentials.username}
                         onClick={() => this.handleSave("username")}
                       >
                         Save
@@ -183,13 +158,7 @@ export class settings extends Component {
                           onChange={this.handleChange}
                           name="bio"
                           value={this.state.bio}
-                          helperText={
-                            this.state.success.bioSuccess != null
-                              ? this.state.success.bioSuccess
-                              : this.state.errors.bioError
-                              ? this.state.errors.bioError
-                              : ""
-                          }
+                          helperText={successCodes.includes("settings/bio-updated") ? "Description updated successfully!" : ""}
                         />
                       }
                     ></ListItemText>
@@ -198,9 +167,7 @@ export class settings extends Component {
                       <Button
                         color="secondary"
                         variant="contained"
-                        disabled={
-                          this.state.bio === this.props.user.credentials.bio
-                        }
+                        disabled={this.state.bio === this.props.user.credentials.bio}
                         onClick={() => this.handleSave("bio")}
                       >
                         Save
@@ -209,39 +176,38 @@ export class settings extends Component {
                   </ListItem>
                 </List>
                 <br />
-                <List
-                  subheader={<ListSubheader>Account Settings</ListSubheader>}
-                >
+                <List subheader={<ListSubheader>Account Settings</ListSubheader>}>
                   <ListItem>
                     <ListItemIcon>
                       <Mail />
                     </ListItemIcon>
-                    <ListItemText
-                      primary={
-                        <TextField
-                          label="Email"
-                          InputLabelProps={{
-                            shrink: true
-                          }}
-                          onChange={this.handleChange}
-                          name="email"
-                          value={this.state.email}
-                          helperText={
-                            this.state.success.emailSuccess != null
-                              ? this.state.success.emailSuccess
-                              : this.state.errors.emailError
-                              ? this.state.errors.emailError
-                              : ""
-                          }
-                        />
-                      }
-                      secondary={
-                        this.state.email ===
-                        this.props.user.credentials.email ? (
-                          ""
-                        ) : (
-                          <React.Fragment>
-                            <br></br>
+                    <Grid container direction="column" justify="flex-start" alignItems="flex-start">
+                      <ListItemText
+                        primary={
+                          <TextField
+                            label="Email"
+                            InputLabelProps={{
+                              shrink: true
+                            }}
+                            onChange={this.handleChange}
+                            name="email"
+                            value={this.state.email}
+                            helperText={
+                              errorCodes.includes("auth/invalid-email")
+                                ? "Invalid email!"
+                                : successCodes.includes("settings/email-updated")
+                                ? "Email updated successfully!"
+                                : ""
+                            }
+                            error={errorCodes.includes("auth/invalid-email") ? true : false}
+                          />
+                        }
+                      ></ListItemText>
+                      <ListItemText
+                        primary={
+                          this.state.email === this.props.user.credentials.email ? (
+                            ""
+                          ) : (
                             <TextField
                               label="Confirm with password:"
                               InputLabelProps={{
@@ -251,26 +217,19 @@ export class settings extends Component {
                               name="password"
                               type="password"
                               value={this.state.password}
-                              helperText={
-                                this.state.errors.passwordError
-                                  ? this.state.errors.passwordError
-                                  : ""
-                              }
+                              helperText={errorCodes.includes("auth/wrong-password") ? "Wrong password!" : ""}
+                              error={errorCodes.includes("auth/wrong-password") ? true : false}
                             />
-                          </React.Fragment>
-                        )
-                      }
-                    ></ListItemText>
+                          )
+                        }
+                      ></ListItemText>
+                    </Grid>
 
                     <ListItemSecondaryAction>
                       <Button
                         color="secondary"
                         variant="contained"
-                        disabled={
-                          this.state.email ===
-                            this.props.user.credentials.email ||
-                          this.state.password === ""
-                        }
+                        disabled={this.state.email === this.props.user.credentials.email || this.state.password === ""}
                         onClick={this.handleEmailChange}
                       >
                         Save
@@ -283,20 +242,11 @@ export class settings extends Component {
                     </ListItemIcon>
                     <ListItemText
                       primary="Password"
-                      secondary={
-                        this.state.success.passwordSuccess != null
-                          ? this.state.success.passwordSuccess
-                          : this.state.errors.passwordError
-                          ? this.state.errors.passwordError
-                          : ""
-                      }
+                      secondary={successCodes.includes("settings/password-reset-email-sent") ? "The password reset link has been sent to your email!" : ""}
                     ></ListItemText>
 
                     <ListItemSecondaryAction>
-                      <Button
-                        variant="outlined"
-                        onClick={this.handlePasswordReset}
-                      >
+                      <Button variant="outlined" onClick={this.handlePasswordReset}>
                         Reset
                       </Button>
                     </ListItemSecondaryAction>
@@ -316,19 +266,21 @@ settings.propTypes = {
   getUserPersonalData: PropTypes.func.isRequired,
   setUserPersonalData: PropTypes.func.isRequired,
   resetPassword: PropTypes.func.isRequired,
+  clearStatus: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired
+  uiStatus: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   user: state.user,
-  UI: state.UI
+  uiStatus: state.uiStatus
 });
 
 const mapActionsToProps = {
   getUserPersonalData,
   setUserPersonalData,
-  resetPassword
+  resetPassword,
+  clearStatus
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(settings);

@@ -60,65 +60,60 @@ export const signupUser = (newUserData, history) => dispatch => {
 };
 
 export const logoutUser = () => dispatch => {
+  console.log("Logout!");
   localStorage.removeItem("FBIdToken");
   delete axios.defaults.headers.common["Authorization"];
   dispatch({ type: SET_UNAUTHENTICATED });
+  dispatch({ type: CLEAR_STATUS });
 };
 
 export const getUserPersonalData = () => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
   axios
     .get("/getUserPersonalData")
     .then(res => {
       dispatch({ type: SET_USER_DATA, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
 };
 
 export const setUserPersonalData = (userData, history) => dispatch => {
-  console.log("SETTING DATA");
-  dispatch({ type: LOADING_UI });
+  dispatch({ type: SET_STATUS_BUSY });
 
   axios
     .post("/setUserPersonalData", userData)
     .then(res => {
       console.log("Success!");
-      console.log(res);
-      dispatch({ type: CLEAR_ERRORS });
-      dispatch({ type: SET_SUCCESS, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS, payload: res.data.successCode });
       if (userData.username || userData.bio) {
         dispatch({ type: SET_ONE_USER_DATA, payload: userData });
       } else if (userData.email) {
-        dispatch({ type: SET_UNAUTHENTICATED });
+        dispatch(logoutUser());
         history.push("/login");
       }
     })
-    .catch(error => {
-      if (error.response) {
-        console.log("Failure!", error.response.data);
-        dispatch({ type: CLEAR_SUCCESS });
-        dispatch({ type: SET_ERRORS, payload: error.response.data });
-      }
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
     });
 };
 
 export const resetPassword = () => dispatch => {
-  console.log("RESETTING PASSWORD");
-  dispatch({ type: LOADING_UI });
+  dispatch({ type: SET_STATUS_BUSY });
 
   axios
     .post("/resetPassword")
     .then(res => {
       console.log("Success!");
-      console.log(res);
-      dispatch({ type: CLEAR_ERRORS });
-      dispatch({ type: SET_SUCCESS, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS, payload: res.data.successCode });
     })
-    .catch(error => {
-      if (error.response) {
-        console.log("Failure!", error.response.data);
-        dispatch({ type: CLEAR_SUCCESS });
-        dispatch({ type: SET_ERRORS, payload: error.response.data });
-      }
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
     });
 };
 

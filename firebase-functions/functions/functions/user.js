@@ -191,6 +191,7 @@ exports.updateUserProfile = (req, res) => {
 };
 
 exports.resetPassword = (req, res) => {
+  // Sends the password reset email
   admin
     .auth()
     .getUser(req.user.uid)
@@ -200,10 +201,10 @@ exports.resetPassword = (req, res) => {
       return firebase.auth().sendPasswordResetEmail(email);
     })
     .then(() => {
-      return res.status(200).json({ passwordSuccess: "The reset link was sent to your email!" });
+      return res.status(200).json({ successCode: "settings/password-reset-email-sent" });
     })
     .catch(error => {
-      return res.status(500).json({ passwordError: error.code });
+      return res.status(500).json({ errorCode: error.code });
     });
 };
 
@@ -223,12 +224,27 @@ exports.getUserPersonalData = (req, res) => {
     .then(userData => {
       res.status(200).json(userData);
     })
-    .catch(error => console.error(error));
+    .catch(error => res.status(500).json({ errorCode: error.code }));
 };
 
+function validateEmail(email) {
+  // Email validation
+  if (email !== "") {
+    // Regex source: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+    let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!email.match(regex)) {
+      return "auth/invalid-email";
+    }
+  } else {
+    return "auth/invalid-email";
+  }
+
+  return null;
+}
+
 exports.setUserPersonalData = (req, res) => {
-  // NEED TO VALIDATE USERNAME - ON BACKEND AND ON FRONDEND + for all other stuff
   if (req.body.username) {
+    // Change username
     db.collection("users")
       .where("username", "==", `${req.body.username}`)
       .get()
@@ -239,37 +255,34 @@ exports.setUserPersonalData = (req, res) => {
             .doc(req.user.uid)
             .update({ username: req.body.username });
         } else {
-          return res.status(400).json({ usernameError: "This username is already taken!" });
+          return res.status(400).json({ errorCode: "settings/username-already-exists" });
         }
       })
       .then(() => {
-        return res.status(200).json({ usernameSuccess: "Username changed successfully!" });
+        return res.status(200).json({ successCode: "settings/username-updated" });
       })
       .catch(error => {
-        return res.status(500).json({ usernameError: error.code });
+        return res.status(500).json({ errorCode: error.code });
       });
   } else if (req.body.bio) {
+    // Change bio
     db.collection("users")
       .doc(req.user.uid)
       .update({ bio: req.body.bio })
       .then(() => {
-        return res.status(200).json({ bioSuccess: "Description updated successfully!" });
+        return res.status(200).json({ successCode: "settings/bio-updated" });
       })
       .catch(error => {
-        return res.status(500).json({ bioError: error.code });
+        return res.status(500).json({ errorCode: error.code });
       });
   } else if (req.body.email && req.body.password) {
-    const userData = {
-      email: req.user.email,
-      password: req.body.password
-    };
-
-    // NEED TO VALIDATE EMAIL
-    const errors = validateUserLoginData(userData);
-    if (Object.keys(errors).length !== 0) {
-      return res.status(400).json(errors);
+    // Email validation
+    const errorCode = validateEmail(req.body.email);
+    if (errorCode !== null) {
+      return res.status(400).json({ errorCode: errorCode });
     }
 
+    // Change email
     firebase
       .auth()
       .signInWithEmailAndPassword(req.user.email, req.body.password)
@@ -284,15 +297,15 @@ exports.setUserPersonalData = (req, res) => {
           .update({ email: req.body.email });
       })
       .then(() => {
-        return res.status(200).json({ emailSuccess: "Email changed successfully!" });
+        return res.status(200).json({ successCode: "settings/email-updated" });
       })
       .catch(error => {
         if (error.code === "auth/wrong-password") {
           return res.status(400).json({
-            passwordError: "Wrong password"
+            errorCode: "auth/wrong-password"
           });
         } else {
-          return res.status(500).json({ emailError: error.code });
+          return res.status(500).json({ errorCode: error.code });
         }
       });
   }

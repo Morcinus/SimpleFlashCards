@@ -17,6 +17,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         errorCodes: [],
+        successCodes: [],
         status: BUSY
       };
     case SET_STATUS_ERROR:

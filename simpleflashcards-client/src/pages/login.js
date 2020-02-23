@@ -52,7 +52,6 @@ export class login extends Component {
       classes,
       uiStatus: { status, errorCodes }
     } = this.props;
-    const { errors } = this.state;
     return (
       <div className="rootContainer">
         <Grid container className={classes.form} justify="center">
