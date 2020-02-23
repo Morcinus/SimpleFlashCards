@@ -124,11 +124,13 @@ export class settings extends Component {
                           helperText={
                             errorCodes.includes("settings/username-already-exists")
                               ? "This username is already taken!"
+                              : errorCodes.includes("auth/invalid-username")
+                              ? "Must be a valid username!"
                               : successCodes.includes("settings/username-updated")
                               ? "Username updated successfully!"
                               : ""
                           }
-                          error={errorCodes.includes("settings/username-already-exists") ? true : false}
+                          error={errorCodes.includes("settings/username-already-exists") ? true : errorCodes.includes("auth/invalid-username") ? true : false}
                         />
                       }
                     ></ListItemText>
@@ -158,7 +160,14 @@ export class settings extends Component {
                           onChange={this.handleChange}
                           name="bio"
                           value={this.state.bio}
-                          helperText={successCodes.includes("settings/bio-updated") ? "Description updated successfully!" : ""}
+                          helperText={
+                            errorCodes.includes("settings/too-long-bio")
+                              ? "Description must not be longer than 250 characters!"
+                              : successCodes.includes("settings/bio-updated")
+                              ? "Description updated successfully!"
+                              : ""
+                          }
+                          error={errorCodes.includes("settings/too-long-bio") ? true : false}
                         />
                       }
                     ></ListItemText>

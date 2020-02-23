@@ -111,6 +111,7 @@ exports.login = (req, res) => {
     });
 };
 
+// NOT USED??? OBSOLETE
 function validateUserProfileData(userData) {
   let errors = {};
 
@@ -136,6 +137,7 @@ function validateUserProfileData(userData) {
   return errors;
 }
 
+// NOT USED??? OBSOLETE
 exports.updateUserProfile = (req, res) => {
   // Data validation
   const errors = validateUserProfileData(req.body);
@@ -242,8 +244,39 @@ function validateEmail(email) {
   return null;
 }
 
+function validateBio(bio) {
+  // Bio
+  if (bio != null) {
+    if (bio.length > 250) {
+      return "settings/too-long-bio";
+    }
+  }
+
+  return null;
+}
+
+function validateUsername(username) {
+  // Username
+  if (username !== "") {
+    let usernameRegex = /^[a-zA-Z0-9]+$/;
+    if (!username.match(usernameRegex)) {
+      return "auth/invalid-username";
+    }
+  } else {
+    return "auth/invalid-username";
+  }
+
+  return null;
+}
+
 exports.setUserPersonalData = (req, res) => {
-  if (req.body.username) {
+  if (typeof req.body.username !== "undefined") {
+    // Username validation
+    const errorCode = validateUsername(req.body.username);
+    if (errorCode !== null) {
+      return res.status(400).json({ errorCode: errorCode });
+    }
+
     // Change username
     db.collection("users")
       .where("username", "==", `${req.body.username}`)
@@ -264,7 +297,13 @@ exports.setUserPersonalData = (req, res) => {
       .catch(error => {
         return res.status(500).json({ errorCode: error.code });
       });
-  } else if (req.body.bio) {
+  } else if (typeof req.body.bio !== "undefined") {
+    // Bio validation
+    const errorCode = validateBio(req.body.bio);
+    if (errorCode !== null) {
+      return res.status(400).json({ errorCode: errorCode });
+    }
+
     // Change bio
     db.collection("users")
       .doc(req.user.uid)
@@ -275,7 +314,7 @@ exports.setUserPersonalData = (req, res) => {
       .catch(error => {
         return res.status(500).json({ errorCode: error.code });
       });
-  } else if (req.body.email && req.body.password) {
+  } else if (typeof req.body.email !== "undefined" && typeof req.body.password !== "undefined") {
     // Email validation
     const errorCode = validateEmail(req.body.email);
     if (errorCode !== null) {
