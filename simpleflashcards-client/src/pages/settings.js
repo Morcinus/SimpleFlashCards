@@ -45,7 +45,7 @@ export class settings extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // User credentials
+    // Update user credentials in state
     if (this.props.user.credentials) {
       if (this.props.user.credentials !== prevProps.user.credentials) {
         this.setState({

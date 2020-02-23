@@ -245,7 +245,7 @@ function validateEmail(email) {
 }
 
 function validateBio(bio) {
-  // Bio
+  // Bio validation
   if (bio != null) {
     if (bio.length > 250) {
       return "settings/too-long-bio";
@@ -256,7 +256,7 @@ function validateBio(bio) {
 }
 
 function validateUsername(username) {
-  // Username
+  // Username validation
   if (username !== "") {
     let usernameRegex = /^[a-zA-Z0-9]+$/;
     if (!username.match(usernameRegex)) {
@@ -365,6 +365,7 @@ exports.getUserDataByUsername = (req, res) => {
           createdCollections: doc.data().createdCollections
         };
 
+        // Gets user decks
         if (doc.data().createdDecks) {
           return db
             .collection("decks")
@@ -390,10 +391,11 @@ exports.getUserDataByUsername = (req, res) => {
           return userData;
         }
       } else {
-        res.status(404).json({ error: "User not found" });
+        return res.status(404).json({ errorCode: "userprofile/user-not-found" });
       }
     })
     .then(userData => {
+      // Gets user collections
       if (doc.data().createdCollections) {
         return db
           .collection("collections")
@@ -421,7 +423,9 @@ exports.getUserDataByUsername = (req, res) => {
     .then(userData => {
       res.status(200).json(userData);
     })
-    .catch(error => console.error(error));
+    .catch(error => {
+      return res.status(500).json({ errorCode: error.code });
+    });
 };
 
 exports.getUserData = (req, res) => {
@@ -430,7 +434,6 @@ exports.getUserData = (req, res) => {
     .doc(req.user.uid)
     .get()
     .then(document => {
-      console.log("Jsem tu 1");
       doc = document;
       if (doc) {
         let userData = {
@@ -439,6 +442,7 @@ exports.getUserData = (req, res) => {
           createdCollections: doc.data().createdCollections
         };
 
+        // Gets user decks
         if (doc.data().createdDecks) {
           return db
             .collection("decks")
@@ -464,11 +468,11 @@ exports.getUserData = (req, res) => {
           return userData;
         }
       } else {
-        res.status(404).json({ error: "User not found" });
+        return res.status(404).json({ errorCode: "userprofile/user-not-found" });
       }
     })
     .then(userData => {
-      console.log("Jsem tu 2");
+      // Gets user collections
       if (doc.data().createdCollections) {
         return db
           .collection("collections")
@@ -494,8 +498,9 @@ exports.getUserData = (req, res) => {
       }
     })
     .then(userData => {
-      console.log("Jsem tu");
       res.status(200).json(userData);
     })
-    .catch(error => console.error(error));
+    .catch(error => {
+      return res.status(500).json({ errorCode: error.code });
+    });
 };

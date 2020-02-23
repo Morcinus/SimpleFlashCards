@@ -1,13 +1,7 @@
 import {
-  LOADING_UI,
-  SET_ERRORS,
-  CLEAR_ERRORS,
   SET_AUTHENTICATED,
   SET_UNAUTHENTICATED,
   SET_USER_DATA,
-  CLEAR_USER_DATA,
-  SET_SUCCESS,
-  CLEAR_SUCCESS,
   SET_ONE_USER_DATA,
   SET_USER_PROFILE,
   CLEAR_USER_PROFILE,
@@ -124,26 +118,31 @@ const setAuthorizationHeader = token => {
 };
 
 export const getUserDataByUsername = username => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
   axios
     .get(`/getUserDataByUsername/${username}`)
     .then(res => {
-      dispatch({ type: CLEAR_USER_PROFILE });
       dispatch({ type: SET_USER_PROFILE, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
 };
 
 export const getUserData = () => dispatch => {
-  console.log("Getting user Data");
+  dispatch({ type: SET_STATUS_BUSY });
   axios
     .get("/getUserData")
     .then(res => {
-      console.log("Res data", res.data);
-      dispatch({ type: CLEAR_USER_PROFILE });
       dispatch({ type: SET_USER_PROFILE, payload: res.data });
-      console.log("All saved");
+      dispatch({ type: SET_STATUS_SUCCESS });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
 };
 
 export const clearUserData = () => dispatch => {
