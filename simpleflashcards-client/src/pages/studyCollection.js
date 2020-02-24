@@ -26,6 +26,7 @@ import {
   pushCollectionProgress,
   clearStudyCollection
 } from "../redux/actions/colStudyActions";
+import { clearStatus } from "../redux/actions/uiStatusActions";
 
 // QueryString
 const queryString = require("query-string");
@@ -61,11 +62,8 @@ export class studyCollection extends Component {
 
   // Hard
   setCardProgress(buttonIndex) {
-    let understandingLevel = this.props.colStudy.currentColCards[
-      this.state.cardArrayIndex
-    ].understandingLevel
-      ? this.props.colStudy.currentColCards[this.state.cardArrayIndex]
-          .understandingLevel
+    let understandingLevel = this.props.colStudy.currentColCards[this.state.cardArrayIndex].understandingLevel
+      ? this.props.colStudy.currentColCards[this.state.cardArrayIndex].understandingLevel
       : 0;
 
     switch (buttonIndex) {
@@ -98,12 +96,8 @@ export class studyCollection extends Component {
         cardProgress: [
           ...prevState.cardProgress,
           {
-            cardId: this.props.colStudy.currentColCards[
-              prevState.cardArrayIndex
-            ].cardId,
-            deckId: this.props.colStudy.currentColCards[
-              prevState.cardArrayIndex
-            ].deckId,
+            cardId: this.props.colStudy.currentColCards[prevState.cardArrayIndex].cardId,
+            deckId: this.props.colStudy.currentColCards[prevState.cardArrayIndex].deckId,
             understandingLevel: understandingLevel
           }
         ],
@@ -116,9 +110,7 @@ export class studyCollection extends Component {
   }
 
   checkcolFinished() {
-    if (
-      this.state.cardArrayIndex >= this.props.colStudy.currentColCards.length
-    ) {
+    if (this.state.cardArrayIndex >= this.props.colStudy.currentColCards.length) {
       this.setState({
         colFinished: true
       });
@@ -163,15 +155,17 @@ export class studyCollection extends Component {
     this.props.history.push("/home");
   };
 
+  componentWillUnmount() {
+    this.props.clearStatus();
+  }
+
   render() {
+    const {
+      uiStatus: { status }
+    } = this.props;
     return (
       <div className="rootContainer">
-        <Grid
-          container
-          justify="center"
-          spacing={3}
-          style={{ marginLeft: "20px" }}
-        >
+        <Grid container justify="center" spacing={3} style={{ marginLeft: "20px" }}>
           <Grid item sm={2} lg={2} xl={2}></Grid>
           <Grid item sm={8} lg={8} xl={8}>
             <Paper>
@@ -188,39 +182,32 @@ export class studyCollection extends Component {
                       </IconButton>
                     )}
                   </Box>
-                  <Box flexGrow={1} alignSelf="center">
-                    <LinearProgress
-                      color="secondary"
-                      variant="determinate"
-                      value={
-                        (this.state.cardArrayIndex /
-                          this.props.colStudy.currentColCards.length) *
-                        100
-                      }
-                    />
-                  </Box>
+                  {status == "BUSY" ? (
+                    <Box flexGrow={1} alignSelf="flex-end">
+                      <LinearProgress color="secondary" />
+                      <Typography variant="h5" color="secondary" align="right">
+                        Loading...
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <Box flexGrow={1} alignSelf="center">
+                      <LinearProgress
+                        color="secondary"
+                        variant="determinate"
+                        value={(this.state.cardArrayIndex / this.props.colStudy.currentColCards.length) * 100}
+                      />
+                    </Box>
+                  )}
                 </Box>
-
-                {/* !this.props.colStudy.loading ? */}
 
                 <br />
                 {this.state.colFinished ? (
                   <h4>Congratulations! Studying finished.</h4>
-                ) : !this.props.colStudy.loading ? (
-                  this.props.colStudy.currentColCards.length > 0 ? (
-                    <Grid
-                      container
-                      direction="column"
-                      justify="center"
-                      alignItems="center"
-                    >
-                      {flashCard(
-                        this.props.colStudy.currentColCards[
-                          this.state.cardArrayIndex
-                        ],
-                        this.state.cardSide,
-                        this.flipCard
-                      )}
+                ) : (
+                  status !== "BUSY" &&
+                  (this.props.colStudy.currentColCards.length > 0 ? (
+                    <Grid container direction="column" justify="center" alignItems="center">
+                      {flashCard(this.props.colStudy.currentColCards[this.state.cardArrayIndex], this.state.cardSide, this.flipCard)}
                       {this.state.cardSide === true ? (
                         <div style={{ minHeight: "85px" }}>
                           <Grid
@@ -284,9 +271,7 @@ export class studyCollection extends Component {
                     </Grid>
                   ) : (
                     <h4>There is nothing to learn! Try again later...</h4>
-                  )
-                ) : (
-                  <h4>Loading...</h4>
+                  ))
                 )}
 
                 <br />
@@ -295,24 +280,14 @@ export class studyCollection extends Component {
           </Grid>
           <Grid item sm={2} lg={2} xl={2}></Grid>
         </Grid>
+
         <Dialog open={this.state.dialogOpen} onClose={this.handleDialogClose}>
           <DialogTitle>{"Are you sure you want to quit?"}</DialogTitle>
           <DialogActions style={{ justifyContent: "center" }}>
-            <Button
-              onClick={this.handleQuit}
-              color="secondary"
-              variant="contained"
-              size="large"
-              autoFocus
-            >
+            <Button onClick={this.handleQuit} color="secondary" variant="contained" size="large" autoFocus>
               <strong>Quit</strong>
             </Button>
-            <Button
-              onClick={this.handleDialogClose}
-              color="secondary"
-              variant="outlined"
-              size="large"
-            >
+            <Button onClick={this.handleDialogClose} color="secondary" variant="outlined" size="large">
               <strong>Cancel</strong>
             </Button>
           </DialogActions>
@@ -341,13 +316,7 @@ function flashCard(card, cardSide, cardFlipFunciton) {
         onClick={cardFlipFunciton}
       >
         <Typography variant="h4" style={{ color: "#37474f" }}>
-          {!cardSide
-            ? card
-              ? card.body1
-              : "loading..."
-            : card
-            ? card.body2
-            : "loading..."}
+          {!cardSide ? (card ? card.body1 : "loading...") : card ? card.body2 : "loading..."}
         </Typography>
       </CardActionArea>
     </Card>
@@ -360,11 +329,14 @@ studyCollection.propTypes = {
   getColReviewCards: PropTypes.func.isRequired,
   pushCollectionProgress: PropTypes.func.isRequired,
   clearStudyCollection: PropTypes.func.isRequired,
-  colStudy: PropTypes.object.isRequired
+  colStudy: PropTypes.object.isRequired,
+  uiStatus: PropTypes.object.isRequired,
+  clearStatus: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  colStudy: state.colStudy
+  colStudy: state.colStudy,
+  uiStatus: state.uiStatus
 });
 
 const mapActionsToProps = {
@@ -372,7 +344,8 @@ const mapActionsToProps = {
   getColCardsToLearnAndReview,
   getColLearnCards,
   getColReviewCards,
-  clearStudyCollection
+  clearStudyCollection,
+  clearStatus
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(studyCollection);

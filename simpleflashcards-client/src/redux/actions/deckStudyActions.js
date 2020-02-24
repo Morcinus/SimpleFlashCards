@@ -1,4 +1,4 @@
-import { SET_STUDY_DECK, CLEAR_STUDY_DECK, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS } from "../types";
+import { SET_STUDY_DECK, CLEAR_STUDY_DECK, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS } from "../types";
 import axios from "axios";
 
 export const getLearnDeck = deckId => dispatch => {

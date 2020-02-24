@@ -154,7 +154,7 @@ export class studyDeck extends Component {
 
   render() {
     const {
-      uiStatus: { status, errorCodes, successCodes }
+      uiStatus: { status }
     } = this.props;
     return (
       <div className="rootContainer">
@@ -323,14 +323,12 @@ studyDeck.propTypes = {
   getReviewDeck: PropTypes.func.isRequired,
   pushDeckProgress: PropTypes.func.isRequired,
   clearStudyDeck: PropTypes.func.isRequired,
-  deckUi: PropTypes.object.isRequired,
   deckStudy: PropTypes.object.isRequired,
   uiStatus: PropTypes.object.isRequired,
   clearStatus: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  deckUi: state.deckUi,
   deckStudy: state.deckStudy,
   uiStatus: state.uiStatus
 });

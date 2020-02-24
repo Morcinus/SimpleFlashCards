@@ -1,21 +1,10 @@
 const { db } = require("../util/admin");
+const { compareUnderstandingLevels, findUnknownCards } = require("../util/functions");
 
-// Compares understanding levels of two progress cards
-// TODO - dat nekam do util... pouzivam vickrat + i s nejakyma dalsima funkcema
-function compareUnderstandingLevels(card1, card2) {
-  if (card1.understandingLevel < card2.understandingLevel) {
-    return -1;
-  }
-  if (card1.understandingLevel > card2.understandingLevel) {
-    return 1;
-  }
-  return 0;
-}
-
-// TODO - shoud be done differently - ask Horky/research
 // Finds and returns all progresscards of a collection
-async function loop(uid, deckArray, cardLimit) {
+async function getProgressCards(uid, deckArray) {
   let exportCards = [];
+
   for (let i = 0; i < deckArray.length; i++) {
     await new Promise(function(resolve, reject) {
       db.collection("users")
@@ -31,9 +20,6 @@ async function loop(uid, deckArray, cardLimit) {
             // Sorts the array by understandingLevel
             progressCards = progressCards.sort(compareUnderstandingLevels);
 
-            // // Limits the array
-            // progressCards = progressCards.slice(0, cardLimit);
-
             // Push the cards to export array
             progressCards.forEach(card => {
               card.deckId = deckArray[i];
@@ -44,73 +30,18 @@ async function loop(uid, deckArray, cardLimit) {
           resolve();
         })
         .catch(error => reject(error));
-    }).catch(error => {
-      console.log(error);
-      return;
-    });
+    }).catch(error => console.error(error));
   }
-  return exportCards;
-}
-// RENAME DECKS ARRAY TO DECKS - EVERYWHERE - IT IS NOT ARRAY
-// Gets export cards by the grouped progressCards object
-async function getExportCards(decksArray) {
-  let exportCards = {};
-
-  let deckIds = Object.keys(decksArray);
-
-  for (let i = 0; i < deckIds.length; i++) {
-    await db
-      .collection("decks")
-      .doc(`${deckIds[i]}`)
-      .get()
-      .then(doc => {
-        let cardArray = doc.data().cardArray;
-
-        let exportDeckCards = [];
-
-        // Loop through each progressCard in deck
-        decksArray[deckIds[i]].forEach(progressCard => {
-          let progressCardId = progressCard.cardId;
-
-          // Finds the card in cardArray
-          let exportCard = cardArray.find(
-            ({ cardId }) => cardId === progressCardId
-          );
-
-          // Pushes the card to the export array
-          if (exportCard) {
-            exportCard.understandingLevel = progressCard.understandingLevel;
-            exportDeckCards.push(exportCard);
-          }
-        });
-        return exportDeckCards;
-      })
-      .then(exportDeckCards => {
-        exportDeckCards.forEach(exportCard => {
-          // Check if the deckId is in exportCards already
-          if (exportCards.hasOwnProperty(deckIds[i])) {
-            // Push card to the existing deck array
-            exportCards[deckIds[i]].push(exportCard);
-          } else {
-            // Create a new deck array
-            exportCards[deckIds[i]] = [exportCard];
-          }
-        });
-        return;
-      })
-      .catch(error => console.log(error));
-  }
-
   return exportCards;
 }
 
 // Gets export cards by the grouped progressCards object
-// Returns ungrouped array
-async function getExportCards_ungrouped(decksArray) {
+async function getExportCards(deckArrays) {
   let exportCards = [];
 
-  let deckIds = Object.keys(decksArray);
+  let deckIds = Object.keys(deckArrays);
 
+  // Get each deck
   for (let i = 0; i < deckIds.length; i++) {
     await db
       .collection("decks")
@@ -120,13 +51,11 @@ async function getExportCards_ungrouped(decksArray) {
         let cardArray = doc.data().cardArray;
 
         // Loop through each progressCard in deck
-        decksArray[deckIds[i]].forEach(progressCard => {
+        deckArrays[deckIds[i]].forEach(progressCard => {
           let progressCardId = progressCard.cardId;
 
           // Finds the card in cardArray
-          let exportCard = cardArray.find(
-            ({ cardId }) => cardId === progressCardId
-          );
+          let exportCard = cardArray.find(({ cardId }) => cardId === progressCardId);
 
           // Pushes the card to the export array
           if (exportCard) {
@@ -136,35 +65,41 @@ async function getExportCards_ungrouped(decksArray) {
           }
         });
       })
-      .catch(error => console.log(error));
+      .catch(error => console.error(error));
   }
 
   return exportCards;
 }
 
 // Groups cards into arrays by their deckId
-function groupIntoArrays(cards) {
-  let deckArrays = {};
-  cards.forEach(card => {
-    let deckId = card.deckId;
+function groupIntoArrays(cardsRef) {
+  // Clone array (deep clone)
+  let cards = JSON.parse(JSON.stringify(cardsRef));
 
-    // Check if the deckId is in the array already
-    if (deckArrays.hasOwnProperty(deckId)) {
-      // Push card to the existing deck array
-      delete card.deckId;
-      deckArrays[deckId].push(card);
-    } else {
-      // Create a new deck array
-      delete card.deckId;
-      deckArrays[deckId] = [card];
-    }
-  });
+  let deckArrays = {};
+  if (cards.length > 0) {
+    cards.forEach(card => {
+      let deckId = card.deckId;
+
+      // Check if the deckId is in the array already
+      if (deckArrays.hasOwnProperty(deckId)) {
+        // Push card to the existing deck array
+        delete card.deckId;
+        deckArrays[deckId].push(card);
+      } else {
+        // Create a new deck array
+        delete card.deckId;
+        deckArrays[deckId] = [card];
+      }
+    });
+  }
+
   return deckArrays;
 }
 
 // Gets the cards for review
 exports.getColCardsToReview = (req, res) => {
-  const cardLimit = 5;
+  const cardLimit = 20;
 
   db.collection("collections")
     .doc(req.params.colId)
@@ -172,7 +107,7 @@ exports.getColCardsToReview = (req, res) => {
     .then(colDoc => {
       let deckArray = colDoc.data().deckArray;
 
-      return loop(req.user.uid, deckArray, cardLimit);
+      return getProgressCards(req.user.uid, deckArray);
     })
     .then(progressCards => {
       // Sorts the array by understandingLevel
@@ -183,15 +118,20 @@ exports.getColCardsToReview = (req, res) => {
 
       return progressCards;
     })
-    .then(progressCards => {
+    .then(async progressCards => {
       let groupedArray = groupIntoArrays(progressCards);
 
-      return getExportCards(groupedArray);
+      let exportCards = await getExportCards(groupedArray);
+
+      return groupIntoArrays(exportCards);
     })
     .then(exportCards => {
       res.status(200).json({ cardArray: exportCards });
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 
 exports.getColUnknownCards = (req, res) => {
@@ -231,13 +171,13 @@ exports.getColUnknownCards = (req, res) => {
                   .get()
                   .then(doc => {
                     let cardArray = doc.data().cardArray;
-                    let unknownCards = findUnknownCards(
-                      cardArray,
-                      progressCards
-                    );
+                    let unknownCards = findUnknownCards(cardArray, progressCards);
                     return unknownCards;
                   })
-                  .catch(error => console.error(error));
+                  .catch(err => {
+                    console.error(err);
+                    return res.status(500).json({ errorCode: err.code });
+                  });
               } else {
                 // Else all cards are unknown => just return all cards
                 return db
@@ -248,7 +188,10 @@ exports.getColUnknownCards = (req, res) => {
                     let cardArray = doc.data().cardArray;
                     return cardArray;
                   })
-                  .catch(error => console.error(error));
+                  .catch(err => {
+                    console.error(err);
+                    return res.status(500).json({ errorCode: err.code });
+                  });
               }
             })
             .then(cardArray => {
@@ -262,10 +205,7 @@ exports.getColUnknownCards = (req, res) => {
                 }
                 // Continue the loop
                 return;
-              } else if (
-                cardArray.length + exportCardsArray.length >=
-                cardLimit
-              ) {
+              } else if (cardArray.length + exportCardsArray.length >= cardLimit) {
                 for (let j = 0; j <= cardLimit - exportCardsArray.length; j++) {
                   // Finished, push cards & break loop
                   let card = cardArray[j];
@@ -277,7 +217,10 @@ exports.getColUnknownCards = (req, res) => {
                 return;
               }
             })
-            .catch(error => console.error(error));
+            .catch(err => {
+              console.error(err);
+              return res.status(500).json({ errorCode: err.code });
+            });
         }
       }
 
@@ -286,37 +229,11 @@ exports.getColUnknownCards = (req, res) => {
     .then(exportCards => {
       res.status(200).json({ cardArray: exportCards });
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
-
-// Finds cards the user doesn't know
-function findUnknownCards(cardArrayRef, progressCardArray) {
-  let unknownCardArray = [];
-
-  // Clones array so that the original array does not get modified
-  let cardArray = cardArrayRef.slice();
-
-  // Deletes cards in cardArray that the user already knows
-  progressCardArray.forEach(progressCard => {
-    for (let i = 0; i < cardArray.length; i++) {
-      // If the card is not already deleted
-      if (cardArray[i])
-        if (cardArray[i].cardId === progressCard.cardId) {
-          delete cardArray[i];
-        }
-    }
-  });
-
-  // Pushes the remaining cards (=unknown cards)
-  cardArray.forEach(card => {
-    // If the card was not deleted
-    if (card !== undefined) {
-      unknownCardArray.push(card);
-    }
-  });
-
-  return unknownCardArray;
-}
 
 exports.getColCardsToLearnAndReview = (req, res) => {
   const cardLimit = 10;
@@ -333,46 +250,45 @@ exports.getColCardsToLearnAndReview = (req, res) => {
       // Get the array of deckIds
       deckArray = colDoc.data().deckArray;
 
-      return loop(req.user.uid, deckArray, cardLimit);
+      return getProgressCards(req.user.uid, deckArray);
     })
     .then(unsortedProgressCards => {
-      console.log(`unsortedProgressCards: ${unsortedProgressCards}`);
+      //console.log(`unsortedProgressCards: ${unsortedProgressCards}`);
       // Sorts the array by understandingLevel
       progressCards = unsortedProgressCards.sort(compareUnderstandingLevels);
-
+      console.log("ProgressCards0: ", progressCards);
       // Update the unknownCardsLimit if there is not enough progressCards
-      if (progressCards.length < cardLimit / 2) {
+      if (progressCards.length < Math.round(cardLimit / 2)) {
         // upravit cardlimit
         unknownCardsLimit = cardLimit - progressCards.length; // +1???
-        console.log(
-          `unknownCardsLimit (${unknownCardsLimit}) = (${cardLimit}) - (${progressCards.length})`
-        );
+        // console.log(`unknownCardsLimit (${unknownCardsLimit}) = (${cardLimit}) - (${progressCards.length})`);
       }
-
       return groupIntoArrays(progressCards);
     })
     .then(async groupedProgressCards => {
+      console.log("ProgressCards0,1: ", groupedProgressCards);
+      console.log("ProgressCards0,3: ", progressCards);
       let breakLoop = false;
-
-      let deckIds = Object.keys(deckArray);
 
       // Loop through decks until cardLimit reached
       for (let i = 0; i < deckArray.length; i++) {
         if (breakLoop) {
           break;
         } else {
-          let progressCards = groupedProgressCards[deckArray[i]];
+          // Get progress cards of one deck
+          let progressCards2 = groupedProgressCards[deckArray[i]];
 
+          // Find unknown cards
           await new Promise((resolve, reject) => {
             // If user has some progress, find unknown cards
-            if (progressCards) {
+            if (progressCards2) {
               return db
                 .collection("decks")
                 .doc(deckArray[i])
                 .get()
                 .then(doc => {
                   let cardArray = doc.data().cardArray;
-                  let unknownCards = findUnknownCards(cardArray, progressCards);
+                  let unknownCards = findUnknownCards(cardArray, progressCards2);
                   resolve(unknownCards);
                 })
                 .catch(error => reject(error));
@@ -391,10 +307,7 @@ exports.getColCardsToLearnAndReview = (req, res) => {
           })
             .then(cardArray => {
               // Fill exportCardsArray with unknownCards until unknownCardsLimit reached
-              if (
-                cardArray.length + exportCardsArray.length <
-                unknownCardsLimit
-              ) {
+              if (cardArray.length + exportCardsArray.length < unknownCardsLimit) {
                 // Push all cards from card array
                 for (let j = 0; j < cardArray.length; j++) {
                   let card = cardArray[j];
@@ -403,16 +316,9 @@ exports.getColCardsToLearnAndReview = (req, res) => {
                 }
                 // Continue the loop
                 return;
-              } else if (
-                cardArray.length + exportCardsArray.length >=
-                unknownCardsLimit
-              ) {
+              } else if (cardArray.length + exportCardsArray.length >= unknownCardsLimit) {
                 let exportCardsLength = exportCardsArray.length;
-                for (
-                  let j = 0;
-                  j < unknownCardsLimit - exportCardsLength;
-                  j++
-                ) {
+                for (let j = 0; j < unknownCardsLimit - exportCardsLength; j++) {
                   // Finished, push cards & break loop
                   let card = cardArray[j];
                   card.deckId = deckArray[i];
@@ -423,31 +329,40 @@ exports.getColCardsToLearnAndReview = (req, res) => {
                 return;
               }
             })
-            .catch(error => console.error(error));
+            .catch(err => {
+              console.error(err);
+              return res.status(500).json({ errorCode: err.code });
+            });
         }
       }
+      console.log("ProgressCards0,2: ", progressCards);
     })
     .then(async () => {
-      let progressCardsLimit = cardLimit - exportCardsArray.length; //+1???
-
+      // Fill the remaining space with remaining progressCards
       if (exportCardsArray.length < cardLimit) {
-        let slicedProgressCards = progressCards.slice(0, progressCardsLimit);
-        let groupedProgressCards = groupIntoArrays(slicedProgressCards);
+        let progressCardsLimit = cardLimit - exportCardsArray.length; //+1???
 
-        await getExportCards_ungrouped(groupedProgressCards).then(
-          exportProgressCards => {
-            exportProgressCards.forEach(exportProgressCard => {
-              exportCardsArray.push(exportProgressCard);
-            });
-          }
-        );
+        console.log(`progressCardsLimit (${progressCardsLimit}) =  ${cardLimit} - ${exportCardsArray.length}`);
+        let slicedProgressCards = progressCards.slice(0, progressCardsLimit);
+        console.log("ProgressCards1: ", slicedProgressCards);
+        let groupedProgressCards = groupIntoArrays(slicedProgressCards);
+        console.log("ProgressCards2: ", groupedProgressCards);
+        // Get exportCards and push them to exportCardsArray
+        await getExportCards(groupedProgressCards).then(exportCards => {
+          exportCards.forEach(exportCard => {
+            exportCardsArray.push(exportCard);
+          });
+        });
       }
       return groupIntoArrays(exportCardsArray);
     })
     .then(exportCards => {
       res.status(200).json({ cardArray: exportCards });
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 
 // Sets card progress
@@ -470,11 +385,9 @@ exports.setColCardsProgress = (req, res) => {
         if (doc.exists) {
           cardArray = doc.data().cardArray ? doc.data().cardArray : [];
         }
-        console.log(cardArray);
 
         // Update the cardArray
         newCardArray[deckIds[i]].forEach(newCard => {
-          console.log("Looping with: ", newCard);
           for (let i = 0; i < cardArray.length; i++) {
             if (cardArray[i].cardId === newCard.cardId) {
               // Update the existing card
@@ -505,5 +418,8 @@ exports.setColCardsProgress = (req, res) => {
     .then(() => {
       res.status(200).json();
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };

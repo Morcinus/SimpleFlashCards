@@ -1,4 +1,5 @@
 const { db } = require("../util/admin");
+const { compareUnderstandingLevels, findUnknownCards } = require("../util/functions");
 
 // Sets card progress
 exports.setDeckCardsProgress = (req, res) => {
@@ -106,17 +107,6 @@ exports.getCardsToReview = (req, res) => {
     });
 };
 
-// Compares understanding levels of two progress cards
-function compareUnderstandingLevels(card1, card2) {
-  if (card1.understandingLevel < card2.understandingLevel) {
-    return -1;
-  }
-  if (card1.understandingLevel > card2.understandingLevel) {
-    return 1;
-  }
-  return 0;
-}
-
 // Gets cards that the user doesn't know yet
 exports.getDeckUnknownCards = (req, res) => {
   let deckId = req.params.deckId;
@@ -161,35 +151,6 @@ exports.getDeckUnknownCards = (req, res) => {
       return res.status(500).json({ errorCode: err.code });
     });
 };
-
-// Finds cards the user doesn't know
-function findUnknownCards(cardArrayRef, progressCardArray) {
-  let unknownCardArray = [];
-
-  // Clones array so that the original array does not get modified
-  let cardArray = cardArrayRef.slice();
-
-  // Deletes cards in cardArray that the user already knows
-  progressCardArray.forEach(progressCard => {
-    for (let i = 0; i < cardArray.length; i++) {
-      // If the card is not already deleted
-      if (cardArray[i])
-        if (cardArray[i].cardId === progressCard.cardId) {
-          delete cardArray[i];
-        }
-    }
-  });
-
-  // Pushes the remaining cards (=unknown cards)
-  cardArray.forEach(card => {
-    // If the card was not deleted
-    if (typeof card !== undefined) {
-      unknownCardArray.push(card);
-    }
-  });
-
-  return unknownCardArray;
-}
 
 // Gets array of cards the user doesn't know and cards to review
 exports.getCardsToLearnAndReview = (req, res) => {

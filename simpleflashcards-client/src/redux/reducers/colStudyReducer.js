@@ -1,12 +1,7 @@
-import {
-  SET_STUDY_COLLECTION,
-  CLEAR_STUDY_COLLECTION,
-  LOADING_COLLECTION
-} from "../types";
+import { SET_STUDY_COLLECTION, CLEAR_STUDY_COLLECTION } from "../types";
 
 const initialState = {
-  currentColCards: [],
-  loading: false
+  currentColCards: []
 };
 
 export default function(state = initialState, action) {
@@ -14,20 +9,10 @@ export default function(state = initialState, action) {
     case SET_STUDY_COLLECTION:
       return {
         ...state,
-        currentColCards: action.payload,
-        loading: false
+        currentColCards: action.payload
       };
     case CLEAR_STUDY_COLLECTION:
-      return {
-        ...state,
-        currentColCards: [],
-        loading: false
-      };
-    case LOADING_COLLECTION:
-      return {
-        ...state,
-        loading: true
-      };
+      return initialState;
     default:
       return state;
   }
