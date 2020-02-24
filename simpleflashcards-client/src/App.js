@@ -27,7 +27,7 @@ import login from "./pages/login";
 import home from "./pages/home";
 import createDeck from "./pages/createDeck";
 import deck from "./pages/deck";
-import study from "./pages/study";
+import studyDeck from "./pages/studyDeck";
 import settings from "./pages/settings";
 import editDeck from "./pages/editDeck";
 import collection from "./pages/collection";
@@ -68,7 +68,7 @@ function App() {
             <Route exact path="/createDeck" component={createDeck} />
             <Route exact path="/editDeck/:deckId" component={editDeck} />
             <Route exact path="/deck/:deckId" component={deck} />
-            <Route exact path="/study/:deckId" component={study} />
+            <Route exact path="/studyDeck/:deckId" component={studyDeck} />
             <Route exact path="/collection/:colId" component={collection} />
             <Route exact path="/studyCollection/:colId" component={studyCollection} />
             <Route exact path="/editCollection/:colId" component={editCollection} />

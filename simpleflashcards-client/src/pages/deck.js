@@ -160,7 +160,7 @@ function learnButtons(deckId) {
   return (
     <Grid container direction="row" justify="space-evenly" alignItems="center">
       <Card variant="outlined" style={smallCardStyle}>
-        <Link to={`/study/${deckId}?lessonType=learn`} style={linkStyle}>
+        <Link to={`/studyDeck/${deckId}?lessonType=learn`} style={linkStyle}>
           <CardActionArea style={cardActionStyle}>
             <MenuBook style={iconStyle}></MenuBook>
             <Typography style={textStyle}>LEARN NEW</Typography>
@@ -168,7 +168,7 @@ function learnButtons(deckId) {
         </Link>
       </Card>
       <Card variant="outlined" style={largeCardStyle}>
-        <Link to={`/study/${deckId}?lessonType=study`} style={linkStyle}>
+        <Link to={`/studyDeck/${deckId}?lessonType=study`} style={linkStyle}>
           <CardActionArea style={cardActionStyle}>
             <MenuBook style={iconStyle}></MenuBook>
             <FitnessCenter style={iconStyle}></FitnessCenter>
@@ -177,7 +177,7 @@ function learnButtons(deckId) {
         </Link>
       </Card>
       <Card variant="outlined" style={smallCardStyle}>
-        <Link to={`/study/${deckId}?lessonType=review`} style={linkStyle}>
+        <Link to={`/studyDeck/${deckId}?lessonType=review`} style={linkStyle}>
           <CardActionArea style={cardActionStyle}>
             <FitnessCenter style={iconStyle}></FitnessCenter>
             <Typography style={textStyle}>REVIEW OLD</Typography>

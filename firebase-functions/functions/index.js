@@ -32,7 +32,7 @@ const {
   getCollection
 } = require("./functions/collection");
 
-const { getDeckCards, setDeckCardsProgress, getCardsToReview, getDeckUnknownCards, getCardsToLearnAndReview } = require("./functions/cards");
+const { getDeckCards, setDeckCardsProgress, getCardsToReview, getDeckUnknownCards, getCardsToLearnAndReview } = require("./functions/deckCards");
 
 const { getColCardsToReview, getColUnknownCards, getColCardsToLearnAndReview, setColCardsProgress } = require("./functions/collectionCards");
 
@@ -75,7 +75,6 @@ app.get("/getPinnedCollections", authMiddleware, getPinnedCollections);
 app.get("/getCollection/:colId", authMiddleware, getCollection);
 
 // Deck card routes
-app.get("/getDeckCards/:deckId", getDeckCards);
 app.get("/getCardsToReview/:deckId", authMiddleware, getCardsToReview);
 app.get("/getDeckUnknownCards/:deckId", authMiddleware, getDeckUnknownCards);
 app.get("/getCardsToLearnAndReview/:deckId", authMiddleware, getCardsToLearnAndReview);

@@ -1,16 +1,5 @@
 const { db } = require("../util/admin");
 
-// Loads all cards from one deck
-exports.getDeckCards = (req, res) => {
-  db.collection("decks")
-    .doc(`${req.params.deckId}`)
-    .get()
-    .then(doc => {
-      res.status(200).json(doc.data().cardArray);
-    })
-    .catch(error => console.error(error));
-};
-
 // Sets card progress
 exports.setDeckCardsProgress = (req, res) => {
   let newCardArray = req.body.cardArray;
@@ -24,15 +13,14 @@ exports.setDeckCardsProgress = (req, res) => {
 
   db.runTransaction(t => {
     return t.get(progressDocRef).then(doc => {
+      // Get progress cards
       let cardArray = [];
       if (doc.exists) {
         cardArray = doc.data().cardArray ? doc.data().cardArray : [];
       }
-      console.log(cardArray);
 
       // Update the cardArray
       newCardArray.forEach(newCard => {
-        console.log("Looping with: ", newCard);
         for (let i = 0; i < cardArray.length; i++) {
           if (cardArray[i].cardId === newCard.cardId) {
             // Update the existing card
@@ -57,7 +45,10 @@ exports.setDeckCardsProgress = (req, res) => {
     .then(() => {
       res.status(200).json();
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 
 // Gets the cards for review
@@ -80,6 +71,7 @@ exports.getCardsToReview = (req, res) => {
       // Limits the array
       progressCards = progressCards.slice(0, cardLimit);
 
+      // Get deck
       return db
         .collection("decks")
         .doc(`${deckId}`)
@@ -89,13 +81,12 @@ exports.getCardsToReview = (req, res) => {
       let cardArray = doc.data().cardArray;
       let exportCards = [];
 
+      // Get cards
       progressCards.forEach(progressCard => {
         let progressCardId = progressCard.cardId;
 
         // Finds the card in cardArray
-        let exportCard = cardArray.find(
-          ({ cardId }) => cardId === progressCardId
-        );
+        let exportCard = cardArray.find(({ cardId }) => cardId === progressCardId);
 
         // Pushes the card to the export array
         if (exportCard) {
@@ -109,7 +100,10 @@ exports.getCardsToReview = (req, res) => {
     .then(exportCards => {
       res.status(200).json(exportCards);
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 
 // Compares understanding levels of two progress cards
@@ -123,8 +117,6 @@ function compareUnderstandingLevels(card1, card2) {
   return 0;
 }
 
-// TO-DO: needs error handling - if deck doesnt exist etc.. - EVERY FB FUNCTION
-// TO-DO: Needs error handling if card is no longer in deck !! if the owner changed deck
 // Gets cards that the user doesn't know yet
 exports.getDeckUnknownCards = (req, res) => {
   let deckId = req.params.deckId;
@@ -135,16 +127,22 @@ exports.getDeckUnknownCards = (req, res) => {
     .doc(`${deckId}`)
     .get()
     .then(doc => {
-      cardArray = doc.data().cardArray;
+      if (doc.exists) {
+        cardArray = doc.data().cardArray;
 
-      return db
-        .collection("users")
-        .doc(`${req.user.uid}`)
-        .collection("deckProgress")
-        .doc(`${deckId}`)
-        .get();
+        // Get deck progress
+        return db
+          .collection("users")
+          .doc(`${req.user.uid}`)
+          .collection("deckProgress")
+          .doc(`${deckId}`)
+          .get();
+      } else {
+        return res.status(404).json({ errorCode: "deck/deck-not-found" });
+      }
     })
     .then(doc => {
+      // Find unknown cards
       let unknownCards = [];
       if (doc.exists) {
         let progressCards = doc.data().cardArray;
@@ -158,7 +156,10 @@ exports.getDeckUnknownCards = (req, res) => {
     .then(unknownCards => {
       res.status(200).json(unknownCards);
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 
 // Finds cards the user doesn't know
@@ -182,7 +183,7 @@ function findUnknownCards(cardArrayRef, progressCardArray) {
   // Pushes the remaining cards (=unknown cards)
   cardArray.forEach(card => {
     // If the card was not deleted
-    if (card !== undefined) {
+    if (typeof card !== undefined) {
       unknownCardArray.push(card);
     }
   });
@@ -191,9 +192,6 @@ function findUnknownCards(cardArrayRef, progressCardArray) {
 }
 
 // Gets array of cards the user doesn't know and cards to review
-// NEEDS UPDATE: To include cards that are over understandingLevel 5 if user knows all the cards <- Rethinkg the whole algorithm
-// PREKOPAT: Aby nejdriv pushovalo unknown cards (cardlimit/2) a pak zbytek doplnilo progress
-// Aby porovnalo pocet unknown cards a progress cards... Pokud jedno neni vic jak pulka tak doplnit druhym
 exports.getCardsToLearnAndReview = (req, res) => {
   let deckId = req.params.deckId;
   let cardArray = [];
@@ -205,6 +203,7 @@ exports.getCardsToLearnAndReview = (req, res) => {
     .then(doc => {
       cardArray = doc.data().cardArray;
 
+      // Get deck progress
       return db
         .collection("users")
         .doc(`${req.user.uid}`)
@@ -215,33 +214,29 @@ exports.getCardsToLearnAndReview = (req, res) => {
     .then(doc => {
       let exportCards = [];
       let progressCardsArray = [];
-      if (doc.exists)
-        progressCardsArray = doc.data().cardArray ? doc.data().cardArray : [];
+      let lastProgressCardIndex;
+      if (doc.exists) progressCardsArray = doc.data().cardArray ? doc.data().cardArray : [];
 
+      // Fill half of exportCards with known cards
       if (progressCardsArray.length > 0) {
         // Sorts the array
-        progressCardsArray = progressCardsArray.sort(
-          compareUnderstandingLevels
-        );
+        progressCardsArray = progressCardsArray.sort(compareUnderstandingLevels);
 
-        // Pushes 10 (=cardLimit/2) progress cards into the exportCards array
+        // Pushes progress cards into the exportCards array
         for (let i = 0; i < progressCardsArray.length; i++) {
-          if (
-            progressCardsArray[i].understandingLevel < 5 &&
-            exportCards.length < cardLimit / 2
-          ) {
+          if (exportCards.length < Math.round(cardLimit / 2)) {
             // Finds the card in cardArray
-            let exportCard = cardArray.find(
-              ({ cardId }) => cardId === progressCardsArray[i].cardId
-            );
+            let exportCard = cardArray.find(({ cardId }) => cardId === progressCardsArray[i].cardId);
 
             // Pushes the card to the export array
             if (exportCard) {
-              exportCard.understandingLevel =
-                progressCardsArray[i].understandingLevel;
+              exportCard.understandingLevel = progressCardsArray[i].understandingLevel;
               exportCards.push(exportCard);
             }
-          } else break;
+          } else {
+            lastProgressCardIndex = i;
+            break;
+          }
         }
       }
 
@@ -255,10 +250,33 @@ exports.getCardsToLearnAndReview = (req, res) => {
         } else break;
       }
 
+      // If cardLimit still not reached, fill exportCards with known cards
+      if (progressCardsArray.length > 0) {
+        // If progressCardsArray still contains some cards
+        if (progressCardsArray.length > lastProgressCardIndex) {
+          // Pushes progress cards into the exportCards array
+          for (let i = lastProgressCardIndex; i < progressCardsArray.length; i++) {
+            if (exportCards.length < cardLimit) {
+              // Finds the card in cardArray
+              let exportCard = cardArray.find(({ cardId }) => cardId === progressCardsArray[i].cardId);
+
+              // Pushes the card to the export array
+              if (exportCard) {
+                exportCard.understandingLevel = progressCardsArray[i].understandingLevel;
+                exportCards.push(exportCard);
+              }
+            } else break;
+          }
+        }
+      }
+
       return exportCards;
     })
     .then(exportCards => {
       res.status(200).json(exportCards);
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };

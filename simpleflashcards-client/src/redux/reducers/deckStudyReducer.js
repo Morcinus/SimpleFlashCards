@@ -1,8 +1,7 @@
-import { SET_STUDY_DECK, CLEAR_STUDY_DECK, LOADING_DECK } from "../types";
+import { SET_STUDY_DECK, CLEAR_STUDY_DECK } from "../types";
 
 const initialState = {
-  currentDeck: [],
-  loading: false
+  currentDeck: []
 };
 
 export default function(state = initialState, action) {
@@ -10,20 +9,10 @@ export default function(state = initialState, action) {
     case SET_STUDY_DECK:
       return {
         ...state,
-        currentDeck: action.payload,
-        loading: false
+        currentDeck: action.payload
       };
     case CLEAR_STUDY_DECK:
-      return {
-        ...state,
-        currentDeck: [],
-        loading: false
-      };
-    case LOADING_DECK:
-      return {
-        ...state,
-        loading: true
-      };
+      return initialState;
     default:
       return state;
   }

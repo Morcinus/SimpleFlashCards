@@ -19,18 +19,13 @@ import DialogActions from "@material-ui/core/DialogActions";
 
 // Redux
 import { connect } from "react-redux";
-import {
-  getLearnAndReviewDeck,
-  getLearnDeck,
-  getReviewDeck,
-  pushDeckProgress,
-  clearStudyDeck
-} from "../redux/actions/deckStudyActions";
+import { getLearnAndReviewDeck, getLearnDeck, getReviewDeck, pushDeckProgress, clearStudyDeck } from "../redux/actions/deckStudyActions";
+import { clearStatus } from "../redux/actions/uiStatusActions";
 
 // QueryString
 const queryString = require("query-string");
 
-export class study extends Component {
+export class studyDeck extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,13 +54,10 @@ export class study extends Component {
     });
   }
 
-  // Hard
+  // Sets card progress
   setCardProgress(buttonIndex) {
-    let understandingLevel = this.props.deckStudy.currentDeck[
-      this.state.cardArrayIndex
-    ].understandingLevel
-      ? this.props.deckStudy.currentDeck[this.state.cardArrayIndex]
-          .understandingLevel
+    let understandingLevel = this.props.deckStudy.currentDeck[this.state.cardArrayIndex].understandingLevel
+      ? this.props.deckStudy.currentDeck[this.state.cardArrayIndex].understandingLevel
       : 0;
 
     switch (buttonIndex) {
@@ -98,8 +90,7 @@ export class study extends Component {
         cardProgress: [
           ...prevState.cardProgress,
           {
-            cardId: this.props.deckStudy.currentDeck[prevState.cardArrayIndex]
-              .cardId,
+            cardId: this.props.deckStudy.currentDeck[prevState.cardArrayIndex].cardId,
             understandingLevel: understandingLevel
           }
         ],
@@ -116,10 +107,7 @@ export class study extends Component {
       this.setState({
         deckFinished: true
       });
-      this.props.pushDeckProgress(
-        this.props.match.params.deckId,
-        this.state.cardProgress
-      );
+      this.props.pushDeckProgress(this.props.match.params.deckId, this.state.cardProgress);
     }
   }
 
@@ -160,15 +148,17 @@ export class study extends Component {
     this.props.history.push("/home");
   };
 
+  componentWillUnmount() {
+    this.props.clearStatus();
+  }
+
   render() {
+    const {
+      uiStatus: { status, errorCodes, successCodes }
+    } = this.props;
     return (
       <div className="rootContainer">
-        <Grid
-          container
-          justify="center"
-          spacing={3}
-          style={{ marginLeft: "20px" }}
-        >
+        <Grid container justify="center" spacing={3} style={{ marginLeft: "20px" }}>
           <Grid item sm={2} lg={2} xl={2}></Grid>
           <Grid item sm={8} lg={8} xl={8}>
             <Paper>
@@ -185,39 +175,33 @@ export class study extends Component {
                       </IconButton>
                     )}
                   </Box>
-                  <Box flexGrow={1} alignSelf="center">
-                    <LinearProgress
-                      color="secondary"
-                      variant="determinate"
-                      value={
-                        (this.state.cardArrayIndex /
-                          this.props.deckStudy.currentDeck.length) *
-                        100
-                      }
-                    />
-                  </Box>
+                  {status == "BUSY" ? (
+                    <Box flexGrow={1} alignSelf="flex-end">
+                      <LinearProgress color="secondary" />
+                      <Typography variant="h5" color="secondary" align="right">
+                        Loading...
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <Box flexGrow={1} alignSelf="center">
+                      <LinearProgress
+                        color="secondary"
+                        variant="determinate"
+                        value={(this.state.cardArrayIndex / this.props.deckStudy.currentDeck.length) * 100}
+                      />
+                    </Box>
+                  )}
                 </Box>
 
-                {/* !this.props.deckStudy.loading ? */}
-
                 <br />
+
                 {this.state.deckFinished ? (
                   <h4>Congratulations! Studying finished.</h4>
-                ) : !this.props.deckStudy.loading ? (
-                  this.props.deckStudy.currentDeck.length > 0 ? (
-                    <Grid
-                      container
-                      direction="column"
-                      justify="center"
-                      alignItems="center"
-                    >
-                      {flashCard(
-                        this.props.deckStudy.currentDeck[
-                          this.state.cardArrayIndex
-                        ],
-                        this.state.cardSide,
-                        this.flipCard
-                      )}
+                ) : (
+                  status !== "BUSY" &&
+                  (this.props.deckStudy.currentDeck.length > 0 ? (
+                    <Grid container direction="column" justify="center" alignItems="center">
+                      {flashCard(this.props.deckStudy.currentDeck[this.state.cardArrayIndex], this.state.cardSide, this.flipCard)}
                       {this.state.cardSide === true ? (
                         <div style={{ minHeight: "85px" }}>
                           <Grid
@@ -281,9 +265,7 @@ export class study extends Component {
                     </Grid>
                   ) : (
                     <h4>There is nothing to learn! Try again later...</h4>
-                  )
-                ) : (
-                  <h4>Loading...</h4>
+                  ))
                 )}
 
                 <br />
@@ -292,24 +274,14 @@ export class study extends Component {
           </Grid>
           <Grid item sm={2} lg={2} xl={2}></Grid>
         </Grid>
+
         <Dialog open={this.state.dialogOpen} onClose={this.handleDialogClose}>
           <DialogTitle>{"Are you sure you want to quit?"}</DialogTitle>
           <DialogActions style={{ justifyContent: "center" }}>
-            <Button
-              onClick={this.handleQuit}
-              color="secondary"
-              variant="contained"
-              size="large"
-              autoFocus
-            >
+            <Button onClick={this.handleQuit} color="secondary" variant="contained" size="large" autoFocus>
               <strong>Quit</strong>
             </Button>
-            <Button
-              onClick={this.handleDialogClose}
-              color="secondary"
-              variant="outlined"
-              size="large"
-            >
+            <Button onClick={this.handleDialogClose} color="secondary" variant="outlined" size="large">
               <strong>Cancel</strong>
             </Button>
           </DialogActions>
@@ -338,32 +310,29 @@ function flashCard(card, cardSide, cardFlipFunciton) {
         onClick={cardFlipFunciton}
       >
         <Typography variant="h4" style={{ color: "#37474f" }}>
-          {!cardSide
-            ? card
-              ? card.body1
-              : "loading..."
-            : card
-            ? card.body2
-            : "loading..."}
+          {!cardSide ? (card ? card.body1 : "loading...") : card ? card.body2 : "loading..."}
         </Typography>
       </CardActionArea>
     </Card>
   );
 }
 
-study.propTypes = {
+studyDeck.propTypes = {
   getLearnAndReviewDeck: PropTypes.func.isRequired,
   getLearnDeck: PropTypes.func.isRequired,
   getReviewDeck: PropTypes.func.isRequired,
   pushDeckProgress: PropTypes.func.isRequired,
   clearStudyDeck: PropTypes.func.isRequired,
   deckUi: PropTypes.object.isRequired,
-  deckStudy: PropTypes.object.isRequired
+  deckStudy: PropTypes.object.isRequired,
+  uiStatus: PropTypes.object.isRequired,
+  clearStatus: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   deckUi: state.deckUi,
-  deckStudy: state.deckStudy
+  deckStudy: state.deckStudy,
+  uiStatus: state.uiStatus
 });
 
 const mapActionsToProps = {
@@ -371,7 +340,8 @@ const mapActionsToProps = {
   getLearnAndReviewDeck,
   getLearnDeck,
   getReviewDeck,
-  clearStudyDeck
+  clearStudyDeck,
+  clearStatus
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(study);
+export default connect(mapStateToProps, mapActionsToProps)(studyDeck);

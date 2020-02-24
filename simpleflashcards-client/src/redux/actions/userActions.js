@@ -102,7 +102,6 @@ export const resetPassword = () => dispatch => {
   axios
     .post("/resetPassword")
     .then(res => {
-      console.log("Success!");
       dispatch({ type: SET_STATUS_SUCCESS, payload: res.data.successCode });
     })
     .catch(err => {
