@@ -1,8 +1,33 @@
 const { db, admin } = require("../util/admin");
 
 //#region Collection Editing
+const validateCreateCollectionData = (colName, deckArray) => {
+  let errors = [];
+
+  // ColName validation
+  if (colName !== "") {
+    let colNameRegex = /^[a-zA-Z0-9 ]+$/;
+    if (!colName.match(colNameRegex)) {
+      errors.push("createCollection/invalid-collection-name");
+    }
+  } else {
+    errors.push("createCollection/empty-collection-name");
+  }
+
+  // Decks validation
+  if (deckArray.length <= 0) {
+    errors.push("createCollection/empty-collection");
+  }
+
+  return errors;
+};
+
 exports.createCollection = (req, res) => {
-  console.log("Creating collection");
+  // Validate collection data
+  const errorCodes = validateCreateCollectionData(req.body.colName, req.body.deckArray);
+  if (errorCodes.length > 0) {
+    return res.status(400).json({ errorCodes: errorCodes });
+  }
 
   const colData = {
     creatorId: req.user.uid,
@@ -15,18 +40,20 @@ exports.createCollection = (req, res) => {
   db.collection("collections")
     .add(colData)
     .then(docReference => {
-      db.collection("users")
+      return db
+        .collection("users")
         .doc(req.user.uid)
         .update({
           createdCollections: admin.firestore.FieldValue.arrayUnion(docReference.id)
         });
-
-      return docReference.id;
     })
-    .then(colId => {
-      res.status(200).json({ colId: colId });
+    .then(() => {
+      return res.status(200).json({ successCode: "createCollection/collection-created" });
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 
 const validateCollectionData = (colName, deckArray) => {
@@ -42,7 +69,7 @@ const validateCollectionData = (colName, deckArray) => {
     errors.push("updateCollection/empty-collection-name");
   }
 
-  // DeckCards validation
+  // Decks validation
   if (deckArray.length <= 0) {
     errors.push("updateCollection/empty-collection");
   }
@@ -99,8 +126,6 @@ exports.addDeckToCollection = (req, res) => {
       // Authorization check
       let creatorId = doc.data().creatorId;
       if (creatorId !== req.user.uid) {
-        console.log("CreatorId: ", creatorId);
-        console.log("userid: ", req.user.uid);
         return res.status(401).json();
       } else {
         // Update collection
@@ -114,7 +139,10 @@ exports.addDeckToCollection = (req, res) => {
     .then(() => {
       res.status(200).json();
     })
-    .catch(error => console.error(error));
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ errorCode: err.code });
+    });
 };
 
 exports.deleteCollection = (req, res) => {
@@ -250,9 +278,9 @@ exports.getUserCollectionsWithDeckInfo = (req, res) => {
       .then(userCollections => {
         res.status(200).json(userCollections);
       })
-      .catch(error => res.status(500).json({ error: error.code }));
+      .catch(error => res.status(500).json({ errorCode: error.code }));
   } else {
-    res.status(400).json();
+    res.status(401).json();
   }
 };
 

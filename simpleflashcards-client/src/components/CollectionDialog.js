@@ -26,6 +26,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import AddBox from "@material-ui/icons/AddBox";
 import Switch from "@material-ui/core/Switch";
 import Box from "@material-ui/core/Box";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 // Other
 import { collectionDefaultImgUrl } from "../util/other";
@@ -40,13 +42,15 @@ import {
   createCollection
 } from "../redux/actions/colUiActions";
 
+const initialState = {
+  newColName: "",
+  private: false
+};
+
 export class CollectionDialog extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      newColName: "",
-      private: false
-    };
+    this.state = initialState;
     this.handleClose = this.handleClose.bind(this);
     this.handleAddToCollection = this.handleAddToCollection.bind(this);
     this.handleCreateCollection = this.handleCreateCollection.bind(this);
@@ -65,28 +69,12 @@ export class CollectionDialog extends Component {
   };
 
   handleAddToCollection(colId, i) {
-    let failed = this.props.addDeckToCollection(colId, this.props.deckId, i);
-    // Tohle nebude fungovat, musim to kontrolovat na updatu
-    if (!failed) {
-      console.log("success");
-    }
+    this.props.addDeckToCollection(colId, this.props.deckId, i);
   }
 
   handleCreateCollection() {
-    if (this.state.newColName && this.state.newColName != "") {
-      let failed = this.props.createCollection(this.state.newColName, this.props.deckId, this.state.private);
-      // Tohle nebude fungovat, musim to kontrolovat na updatu
-      if (!failed) {
-        console.log("Collection created");
-        this.setState({
-          collectionCreated: true,
-          private: false,
-          newColName: ""
-        });
-      }
-    } else {
-      console.log("Collection name must not be empty");
-    }
+    this.props.createCollection(this.state.newColName, this.props.deckId, this.state.private);
+    this.setState(initialState);
   }
 
   handleChange = event => {
@@ -102,84 +90,102 @@ export class CollectionDialog extends Component {
   };
 
   render() {
+    const {
+      colUi: { colDialogStatus, colDialogErrorCodes, colDialogSuccessCodes }
+    } = this.props;
     return (
       <Dialog open={this.props.colUi.collectionDialogOpen} onClose={this.handleClose}>
         <DialogContent>
-          <Grid container direction="row" justify="space-between" alignItems="center">
-            <Typography variant="h6">Add to new collection</Typography>
+          {colDialogStatus == "BUSY" && (
+            <React.Fragment>
+              <LinearProgress color="secondary" />
+              <Typography variant="h5" color="secondary" align="right">
+                Loading...
+              </Typography>
+            </React.Fragment>
+          )}
 
-            <IconButton onClick={this.handleClose}>
-              <CloseIcon />
-            </IconButton>
-          </Grid>
+          {this.props.colUi && this.props.colUi.userCollections.length > 0 && (
+            <React.Fragment>
+              <Grid container direction="row" justify="space-between" alignItems="center">
+                <Typography variant="h6">Add to new collection</Typography>
 
-          <div>
-            <List style={{ paddingBottom: 0 }}>
-              <ListItem style={{ paddingBottom: 0 }}>
-                <ListItemAvatar>
-                  <Avatar variant="square" src={collectionDefaultImgUrl}></Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    <TextField name="newColName" value={this.state.newColName} onChange={this.handleChange} placeholder="Collection Name" margin="normal" />
-                  }
-                />
-                <ListItemSecondaryAction>
-                  {this.state.collectionCreated ? (
-                    <IconButton edge="end">
-                      <DoneIcon />
-                    </IconButton>
-                  ) : (
-                    <IconButton edge="end" onClick={this.handleCreateCollection}>
-                      <AddBox />
-                    </IconButton>
-                  )}
-                </ListItemSecondaryAction>
-              </ListItem>
-              {/* <ListItem style={{ paddingBottom: 0 }}>
-                <ListItemText primary={"Make Private"} />
-                <ListItemSecondaryAction>
-                  <FormControlLabel
-                    labelPlacement="start"
-                    control={<Switch checked={this.state.private} onChange={this.handleSwitchChange} value="checked" name="private" color="primary" />}
-                    label="Make Private"
-                  />
-                </ListItemSecondaryAction>
-              </ListItem> */}
-            </List>
-            <Box display="flex" flexDirection="row-reverse" style={{ paddingRight: "1em" }}>
-              <FormControlLabel
-                labelPlacement="start"
-                control={<Switch checked={this.state.private} onChange={this.handleSwitchChange} value="checked" name="private" color="secondary" />}
-                label="Make Private"
-              />
-            </Box>
-          </div>
-          <Typography variant="h6">Add to existing collection</Typography>
-          <div>
-            <List>
-              {this.props.colUi.userCollections.map((collection, i) => {
-                return (
-                  <ListItem key={i}>
+                <IconButton onClick={this.handleClose}>
+                  <CloseIcon />
+                </IconButton>
+              </Grid>
+
+              <div>
+                <List style={{ paddingBottom: 0 }}>
+                  <ListItem style={{ paddingBottom: 0 }}>
                     <ListItemAvatar>
-                      <Avatar src={collectionDefaultImgUrl} variant="square"></Avatar>
+                      <Avatar variant="square" src={collectionDefaultImgUrl}></Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={collection.colName} secondary={collection.colDescription ? collection.colDescription : null} />
+                    <ListItemText
+                      primary={
+                        <TextField name="newColName" value={this.state.newColName} onChange={this.handleChange} placeholder="Collection Name" margin="normal" />
+                      }
+                    />
                     <ListItemSecondaryAction>
-                      <IconButton
-                        edge="end"
-                        id={collection.colId}
-                        onClick={() => this.handleAddToCollection(collection.colId, i)}
-                        disabled={collection.containsDeck}
-                      >
-                        <AddBox />
-                      </IconButton>
+                      {colDialogSuccessCodes.includes("createCollection/collection-created") ? (
+                        <IconButton edge="end">
+                          <DoneIcon />
+                        </IconButton>
+                      ) : (
+                        <IconButton edge="end" onClick={this.handleCreateCollection}>
+                          <AddBox />
+                        </IconButton>
+                      )}
                     </ListItemSecondaryAction>
                   </ListItem>
-                );
-              })}
-            </List>
-          </div>
+                </List>
+                {colDialogStatus == "ERROR" &&
+                  (colDialogErrorCodes.includes("createCollection/invalid-collection-name") ? (
+                    <Typography color="error" align="center">
+                      Invalid collection name!
+                    </Typography>
+                  ) : (
+                    colDialogErrorCodes.includes("createCollection/empty-collection-name") && (
+                      <Typography color="error" align="center">
+                        Collection name must not be empty!
+                      </Typography>
+                    )
+                  ))}
+                <Box display="flex" flexDirection="row-reverse" style={{ paddingRight: "1em" }}>
+                  <FormControlLabel
+                    labelPlacement="start"
+                    control={<Switch checked={this.state.private} onChange={this.handleSwitchChange} value="checked" name="private" color="secondary" />}
+                    label="Make Private"
+                  />
+                </Box>
+              </div>
+              <Typography variant="h6">Add to existing collection</Typography>
+              <div>
+                <List>
+                  {this.props.colUi.userCollections.map((collection, i) => {
+                    return (
+                      <ListItem key={i}>
+                        <ListItemAvatar>
+                          <Avatar src={collectionDefaultImgUrl} variant="square"></Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary={collection.colName} secondary={collection.colDescription ? collection.colDescription : null} />
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge="end"
+                            id={collection.colId}
+                            onClick={() => this.handleAddToCollection(collection.colId, i)}
+                            disabled={collection.containsDeck}
+                          >
+                            <AddBox />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    );
+                  })}
+                </List>
+              </div>
+            </React.Fragment>
+          )}
         </DialogContent>
       </Dialog>
     );

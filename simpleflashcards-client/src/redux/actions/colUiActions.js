@@ -10,7 +10,11 @@ import {
   ADD_DECK_TO_COLLECTION,
   SET_STATUS_BUSY,
   SET_STATUS_ERROR,
-  SET_STATUS_SUCCESS
+  SET_STATUS_SUCCESS,
+  SET_COL_DIALOG_STATUS_BUSY,
+  SET_COL_DIALOG_STATUS_ERROR,
+  SET_COL_DIALOG_STATUS_SUCCESS,
+  CLEAR_COL_DIALOG_STATUS
 } from "../types";
 import axios from "axios";
 
@@ -51,14 +55,17 @@ export const clearPinnedCollections = () => dispatch => {
 };
 
 export const getUserCollectionsWithDeckInfo = deckId => dispatch => {
-  //dispatch({ type: LOADING_COLLECTION_UI });
+  dispatch({ type: SET_COL_DIALOG_STATUS_BUSY });
   axios
     .get(`/getUserCollectionsWithDeckInfo/${deckId}`)
     .then(res => {
-      console.log(res.data);
       dispatch({ type: SET_USER_COLLECTIONS, payload: res.data });
+      dispatch({ type: SET_COL_DIALOG_STATUS_SUCCESS });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_COL_DIALOG_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
 };
 
 export const getCollection = colId => dispatch => {
@@ -99,34 +106,59 @@ export const openCollectionDialog = () => dispatch => {
 
 export const closeCollectionDialog = () => dispatch => {
   dispatch({ type: CLOSE_COLLECTION_DIALOG });
+  dispatch({ type: CLEAR_COL_DIALOG_STATUS });
 };
 
 export const addDeckToCollection = (colId, deckId, i) => dispatch => {
-  console.log(`Adding ${colId} ; ${deckId}`);
+  dispatch({ type: SET_COL_DIALOG_STATUS_BUSY });
   axios
     .post(`/addDeckToCollection/${colId}/${deckId}`)
     .then(() => {
       dispatch({ type: ADD_DECK_TO_COLLECTION, payload: i });
-      return false;
+      dispatch({ type: SET_COL_DIALOG_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.log(err.response);
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_COL_DIALOG_STATUS_ERROR, payload: err.response.data.errorCode });
     });
 };
 
 export const createCollection = (colName, deckId, privateCol) => dispatch => {
-  let exportData = {
-    colName: colName,
-    deckArray: [deckId],
-    private: privateCol
-  };
-  console.log(`Creating ${colName} with ${deckId}`);
-  axios
-    .post(`/createCollection`, exportData)
-    .then(() => {
-      return false;
-    })
-    .catch(err => {
-      console.log(err.response);
-    });
+  // CollectionName validation
+  const errorCode = validateUploadCollectionName(colName);
+
+  if (errorCode !== null) {
+    dispatch({ type: SET_COL_DIALOG_STATUS_ERROR, payload: errorCode });
+  } else {
+    let exportData = {
+      colName: colName,
+      deckArray: [deckId],
+      private: privateCol
+    };
+
+    dispatch({ type: SET_COL_DIALOG_STATUS_BUSY });
+    axios
+      .post(`/createCollection`, exportData)
+      .then(res => {
+        dispatch({ type: SET_COL_DIALOG_STATUS_SUCCESS, payload: res.data.successCode });
+      })
+      .catch(err => {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_COL_DIALOG_STATUS_ERROR, payload: err.response.data.errorCode });
+      });
+  }
+};
+
+const validateUploadCollectionName = colName => {
+  // CollectionName validation
+  if (colName !== "") {
+    let colNameRegex = /^[a-zA-Z0-9 ]+$/;
+    if (!colName.match(colNameRegex)) {
+      return "createCollection/invalid-collection-name";
+    }
+  } else {
+    return "createCollection/empty-collection-name";
+  }
+
+  return null;
 };

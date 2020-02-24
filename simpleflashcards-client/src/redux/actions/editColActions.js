@@ -69,7 +69,7 @@ export const getCollection = colId => dispatch => {
 const validateUploadCollectionData = colData => {
   let errors = [];
 
-  // DeckName validation
+  // CollectionName validation
   if (colData.colName !== "") {
     let colNameRegex = /^[a-zA-Z0-9 ]+$/;
     if (!colData.colName.match(colNameRegex)) {
@@ -79,7 +79,7 @@ const validateUploadCollectionData = colData => {
     errors.push("updateCollection/empty-collection-name");
   }
 
-  // DeckCards validation
+  // CollectionDecks validation
   if (colData.deckArray.length <= 0) {
     errors.push("updateCollection/empty-collection");
   }
