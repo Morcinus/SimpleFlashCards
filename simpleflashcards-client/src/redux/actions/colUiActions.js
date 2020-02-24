@@ -5,7 +5,6 @@ import {
   CLEAR_USER_COLLECTIONS,
   SET_COLLECTION,
   CLEAR_COLLECTION,
-  LOADING_COLLECTION_UI,
   OPEN_COLLECTION_DIALOG,
   CLOSE_COLLECTION_DIALOG,
   ADD_DECK_TO_COLLECTION,
@@ -52,7 +51,7 @@ export const clearPinnedCollections = () => dispatch => {
 };
 
 export const getUserCollectionsWithDeckInfo = deckId => dispatch => {
-  dispatch({ type: LOADING_COLLECTION_UI });
+  //dispatch({ type: LOADING_COLLECTION_UI });
   axios
     .get(`/getUserCollectionsWithDeckInfo/${deckId}`)
     .then(res => {
@@ -63,7 +62,7 @@ export const getUserCollectionsWithDeckInfo = deckId => dispatch => {
 };
 
 export const getCollection = colId => dispatch => {
-  dispatch({ type: LOADING_COLLECTION_UI });
+  //dispatch({ type: LOADING_COLLECTION_UI });
   axios
     .get(`/getCollection/${colId}`)
     .then(res => {
