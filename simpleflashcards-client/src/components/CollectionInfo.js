@@ -18,6 +18,7 @@ import Bookmark from "@material-ui/icons/Bookmark";
 import Share from "@material-ui/icons/Share";
 import Edit from "@material-ui/icons/Edit";
 import Lock from "@material-ui/icons/Lock";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 // Other
 import { collectionDefaultImgUrl } from "../util/other";
@@ -33,12 +34,13 @@ export class CollectionInfo extends Component {
       popoverOpen: false,
       anchorEl: null,
       copiedLink: false,
-      isPinned: null
+      isPinned: false
     };
     this.handlePinButtonClick = this.handlePinButtonClick.bind(this);
   }
 
   handleCopyClick = elementId => {
+    // Copy collection link to clipboard
     // Zdroj: https://stackoverflow.com/questions/39501289/in-reactjs-how-to-copy-text-to-clipboard
     let textField = document.createElement("textarea");
     textField.innerText = `${window.location.href}`;
@@ -74,6 +76,7 @@ export class CollectionInfo extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    // Load isPinned from colUi
     if (this.props.colUi.collection) {
       if (this.props.colUi.collection !== prevProps.colUi.collection) {
         this.setState({
@@ -84,6 +87,7 @@ export class CollectionInfo extends Component {
   }
 
   componentWillUnmount() {
+    // Pin/Unpin collection
     if (this.props.colUi.collection.isPinned !== this.state.isPinned) {
       if (this.state.isPinned) {
         this.props.pinCollection(this.props.colId);
@@ -94,106 +98,119 @@ export class CollectionInfo extends Component {
   }
 
   render() {
+    const {
+      uiStatus: { status }
+    } = this.props;
     return (
       <Grid container direction="column">
-        <Card
-          variant="outlined"
-          style={{
-            width: "174px",
-            height: "204px"
-          }}
-        >
-          <CardMedia style={{ width: "100%", height: "100%" }} image={collectionDefaultImgUrl}></CardMedia>
-        </Card>
-        <br />
-        <Typography variant="h5">
-          {this.props.colUi.collection ? this.props.colUi.collection.private ? <Lock></Lock> : "" : ""}
-          {this.props.colUi.collection ? `${this.props.colUi.collection.colName}` : "Loading..."}
-        </Typography>
+        {status == "BUSY" && (
+          <React.Fragment>
+            <Card
+              variant="outlined"
+              style={{
+                width: "174px",
+                height: "204px",
+                backgroundColor: "#d9d9d9",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              <CircularProgress />
+            </Card>
+          </React.Fragment>
+        )}
+        {status == "SUCCESS" && this.props.colUi.collection && (
+          <React.Fragment>
+            <Card
+              variant="outlined"
+              style={{
+                width: "174px",
+                height: "204px"
+              }}
+            >
+              <CardMedia style={{ width: "100%", height: "100%" }} image={collectionDefaultImgUrl}></CardMedia>
+            </Card>
 
-        <Typography>
-          {this.props.colUi.collection ? (this.props.colUi.collection.colDescription ? `${this.props.colUi.collection.colDescription}` : "") : "Loading..."}
-        </Typography>
-        <br />
-        <Typography>
-          Created by:{" "}
-          {this.props.colUi.collection ? (
-            <MUILink to={`/user/${this.props.colUi.collection.creatorName}`} component={Link}>
-              {this.props.colUi.collection.creatorName}
-            </MUILink>
-          ) : (
-            "Loading..."
-          )}
-        </Typography>
-        <br />
-        <Divider></Divider>
-        <Grid container direction="row" justify="center" alignItems="center" style={{ marginTop: "20px" }}>
-          <Button
-            item
-            variant={this.state.isPinned !== null ? (this.state.isPinned ? "contained" : "outlined") : "text"}
-            color="primary"
-            style={{ marginRight: "20px" }}
-            size="large"
-            onClick={this.handlePinButtonClick}
-          >
-            {this.state.isPinned !== null ? (
-              this.state.isPinned ? (
-                <Fragment>
-                  <Bookmark /> <Typography> Pinned</Typography>
-                </Fragment>
-              ) : (
-                <Fragment>
-                  <BookmarkBorder /> <Typography> Pin</Typography>
-                </Fragment>
-              )
-            ) : (
-              "Loading..."
-            )}
-          </Button>
+            <br />
 
-          <Button onClick={this.handlePopoverOpen} item variant="outlined" color="primary" size="large">
-            <Share /> <Typography> Share</Typography>
-          </Button>
-          <Popover
-            open={this.state.popoverOpen}
-            anchorEl={this.state.anchorEl}
-            onClose={this.handlePopoverClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "center"
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center"
-            }}
-          >
-            <Box style={{ margin: "20px" }} id="popover">
-              <Typography style={{ fontWeight: "bold", color: "#37474f" }}>Share this collection</Typography>
-              <Input defaultValue={`${window.location.href}`} readOnly={true} style={{ color: "#808080" }} />
-              <Grid container direction="row" justify="flex-start" alignItems="center">
-                <Box item flexGrow={1}>
-                  <Typography style={{ color: "#37474f" }}>{this.state.copiedLink ? "Copied!" : ""}</Typography>
-                </Box>
-                <Button item color="secondary" style={{ fontWeight: "bold" }} onClick={() => this.handleCopyClick("popover")}>
-                  Copy link
-                </Button>
-              </Grid>
-            </Box>
-          </Popover>
-        </Grid>
-        <Grid container justify="center" style={{ marginTop: "20px" }}>
-          {this.props.colUi.collection ? (
-            this.props.colUi.collection.isCreator ? (
-              <Button item variant="text" color="primary" size="large" component={Link} to={`/editCollection/${this.props.colId}`}>
-                <Edit /> <Typography> Edit Collection</Typography>
+            <Typography variant="h5">
+              {this.props.colUi.collection.private && <Lock></Lock>}
+              {this.props.colUi.collection.colName}
+            </Typography>
+            <Typography>{this.props.colUi.collection.colDescription}</Typography>
+
+            <br />
+
+            <Typography>
+              Created by:
+              <MUILink to={`/user/${this.props.colUi.collection.creatorName}`} component={Link}>
+                {this.props.colUi.collection.creatorName}
+              </MUILink>
+            </Typography>
+
+            <br />
+            <Divider></Divider>
+
+            <Grid container direction="row" justify="center" alignItems="center" style={{ marginTop: "20px" }}>
+              <Button
+                item
+                variant={this.state.isPinned !== null ? (this.state.isPinned ? "contained" : "outlined") : "text"}
+                color="primary"
+                style={{ marginRight: "20px" }}
+                size="large"
+                onClick={this.handlePinButtonClick}
+              >
+                {this.state.isPinned ? (
+                  <Fragment>
+                    <Bookmark /> <Typography> Pinned</Typography>
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <BookmarkBorder /> <Typography> Pin</Typography>
+                  </Fragment>
+                )}
               </Button>
-            ) : (
-              ""
-            )
-          ) : (
-            "Loading..."
-          )}
-        </Grid>
+
+              <Button onClick={this.handlePopoverOpen} item variant="outlined" color="primary" size="large">
+                <Share /> <Typography> Share</Typography>
+              </Button>
+              <Popover
+                open={this.state.popoverOpen}
+                anchorEl={this.state.anchorEl}
+                onClose={this.handlePopoverClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center"
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center"
+                }}
+              >
+                <Box style={{ margin: "20px" }} id="popover">
+                  <Typography style={{ fontWeight: "bold", color: "#37474f" }}>Share this collection</Typography>
+                  <Input defaultValue={`${window.location.href}`} readOnly={true} style={{ color: "#808080" }} />
+                  <Grid container direction="row" justify="flex-start" alignItems="center">
+                    <Box item flexGrow={1}>
+                      <Typography style={{ color: "#37474f" }}>{this.state.copiedLink ? "Copied!" : ""}</Typography>
+                    </Box>
+                    <Button item color="secondary" style={{ fontWeight: "bold" }} onClick={() => this.handleCopyClick("popover")}>
+                      Copy link
+                    </Button>
+                  </Grid>
+                </Box>
+              </Popover>
+            </Grid>
+            <Grid container justify="center" style={{ marginTop: "20px" }}>
+              {this.props.colUi.collection.isCreator && (
+                <Button item variant="text" color="primary" size="large" component={Link} to={`/editCollection/${this.props.colId}`}>
+                  <Edit /> <Typography> Edit Collection</Typography>
+                </Button>
+              )}
+            </Grid>
+          </React.Fragment>
+        )}
       </Grid>
     );
   }
@@ -202,11 +219,13 @@ export class CollectionInfo extends Component {
 CollectionInfo.propTypes = {
   pinCollection: PropTypes.func.isRequired,
   unpinCollection: PropTypes.func.isRequired,
-  colUi: PropTypes.object.isRequired
+  colUi: PropTypes.object.isRequired,
+  uiStatus: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  colUi: state.colUi
+  colUi: state.colUi,
+  uiStatus: state.uiStatus
 });
 
 const mapActionsToProps = {

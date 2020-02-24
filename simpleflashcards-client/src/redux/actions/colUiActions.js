@@ -62,14 +62,17 @@ export const getUserCollectionsWithDeckInfo = deckId => dispatch => {
 };
 
 export const getCollection = colId => dispatch => {
-  //dispatch({ type: LOADING_COLLECTION_UI });
+  dispatch({ type: SET_STATUS_BUSY });
   axios
     .get(`/getCollection/${colId}`)
     .then(res => {
-      console.log(res.data);
       dispatch({ type: SET_COLLECTION, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
 };
 
 export const clearCollection = () => dispatch => {
@@ -77,16 +80,16 @@ export const clearCollection = () => dispatch => {
 };
 
 export const pinCollection = colId => dispatch => {
-  console.log("Pinning collection");
   axios.post(`/pinCollection/${colId}`).catch(err => {
-    console.log(err.response.data);
+    console.error("Error:", err.response.data.errorCode);
+    dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
   });
 };
 
 export const unpinCollection = colId => dispatch => {
-  console.log("Unpinning collection");
   axios.post(`/unpinCollection/${colId}`).catch(err => {
-    console.log(err.response.data);
+    console.error("Error:", err.response.data.errorCode);
+    dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
   });
 };
 

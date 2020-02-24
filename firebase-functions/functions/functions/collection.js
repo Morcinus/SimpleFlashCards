@@ -177,7 +177,7 @@ exports.pinCollection = (req, res) => {
       .then(() => {
         res.status(200).json();
       })
-      .catch(error => res.status(500).json({ error: error.code }));
+      .catch(error => res.status(500).json({ errorCode: error.code }));
   } else {
     res.status(400).json();
   }
@@ -193,7 +193,7 @@ exports.unpinCollection = (req, res) => {
       .then(() => {
         res.status(200).json();
       })
-      .catch(error => res.status(500).json({ error: error.code }));
+      .catch(error => res.status(500).json({ errorCode: error.code }));
   } else {
     res.status(400).json();
   }
