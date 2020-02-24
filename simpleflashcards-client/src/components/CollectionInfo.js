@@ -88,11 +88,13 @@ export class CollectionInfo extends Component {
 
   componentWillUnmount() {
     // Pin/Unpin collection
-    if (this.props.colUi.collection.isPinned !== this.state.isPinned) {
-      if (this.state.isPinned) {
-        this.props.pinCollection(this.props.colId);
-      } else {
-        this.props.unpinCollection(this.props.colId);
+    if (this.props.colUi.collection) {
+      if (this.props.colUi.collection.isPinned !== this.state.isPinned) {
+        if (this.state.isPinned) {
+          this.props.pinCollection(this.props.colId);
+        } else {
+          this.props.unpinCollection(this.props.colId);
+        }
       }
     }
   }

@@ -95,11 +95,13 @@ export class DeckInfo extends Component {
 
   componentWillUnmount() {
     // Pin/Unpin deck
-    if (this.props.deckUi.deck.isPinned !== this.state.isPinned) {
-      if (this.state.isPinned) {
-        this.props.pinDeck(this.props.deckId);
-      } else {
-        this.props.unpinDeck(this.props.deckId);
+    if (this.props.deckUi.deck) {
+      if (this.props.deckUi.deck.isPinned !== this.state.isPinned) {
+        if (this.state.isPinned) {
+          this.props.pinDeck(this.props.deckId);
+        } else {
+          this.props.unpinDeck(this.props.deckId);
+        }
       }
     }
   }
