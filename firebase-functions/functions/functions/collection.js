@@ -218,11 +218,15 @@ exports.getUserCollections = (req, res) => {
         return userCollections;
       })
       .then(userCollections => {
-        res.status(200).json(userCollections);
+        if (userCollections.length > 0) {
+          res.status(200).json(userCollections);
+        } else {
+          res.status(404).json({ errorCode: "collection/no-collection-found" });
+        }
       })
-      .catch(error => res.status(500).json({ error: error.code }));
+      .catch(error => res.status(500).json({ errorCode: error.code }));
   } else {
-    res.status(400).json();
+    res.status(401).json();
   }
 };
 
@@ -260,7 +264,6 @@ exports.getPinnedCollections = (req, res) => {
       .doc(req.user.uid)
       .get()
       .then(doc => {
-        console.log(doc);
         let pinnedCollections = doc.data().pinnedCollections;
         let promises = [];
 
@@ -283,14 +286,19 @@ exports.getPinnedCollections = (req, res) => {
           });
         }
 
-        return Promise.all(promises); // Waits for the forEach loop to finish
+        // Wait for the forEach loop to finish
+        return Promise.all(promises);
       })
       .then(() => {
-        res.status(200).json(exportCollections);
+        if (exportCollections.length > 0) {
+          res.status(200).json(exportCollections);
+        } else {
+          res.status(404).json({ errorCode: "collection/no-collection-found" });
+        }
       })
-      .catch(error => res.status(500).json({ error: error.code }));
+      .catch(error => res.status(500).json({ errorCode: error.code }));
   } else {
-    res.status(400).json();
+    res.status(401).json();
   }
 };
 

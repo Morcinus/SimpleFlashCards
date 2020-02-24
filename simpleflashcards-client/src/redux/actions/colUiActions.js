@@ -8,20 +8,47 @@ import {
   LOADING_COLLECTION_UI,
   OPEN_COLLECTION_DIALOG,
   CLOSE_COLLECTION_DIALOG,
-  ADD_DECK_TO_COLLECTION
+  ADD_DECK_TO_COLLECTION,
+  SET_STATUS_BUSY,
+  SET_STATUS_ERROR,
+  SET_STATUS_SUCCESS
 } from "../types";
 import axios from "axios";
 
-// Neni SET_ERRORS ?
 export const getUserCollections = () => dispatch => {
-  dispatch({ type: LOADING_COLLECTION_UI });
+  dispatch({ type: SET_STATUS_BUSY });
   axios
     .get(`/getUserCollections`)
     .then(res => {
-      console.log(res.data);
       dispatch({ type: SET_USER_COLLECTIONS, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
+
+export const clearUserCollections = () => dispatch => {
+  dispatch({ type: CLEAR_USER_COLLECTIONS });
+};
+
+export const getPinnedCollections = () => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .get(`/getPinnedCollections`)
+    .then(res => {
+      dispatch({ type: SET_PINNED_COLLECTIONS, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS });
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
+
+export const clearPinnedCollections = () => dispatch => {
+  dispatch({ type: CLEAR_PINNED_COLLECTIONS });
 };
 
 export const getUserCollectionsWithDeckInfo = deckId => dispatch => {
@@ -35,17 +62,6 @@ export const getUserCollectionsWithDeckInfo = deckId => dispatch => {
     .catch(err => console.log(err));
 };
 
-export const getPinnedCollections = () => dispatch => {
-  dispatch({ type: LOADING_COLLECTION_UI });
-  axios
-    .get(`/getPinnedCollections`)
-    .then(res => {
-      console.log(res.data);
-      dispatch({ type: SET_PINNED_COLLECTIONS, payload: res.data });
-    })
-    .catch(err => console.log(err));
-};
-
 export const getCollection = colId => dispatch => {
   dispatch({ type: LOADING_COLLECTION_UI });
   axios
@@ -55,14 +71,6 @@ export const getCollection = colId => dispatch => {
       dispatch({ type: SET_COLLECTION, payload: res.data });
     })
     .catch(err => console.log(err));
-};
-
-export const clearPinnedCollections = () => dispatch => {
-  dispatch({ type: CLEAR_PINNED_COLLECTIONS });
-};
-
-export const clearUserCollections = () => dispatch => {
-  dispatch({ type: CLEAR_USER_COLLECTIONS });
 };
 
 export const clearCollection = () => dispatch => {

@@ -5,31 +5,47 @@ import {
   CLEAR_USER_DECKS,
   SET_DECK,
   CLEAR_DECK,
-  LOADING_DECK_UI
+  LOADING_DECK_UI,
+  SET_STATUS_BUSY,
+  SET_STATUS_ERROR,
+  SET_STATUS_SUCCESS
 } from "../types";
 import axios from "axios";
 
-// Neni SET_ERRORS ?
 export const getUserDecks = () => dispatch => {
-  dispatch({ type: LOADING_DECK_UI });
+  dispatch({ type: SET_STATUS_BUSY });
   axios
     .get(`/getUserDecks`)
     .then(res => {
-      console.log(res.data);
       dispatch({ type: SET_USER_DECKS, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
+
+export const clearUserDecks = () => dispatch => {
+  dispatch({ type: CLEAR_USER_DECKS });
 };
 
 export const getPinnedDecks = () => dispatch => {
-  dispatch({ type: LOADING_DECK_UI });
+  dispatch({ type: SET_STATUS_BUSY });
   axios
     .get(`/getPinnedDecks`)
     .then(res => {
-      console.log(res.data);
       dispatch({ type: SET_PINNED_DECKS, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
+
+export const clearPinnedDecks = () => dispatch => {
+  dispatch({ type: CLEAR_PINNED_DECKS });
 };
 
 export const getDeck = deckId => dispatch => {
@@ -41,14 +57,6 @@ export const getDeck = deckId => dispatch => {
       dispatch({ type: SET_DECK, payload: res.data });
     })
     .catch(err => console.log(err));
-};
-
-export const clearPinnedDecks = () => dispatch => {
-  dispatch({ type: CLEAR_PINNED_DECKS });
-};
-
-export const clearUserDecks = () => dispatch => {
-  dispatch({ type: CLEAR_USER_DECKS });
 };
 
 export const clearDeck = () => dispatch => {

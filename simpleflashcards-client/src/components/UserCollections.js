@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -15,17 +15,17 @@ import { collectionDefaultImgUrl } from "../util/other";
 
 // Redux
 import { connect } from "react-redux";
-import { getPinnedCollections, clearPinnedCollections } from "../redux/actions/colUiActions";
+import { getUserCollections, clearUserCollections } from "../redux/actions/colUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
-export class PinnedCollections extends Component {
+export class UserCollections extends Component {
   componentDidMount() {
-    this.props.getPinnedCollections();
+    this.props.getUserCollections();
   }
 
   componentWillUnmount() {
     this.props.clearStatus();
-    this.props.clearPinnedCollections();
+    this.props.clearUserCollections();
   }
 
   render() {
@@ -44,11 +44,11 @@ export class PinnedCollections extends Component {
         )}
         {status == "ERROR" && errorCodes.includes("collection/no-collection-found") && (
           <Typography variant="h6" color="error" align="center">
-            You don't have any pinned collections!
+            You don't have any collections!
           </Typography>
         )}
         <Grid container direction="row" justify="flex-start" alignItems="flex-start">
-          {status == "SUCCESS" && <RenderCollections collectionArray={this.props.colUi.pinnedCollections} />}
+          {status == "SUCCESS" && <RenderCollections collectionArray={this.props.colUi.userCollections} />}
         </Grid>
       </div>
     );
@@ -81,9 +81,9 @@ function RenderCollections({ collectionArray }) {
   return markup;
 }
 
-PinnedCollections.propTypes = {
-  getPinnedCollections: PropTypes.func.isRequired,
-  clearPinnedCollections: PropTypes.func.isRequired,
+UserCollections.propTypes = {
+  getUserCollections: PropTypes.func.isRequired,
+  clearUserCollections: PropTypes.func.isRequired,
   colUi: PropTypes.object.isRequired,
   clearStatus: PropTypes.func.isRequired,
   uiStatus: PropTypes.object.isRequired
@@ -95,9 +95,9 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-  getPinnedCollections,
-  clearPinnedCollections,
+  getUserCollections,
+  clearUserCollections,
   clearStatus
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(PinnedCollections);
+export default connect(mapStateToProps, mapActionsToProps)(UserCollections);

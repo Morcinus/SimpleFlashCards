@@ -396,11 +396,15 @@ exports.getUserDecks = (req, res) => {
         return userDecks;
       })
       .then(userDecks => {
-        res.status(200).json(userDecks);
+        if (userDecks.length > 0) {
+          res.status(200).json(userDecks);
+        } else {
+          res.status(404).json({ errorCode: "deck/no-deck-found" });
+        }
       })
-      .catch(error => res.status(500).json({ error: error.code }));
+      .catch(error => res.status(500).json({ errorCode: error.code }));
   } else {
-    res.status(400).json();
+    res.status(401).json();
   }
 };
 
@@ -412,7 +416,6 @@ exports.getPinnedDecks = (req, res) => {
       .doc(req.user.uid)
       .get()
       .then(doc => {
-        console.log(doc);
         let pinnedDecks = doc.data().pinnedDecks;
         let promises = [];
 
@@ -436,14 +439,19 @@ exports.getPinnedDecks = (req, res) => {
           });
         }
 
-        return Promise.all(promises); // Waits for the forEach loop to finish
+        // Wait for the forEach loop to finish
+        return Promise.all(promises);
       })
       .then(() => {
-        res.status(200).json(exportDecks);
+        if (exportDecks.length > 0) {
+          res.status(200).json(exportDecks);
+        } else {
+          res.status(404).json({ errorCode: "deck/no-deck-found" });
+        }
       })
-      .catch(error => res.status(500).json({ error: error.code }));
+      .catch(error => res.status(500).json({ errorCode: error.code }));
   } else {
-    res.status(400).json();
+    res.status(401).json();
   }
 };
 

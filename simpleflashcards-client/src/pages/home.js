@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
 // Components
-import MyDecks from "../components/MyDecks";
+import UserDecks from "../components/UserDecks";
 import PinnedDecks from "../components/PinnedDecks";
-import MyCollections from "../components/MyCollections";
+import UserCollections from "../components/UserCollections";
 import PinnedCollections from "../components/PinnedCollections";
 
 // Material UI
@@ -37,10 +37,7 @@ export class home extends Component {
             <Paper>
               <div style={{ padding: "25px 50px" }}>
                 <div>
-                  <Tabs
-                    value={this.state.selectedTabIndex}
-                    onChange={this.handleChange}
-                  >
+                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleChange}>
                     <Tab
                       label={
                         <div>
@@ -106,22 +103,16 @@ export class home extends Component {
                 <Divider></Divider>
                 <br />
 
-                {/* {this.state.selectedTabIndex === 1 ? (
-                  <PinnedDecks />
-                ) : (
-                  <MyDecks />
-                )} */}
-
                 {(() => {
                   switch (this.state.selectedTabIndex) {
                     case 1:
                       return <PinnedDecks />;
                     case 2:
-                      return <MyCollections />;
+                      return <UserCollections />;
                     case 3:
                       return <PinnedCollections />;
                     default:
-                      return <MyDecks />;
+                      return <UserDecks />;
                   }
                 })()}
 

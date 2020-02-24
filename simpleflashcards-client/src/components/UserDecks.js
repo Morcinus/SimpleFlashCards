@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -11,21 +11,21 @@ import Card from "@material-ui/core/Card";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 // Other
-import { collectionDefaultImgUrl } from "../util/other";
+import defaultDeckImageUrl from "../util/other";
 
 // Redux
 import { connect } from "react-redux";
-import { getPinnedCollections, clearPinnedCollections } from "../redux/actions/colUiActions";
+import { getUserDecks, clearUserDecks } from "../redux/actions/deckUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
-export class PinnedCollections extends Component {
+export class UserDecks extends Component {
   componentDidMount() {
-    this.props.getPinnedCollections();
+    this.props.getUserDecks();
   }
 
   componentWillUnmount() {
     this.props.clearStatus();
-    this.props.clearPinnedCollections();
+    this.props.clearUserDecks();
   }
 
   render() {
@@ -42,23 +42,23 @@ export class PinnedCollections extends Component {
             </Typography>
           </React.Fragment>
         )}
-        {status == "ERROR" && errorCodes.includes("collection/no-collection-found") && (
+        {status == "ERROR" && errorCodes.includes("deck/no-deck-found") && (
           <Typography variant="h6" color="error" align="center">
-            You don't have any pinned collections!
+            You don't have any decks!
           </Typography>
         )}
         <Grid container direction="row" justify="flex-start" alignItems="flex-start">
-          {status == "SUCCESS" && <RenderCollections collectionArray={this.props.colUi.pinnedCollections} />}
+          {status == "SUCCESS" && <RenderDecks deckArray={this.props.deckUi.userDecks} />}
         </Grid>
       </div>
     );
   }
 }
 
-function RenderCollections({ collectionArray }) {
+function RenderDecks({ deckArray }) {
   let markup = [];
 
-  for (let i = 0; i < collectionArray.length; i++) {
+  for (let i = 0; i < deckArray.length; i++) {
     markup.push(
       <Grid item>
         <Card
@@ -69,11 +69,11 @@ function RenderCollections({ collectionArray }) {
             marginRight: "20px"
           }}
         >
-          <CardActionArea style={{ width: "100%", height: "100%" }} component={Link} to={`/collection/${collectionArray[i].colId}`}>
-            <CardMedia style={{ width: "100%", height: "100%" }} image={collectionDefaultImgUrl}></CardMedia>
+          <CardActionArea style={{ width: "100%", height: "100%" }} component={Link} to={`/deck/${deckArray[i].deckId}`}>
+            <CardMedia style={{ width: "100%", height: "100%" }} image={deckArray[i].deckImage ? deckArray[i].deckImage : defaultDeckImageUrl}></CardMedia>
           </CardActionArea>
         </Card>
-        <Typography>{collectionArray[i].colName}</Typography>
+        <Typography>{deckArray[i].deckName}</Typography>
       </Grid>
     );
   }
@@ -81,23 +81,23 @@ function RenderCollections({ collectionArray }) {
   return markup;
 }
 
-PinnedCollections.propTypes = {
-  getPinnedCollections: PropTypes.func.isRequired,
-  clearPinnedCollections: PropTypes.func.isRequired,
-  colUi: PropTypes.object.isRequired,
+UserDecks.propTypes = {
+  getUserDecks: PropTypes.func.isRequired,
+  clearUserDecks: PropTypes.func.isRequired,
+  deckUi: PropTypes.object.isRequired,
   clearStatus: PropTypes.func.isRequired,
   uiStatus: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  colUi: state.colUi,
+  deckUi: state.deckUi,
   uiStatus: state.uiStatus
 });
 
 const mapActionsToProps = {
-  getPinnedCollections,
-  clearPinnedCollections,
+  getUserDecks,
+  clearUserDecks,
   clearStatus
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(PinnedCollections);
+export default connect(mapStateToProps, mapActionsToProps)(UserDecks);
