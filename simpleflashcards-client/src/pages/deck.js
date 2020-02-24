@@ -15,6 +15,7 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Bookmarks from "@material-ui/icons/Bookmarks";
 import MenuBook from "@material-ui/icons/MenuBook";
 import FitnessCenter from "@material-ui/icons/FitnessCenter";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 // Components
 import DeckInfo from "../components/DeckInfo";
@@ -24,6 +25,7 @@ import CollectionDialog from "../components/CollectionDialog";
 // Redux
 import { connect } from "react-redux";
 import { getDeck, clearDeck } from "../redux/actions/deckUiActions";
+import { clearStatus } from "../redux/actions/uiStatusActions";
 
 export class deck extends Component {
   constructor() {
@@ -44,18 +46,17 @@ export class deck extends Component {
   }
 
   componentWillUnmount() {
+    this.props.clearStatus();
     this.props.clearDeck();
   }
 
   render() {
+    const {
+      uiStatus: { status, errorCodes }
+    } = this.props;
     return (
       <div className="rootContainer">
-        <Grid
-          container
-          justify="center"
-          spacing={3}
-          style={{ marginLeft: "20px" }}
-        >
+        <Grid container justify="center" spacing={3} style={{ marginLeft: "20px" }}>
           <Grid item sm={3} lg={3} xl={3}>
             <DeckInfo deckId={this.props.match.params.deckId}></DeckInfo>
           </Grid>
@@ -63,10 +64,7 @@ export class deck extends Component {
             <Paper>
               <div style={{ padding: "25px 50px" }}>
                 <div>
-                  <Tabs
-                    value={this.state.selectedTabIndex}
-                    onChange={this.handleChange}
-                  >
+                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleChange}>
                     <Tab
                       label={
                         <div>
@@ -104,18 +102,20 @@ export class deck extends Component {
                 <Divider></Divider>
                 <br />
 
-                {this.state.selectedTabIndex === 1 ? (
-                  !this.props.deckUi.loading ? (
-                    <DeckCards />
-                  ) : (
-                    <h4>Loading...</h4>
-                  )
-                ) : !this.props.deckUi.loading ? (
-                  learnButtons(this.props.match.params.deckId)
-                ) : (
-                  <h4>Loading...</h4>
+                {status == "BUSY" && (
+                  <React.Fragment>
+                    <LinearProgress color="secondary" />
+                    <Typography variant="h5" color="secondary" align="right">
+                      Loading...
+                    </Typography>
+                  </React.Fragment>
                 )}
-
+                {status == "ERROR" && errorCodes.includes("deck/deck-not-found") && (
+                  <Typography variant="h6" color="error" align="center">
+                    Error 404: Deck not found!
+                  </Typography>
+                )}
+                {status == "SUCCESS" && (this.state.selectedTabIndex === 1 ? <DeckCards /> : learnButtons(this.props.match.params.deckId))}
                 <br />
               </div>
             </Paper>
@@ -128,85 +128,59 @@ export class deck extends Component {
 }
 
 function learnButtons(deckId) {
+  const cardActionStyle = {
+    width: "100%",
+    height: "100%",
+    textAlign: "center"
+  };
+  const iconStyle = {
+    fontSize: 75,
+    color: "#37474f"
+  };
+  const textStyle = {
+    fontWeight: "bold",
+    color: "#37474f"
+  };
+  const smallCardStyle = {
+    width: "175px",
+    height: "175px",
+    marginRight: "20px",
+    backgroundColor: "#bff27e"
+  };
+  const largeCardStyle = {
+    width: "200px",
+    height: "200px",
+    marginRight: "20px",
+    backgroundColor: "#91cc47"
+  };
+  const linkStyle = {
+    textDecoration: "none"
+  };
+
   return (
     <Grid container direction="row" justify="space-evenly" alignItems="center">
-      <Card
-        variant="outlined"
-        style={{
-          width: "175px",
-          height: "175px",
-          marginRight: "20px",
-          backgroundColor: "#bff27e",
-          alignItems: "center"
-        }}
-      >
-        <Link
-          to={`/study/${deckId}?lessonType=learn`}
-          style={{ textDecoration: "none" }}
-        >
-          <CardActionArea
-            style={{ width: "100%", height: "100%", textAlign: "center" }}
-          >
-            <MenuBook style={{ fontSize: 75, color: "#37474f" }}></MenuBook>
-            <Typography
-              style={{
-                fontWeight: "bold",
-                color: "#37474f"
-              }}
-            >
-              LEARN NEW
-            </Typography>
+      <Card variant="outlined" style={smallCardStyle}>
+        <Link to={`/study/${deckId}?lessonType=learn`} style={linkStyle}>
+          <CardActionArea style={cardActionStyle}>
+            <MenuBook style={iconStyle}></MenuBook>
+            <Typography style={textStyle}>LEARN NEW</Typography>
           </CardActionArea>
         </Link>
       </Card>
-      <Card
-        variant="outlined"
-        style={{
-          width: "200px",
-          height: "200px",
-          marginRight: "20px",
-          backgroundColor: "#91cc47"
-        }}
-      >
-        <Link
-          to={`/study/${deckId}?lessonType=study`}
-          style={{ textDecoration: "none" }}
-        >
-          <CardActionArea
-            style={{ width: "100%", height: "100%", textAlign: "center" }}
-          >
-            <MenuBook style={{ fontSize: 75, color: "#37474f" }}></MenuBook>
-            <FitnessCenter
-              style={{ fontSize: 75, color: "#37474f" }}
-            ></FitnessCenter>
-            <Typography style={{ fontWeight: "bold", color: "#37474f" }}>
-              LEARN & REVIEW
-            </Typography>
+      <Card variant="outlined" style={largeCardStyle}>
+        <Link to={`/study/${deckId}?lessonType=study`} style={linkStyle}>
+          <CardActionArea style={cardActionStyle}>
+            <MenuBook style={iconStyle}></MenuBook>
+            <FitnessCenter style={iconStyle}></FitnessCenter>
+            <Typography style={textStyle}>LEARN & REVIEW</Typography>
           </CardActionArea>
         </Link>
       </Card>
-      <Card
-        variant="outlined"
-        style={{
-          width: "175px",
-          height: "175px",
-          marginRight: "20px",
-          backgroundColor: "#bff27e"
-        }}
-      >
-        <Link
-          to={`/study/${deckId}?lessonType=review`}
-          style={{ textDecoration: "none" }}
-        >
-          <CardActionArea
-            style={{ width: "100%", height: "100%", textAlign: "center" }}
-          >
-            <FitnessCenter
-              style={{ fontSize: 75, color: "#37474f" }}
-            ></FitnessCenter>
-            <Typography style={{ fontWeight: "bold", color: "#37474f" }}>
-              REVIEW OLD
-            </Typography>
+      <Card variant="outlined" style={smallCardStyle}>
+        <Link to={`/study/${deckId}?lessonType=review`} style={linkStyle}>
+          <CardActionArea style={cardActionStyle}>
+            <FitnessCenter style={iconStyle}></FitnessCenter>
+            <Typography style={textStyle}>REVIEW OLD</Typography>
           </CardActionArea>
         </Link>
       </Card>
@@ -217,16 +191,20 @@ function learnButtons(deckId) {
 deck.propTypes = {
   getDeck: PropTypes.func.isRequired,
   clearDeck: PropTypes.func.isRequired,
-  deckUi: PropTypes.object.isRequired
+  deckUi: PropTypes.object.isRequired,
+  clearStatus: PropTypes.func.isRequired,
+  uiStatus: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  deckUi: state.deckUi
+  deckUi: state.deckUi,
+  uiStatus: state.uiStatus
 });
 
 const mapActionsToProps = {
   getDeck,
-  clearDeck
+  clearDeck,
+  clearStatus
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(deck);

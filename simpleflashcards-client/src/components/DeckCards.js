@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
-import Loop from "@material-ui/icons/Loop";
+import LoopIcon from "@material-ui/icons/Loop";
 import IconButton from "@material-ui/core/IconButton";
 
 // Redux
@@ -25,7 +25,7 @@ export class DeckCards extends Component {
   // Flips card
   flipCard(index) {
     // Changing the array item
-    // https://stackoverflow.com/questions/29537299/react-how-to-update-state-item1-in-state-using-setstate
+    // Source: https://stackoverflow.com/questions/29537299/react-how-to-update-state-item1-in-state-using-setstate
     let cardSides = [...this.state.cardSides];
 
     let cardSide = { ...cardSides[index] };
@@ -36,7 +36,7 @@ export class DeckCards extends Component {
     this.setState({ cardSides });
   }
 
-  // Flips card
+  // Flips all cards
   flipAllCards() {
     let cardSides = [...this.state.cardSides];
     let falseCount = 0;
@@ -83,19 +83,10 @@ export class DeckCards extends Component {
     return (
       <Fragment>
         <IconButton onClick={this.flipAllCards}>
-          <Loop />
+          <LoopIcon />
         </IconButton>
-        <Grid
-          container
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"
-        >
-          <RenderCards
-            cardArray={this.props.deckUi.deck.cardArray}
-            cardSides={this.state.cardSides}
-            flipCardFunction={this.flipCard}
-          />
+        <Grid container direction="row" justify="flex-start" alignItems="flex-start">
+          <RenderCards cardArray={this.props.deckUi.deck.cardArray} cardSides={this.state.cardSides} flipCardFunction={this.flipCard} />
         </Grid>
       </Fragment>
     );
@@ -105,22 +96,25 @@ export class DeckCards extends Component {
 function RenderCards({ cardArray, cardSides, flipCardFunction }) {
   let markup = [];
 
+  const frontCardStyle = {
+    width: "145px",
+    height: "170px",
+    marginRight: "20px",
+    backgroundColor: "#fff0c7"
+  };
+
+  const backCardStyle = {
+    width: "145px",
+    height: "170px",
+    marginRight: "20px",
+    backgroundColor: "#ffe499"
+  };
+
   for (let i = 0; i < cardArray.length; i++) {
     markup.push(
       <Grid item>
-        <Card
-          variant="outlined"
-          style={{
-            width: "145px",
-            height: "170px",
-            marginRight: "20px",
-            backgroundColor: "#fff0c7"
-          }}
-        >
-          <CardActionArea
-            style={{ width: "100%", height: "100%", textAlign: "center" }}
-            onClick={() => flipCardFunction(i)}
-          >
+        <Card variant="outlined" style={cardSides[i] ? backCardStyle : frontCardStyle}>
+          <CardActionArea style={{ width: "100%", height: "100%", textAlign: "center" }} onClick={() => flipCardFunction(i)}>
             <Typography variant="h6" style={{ color: "#37474f" }}>
               {cardSides[i] ? cardArray[i].body2 : cardArray[i].body1}
             </Typography>

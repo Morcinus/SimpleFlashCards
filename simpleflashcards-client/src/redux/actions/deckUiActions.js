@@ -5,7 +5,6 @@ import {
   CLEAR_USER_DECKS,
   SET_DECK,
   CLEAR_DECK,
-  LOADING_DECK_UI,
   SET_STATUS_BUSY,
   SET_STATUS_ERROR,
   SET_STATUS_SUCCESS
@@ -49,14 +48,17 @@ export const clearPinnedDecks = () => dispatch => {
 };
 
 export const getDeck = deckId => dispatch => {
-  dispatch({ type: LOADING_DECK_UI });
+  dispatch({ type: SET_STATUS_BUSY });
   axios
     .get(`/getDeck/${deckId}`)
     .then(res => {
-      console.log(res.data);
       dispatch({ type: SET_DECK, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
 };
 
 export const clearDeck = () => dispatch => {
@@ -64,15 +66,15 @@ export const clearDeck = () => dispatch => {
 };
 
 export const pinDeck = deckId => dispatch => {
-  console.log("Pinning deck");
   axios.post(`/pinDeck/${deckId}`).catch(err => {
-    console.log(err.response.data);
+    console.error("Error:", err.response.data.errorCode);
+    dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
   });
 };
 
 export const unpinDeck = deckId => dispatch => {
-  console.log("Unpinning deck");
   axios.post(`/unpinDeck/${deckId}`).catch(err => {
-    console.log(err.response.data);
+    console.error("Error:", err.response.data.errorCode);
+    dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
   });
 };
