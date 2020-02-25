@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: redux/reducers/colUiReducer.js</title>
+    <title>JSDoc: redux/actions/deckUiActions.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>redux/reducers/colUiReducer.js</h1>
+                        <h1>redux/actions/deckUiActions.js</h1>
                     </header>
                     
                     
@@ -83,140 +83,131 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import {
-  SET_USER_COLLECTIONS,
-  SET_PINNED_COLLECTIONS,
-  CLEAR_PINNED_COLLECTIONS,
-  CLEAR_USER_COLLECTIONS,
-  SET_COLLECTION,
-  CLEAR_COLLECTION,
-  OPEN_COLLECTION_DIALOG,
-  CLOSE_COLLECTION_DIALOG,
-  ADD_DECK_TO_COLLECTION,
-  SET_COL_DIALOG_STATUS_BUSY,
-  SET_COL_DIALOG_STATUS_ERROR,
-  SET_COL_DIALOG_STATUS_SUCCESS,
-  CLEAR_COL_DIALOG_STATUS
+  SET_USER_DECKS,
+  SET_PINNED_DECKS,
+  CLEAR_PINNED_DECKS,
+  CLEAR_USER_DECKS,
+  SET_DECK,
+  CLEAR_DECK,
+  SET_STATUS_BUSY,
+  SET_STATUS_ERROR,
+  SET_STATUS_SUCCESS
 } from "../types";
-
-// ColDialog Status
-const BUSY = "BUSY";
-const ERROR = "ERROR";
-const SUCCESS = "SUCCESS";
+import axios from "axios";
 
 /**
- * @module colUiReducer
- * @category ReduxReducers
- * @description Uchovává data a informace o kolekcích.
+ * @category ReduxActions
+ * @module deckUiActions
+ * @description Zde jsou funkce, které komunikují se serverem ohledně balíčků a vyvolávají změny v [deckUiReducer]{@link module:deckUiReducer} a [uiStatusReducer]{@link module:uiStatusReducer}.
  */
 
 /**
- * @type {Object} initialState
- * @description Původní stav reduceru
- * @property {Object} initialState - původní stav reduceru
- * @property {Array&lt;Object>} initialState.userCollections - Uchovává kolekce vytvořené daným uživatelem.
- * @property {Array&lt;Object>} initialState.pinnedCollections - Uchovává "připnuté" (=uložené) kolekce daného uživatele.
- * @property {Object} initialState.collection - Uchovává podrobná data o dané kolekci.
- * @property {boolean} initialState.collectionDialogOpen - Uchovává informaci, zda je otevřený/uzavřený CollectionDialog.
- * @property {string|null} initialState.colDialogStatus - Uchovává status CollectionDialogu, nabývá hodnot "BUSY", "ERROR", "SUCCESS", null.
- * @property {Array&lt;String>} initialState.colDialogErrorCodes - Uchovává error kódy CollectionDialogu.
- * @property {Array&lt;String>} initialState.colDialogSuccessCodes - Uchovává success kódy CollectionDialogu.
+ * @function getUserDecks
+ * @description Získá ze serveru seznam balíčků vytvořených uživatelem a uloží ho do reduceru.
+ * @async
  */
-const initialState = {
-  userCollections: [],
-  pinnedCollections: [],
-  collection: null,
-  collectionDialogOpen: false,
-  colDialogStatus: null,
-  colDialogErrorCodes: [],
-  colDialogSuccessCodes: []
+export const getUserDecks = () => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .get(`/getUserDecks`)
+    .then(res => {
+      dispatch({ type: SET_USER_DECKS, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS });
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
 };
 
 /**
- * @function function
- * @description Mění stav reduceru.
- * @param {Object} state - stav reduceru
- * @param {Object} action - akce, která vyvolává změnu v reduceru
- * @returns nový stav reduceru
+ * @function clearUserDecks
+ * @description Vymaže seznam balíčků vytvořených uživatelem z reduceru.
  */
-export default function(state = initialState, action) {
-  switch (action.type) {
-    case SET_USER_COLLECTIONS:
-      return {
-        ...state,
-        userCollections: action.payload
-      };
-    case SET_PINNED_COLLECTIONS:
-      return {
-        ...state,
-        pinnedCollections: action.payload
-      };
-    case CLEAR_PINNED_COLLECTIONS:
-      return {
-        ...state,
-        pinnedCollections: []
-      };
-    case CLEAR_USER_COLLECTIONS:
-      return {
-        ...state,
-        userCollections: []
-      };
-    case SET_COLLECTION:
-      return {
-        ...state,
-        collection: action.payload.collection
-      };
-    case CLEAR_COLLECTION:
-      return {
-        ...state,
-        collection: null
-      };
-    case OPEN_COLLECTION_DIALOG:
-      return {
-        ...state,
-        collectionDialogOpen: true
-      };
-    case CLOSE_COLLECTION_DIALOG:
-      return {
-        ...state,
-        collectionDialogOpen: false
-      };
-    case ADD_DECK_TO_COLLECTION:
-      return {
-        ...state,
-        userCollections: state.userCollections.map((userCollections, i) =>
-          i === action.payload ? { ...userCollections, containsDeck: true } : userCollections
-        ) // Source: https://stackoverflow.com/questions/35628774/how-to-update-single-value-inside-specific-array-item-in-redux
-      };
-    case SET_COL_DIALOG_STATUS_BUSY:
-      return {
-        ...state,
-        colDialogErrorCodes: [],
-        colDialogSuccessCodes: [],
-        colDialogStatus: BUSY
-      };
-    case SET_COL_DIALOG_STATUS_ERROR:
-      return {
-        ...state,
-        colDialogErrorCodes: [...state.colDialogErrorCodes, action.payload],
-        colDialogStatus: ERROR
-      };
-    case SET_COL_DIALOG_STATUS_SUCCESS:
-      return {
-        ...state,
-        colDialogStatus: SUCCESS,
-        colDialogSuccessCodes: action.payload ? [...state.colDialogSuccessCodes, action.payload] : [...state.colDialogSuccessCodes]
-      };
-    case CLEAR_COL_DIALOG_STATUS:
-      return {
-        ...state,
-        colDialogStatus: null,
-        colDialogErrorCodes: [],
-        colDialogSuccessCodes: []
-      };
-    default:
-      return state;
-  }
-}
+export const clearUserDecks = () => dispatch => {
+  dispatch({ type: CLEAR_USER_DECKS });
+};
+
+/**
+ * @function getPinnedDecks
+ * @description Získá ze serveru seznam balíčků připnutých uživatelem a uloží ho do reduceru.
+ * @async
+ */
+export const getPinnedDecks = () => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .get(`/getPinnedDecks`)
+    .then(res => {
+      dispatch({ type: SET_PINNED_DECKS, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS });
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
+
+/**
+ * @function clearPinnedDecks
+ * @description Vymaže seznam balíčků připnutých uživatelem z reduceru.
+ */
+export const clearPinnedDecks = () => dispatch => {
+  dispatch({ type: CLEAR_PINNED_DECKS });
+};
+
+/**
+ * @function getDeck
+ * @description Získá ze serveru prodrobná data o daném balíčku a uloží je do reduceru.
+ * @param {string} deckId - ID balíčku, o kterém se mají získat data.
+ * @async
+ */
+export const getDeck = deckId => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .get(`/getDeck/${deckId}`)
+    .then(res => {
+      dispatch({ type: SET_DECK, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS });
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
+
+/**
+ * @function clearDeck
+ * @description Smaže data o daném balíčku z reduceru.
+ */
+export const clearDeck = () => dispatch => {
+  dispatch({ type: CLEAR_DECK });
+};
+
+/**
+ * @function pinDeck
+ * @description Pošle na server požadavek, aby byl připnut daný balíček.
+ * @param {string} deckId - ID balíčku, který má být připnut.
+ * @async
+ */
+export const pinDeck = deckId => dispatch => {
+  axios.post(`/pinDeck/${deckId}`).catch(err => {
+    console.error("Error:", err.response.data.errorCode);
+    dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+  });
+};
+
+/**
+ * @function unpinDeck
+ * @description Pošle na server požadavek, aby byl odepnut daný balíček.
+ * @param {string} deckId - ID balíčku, který má být odepnut.
+ * @async
+ */
+export const unpinDeck = deckId => dispatch => {
+  axios.post(`/unpinDeck/${deckId}`).catch(err => {
+    console.error("Error:", err.response.data.errorCode);
+    dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+  });
+};
 </code></pre>
         </article>
     </section>

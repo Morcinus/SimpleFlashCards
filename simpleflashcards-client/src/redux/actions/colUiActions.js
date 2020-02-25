@@ -21,7 +21,7 @@ import axios from "axios";
 /**
  * @category ReduxActions
  * @module colUiActions
- * @description Zde jsou funkce, které komunikují se serverem a vyvolávají změny v [colUiReducer]{@link module:colUiReducer} a [uiStatusReducer]{@link module:uiStatusReducer}.
+ * @description Zde jsou funkce, které komunikují se serverem ohledně kolekcí a vyvolávají změny v [colUiReducer]{@link module:colUiReducer} a [uiStatusReducer]{@link module:uiStatusReducer}.
  */
 
 /**
@@ -100,7 +100,7 @@ export const getUserCollectionsWithDeckInfo = deckId => dispatch => {
 
 /**
  * @function getCollection
- * @description Získá ze serveru data o dané kolekci a uloží je do reduceru.
+ * @description Získá ze serveru prodrobná data o dané kolekci a uloží je do reduceru.
  * @param {string} colId - ID kolekce, o které se mají získat data.
  * @async
  */

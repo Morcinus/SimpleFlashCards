@@ -34,7 +34,7 @@ import { clearStatus } from "../redux/actions/uiStatusActions";
  * @requires colUiActions~clearCollection
  * @requires functions~colLearnButtons
  * @requires uiStatusActions~clearStatus
- * @property {Object} uiStatus
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
  */
 export class collection extends Component {
   constructor() {

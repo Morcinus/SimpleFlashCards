@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: redux/reducers/colUiReducer.js</title>
+    <title>JSDoc: redux/reducers/deckUiReducer.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>redux/reducers/colUiReducer.js</h1>
+                        <h1>redux/reducers/deckUiReducer.js</h1>
                     </header>
                     
                     
@@ -82,53 +82,26 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {
-  SET_USER_COLLECTIONS,
-  SET_PINNED_COLLECTIONS,
-  CLEAR_PINNED_COLLECTIONS,
-  CLEAR_USER_COLLECTIONS,
-  SET_COLLECTION,
-  CLEAR_COLLECTION,
-  OPEN_COLLECTION_DIALOG,
-  CLOSE_COLLECTION_DIALOG,
-  ADD_DECK_TO_COLLECTION,
-  SET_COL_DIALOG_STATUS_BUSY,
-  SET_COL_DIALOG_STATUS_ERROR,
-  SET_COL_DIALOG_STATUS_SUCCESS,
-  CLEAR_COL_DIALOG_STATUS
-} from "../types";
-
-// ColDialog Status
-const BUSY = "BUSY";
-const ERROR = "ERROR";
-const SUCCESS = "SUCCESS";
+            <pre class="prettyprint source linenums"><code>import { SET_USER_DECKS, SET_PINNED_DECKS, CLEAR_PINNED_DECKS, CLEAR_USER_DECKS, SET_DECK, CLEAR_DECK } from "../types";
 
 /**
- * @module colUiReducer
+ * @module deckUiReducer
  * @category ReduxReducers
- * @description Uchovává data a informace o kolekcích.
+ * @description Uchovává data a informace o balíčkách.
  */
 
 /**
  * @type {Object} initialState
  * @description Původní stav reduceru
  * @property {Object} initialState - původní stav reduceru
- * @property {Array&lt;Object>} initialState.userCollections - Uchovává kolekce vytvořené daným uživatelem.
- * @property {Array&lt;Object>} initialState.pinnedCollections - Uchovává "připnuté" (=uložené) kolekce daného uživatele.
- * @property {Object} initialState.collection - Uchovává podrobná data o dané kolekci.
- * @property {boolean} initialState.collectionDialogOpen - Uchovává informaci, zda je otevřený/uzavřený CollectionDialog.
- * @property {string|null} initialState.colDialogStatus - Uchovává status CollectionDialogu, nabývá hodnot "BUSY", "ERROR", "SUCCESS", null.
- * @property {Array&lt;String>} initialState.colDialogErrorCodes - Uchovává error kódy CollectionDialogu.
- * @property {Array&lt;String>} initialState.colDialogSuccessCodes - Uchovává success kódy CollectionDialogu.
+ * @property {Array&lt;Object>} initialState.userDecks - Uchovává balíčky vytvořené daným uživatelem.
+ * @property {Array&lt;Object>} initialState.pinnedDecks - Uchovává "připnuté" (=uložené) balíčky daného uživatele.
+ * @property {Object} initialState.deck - Uchovává podrobná data o daném balíčku.
  */
 const initialState = {
-  userCollections: [],
-  pinnedCollections: [],
-  collection: null,
-  collectionDialogOpen: false,
-  colDialogStatus: null,
-  colDialogErrorCodes: [],
-  colDialogSuccessCodes: []
+  userDecks: [],
+  pinnedDecks: [],
+  deck: null
 };
 
 /**
@@ -140,78 +113,35 @@ const initialState = {
  */
 export default function(state = initialState, action) {
   switch (action.type) {
-    case SET_USER_COLLECTIONS:
+    case SET_USER_DECKS:
       return {
         ...state,
-        userCollections: action.payload
+        userDecks: action.payload
       };
-    case SET_PINNED_COLLECTIONS:
+    case SET_PINNED_DECKS:
       return {
         ...state,
-        pinnedCollections: action.payload
+        pinnedDecks: action.payload
       };
-    case CLEAR_PINNED_COLLECTIONS:
+    case CLEAR_PINNED_DECKS:
       return {
         ...state,
-        pinnedCollections: []
+        pinnedDecks: []
       };
-    case CLEAR_USER_COLLECTIONS:
+    case CLEAR_USER_DECKS:
       return {
         ...state,
-        userCollections: []
+        userDecks: []
       };
-    case SET_COLLECTION:
+    case SET_DECK:
       return {
         ...state,
-        collection: action.payload.collection
+        deck: action.payload.deck
       };
-    case CLEAR_COLLECTION:
+    case CLEAR_DECK:
       return {
         ...state,
-        collection: null
-      };
-    case OPEN_COLLECTION_DIALOG:
-      return {
-        ...state,
-        collectionDialogOpen: true
-      };
-    case CLOSE_COLLECTION_DIALOG:
-      return {
-        ...state,
-        collectionDialogOpen: false
-      };
-    case ADD_DECK_TO_COLLECTION:
-      return {
-        ...state,
-        userCollections: state.userCollections.map((userCollections, i) =>
-          i === action.payload ? { ...userCollections, containsDeck: true } : userCollections
-        ) // Source: https://stackoverflow.com/questions/35628774/how-to-update-single-value-inside-specific-array-item-in-redux
-      };
-    case SET_COL_DIALOG_STATUS_BUSY:
-      return {
-        ...state,
-        colDialogErrorCodes: [],
-        colDialogSuccessCodes: [],
-        colDialogStatus: BUSY
-      };
-    case SET_COL_DIALOG_STATUS_ERROR:
-      return {
-        ...state,
-        colDialogErrorCodes: [...state.colDialogErrorCodes, action.payload],
-        colDialogStatus: ERROR
-      };
-    case SET_COL_DIALOG_STATUS_SUCCESS:
-      return {
-        ...state,
-        colDialogStatus: SUCCESS,
-        colDialogSuccessCodes: action.payload ? [...state.colDialogSuccessCodes, action.payload] : [...state.colDialogSuccessCodes]
-      };
-    case CLEAR_COL_DIALOG_STATUS:
-      return {
-        ...state,
-        colDialogStatus: null,
-        colDialogErrorCodes: [],
-        colDialogSuccessCodes: []
+        deck: null
       };
     default:
       return state;

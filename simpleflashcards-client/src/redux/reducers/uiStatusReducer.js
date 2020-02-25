@@ -5,12 +5,33 @@ const BUSY = "BUSY";
 const ERROR = "ERROR";
 const SUCCESS = "SUCCESS";
 
+/**
+ * @module uiStatusReducer
+ * @category ReduxReducers
+ * @description Uchovává informace o stavu aplikace.
+ */
+
+/**
+ * @type {Object} initialState
+ * @description Původní stav reduceru
+ * @property {Object} initialState - původní stav reduceru
+ * @property {string|null} initialState.status - Uchovává status aplikace, nabývá hodnot "BUSY", "ERROR", "SUCCESS", null.
+ * @property {Array<String>} initialState.errorCodes - Uchovává error kódy.
+ * @property {Array<String>} initialState.successCodes - Uchovává success kódy.
+ */
 const initialState = {
   status: null,
   errorCodes: [],
   successCodes: []
 };
 
+/**
+ * @function function
+ * @description Mění stav reduceru.
+ * @param {Object} state - stav reduceru
+ * @param {Object} action - akce, která vyvolává změnu v reduceru
+ * @returns nový stav reduceru
+ */
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_STATUS_BUSY:

@@ -23,6 +23,21 @@ import { connect } from "react-redux";
 import { getDeck, clearDeck } from "../redux/actions/deckUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @class deck
+ * @extends Component
+ * @category Pages
+ * @classdesc Vytvoří stránku daného balíčku.
+ * @property {Object} state - Vnitřní state komponentu
+ * @property {number} state.selectedTabIndex - Index pro Tabs komponent na této stránce
+ *
+ * @requires deckUiActions~getDeck
+ * @requires deckUiActions~clearDeck
+ * @requires functions~deckLearnButtons
+ * @requires uiStatusActions~clearStatus
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ */
+
 export class deck extends Component {
   constructor() {
     super();
@@ -31,7 +46,13 @@ export class deck extends Component {
     };
   }
 
-  handleChange = (event, newValue) => {
+  /**
+   * @function handleTabChange
+   * @memberOf deck
+   * @description Přepisuje [selectedTabIndex]{@link deck} v state tohoto komponentu při přepnutí v Tabs navigation baru
+   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link deck}
+   */
+  handleTabChange = (_, newValue) => {
     this.setState({
       selectedTabIndex: newValue
     });
@@ -60,7 +81,7 @@ export class deck extends Component {
             <Paper>
               <div style={{ padding: "25px 50px" }}>
                 <div>
-                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleChange}>
+                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleTabChange}>
                     <Tab
                       label={
                         <div>

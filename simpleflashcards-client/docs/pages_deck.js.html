@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: pages/collection.js</title>
+    <title>JSDoc: pages/deck.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>pages/collection.js</h1>
+                        <h1>pages/deck.js</h1>
                     </header>
                     
                     
@@ -82,7 +82,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
+            <pre class="prettyprint source linenums"><code>import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 
 // Material UI
@@ -96,31 +96,33 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Bookmarks from "@material-ui/icons/Bookmarks";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-// Other
-import { colLearnButtons } from "../util/functions";
-import CollectionInfo from "../components/CollectionInfo";
-import CollectionDecks from "../components/CollectionDecks";
+// Components
+import DeckInfo from "../components/DeckInfo";
+import DeckCards from "../components/DeckCards";
+import CollectionDialog from "../components/CollectionDialog";
+import { deckLearnButtons } from "../util/functions";
 
 // Redux
 import { connect } from "react-redux";
-import { getCollection, clearCollection } from "../redux/actions/colUiActions";
+import { getDeck, clearDeck } from "../redux/actions/deckUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
 /**
- * @class collection
+ * @class deck
  * @extends Component
  * @category Pages
- * @classdesc Vytvoří stránku dané kolekce.
+ * @classdesc Vytvoří stránku daného balíčku.
  * @property {Object} state - Vnitřní state komponentu
  * @property {number} state.selectedTabIndex - Index pro Tabs komponent na této stránce
  *
- * @requires colUiActions~getCollection
- * @requires colUiActions~clearCollection
- * @requires functions~colLearnButtons
+ * @requires deckUiActions~getDeck
+ * @requires deckUiActions~clearDeck
+ * @requires functions~deckLearnButtons
  * @requires uiStatusActions~clearStatus
  * @requires {@link module:store~reducers module:store~reducers.uiStatus}
  */
-export class collection extends Component {
+
+export class deck extends Component {
   constructor() {
     super();
     this.state = {
@@ -130,9 +132,9 @@ export class collection extends Component {
 
   /**
    * @function handleTabChange
-   * @memberOf collection
-   * @description Přepisuje [selectedTabIndex]{@link collection} v state tohoto komponentu při přepnutí v Tabs navigation baru
-   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link collection}
+   * @memberOf deck
+   * @description Přepisuje [selectedTabIndex]{@link deck} v state tohoto komponentu při přepnutí v Tabs navigation baru
+   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link deck}
    */
   handleTabChange = (_, newValue) => {
     this.setState({
@@ -141,12 +143,12 @@ export class collection extends Component {
   };
 
   componentDidMount() {
-    this.props.getCollection(this.props.match.params.colId);
+    this.props.getDeck(this.props.match.params.deckId);
   }
 
   componentWillUnmount() {
     this.props.clearStatus();
-    this.props.clearCollection();
+    this.props.clearDeck();
   }
 
   render() {
@@ -157,7 +159,7 @@ export class collection extends Component {
       &lt;div className="rootContainer">
         &lt;Grid container justify="center" spacing={3} style={{ marginLeft: "20px" }}>
           &lt;Grid item sm={3} lg={3} xl={3}>
-            &lt;CollectionInfo colId={this.props.match.params.colId}>&lt;/CollectionInfo>
+            &lt;DeckInfo deckId={this.props.match.params.deckId}>&lt;/DeckInfo>
           &lt;/Grid>
           &lt;Grid item sm={9} lg={9} xl={9}>
             &lt;Paper>
@@ -178,6 +180,7 @@ export class collection extends Component {
                           Learn
                         &lt;/div>
                       }
+                      to="/home"
                     />
                     &lt;Tab
                       label={
@@ -190,9 +193,10 @@ export class collection extends Component {
                               marginRight: 5
                             }}
                           />
-                          Decks
+                          Cards
                         &lt;/div>
                       }
+                      to="/create"
                     />
                   &lt;/Tabs>
                 &lt;/div>
@@ -207,44 +211,43 @@ export class collection extends Component {
                     &lt;/Typography>
                   &lt;/React.Fragment>
                 )}
-                {status == "ERROR" &amp;&amp; errorCodes.includes("collection/collection-not-found") &amp;&amp; (
+                {status == "ERROR" &amp;&amp; errorCodes.includes("deck/deck-not-found") &amp;&amp; (
                   &lt;Typography variant="h6" color="error" align="center">
-                    Error 404: Collection not found!
+                    Error 404: Deck not found!
                   &lt;/Typography>
                 )}
-
-                {status == "SUCCESS" &amp;&amp; (this.state.selectedTabIndex === 1 ? &lt;CollectionDecks /> : colLearnButtons(this.props.match.params.colId))}
-
+                {status == "SUCCESS" &amp;&amp; (this.state.selectedTabIndex === 1 ? &lt;DeckCards /> : deckLearnButtons(this.props.match.params.deckId))}
                 &lt;br />
               &lt;/div>
             &lt;/Paper>
           &lt;/Grid>
         &lt;/Grid>
+        &lt;CollectionDialog deckId={this.props.match.params.deckId} />
       &lt;/div>
     );
   }
 }
 
-collection.propTypes = {
-  getCollection: PropTypes.func.isRequired,
-  clearCollection: PropTypes.func.isRequired,
-  colUi: PropTypes.object.isRequired,
+deck.propTypes = {
+  getDeck: PropTypes.func.isRequired,
+  clearDeck: PropTypes.func.isRequired,
+  deckUi: PropTypes.object.isRequired,
   clearStatus: PropTypes.func.isRequired,
   uiStatus: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  colUi: state.colUi,
+  deckUi: state.deckUi,
   uiStatus: state.uiStatus
 });
 
 const mapActionsToProps = {
-  getCollection,
-  clearCollection,
+  getDeck,
+  clearDeck,
   clearStatus
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(collection);
+export default connect(mapStateToProps, mapActionsToProps)(deck);
 </code></pre>
         </article>
     </section>

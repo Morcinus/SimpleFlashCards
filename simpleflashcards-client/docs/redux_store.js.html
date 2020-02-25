@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: redux/reducers/colUiReducer.js</title>
+    <title>JSDoc: redux/store.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>redux/reducers/colUiReducer.js</h1>
+                        <h1>redux/store.js</h1>
                     </header>
                     
                     
@@ -82,141 +82,64 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {
-  SET_USER_COLLECTIONS,
-  SET_PINNED_COLLECTIONS,
-  CLEAR_PINNED_COLLECTIONS,
-  CLEAR_USER_COLLECTIONS,
-  SET_COLLECTION,
-  CLEAR_COLLECTION,
-  OPEN_COLLECTION_DIALOG,
-  CLOSE_COLLECTION_DIALOG,
-  ADD_DECK_TO_COLLECTION,
-  SET_COL_DIALOG_STATUS_BUSY,
-  SET_COL_DIALOG_STATUS_ERROR,
-  SET_COL_DIALOG_STATUS_SUCCESS,
-  CLEAR_COL_DIALOG_STATUS
-} from "../types";
+            <pre class="prettyprint source linenums"><code>import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import thunk from "redux-thunk";
 
-// ColDialog Status
-const BUSY = "BUSY";
-const ERROR = "ERROR";
-const SUCCESS = "SUCCESS";
+// Reducers
+import userReducer from "./reducers/userReducer";
+import uiStatusReducer from "./reducers/uiStatusReducer";
+import createDeckReducer from "./reducers/createDeckReducer";
+import editDeckReducer from "./reducers/editDeckReducer";
+import deckUiReducer from "./reducers/deckUiReducer";
+import deckStudyReducer from "./reducers/deckStudyReducer";
+import colUiReducer from "./reducers/colUiReducer";
+import colStudyReducer from "./reducers/colStudyReducer";
+import editColReducer from "./reducers/editColReducer";
+
+const initialState = {};
+
+const middleware = [thunk];
 
 /**
- * @module colUiReducer
- * @category ReduxReducers
- * @description Uchovává data a informace o kolekcích.
+ * @category Ostatní
+ * @module store
+ * @description Zde se ze všech reducerů vytvoří store, který uchovává všechny hodnoty.
  */
 
 /**
- * @type {Object} initialState
- * @description Původní stav reduceru
- * @property {Object} initialState - původní stav reduceru
- * @property {Array&lt;Object>} initialState.userCollections - Uchovává kolekce vytvořené daným uživatelem.
- * @property {Array&lt;Object>} initialState.pinnedCollections - Uchovává "připnuté" (=uložené) kolekce daného uživatele.
- * @property {Object} initialState.collection - Uchovává podrobná data o dané kolekci.
- * @property {boolean} initialState.collectionDialogOpen - Uchovává informaci, zda je otevřený/uzavřený CollectionDialog.
- * @property {string|null} initialState.colDialogStatus - Uchovává status CollectionDialogu, nabývá hodnot "BUSY", "ERROR", "SUCCESS", null.
- * @property {Array&lt;String>} initialState.colDialogErrorCodes - Uchovává error kódy CollectionDialogu.
- * @property {Array&lt;String>} initialState.colDialogSuccessCodes - Uchovává success kódy CollectionDialogu.
+ * @constant reducers
+ * @type {Object} reducers
+ * @description Seznam všech reducerů
+ * @property {Object} reducers - Seznam všech reducerů
+ * @property {Object} reducers.user - [userReducer]{@link module:userReducer}
+ * @property {Object} reducers.uiStatus - [uiStatusReducer]{@link module:uiStatusReducer}
+ * @property {Object} reducers.deckCreation - [createDeckReducer]{@link module:createDeckReducer}
+ * @property {Object} reducers.deckEdit - [editDeckReducer]{@link module:editDeckReducer}
+ * @property {Object} reducers.deckUi - [deckUiReducer]{@link module:deckUiReducer}
+ * @property {Object} reducers.deckStudy - [deckStudyReducer]{@link module:deckStudyReducer}
+ * @property {Object} reducers.colUi - [colUiReducer]{@link module:colUiReducer}
+ * @property {Object} reducers.colStudy - [colStudyReducer]{@link module:colStudyReducer}
+ * @property {Object} reducers.colEdit - [editColReducer]{@link module:editColReducer}
  */
-const initialState = {
-  userCollections: [],
-  pinnedCollections: [],
-  collection: null,
-  collectionDialogOpen: false,
-  colDialogStatus: null,
-  colDialogErrorCodes: [],
-  colDialogSuccessCodes: []
-};
+const reducers = combineReducers({
+  user: userReducer,
+  uiStatus: uiStatusReducer,
+  deckCreation: createDeckReducer,
+  deckEdit: editDeckReducer,
+  deckUi: deckUiReducer,
+  deckStudy: deckStudyReducer,
+  colUi: colUiReducer,
+  colStudy: colStudyReducer,
+  colEdit: editColReducer
+});
 
-/**
- * @function function
- * @description Mění stav reduceru.
- * @param {Object} state - stav reduceru
- * @param {Object} action - akce, která vyvolává změnu v reduceru
- * @returns nový stav reduceru
- */
-export default function(state = initialState, action) {
-  switch (action.type) {
-    case SET_USER_COLLECTIONS:
-      return {
-        ...state,
-        userCollections: action.payload
-      };
-    case SET_PINNED_COLLECTIONS:
-      return {
-        ...state,
-        pinnedCollections: action.payload
-      };
-    case CLEAR_PINNED_COLLECTIONS:
-      return {
-        ...state,
-        pinnedCollections: []
-      };
-    case CLEAR_USER_COLLECTIONS:
-      return {
-        ...state,
-        userCollections: []
-      };
-    case SET_COLLECTION:
-      return {
-        ...state,
-        collection: action.payload.collection
-      };
-    case CLEAR_COLLECTION:
-      return {
-        ...state,
-        collection: null
-      };
-    case OPEN_COLLECTION_DIALOG:
-      return {
-        ...state,
-        collectionDialogOpen: true
-      };
-    case CLOSE_COLLECTION_DIALOG:
-      return {
-        ...state,
-        collectionDialogOpen: false
-      };
-    case ADD_DECK_TO_COLLECTION:
-      return {
-        ...state,
-        userCollections: state.userCollections.map((userCollections, i) =>
-          i === action.payload ? { ...userCollections, containsDeck: true } : userCollections
-        ) // Source: https://stackoverflow.com/questions/35628774/how-to-update-single-value-inside-specific-array-item-in-redux
-      };
-    case SET_COL_DIALOG_STATUS_BUSY:
-      return {
-        ...state,
-        colDialogErrorCodes: [],
-        colDialogSuccessCodes: [],
-        colDialogStatus: BUSY
-      };
-    case SET_COL_DIALOG_STATUS_ERROR:
-      return {
-        ...state,
-        colDialogErrorCodes: [...state.colDialogErrorCodes, action.payload],
-        colDialogStatus: ERROR
-      };
-    case SET_COL_DIALOG_STATUS_SUCCESS:
-      return {
-        ...state,
-        colDialogStatus: SUCCESS,
-        colDialogSuccessCodes: action.payload ? [...state.colDialogSuccessCodes, action.payload] : [...state.colDialogSuccessCodes]
-      };
-    case CLEAR_COL_DIALOG_STATUS:
-      return {
-        ...state,
-        colDialogStatus: null,
-        colDialogErrorCodes: [],
-        colDialogSuccessCodes: []
-      };
-    default:
-      return state;
-  }
-}
+const store = createStore(
+  reducers,
+  initialState,
+  compose(applyMiddleware(...middleware), window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f)
+);
+
+export default store;
 </code></pre>
         </article>
     </section>

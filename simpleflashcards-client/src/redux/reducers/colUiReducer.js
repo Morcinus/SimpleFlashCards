@@ -27,18 +27,20 @@ const SUCCESS = "SUCCESS";
 
 /**
  * @type {Object} initialState
- * @description Původní state reduceru
- * @property {Object} initialState - Původní state reduceru
+ * @description Původní stav reduceru
+ * @property {Object} initialState - původní stav reduceru
  * @property {Array<Object>} initialState.userCollections - Uchovává kolekce vytvořené daným uživatelem.
  * @property {Array<Object>} initialState.pinnedCollections - Uchovává "připnuté" (=uložené) kolekce daného uživatele.
+ * @property {Object} initialState.collection - Uchovává podrobná data o dané kolekci.
  * @property {boolean} initialState.collectionDialogOpen - Uchovává informaci, zda je otevřený/uzavřený CollectionDialog.
- * @property {string|null} initialState.colDialogStatus - Uchovává error kódy CollectionDialogu, nabývá hodnot "BUSY", "ERROR", "SUCCESS", null.
+ * @property {string|null} initialState.colDialogStatus - Uchovává status CollectionDialogu, nabývá hodnot "BUSY", "ERROR", "SUCCESS", null.
  * @property {Array<String>} initialState.colDialogErrorCodes - Uchovává error kódy CollectionDialogu.
  * @property {Array<String>} initialState.colDialogSuccessCodes - Uchovává success kódy CollectionDialogu.
  */
 const initialState = {
   userCollections: [],
   pinnedCollections: [],
+  collection: null,
   collectionDialogOpen: false,
   colDialogStatus: null,
   colDialogErrorCodes: [],
@@ -47,10 +49,10 @@ const initialState = {
 
 /**
  * @function function
- * @description Mění state reduceru.
- * @param {Object} state - state reduceru
- * @param {Object} action - action, která vyvolává změnu v reduceru
- * @returns nový state
+ * @description Mění stav reduceru.
+ * @param {Object} state - stav reduceru
+ * @param {Object} action - akce, která vyvolává změnu v reduceru
+ * @returns nový stav reduceru
  */
 export default function(state = initialState, action) {
   switch (action.type) {
