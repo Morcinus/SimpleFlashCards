@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Material UI
@@ -8,15 +7,13 @@ import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import Typography from "@material-ui/core/Typography";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Bookmarks from "@material-ui/icons/Bookmarks";
-import MenuBook from "@material-ui/icons/MenuBook";
-import FitnessCenter from "@material-ui/icons/FitnessCenter";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
+// Other
+import { colLearnButtons } from "../util/functions";
 import CollectionInfo from "../components/CollectionInfo";
 import CollectionDecks from "../components/CollectionDecks";
 
@@ -25,6 +22,20 @@ import { connect } from "react-redux";
 import { getCollection, clearCollection } from "../redux/actions/colUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @class collection
+ * @extends Component
+ * @category Pages
+ * @classdesc Vytvoří stránku dané kolekce.
+ * @property {Object} state - Vnitřní state komponentu
+ * @property {number} state.selectedTabIndex - Index pro Tabs komponent na této stránce
+ *
+ * @requires colUiActions~getCollection
+ * @requires colUiActions~clearCollection
+ * @requires functions~colLearnButtons
+ * @requires uiStatusActions~clearStatus
+ * @property {Object} uiStatus
+ */
 export class collection extends Component {
   constructor() {
     super();
@@ -33,7 +44,13 @@ export class collection extends Component {
     };
   }
 
-  handleChange = (event, newValue) => {
+  /**
+   * @function handleTabChange
+   * @memberOf collection
+   * @description Přepisuje [selectedTabIndex]{@link collection} v state tohoto komponentu při přepnutí v Tabs navigation baru
+   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link collection}
+   */
+  handleTabChange = (_, newValue) => {
     this.setState({
       selectedTabIndex: newValue
     });
@@ -62,7 +79,7 @@ export class collection extends Component {
             <Paper>
               <div style={{ padding: "25px 50px" }}>
                 <div>
-                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleChange}>
+                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleTabChange}>
                     <Tab
                       label={
                         <div>
@@ -112,7 +129,7 @@ export class collection extends Component {
                   </Typography>
                 )}
 
-                {status == "SUCCESS" && (this.state.selectedTabIndex === 1 ? <CollectionDecks /> : learnButtons(this.props.match.params.colId))}
+                {status == "SUCCESS" && (this.state.selectedTabIndex === 1 ? <CollectionDecks /> : colLearnButtons(this.props.match.params.colId))}
 
                 <br />
               </div>
@@ -122,67 +139,6 @@ export class collection extends Component {
       </div>
     );
   }
-}
-
-function learnButtons(colId) {
-  const cardActionStyle = {
-    width: "100%",
-    height: "100%",
-    textAlign: "center"
-  };
-  const iconStyle = {
-    fontSize: 75,
-    color: "#37474f"
-  };
-  const textStyle = {
-    fontWeight: "bold",
-    color: "#37474f"
-  };
-  const smallCardStyle = {
-    width: "175px",
-    height: "175px",
-    marginRight: "20px",
-    backgroundColor: "#bff27e"
-  };
-  const largeCardStyle = {
-    width: "200px",
-    height: "200px",
-    marginRight: "20px",
-    backgroundColor: "#91cc47"
-  };
-  const linkStyle = {
-    textDecoration: "none"
-  };
-
-  return (
-    <Grid container direction="row" justify="space-evenly" alignItems="center">
-      <Card variant="outlined" style={smallCardStyle}>
-        <Link to={`/studyCollection/${colId}?lessonType=learn`} style={linkStyle}>
-          <CardActionArea style={cardActionStyle}>
-            <MenuBook style={iconStyle}></MenuBook>
-            <Typography style={textStyle}>LEARN NEW</Typography>
-          </CardActionArea>
-        </Link>
-      </Card>
-      <Card variant="outlined" style={largeCardStyle}>
-        <Link to={`/studyCollection/${colId}?lessonType=study`} style={linkStyle}>
-          <CardActionArea style={cardActionStyle}>
-            <MenuBook style={iconStyle}></MenuBook>
-            <FitnessCenter style={iconStyle}></FitnessCenter>
-            <Typography style={textStyle}>LEARN & REVIEW</Typography>
-          </CardActionArea>
-        </Link>
-      </Card>
-      <Card variant="outlined" style={smallCardStyle}>
-        <Link to={`/studyCollection/${colId}?lessonType=review`} style={linkStyle}>
-          <CardActionArea style={cardActionStyle}>
-            <FitnessCenter style={iconStyle}></FitnessCenter>
-            <Typography style={textStyle}>REVIEW OLD</Typography>
-          </CardActionArea>
-        </Link>
-      </Card>
-    </Grid>
-  );
 }
 
 collection.propTypes = {

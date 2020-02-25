@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Material UI
@@ -8,19 +7,16 @@ import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import Typography from "@material-ui/core/Typography";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Bookmarks from "@material-ui/icons/Bookmarks";
-import MenuBook from "@material-ui/icons/MenuBook";
-import FitnessCenter from "@material-ui/icons/FitnessCenter";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 // Components
 import DeckInfo from "../components/DeckInfo";
 import DeckCards from "../components/DeckCards";
 import CollectionDialog from "../components/CollectionDialog";
+import { deckLearnButtons } from "../util/functions";
 
 // Redux
 import { connect } from "react-redux";
@@ -115,7 +111,7 @@ export class deck extends Component {
                     Error 404: Deck not found!
                   </Typography>
                 )}
-                {status == "SUCCESS" && (this.state.selectedTabIndex === 1 ? <DeckCards /> : learnButtons(this.props.match.params.deckId))}
+                {status == "SUCCESS" && (this.state.selectedTabIndex === 1 ? <DeckCards /> : deckLearnButtons(this.props.match.params.deckId))}
                 <br />
               </div>
             </Paper>
@@ -125,67 +121,6 @@ export class deck extends Component {
       </div>
     );
   }
-}
-
-function learnButtons(deckId) {
-  const cardActionStyle = {
-    width: "100%",
-    height: "100%",
-    textAlign: "center"
-  };
-  const iconStyle = {
-    fontSize: 75,
-    color: "#37474f"
-  };
-  const textStyle = {
-    fontWeight: "bold",
-    color: "#37474f"
-  };
-  const smallCardStyle = {
-    width: "175px",
-    height: "175px",
-    marginRight: "20px",
-    backgroundColor: "#bff27e"
-  };
-  const largeCardStyle = {
-    width: "200px",
-    height: "200px",
-    marginRight: "20px",
-    backgroundColor: "#91cc47"
-  };
-  const linkStyle = {
-    textDecoration: "none"
-  };
-
-  return (
-    <Grid container direction="row" justify="space-evenly" alignItems="center">
-      <Card variant="outlined" style={smallCardStyle}>
-        <Link to={`/studyDeck/${deckId}?lessonType=learn`} style={linkStyle}>
-          <CardActionArea style={cardActionStyle}>
-            <MenuBook style={iconStyle}></MenuBook>
-            <Typography style={textStyle}>LEARN NEW</Typography>
-          </CardActionArea>
-        </Link>
-      </Card>
-      <Card variant="outlined" style={largeCardStyle}>
-        <Link to={`/studyDeck/${deckId}?lessonType=study`} style={linkStyle}>
-          <CardActionArea style={cardActionStyle}>
-            <MenuBook style={iconStyle}></MenuBook>
-            <FitnessCenter style={iconStyle}></FitnessCenter>
-            <Typography style={textStyle}>LEARN & REVIEW</Typography>
-          </CardActionArea>
-        </Link>
-      </Card>
-      <Card variant="outlined" style={smallCardStyle}>
-        <Link to={`/studyDeck/${deckId}?lessonType=review`} style={linkStyle}>
-          <CardActionArea style={cardActionStyle}>
-            <FitnessCenter style={iconStyle}></FitnessCenter>
-            <Typography style={textStyle}>REVIEW OLD</Typography>
-          </CardActionArea>
-        </Link>
-      </Card>
-    </Grid>
-  );
 }
 
 deck.propTypes = {

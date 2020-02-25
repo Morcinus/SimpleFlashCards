@@ -13,7 +13,7 @@
     "react-dom": "^16.9.0",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.0",
-    "react-scripts": "3.1.1",
+    "react-scripts": "^3.4.0",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0"
   },
@@ -21,7 +21,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -38,5 +39,9 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://europe-west1-simpleflashcards-4aea0.cloudfunctions.net/api"
+  "proxy": "https://europe-west1-simpleflashcards-4aea0.cloudfunctions.net/api",
+  "devDependencies": {
+    "better-docs": "^1.4.7",
+    "jsdoc": "^3.6.3"
+  }
 }

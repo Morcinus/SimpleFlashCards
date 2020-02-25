@@ -1,0 +1,34 @@
+{
+  "source": {
+    "include": ["./src"],
+    "includePattern": ".js$"
+  },
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "plugins": ["plugins/markdown", "node_modules/better-docs/category"],
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "better-docs": {
+      "name": "Simple Flashcards Dokumentace",
+      "navigation": [
+        {
+          "label": "Github",
+          "href": "https://github.com/Morcinus/SimpleFlashCards"
+        },
+        {
+          "label": "Aplikace",
+          "href": "https://simpleflashcards-4aea0.firebaseapp.com"
+        }
+      ]
+    }
+  },
+  "opts": {
+    "encoding": "utf8",
+    "template": "node_modules/better-docs",
+    "recurse": true,
+    "verbose": true,
+    "destination": "./docs/"
+  }
+}

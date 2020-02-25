@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: collection.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                     
+                        <h1 class="navbar-item">Simple Flashcards Dokumentace</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/Morcinus/SimpleFlashCards" target="_blank">
+                                Github
+                            </a>
+                        </div>
+                    
+                        <div class="navbar-item">
+                            <a href="simpleflashcards-4aea0.firebaseapp.com" target="_blank">
+                                Aplikace
+                            </a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Pages</h2><h3>Classes</h3><ul><li><a href="collection.html">collection</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>collection.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+
+// Material UI
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Divider from "@material-ui/core/Divider";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import LibraryBooks from "@material-ui/icons/LibraryBooks";
+import Bookmarks from "@material-ui/icons/Bookmarks";
+import LinearProgress from "@material-ui/core/LinearProgress";
+
+// Other
+import { colLearnButtons } from "../util/functions";
+import CollectionInfo from "../components/CollectionInfo";
+import CollectionDecks from "../components/CollectionDecks";
+
+// Redux
+import { connect } from "react-redux";
+import { getCollection, clearCollection } from "../redux/actions/colUiActions";
+import { clearStatus } from "../redux/actions/uiStatusActions";
+
+/**
+ * @category Pages
+ * @description Create an collection component
+ * @param props
+ * @property {Object} state - The internal state of the component
+ * @property {number} state.selectedTabIndex - index pro Tab component na stránce
+ */
+export class collection extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      selectedTabIndex: 0
+    };
+  }
+
+  /**
+   * @memberOf collection
+   * @function
+   */
+  handleChange = (event, newValue) => {
+    this.setState({
+      selectedTabIndex: newValue
+    });
+  };
+
+  componentDidMount() {
+    this.props.getCollection(this.props.match.params.colId);
+  }
+
+  componentWillUnmount() {
+    this.props.clearStatus();
+    this.props.clearCollection();
+  }
+
+  render() {
+    /**
+     * Renders the component
+     */
+    const {
+      uiStatus: { status, errorCodes }
+    } = this.props;
+    return (
+      &lt;div className="rootContainer">
+        &lt;Grid container justify="center" spacing={3} style={{ marginLeft: "20px" }}>
+          &lt;Grid item sm={3} lg={3} xl={3}>
+            &lt;CollectionInfo colId={this.props.match.params.colId}>&lt;/CollectionInfo>
+          &lt;/Grid>
+          &lt;Grid item sm={9} lg={9} xl={9}>
+            &lt;Paper>
+              &lt;div style={{ padding: "25px 50px" }}>
+                &lt;div>
+                  &lt;Tabs value={this.state.selectedTabIndex} onChange={this.handleChange}>
+                    &lt;Tab
+                      label={
+                        &lt;div>
+                          &lt;LibraryBooks
+                            item
+                            style={{
+                              display: "inline-block",
+                              marginBottom: "-5px",
+                              marginRight: 5
+                            }}
+                          />
+                          Learn
+                        &lt;/div>
+                      }
+                    />
+                    &lt;Tab
+                      label={
+                        &lt;div>
+                          &lt;Bookmarks
+                            item
+                            style={{
+                              display: "inline-block",
+                              marginBottom: "-5px",
+                              marginRight: 5
+                            }}
+                          />
+                          Decks
+                        &lt;/div>
+                      }
+                    />
+                  &lt;/Tabs>
+                &lt;/div>
+                &lt;Divider>&lt;/Divider>
+                &lt;br />
+
+                {status == "BUSY" &amp;&amp; (
+                  &lt;React.Fragment>
+                    &lt;LinearProgress color="secondary" />
+                    &lt;Typography variant="h5" color="secondary" align="right">
+                      Loading...
+                    &lt;/Typography>
+                  &lt;/React.Fragment>
+                )}
+                {status == "ERROR" &amp;&amp; errorCodes.includes("collection/collection-not-found") &amp;&amp; (
+                  &lt;Typography variant="h6" color="error" align="center">
+                    Error 404: Collection not found!
+                  &lt;/Typography>
+                )}
+
+                {status == "SUCCESS" &amp;&amp; (this.state.selectedTabIndex === 1 ? &lt;CollectionDecks /> : colLearnButtons(this.props.match.params.colId))}
+
+                &lt;br />
+              &lt;/div>
+            &lt;/Paper>
+          &lt;/Grid>
+        &lt;/Grid>
+      &lt;/div>
+    );
+  }
+}
+
+collection.propTypes = {
+  getCollection: PropTypes.func.isRequired,
+  clearCollection: PropTypes.func.isRequired,
+  colUi: PropTypes.object.isRequired,
+  clearStatus: PropTypes.func.isRequired,
+  uiStatus: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  colUi: state.colUi,
+  uiStatus: state.uiStatus
+});
+
+const mapActionsToProps = {
+  getCollection,
+  clearCollection,
+  clearStatus
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(collection);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Feb 25 2020 14:13:45 GMT+0100 (GMT+01:00)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

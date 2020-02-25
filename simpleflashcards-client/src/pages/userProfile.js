@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Material UI
@@ -8,13 +7,9 @@ import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardActionArea from "@material-ui/core/CardActionArea";
 
 // Other
-import defaultDeckImageUrl from "../util/other";
-import { collectionDefaultImgUrl } from "../util/other";
+import { renderDecks, renderCollections } from "../util/functions";
 
 // Redux
 import { connect } from "react-redux";
@@ -80,14 +75,14 @@ export class userProfile extends Component {
                     <Typography variant="h5">Decks created by this user</Typography>
                     {this.props.user.userProfile.createdDecks && (
                       <Grid container direction="row" justify="flex-start" alignItems="flex-start">
-                        <RenderDecks deckArray={this.props.user.userProfile.createdDecks} />
+                        {renderDecks(this.props.user.userProfile.createdDecks)}
                       </Grid>
                     )}
                     <br />
                     <Typography variant="h5">Collections created by this user</Typography>
                     {this.props.user.userProfile.createdCollections && (
                       <Grid container direction="row" justify="flex-start" alignItems="flex-start">
-                        <RenderCollections collectionArray={this.props.user.userProfile.createdCollections} />
+                        {renderCollections(this.props.user.userProfile.createdCollections)}
                       </Grid>
                     )}
                   </React.Fragment>
@@ -99,58 +94,6 @@ export class userProfile extends Component {
       </div>
     );
   }
-}
-
-function RenderDecks({ deckArray }) {
-  let markup = [];
-
-  for (let i = 0; i < deckArray.length; i++) {
-    markup.push(
-      <Grid item>
-        <Card
-          variant="outlined"
-          style={{
-            width: "145px",
-            height: "170px",
-            marginRight: "20px"
-          }}
-        >
-          <CardActionArea style={{ width: "100%", height: "100%" }} component={Link} to={`/deck/${deckArray[i].deckId}`}>
-            <CardMedia style={{ width: "100%", height: "100%" }} image={deckArray[i].deckImage ? deckArray[i].deckImage : defaultDeckImageUrl}></CardMedia>
-          </CardActionArea>
-        </Card>
-        <Typography>{deckArray[i].deckName}</Typography>
-      </Grid>
-    );
-  }
-
-  return markup;
-}
-
-function RenderCollections({ collectionArray }) {
-  let markup = [];
-
-  for (let i = 0; i < collectionArray.length; i++) {
-    markup.push(
-      <Grid item>
-        <Card
-          variant="outlined"
-          style={{
-            width: "145px",
-            height: "170px",
-            marginRight: "20px"
-          }}
-        >
-          <CardActionArea style={{ width: "100%", height: "100%" }} component={Link} to={`/collection/${collectionArray[i].colId}`}>
-            <CardMedia style={{ width: "100%", height: "100%" }} image={collectionDefaultImgUrl}></CardMedia>
-          </CardActionArea>
-        </Card>
-        <Typography>{collectionArray[i].colName}</Typography>
-      </Grid>
-    );
-  }
-
-  return markup;
 }
 
 userProfile.propTypes = {

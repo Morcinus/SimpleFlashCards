@@ -19,6 +19,23 @@ const BUSY = "BUSY";
 const ERROR = "ERROR";
 const SUCCESS = "SUCCESS";
 
+/**
+ * @module colUiReducer
+ * @category ReduxReducers
+ * @description Uchovává data a informace o kolekcích.
+ */
+
+/**
+ * @type {Object} initialState
+ * @description Původní state reduceru
+ * @property {Object} initialState - Původní state reduceru
+ * @property {Array<Object>} initialState.userCollections - Uchovává kolekce vytvořené daným uživatelem.
+ * @property {Array<Object>} initialState.pinnedCollections - Uchovává "připnuté" (=uložené) kolekce daného uživatele.
+ * @property {boolean} initialState.collectionDialogOpen - Uchovává informaci, zda je otevřený/uzavřený CollectionDialog.
+ * @property {string|null} initialState.colDialogStatus - Uchovává error kódy CollectionDialogu, nabývá hodnot "BUSY", "ERROR", "SUCCESS", null.
+ * @property {Array<String>} initialState.colDialogErrorCodes - Uchovává error kódy CollectionDialogu.
+ * @property {Array<String>} initialState.colDialogSuccessCodes - Uchovává success kódy CollectionDialogu.
+ */
 const initialState = {
   userCollections: [],
   pinnedCollections: [],
@@ -28,6 +45,13 @@ const initialState = {
   colDialogSuccessCodes: []
 };
 
+/**
+ * @function function
+ * @description Mění state reduceru.
+ * @param {Object} state - state reduceru
+ * @param {Object} action - action, která vyvolává změnu v reduceru
+ * @returns nový state
+ */
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_USER_COLLECTIONS:

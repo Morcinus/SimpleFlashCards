@@ -1,0 +1,245 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: redux/reducers/colUiReducer.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                     
+                        <h1 class="navbar-item">Simple Flashcards Dokumentace</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/Morcinus/SimpleFlashCards" target="_blank">
+                                Github
+                            </a>
+                        </div>
+                    
+                        <div class="navbar-item">
+                            <a href="https://simpleflashcards-4aea0.firebaseapp.com" target="_blank">
+                                Aplikace
+                            </a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Pages</h2><h3>Classes</h3><ul><li><a href="collection.html">collection</a></li></ul></div><div class="category"><h2>ReduxActions</h2><h3>Modules</h3><ul><li><a href="module-colUiActions.html">colUiActions</a></li></ul></div><div class="category"><h2>ReduxReducers</h2><h3>Modules</h3><ul><li><a href="module-colUiReducer.html">colUiReducer</a></li></ul></div><div class="category"><h2>util</h2><h3>Modules</h3><ul><li><a href="module-functions.html">functions</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>redux/reducers/colUiReducer.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {
+  SET_USER_COLLECTIONS,
+  SET_PINNED_COLLECTIONS,
+  CLEAR_PINNED_COLLECTIONS,
+  CLEAR_USER_COLLECTIONS,
+  SET_COLLECTION,
+  CLEAR_COLLECTION,
+  OPEN_COLLECTION_DIALOG,
+  CLOSE_COLLECTION_DIALOG,
+  ADD_DECK_TO_COLLECTION,
+  SET_COL_DIALOG_STATUS_BUSY,
+  SET_COL_DIALOG_STATUS_ERROR,
+  SET_COL_DIALOG_STATUS_SUCCESS,
+  CLEAR_COL_DIALOG_STATUS
+} from "../types";
+
+// ColDialog Status
+const BUSY = "BUSY";
+const ERROR = "ERROR";
+const SUCCESS = "SUCCESS";
+
+/**
+ * @module colUiReducer
+ * @category ReduxReducers
+ * @description Uchovává data a informace o kolekcích.
+ */
+
+/**
+ * @type {Object} initialState
+ * @description Původní state reduceru
+ * @property {Object} initialState - Původní state reduceru
+ * @property {Array&lt;Object>} initialState.userCollections - Uchovává kolekce vytvořené daným uživatelem.
+ * @property {Array&lt;Object>} initialState.pinnedCollections - Uchovává "připnuté" (=uložené) kolekce daného uživatele.
+ * @property {boolean} initialState.collectionDialogOpen - Uchovává informaci, zda je otevřený/uzavřený CollectionDialog.
+ * @property {string|null} initialState.colDialogStatus - Uchovává error kódy CollectionDialogu, nabývá hodnot "BUSY", "ERROR", "SUCCESS", null.
+ * @property {Array&lt;String>} initialState.colDialogErrorCodes - Uchovává error kódy CollectionDialogu.
+ * @property {Array&lt;String>} initialState.colDialogSuccessCodes - Uchovává success kódy CollectionDialogu.
+ */
+const initialState = {
+  userCollections: [],
+  pinnedCollections: [],
+  collectionDialogOpen: false,
+  colDialogStatus: null,
+  colDialogErrorCodes: [],
+  colDialogSuccessCodes: []
+};
+
+/**
+ * @function function
+ * @description Mění state reduceru.
+ * @param {Object} state - state reduceru
+ * @param {Object} action - action, která vyvolává změnu v reduceru
+ * @returns nový state
+ */
+export default function(state = initialState, action) {
+  switch (action.type) {
+    case SET_USER_COLLECTIONS:
+      return {
+        ...state,
+        userCollections: action.payload
+      };
+    case SET_PINNED_COLLECTIONS:
+      return {
+        ...state,
+        pinnedCollections: action.payload
+      };
+    case CLEAR_PINNED_COLLECTIONS:
+      return {
+        ...state,
+        pinnedCollections: []
+      };
+    case CLEAR_USER_COLLECTIONS:
+      return {
+        ...state,
+        userCollections: []
+      };
+    case SET_COLLECTION:
+      return {
+        ...state,
+        collection: action.payload.collection
+      };
+    case CLEAR_COLLECTION:
+      return {
+        ...state,
+        collection: null
+      };
+    case OPEN_COLLECTION_DIALOG:
+      return {
+        ...state,
+        collectionDialogOpen: true
+      };
+    case CLOSE_COLLECTION_DIALOG:
+      return {
+        ...state,
+        collectionDialogOpen: false
+      };
+    case ADD_DECK_TO_COLLECTION:
+      return {
+        ...state,
+        userCollections: state.userCollections.map((userCollections, i) =>
+          i === action.payload ? { ...userCollections, containsDeck: true } : userCollections
+        ) // Source: https://stackoverflow.com/questions/35628774/how-to-update-single-value-inside-specific-array-item-in-redux
+      };
+    case SET_COL_DIALOG_STATUS_BUSY:
+      return {
+        ...state,
+        colDialogErrorCodes: [],
+        colDialogSuccessCodes: [],
+        colDialogStatus: BUSY
+      };
+    case SET_COL_DIALOG_STATUS_ERROR:
+      return {
+        ...state,
+        colDialogErrorCodes: [...state.colDialogErrorCodes, action.payload],
+        colDialogStatus: ERROR
+      };
+    case SET_COL_DIALOG_STATUS_SUCCESS:
+      return {
+        ...state,
+        colDialogStatus: SUCCESS,
+        colDialogSuccessCodes: action.payload ? [...state.colDialogSuccessCodes, action.payload] : [...state.colDialogSuccessCodes]
+      };
+    case CLEAR_COL_DIALOG_STATUS:
+      return {
+        ...state,
+        colDialogStatus: null,
+        colDialogErrorCodes: [],
+        colDialogSuccessCodes: []
+      };
+    default:
+      return state;
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Feb 25 2020 17:34:36 GMT+0100 (GMT+01:00)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
