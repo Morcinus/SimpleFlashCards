@@ -38,7 +38,7 @@ export const signupUser = (newUserData, history) => dispatch => {
       setAuthorizationHeader(res.data.idToken);
       dispatch({ type: SET_AUTHENTICATED });
       dispatch({ type: SET_STATUS_SUCCESS });
-      history.push("/");
+      history.push("/home");
     })
     .catch(err => {
       if (err.response.data.errorCodes) {
@@ -54,7 +54,6 @@ export const signupUser = (newUserData, history) => dispatch => {
 };
 
 export const logoutUser = () => dispatch => {
-  console.log("Logout!");
   localStorage.removeItem("FBIdToken");
   delete axios.defaults.headers.common["Authorization"];
   dispatch({ type: SET_UNAUTHENTICATED });

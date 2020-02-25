@@ -109,7 +109,7 @@ export class Navbar extends Component {
                     <Tab
                       label={
                         <div>
-                          <Home
+                          <ExitToApp
                             item
                             style={{
                               display: "inline-block",
@@ -117,11 +117,11 @@ export class Navbar extends Component {
                               marginRight: 5
                             }}
                           />
-                          Home
+                          Login
                         </div>
                       }
                       component={Link}
-                      to="/"
+                      to="/login"
                     />
                     <Tab
                       label={
@@ -139,23 +139,6 @@ export class Navbar extends Component {
                       }
                       component={Link}
                       to="/signup"
-                    />
-                    <Tab
-                      label={
-                        <div>
-                          <ExitToApp
-                            item
-                            style={{
-                              display: "inline-block",
-                              marginBottom: "-5px",
-                              marginRight: 5
-                            }}
-                          />
-                          Login
-                        </div>
-                      }
-                      component={Link}
-                      to="/login"
                     />
                   </Tabs>
                 </Box>

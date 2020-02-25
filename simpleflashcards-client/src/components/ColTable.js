@@ -15,10 +15,7 @@ export class DeckTable extends Component {
           title: "Deck Image",
           field: "imageUrl",
           render: rowData => (
-            <img
-              src={rowData.deckImage ? rowData.deckImage : defaultDeckImageUrl}
-              style={{ width: "145px", height: "170px", borderRadius: 12 }}
-            />
+            <img src={rowData.deckImage ? rowData.deckImage : defaultDeckImageUrl} style={{ width: "145px", height: "170px", borderRadius: 12 }} />
           )
         },
         { title: "Deck Name", field: "frontPage" }
@@ -41,18 +38,6 @@ export class DeckTable extends Component {
           grouping: false
         }}
         editable={{
-          // onRowAdd: newData =>
-          //   new Promise((resolve, reject) => {
-          //     setTimeout(() => {
-          //       {
-          //         const data = this.props.data;
-          //         newData.index = this.props.data.length + 1;
-          //         data.push(newData);
-          //         this.setState({ data }, () => resolve());
-          //       }
-          //       resolve();
-          //     }, 1000);
-          //   }),
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -122,8 +107,7 @@ export class DeckTable extends Component {
         localization={{
           body: {
             editRow: {
-              deleteText:
-                "Are you sure you want to remove this deck from collection?"
+              deleteText: "Are you sure you want to remove this deck from collection?"
             }
           }
         }}

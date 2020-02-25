@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import "./App.css";
 import jwtDecode from "jwt-decode";
 
@@ -21,7 +21,6 @@ import AuthRoute from "./util/AuthRoute";
 import themeFile from "./util/theme";
 
 //Pages
-import homePage from "./pages/homePage";
 import signup from "./pages/signup";
 import login from "./pages/login";
 import home from "./pages/home";
@@ -61,7 +60,7 @@ function App() {
         <BrowserRouter>
           <Navbar />
           <Switch>
-            <Route exact path="/" component={homePage} />
+            <Route exact path="/" render={() => <Redirect to="/login" />} />
             <AuthRoute exact path="/signup" component={signup} />
             <AuthRoute exact path="/login" component={login} />
             <Route exact path="/home" component={home} />
