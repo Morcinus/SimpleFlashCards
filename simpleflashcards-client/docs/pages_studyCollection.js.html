@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: pages/studyDeck.js</title>
+    <title>JSDoc: pages/studyCollection.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>pages/studyDeck.js</h1>
+                        <h1>pages/studyCollection.js</h1>
                     </header>
                     
                     
@@ -92,6 +92,8 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
 import Typography from "@material-ui/core/Typography";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Close from "@material-ui/icons/Close";
@@ -101,7 +103,13 @@ import DialogActions from "@material-ui/core/DialogActions";
 
 // Redux
 import { connect } from "react-redux";
-import { getLearnAndReviewDeck, getLearnDeck, getReviewDeck, pushDeckProgress, clearStudyDeck } from "../redux/actions/deckStudyActions";
+import {
+  getColCardsToLearnAndReview,
+  getColLearnCards,
+  getColReviewCards,
+  pushCollectionProgress,
+  clearStudyCollection
+} from "../redux/actions/colStudyActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
 // Other
@@ -111,44 +119,44 @@ import { flashCard } from "../util/functions";
 const queryString = require("query-string");
 
 /**
- * @class studyDeck
+ * @class studyCollection
  * @extends Component
  * @category Pages
- * @classdesc Na této stránce uživatel může studovat daný balíček
+ * @classdesc Na této stránce uživatel může studovat karty v dané kolekci.
  * @property {Object} state - Vnitřní state komponentu
  * @property {boolean} state.cardSide - Jak je otočená kartička, kterou uživatel momentálně studuje. Pro hodnotu false uživatel vidí přední stranu, pro hodnotu true vidí zadní.
  * @property {Array&lt;Object>} state.cardProgress - Uchovává informace o kartách a pokroku uživatele u každé z nich.
- * @property {number} state.cardArrayIndex - Uchovává informaci, kolikátou kartu z balíčku uživatel momentálně studuje.
- * @property {boolean} state.deckFinished - Uchovává informaci, zda-li uživatel už prošel všechny karty v balíčku.
+ * @property {number} state.cardArrayIndex - Uchovává informaci, kolikátou kartu z kolekce uživatel momentálně studuje.
+ * @property {boolean} state.colFinished - Uchovává informaci, zda-li uživatel už prošel všechny karty ve stažené kolekci.
  * @property {boolean} state.dialogOpen - Uchovává informaci, zda je dialogové okno otevřené či zavřené.
  *
  * @requires functions~flashCard
- * @requires deckStudyActions~getLearnAndReviewDeck
- * @requires deckStudyActions~getLearnDeck
- * @requires deckStudyActions~getReviewDeck
- * @requires deckStudyActions~pushDeckProgress
- * @requires deckStudyActions~clearStudyDeck
+ * @requires colStudyActions~getColCardsToLearnAndReview
+ * @requires colStudyActions~getColLearnCards
+ * @requires colStudyActions~getColReviewCards
+ * @requires colStudyActions~pushCollectionProgress
+ * @requires colStudyActions~clearStudyCollection
  * @requires uiStatusActions~clearStatus
  * @requires {@link module:store~reducers module:store~reducers.uiStatus}
- * @requires {@link module:store~reducers module:store~reducers.deckStudy}
+ * @requires {@link module:store~reducers module:store~reducers.colStudy}
  */
-export class studyDeck extends Component {
+export class studyCollection extends Component {
   constructor(props) {
     super(props);
     this.state = {
       cardSide: false, // false = front; true = back
       cardProgress: [],
       cardArrayIndex: 0,
-      deckFinished: false,
+      colFinished: false,
       dialogOpen: false
     };
     this.flipCard = this.flipCard.bind(this);
-    this.checkDeckFinished = this.checkDeckFinished.bind(this);
+    this.checkcolFinished = this.checkcolFinished.bind(this);
   }
 
   /**
    * @function setCardSideToFront
-   * @memberOf studyDeck
+   * @memberOf studyCollection
    * @description Otočí kartu na přední stranu tím, že přepíše cardSide v state tohoto komponentu.
    */
   setCardSideToFront() {
@@ -159,7 +167,7 @@ export class studyDeck extends Component {
 
   /**
    * @function flipCard
-   * @memberOf studyDeck
+   * @memberOf studyCollection
    * @description Otočí kartu na druhou stranu tím, že přepíše cardSide v state tohoto komponentu.
    */
   flipCard() {
@@ -171,13 +179,13 @@ export class studyDeck extends Component {
 
   /**
    * @function setCardProgress
-   * @memberOf studyDeck
+   * @memberOf studyCollection
    * @description Nastaví v cardProgress v state tohoto komponentu pokrok uživatele u dané karty.
    * @param {number} buttonIndex - Číslo tlačítka, na které uživatel kliknul. Podle toho se zapíše, jaký pokrok uživatel udělal.
    */
   setCardProgress(buttonIndex) {
-    let understandingLevel = this.props.deckStudy.currentDeck[this.state.cardArrayIndex].understandingLevel
-      ? this.props.deckStudy.currentDeck[this.state.cardArrayIndex].understandingLevel
+    let understandingLevel = this.props.colStudy.currentColCards[this.state.cardArrayIndex].understandingLevel
+      ? this.props.colStudy.currentColCards[this.state.cardArrayIndex].understandingLevel
       : 0;
 
     switch (buttonIndex) {
@@ -210,60 +218,61 @@ export class studyDeck extends Component {
         cardProgress: [
           ...prevState.cardProgress,
           {
-            cardId: this.props.deckStudy.currentDeck[prevState.cardArrayIndex].cardId,
+            cardId: this.props.colStudy.currentColCards[prevState.cardArrayIndex].cardId,
+            deckId: this.props.colStudy.currentColCards[prevState.cardArrayIndex].deckId,
             understandingLevel: understandingLevel
           }
         ],
         cardArrayIndex: prevState.cardArrayIndex + 1
       }),
       () => {
-        this.checkDeckFinished();
+        this.checkcolFinished();
       }
     );
   }
 
   /**
-   * @function checkDeckFinished
-   * @memberOf studyDeck
-   * @description Zkontroluje, zda-li uživatel prošel všechny karty v balíčku. Pokud ano, nastaví deckFinished v state tohoto komponentu na true a nahraje nový pokrok na server.
+   * @function checkcolFinished
+   * @memberOf studyCollection
+   * @description Zkontroluje, zda-li uživatel prošel všechny karty v stažené kolekci. Pokud ano, nastaví colFinished v state tohoto komponentu na true a nahraje nový pokrok na server.
    */
-  checkDeckFinished() {
-    if (this.state.cardArrayIndex >= this.props.deckStudy.currentDeck.length) {
+  checkcolFinished() {
+    if (this.state.cardArrayIndex >= this.props.colStudy.currentColCards.length) {
       this.setState({
-        deckFinished: true
+        colFinished: true
       });
-      this.props.pushDeckProgress(this.props.match.params.deckId, this.state.cardProgress);
+      this.props.pushCollectionProgress(this.state.cardProgress);
     }
   }
 
   /**
    * @function componentDidMount
-   * @memberOf studyDeck
-   * @description Na základě typu učení stáhne balíček s kartami ze serveru.
+   * @memberOf studyCollection
+   * @description Na základě typu učení stáhne karty dané kolekce ze serveru.
    */
   componentDidMount() {
     // Parse query string
     let parsedQueryString = queryString.parse(this.props.location.search);
 
-    // Gets deck from the database
+    // Gets collection from the database
     switch (parsedQueryString.lessonType) {
       case "study":
-        this.props.getLearnAndReviewDeck(this.props.match.params.deckId);
+        this.props.getColCardsToLearnAndReview(this.props.match.params.colId);
         break;
       case "learn":
-        this.props.getLearnDeck(this.props.match.params.deckId);
+        this.props.getColLearnCards(this.props.match.params.colId);
         break;
       case "review":
-        this.props.getReviewDeck(this.props.match.params.deckId);
+        this.props.getColReviewCards(this.props.match.params.colId);
         break;
       default:
-        this.props.getLearnAndReviewDeck(this.props.match.params.deckId);
+        this.props.getColCardsToLearnAndReview(this.props.match.params.colId);
     }
   }
 
   /**
    * @function handleDialogOpen
-   * @memberOf studyDeck
+   * @memberOf studyCollection
    * @description Otevře dialogové okno tím, že nastaví ve state komponentu dialogOpen na true.
    */
   handleDialogOpen = () => {
@@ -274,7 +283,7 @@ export class studyDeck extends Component {
 
   /**
    * @function handleDialogClose
-   * @memberOf studyDeck
+   * @memberOf studyCollection
    * @description Zavře dialogové okno tím, že nastaví ve state komponentu dialogOpen na false.
    */
   handleDialogClose = () => {
@@ -285,11 +294,11 @@ export class studyDeck extends Component {
 
   /**
    * @function handleQuit
-   * @memberOf studyDeck
-   * @description Vymaže data o studovaném balíčku a přesměruje uživatele na /home
+   * @memberOf studyCollection
+   * @description Vymaže data o studované kolekci a přesměruje uživatele na /home
    */
   handleQuit = () => {
-    this.props.clearStudyDeck();
+    this.props.clearStudyCollection();
     this.props.history.push("/home");
   };
 
@@ -310,7 +319,7 @@ export class studyDeck extends Component {
               &lt;div style={{ padding: "10px 15px 0px 15px" }}>
                 &lt;Box display="flex" flexWrap="nowrap">
                   &lt;Box>
-                    {this.state.deckFinished ? (
+                    {this.state.colFinished ? (
                       &lt;IconButton component={Link} to="/home">
                         &lt;Close />
                       &lt;/IconButton>
@@ -332,21 +341,20 @@ export class studyDeck extends Component {
                       &lt;LinearProgress
                         color="secondary"
                         variant="determinate"
-                        value={(this.state.cardArrayIndex / this.props.deckStudy.currentDeck.length) * 100}
+                        value={(this.state.cardArrayIndex / this.props.colStudy.currentColCards.length) * 100}
                       />
                     &lt;/Box>
                   )}
                 &lt;/Box>
 
                 &lt;br />
-
-                {this.state.deckFinished ? (
+                {this.state.colFinished ? (
                   &lt;h4>Congratulations! Studying finished.&lt;/h4>
                 ) : (
                   status !== "BUSY" &amp;&amp;
-                  (this.props.deckStudy.currentDeck.length > 0 ? (
+                  (this.props.colStudy.currentColCards.length > 0 ? (
                     &lt;Grid container direction="column" justify="center" alignItems="center">
-                      {flashCard(this.props.deckStudy.currentDeck[this.state.cardArrayIndex], this.state.cardSide, this.flipCard)}
+                      {flashCard(this.props.colStudy.currentColCards[this.state.cardArrayIndex], this.state.cardSide, this.flipCard)}
                       {this.state.cardSide === true ? (
                         &lt;div style={{ minHeight: "85px" }}>
                           &lt;Grid
@@ -436,32 +444,32 @@ export class studyDeck extends Component {
   }
 }
 
-studyDeck.propTypes = {
-  getLearnAndReviewDeck: PropTypes.func.isRequired,
-  getLearnDeck: PropTypes.func.isRequired,
-  getReviewDeck: PropTypes.func.isRequired,
-  pushDeckProgress: PropTypes.func.isRequired,
-  clearStudyDeck: PropTypes.func.isRequired,
-  deckStudy: PropTypes.object.isRequired,
+studyCollection.propTypes = {
+  getColCardsToLearnAndReview: PropTypes.func.isRequired,
+  getColLearnCards: PropTypes.func.isRequired,
+  getColReviewCards: PropTypes.func.isRequired,
+  pushCollectionProgress: PropTypes.func.isRequired,
+  clearStudyCollection: PropTypes.func.isRequired,
+  colStudy: PropTypes.object.isRequired,
   uiStatus: PropTypes.object.isRequired,
   clearStatus: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  deckStudy: state.deckStudy,
+  colStudy: state.colStudy,
   uiStatus: state.uiStatus
 });
 
 const mapActionsToProps = {
-  pushDeckProgress,
-  getLearnAndReviewDeck,
-  getLearnDeck,
-  getReviewDeck,
-  clearStudyDeck,
+  pushCollectionProgress,
+  getColCardsToLearnAndReview,
+  getColLearnCards,
+  getColReviewCards,
+  clearStudyCollection,
   clearStatus
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(studyDeck);
+export default connect(mapStateToProps, mapActionsToProps)(studyCollection);
 </code></pre>
         </article>
     </section>

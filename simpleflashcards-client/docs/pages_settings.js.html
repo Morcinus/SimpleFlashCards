@@ -1,4 +1,88 @@
-import React, { Component } from "react";
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: pages/settings.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                     
+                        <h1 class="navbar-item">Simple Flashcards Dokumentace</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/Morcinus/SimpleFlashCards" target="_blank">
+                                Github
+                            </a>
+                        </div>
+                    
+                        <div class="navbar-item">
+                            <a href="https://simpleflashcards-4aea0.firebaseapp.com" target="_blank">
+                                Aplikace
+                            </a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Ostatní</h2><h3>Modules</h3><ul><li><a href="module-store.html">store</a></li></ul></div><div class="category"><h2>Pages</h2><h3>Classes</h3><ul><li><a href="collection.html">collection</a></li><li><a href="createDeck.html">createDeck</a></li><li><a href="deck.html">deck</a></li><li><a href="editCollection.html">editCollection</a></li><li><a href="editDeck.html">editDeck</a></li><li><a href="home.html">home</a></li><li><a href="login.html">login</a></li><li><a href="settings.html">settings</a></li><li><a href="signup.html">signup</a></li><li><a href="studyCollection.html">studyCollection</a></li><li><a href="studyDeck.html">studyDeck</a></li></ul></div><div class="category"><h2>ReduxActions</h2><h3>Modules</h3><ul><li><a href="module-colStudyActions.html">colStudyActions</a></li><li><a href="module-colUiActions.html">colUiActions</a></li><li><a href="module-createDeckActions.html">createDeckActions</a></li><li><a href="module-deckStudyActions.html">deckStudyActions</a></li><li><a href="module-deckUiActions.html">deckUiActions</a></li><li><a href="module-editColActions.html">editColActions</a></li><li><a href="module-editDeckActions.html">editDeckActions</a></li><li><a href="module-uiStatusActions.html">uiStatusActions</a></li><li><a href="module-userActions.html">userActions</a></li></ul></div><div class="category"><h2>ReduxReducers</h2><h3>Modules</h3><ul><li><a href="module-colStudyReducer.html">colStudyReducer</a></li><li><a href="module-colUiReducer.html">colUiReducer</a></li><li><a href="module-createDeckReducer.html">createDeckReducer</a></li><li><a href="module-deckStudyReducer.html">deckStudyReducer</a></li><li><a href="module-deckUiReducer.html">deckUiReducer</a></li><li><a href="module-editColReducer.html">editColReducer</a></li><li><a href="module-editDeckReducer.html">editDeckReducer</a></li><li><a href="module-uiStatusReducer.html">uiStatusReducer</a></li><li><a href="module-userReducer.html">userReducer</a></li></ul></div><div class="category"><h2>util</h2><h3>Modules</h3><ul><li><a href="module-functions.html">functions</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>pages/settings.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 // Material UI
@@ -144,24 +228,24 @@ export class settings extends Component {
       uiStatus: { status, errorCodes, successCodes }
     } = this.props;
     return (
-      <div className="rootContainer">
-        <Grid container justify="center">
-          <Grid item sm={6} lg={6} xl={6}>
-            <Paper>
-              <div style={{ padding: "25px 50px" }}>
-                <Typography variant="h5">Settings</Typography>
-                <Divider></Divider>
+      &lt;div className="rootContainer">
+        &lt;Grid container justify="center">
+          &lt;Grid item sm={6} lg={6} xl={6}>
+            &lt;Paper>
+              &lt;div style={{ padding: "25px 50px" }}>
+                &lt;Typography variant="h5">Settings&lt;/Typography>
+                &lt;Divider>&lt;/Divider>
 
-                <br />
-                {status == "BUSY" && <LinearProgress color="secondary" />}
-                <List subheader={<ListSubheader>Profile Settings</ListSubheader>}>
-                  <ListItem>
-                    <ListItemIcon>
-                      <Person />
-                    </ListItemIcon>
-                    <ListItemText
+                &lt;br />
+                {status == "BUSY" &amp;&amp; &lt;LinearProgress color="secondary" />}
+                &lt;List subheader={&lt;ListSubheader>Profile Settings&lt;/ListSubheader>}>
+                  &lt;ListItem>
+                    &lt;ListItemIcon>
+                      &lt;Person />
+                    &lt;/ListItemIcon>
+                    &lt;ListItemText
                       primary={
-                        <TextField
+                        &lt;TextField
                           label="Username"
                           InputLabelProps={{
                             shrink: true
@@ -181,26 +265,26 @@ export class settings extends Component {
                           error={errorCodes.includes("settings/username-already-exists") ? true : errorCodes.includes("auth/invalid-username") ? true : false}
                         />
                       }
-                    ></ListItemText>
+                    >&lt;/ListItemText>
 
-                    <ListItemSecondaryAction>
-                      <Button
+                    &lt;ListItemSecondaryAction>
+                      &lt;Button
                         color="secondary"
                         variant="contained"
                         disabled={this.state.username === this.props.user.credentials.username}
                         onClick={() => this.handleSave("username")}
                       >
                         Save
-                      </Button>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemIcon>
-                      <Notes />
-                    </ListItemIcon>
-                    <ListItemText
+                      &lt;/Button>
+                    &lt;/ListItemSecondaryAction>
+                  &lt;/ListItem>
+                  &lt;ListItem>
+                    &lt;ListItemIcon>
+                      &lt;Notes />
+                    &lt;/ListItemIcon>
+                    &lt;ListItemText
                       primary={
-                        <TextField
+                        &lt;TextField
                           label="Profile Description"
                           InputLabelProps={{
                             shrink: true
@@ -218,30 +302,30 @@ export class settings extends Component {
                           error={errorCodes.includes("settings/too-long-bio") ? true : false}
                         />
                       }
-                    ></ListItemText>
+                    >&lt;/ListItemText>
 
-                    <ListItemSecondaryAction>
-                      <Button
+                    &lt;ListItemSecondaryAction>
+                      &lt;Button
                         color="secondary"
                         variant="contained"
                         disabled={this.state.bio === this.props.user.credentials.bio}
                         onClick={() => this.handleSave("bio")}
                       >
                         Save
-                      </Button>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </List>
-                <br />
-                <List subheader={<ListSubheader>Account Settings</ListSubheader>}>
-                  <ListItem>
-                    <ListItemIcon>
-                      <Mail />
-                    </ListItemIcon>
-                    <Grid container direction="column" justify="flex-start" alignItems="flex-start">
-                      <ListItemText
+                      &lt;/Button>
+                    &lt;/ListItemSecondaryAction>
+                  &lt;/ListItem>
+                &lt;/List>
+                &lt;br />
+                &lt;List subheader={&lt;ListSubheader>Account Settings&lt;/ListSubheader>}>
+                  &lt;ListItem>
+                    &lt;ListItemIcon>
+                      &lt;Mail />
+                    &lt;/ListItemIcon>
+                    &lt;Grid container direction="column" justify="flex-start" alignItems="flex-start">
+                      &lt;ListItemText
                         primary={
-                          <TextField
+                          &lt;TextField
                             label="Email"
                             InputLabelProps={{
                               shrink: true
@@ -259,13 +343,13 @@ export class settings extends Component {
                             error={errorCodes.includes("auth/invalid-email") ? true : false}
                           />
                         }
-                      ></ListItemText>
-                      <ListItemText
+                      >&lt;/ListItemText>
+                      &lt;ListItemText
                         primary={
                           this.state.email === this.props.user.credentials.email ? (
                             ""
                           ) : (
-                            <TextField
+                            &lt;TextField
                               label="Confirm with password:"
                               InputLabelProps={{
                                 shrink: true
@@ -279,42 +363,42 @@ export class settings extends Component {
                             />
                           )
                         }
-                      ></ListItemText>
-                    </Grid>
+                      >&lt;/ListItemText>
+                    &lt;/Grid>
 
-                    <ListItemSecondaryAction>
-                      <Button
+                    &lt;ListItemSecondaryAction>
+                      &lt;Button
                         color="secondary"
                         variant="contained"
                         disabled={this.state.email === this.props.user.credentials.email || this.state.password === ""}
                         onClick={this.handleEmailChange}
                       >
                         Save
-                      </Button>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemIcon>
-                      <Lock />
-                    </ListItemIcon>
-                    <ListItemText
+                      &lt;/Button>
+                    &lt;/ListItemSecondaryAction>
+                  &lt;/ListItem>
+                  &lt;ListItem>
+                    &lt;ListItemIcon>
+                      &lt;Lock />
+                    &lt;/ListItemIcon>
+                    &lt;ListItemText
                       primary="Password"
                       secondary={successCodes.includes("settings/password-reset-email-sent") ? "The password reset link has been sent to your email!" : ""}
-                    ></ListItemText>
+                    >&lt;/ListItemText>
 
-                    <ListItemSecondaryAction>
-                      <Button variant="outlined" onClick={this.handlePasswordReset}>
+                    &lt;ListItemSecondaryAction>
+                      &lt;Button variant="outlined" onClick={this.handlePasswordReset}>
                         Reset
-                      </Button>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </List>
-                <br />
-              </div>
-            </Paper>
-          </Grid>
-        </Grid>
-      </div>
+                      &lt;/Button>
+                    &lt;/ListItemSecondaryAction>
+                  &lt;/ListItem>
+                &lt;/List>
+                &lt;br />
+              &lt;/div>
+            &lt;/Paper>
+          &lt;/Grid>
+        &lt;/Grid>
+      &lt;/div>
     );
   }
 }
@@ -341,3 +425,31 @@ const mapActionsToProps = {
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(settings);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Feb 26 2020 14:57:14 GMT+0100 (GMT+01:00)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -16,17 +16,34 @@ import { connect } from "react-redux";
 import { getUserDataByUsername, clearUserData } from "../redux/actions/userActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @class userProfile
+ * @extends Component
+ * @category Pages
+ * @classdesc Na této stránce se zobrazuje profil daného uživatele
+ *
+ * @requires userActions~getUserDataByUsername
+ * @requires userActions~clearUserData
+ * @requires uiStatusActions~clearStatus
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ * @requires {@link module:store~reducers module:store~reducers.user}
+ */
 export class userProfile extends Component {
   constructor() {
     super();
     this.state = {};
   }
 
+  /**
+   * @function componentDidMount
+   * @memberOf userProfile
+   * @description Zkontroluje, zda se má zobrazit profil přihlášeného uživatele, nebo profil jiného uživatele. Pokud jde o jiného uživatele, stáhne jeho data.
+   */
   componentDidMount() {
-    // Check if getUserData() was already called by navbar
+    // Zkontroluje, zda byla funkce getUserData() v Navbaru zavolána
     if (this.props.location.state)
       if (this.props.location.state.isCurrentUserProfile === true) {
-        // Remove isCurrentUserProfile from location state
+        // Odstraní isCurrentUserProfile z location state
         const state = { ...this.props.location.state };
         delete state.isCurrentUserProfile;
         this.props.history.replace({ ...this.props.location, state });
@@ -35,6 +52,7 @@ export class userProfile extends Component {
   }
 
   componentWillUnmount() {
+    this.props.clearUserData();
     this.props.clearStatus();
   }
 
