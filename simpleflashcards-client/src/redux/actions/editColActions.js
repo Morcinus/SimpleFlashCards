@@ -8,10 +8,10 @@ import axios from "axios";
  */
 
 /**
- * @function deleteDeckDraft
+ * @function deleteCollectionDraft
  * @description Vymaže data kolekce z reduceru.
  */
-export const deleteDeckDraft = () => dispatch => {
+export const deleteCollectionDraft = () => dispatch => {
   dispatch({ type: DELETE_EDIT_COLLECTION_DATA });
 };
 
