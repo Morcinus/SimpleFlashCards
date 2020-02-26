@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: uiStatusActions</title>
+    <title>JSDoc: login</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -69,8 +69,8 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Module</p>
-                        <h1>uiStatusActions</h1>
+                        <p>Class</p>
+                        <h1>login</h1>
                     </header>
                     
                     
@@ -82,8 +82,9 @@
 
 <header>
     
+        <h2><span class="attribs"><span class="type-signature"></span></span>login<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            
+            <div class="class-description"><p>Na této stránce se uživatel může přihlásit pomocí emailu a hesla.</p></div>
         
     
 </header>
@@ -92,11 +93,285 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Zde jsou funkce, které  vyvolávají změny v <a href="module-uiStatusReducer.html">uiStatusReducer</a>.</p></div>
+            <div class='vertical-section'>
+                <h3 class="title"><span>Constructor</span></h3>
+                <div class="members">
+                    <div class="member">
+
+
+    
+    <h4 class="name" id="login">
+        <a class="href-link" href="#login">#</a>
+        
+        <span class="code-name">
+            
+                new login<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
         
 
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+        
+<tr class="deep-level-0">
+    
+        <td class="name"><code>state</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">Object</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>vnitřní state komponentu</p></td>
+</tr>
+
+  
+      
+<tr class="deep-level-1">
+    
+        <td class="name"><code>email</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">string</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Text, který uživatel zadá do formuláře do políčka pro email</p></td>
+</tr>
+
+  
+      
+<tr class="deep-level-1">
+    
+        <td class="name"><code>password</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">string</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Text, který uživatel zadá do formuláře do políčka pro heslo</p></td>
+</tr>
+
+  
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_login.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_login.js.html">pages/login.js</a>, <a href="pages_login.js.html#line22">line 22</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+    <div class="method-parameter columns">
+        <div class="column is-2"><label>Requires:</label></div>
+        <div class="column is-10">
+            <ul>
+                <li><a href="module-userActions.html#~loginUser">module:userActions~loginUser</a></li>
+            
+                <li><a href="module-uiStatusActions.html#~clearStatus">module:uiStatusActions~clearStatus</a></li>
+            
+                <li><a href="module-store.html#~reducers">module:store~reducers.uiStatus</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+                </div>
+            </div>
+        
+    
+    </div>
+    
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>Component</li>
+    </ul>
+
+
+    
+
+    
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li><a href="module-userActions.html#~loginUser">module:userActions~loginUser</a></li>
+        
+            <li><a href="module-uiStatusActions.html#~clearStatus">module:uiStatusActions~clearStatus</a></li>
+        
+            <li><a href="module-store.html#~reducers">module:store~reducers.uiStatus</a></li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h3 class="title"><span>Methods</span></h3>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".handleChange">
+        <a class="href-link" href="#.handleChange">#</a>
         
             
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                handleChange<span class="signature">(event)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Přepisuje data v state tohoto komponentu na základě změn v textových polích formuláře.</p>
+    </div>
+    
 
 
 
@@ -106,6 +381,55 @@
 
 
 
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>event</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">event</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Event, který vyvolal spuštění této funkce.</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
 
 
 
@@ -144,9 +468,9 @@
 
     
         <p class="tag-source">
-            <a href="redux_actions_uiStatusActions.js.html" class="button">View Source</a>
+            <a href="pages_login.js.html" class="button">View Source</a>
             <span>
-                <a href="redux_actions_uiStatusActions.js.html">redux/actions/uiStatusActions.js</a>, <a href="redux_actions_uiStatusActions.js.html#line2">line 2</a>
+                <a href="pages_login.js.html">pages/login.js</a>, <a href="pages_login.js.html#line59">line 59</a>
             </span>
         </p>
     
@@ -172,44 +496,22 @@
 
 
 
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class='vertical-section'>
-            <h3 class="title"><span>Methods</span></h3>
-            <div class="members">
+</div>
             
                 <div class="member">
 
 
     
-    <h4 class="name" id="~clearStatus">
-        <a class="href-link" href="#~clearStatus">#</a>
+    <h4 class="name" id=".handleSubmit">
+        <a class="href-link" href="#.handleSubmit">#</a>
         
             
-                <span class='tag'>inner</span>
+                <span class='tag'>static</span>
             
         
         <span class="code-name">
             
-                clearStatus<span class="signature">()</span><span class="type-signature"></span>
+                handleSubmit<span class="signature">(event)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -218,7 +520,7 @@
     
     
     <div class="description">
-        <p>Vymaže všechny hodnoty o stavu aplikace v <a href="module-uiStatusReducer.html">uiStatusReducer</a>.</p>
+        <p>Zavolá funkci pro přihlášení uživatele.</p>
     </div>
     
 
@@ -229,6 +531,56 @@
 
 
 
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>event</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">event</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Event, který vyvolal spuštění této funkce.</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
 
 
 
@@ -267,9 +619,9 @@
 
     
         <p class="tag-source">
-            <a href="redux_actions_uiStatusActions.js.html" class="button">View Source</a>
+            <a href="pages_login.js.html" class="button">View Source</a>
             <span>
-                <a href="redux_actions_uiStatusActions.js.html">redux/actions/uiStatusActions.js</a>, <a href="redux_actions_uiStatusActions.js.html#line8">line 8</a>
+                <a href="pages_login.js.html">pages/login.js</a>, <a href="pages_login.js.html#line44">line 44</a>
             </span>
         </p>
     

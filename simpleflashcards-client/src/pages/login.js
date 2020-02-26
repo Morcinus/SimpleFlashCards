@@ -19,6 +19,19 @@ import { clearStatus } from "../redux/actions/uiStatusActions";
 const styles = theme => ({
   ...theme.loginAndSignup
 });
+/**
+ * @class login
+ * @extends Component
+ * @category Pages
+ * @classdesc Na této stránce se uživatel může přihlásit pomocí emailu a hesla.
+ * @property {Object} state - vnitřní state komponentu
+ * @property {string} state.email - Text, který uživatel zadá do formuláře do políčka pro email
+ * @property {string} state.password - Text, který uživatel zadá do formuláře do políčka pro heslo
+ *
+ * @requires userActions~loginUser
+ * @requires uiStatusActions~clearStatus
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ */
 export class login extends Component {
   constructor() {
     super();
@@ -28,6 +41,12 @@ export class login extends Component {
     };
   }
 
+  /**
+   * @function handleSubmit
+   * @memberOf login
+   * @description Zavolá funkci pro přihlášení uživatele.
+   * @param {event} event - Event, který vyvolal spuštění této funkce.
+   */
   handleSubmit = event => {
     event.preventDefault();
     const userData = {
@@ -37,6 +56,12 @@ export class login extends Component {
     this.props.loginUser(userData, this.props.history);
   };
 
+  /**
+   * @function handleChange
+   * @memberOf login
+   * @description Přepisuje data v state tohoto komponentu na základě změn v textových polích formuláře.
+   * @param {event} event - Event, který vyvolal spuštění této funkce.
+   */
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
@@ -114,12 +139,10 @@ login.propTypes = {
   classes: PropTypes.object.isRequired,
   loginUser: PropTypes.func.isRequired,
   clearStatus: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
   uiStatus: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  user: state.user,
   uiStatus: state.uiStatus
 });
 

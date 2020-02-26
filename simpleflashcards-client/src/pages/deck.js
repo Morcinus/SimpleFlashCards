@@ -27,7 +27,9 @@ import { clearStatus } from "../redux/actions/uiStatusActions";
  * @class deck
  * @extends Component
  * @category Pages
- * @classdesc Vytvoří stránku daného balíčku.
+ * @classdesc Vytvoří stránku daného balíčku. Uživatel zde vidí všechny podrobné informace o balíčku,
+ * může balíček sdílet, prohlédnout si jeho obsah nebo přejít do módu učení. Pokud je uživatel tvůrcem tohoto balíčku,
+ * může také začít balíček upravovat.
  * @property {Object} state - Vnitřní state komponentu
  * @property {number} state.selectedTabIndex - Index pro Tabs komponent na této stránce
  *

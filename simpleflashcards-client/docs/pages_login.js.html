@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: pages/collection.js</title>
+    <title>JSDoc: pages/login.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>pages/collection.js</h1>
+                        <h1>pages/login.js</h1>
                     </header>
                     
                     
@@ -83,141 +83,133 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
+import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 // Material UI
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import Bookmarks from "@material-ui/icons/Bookmarks";
-import LinearProgress from "@material-ui/core/LinearProgress";
-
-// Other
-import { colLearnButtons } from "../util/functions";
-import CollectionInfo from "../components/CollectionInfo";
-import CollectionDecks from "../components/CollectionDecks";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 // Redux
 import { connect } from "react-redux";
-import { getCollection, clearCollection } from "../redux/actions/colUiActions";
+import { loginUser } from "../redux/actions/userActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+const styles = theme => ({
+  ...theme.loginAndSignup
+});
 /**
- * @class collection
+ * @class login
  * @extends Component
  * @category Pages
- * @classdesc Vytvoří stránku dané kolekce. Uživatel zde vidí všechny podrobné informace o kolekci,
- * může kolekci sdílet, prohlédnout si její obsah nebo přejít do módu učení. Pokud je uživatel tvůrcem této kolekce,
- * může také začít balíček upravovat.
- * @property {Object} state - Vnitřní state komponentu
- * @property {number} state.selectedTabIndex - Index pro Tabs komponent na této stránce
+ * @classdesc Na této stránce se uživatel může přihlásit pomocí emailu a hesla.
+ * @property {Object} state - vnitřní state komponentu
+ * @property {string} state.email - Text, který uživatel zadá do formuláře do políčka pro email
+ * @property {string} state.password - Text, který uživatel zadá do formuláře do políčka pro heslo
  *
- * @requires colUiActions~getCollection
- * @requires colUiActions~clearCollection
- * @requires functions~colLearnButtons
+ * @requires userActions~loginUser
  * @requires uiStatusActions~clearStatus
  * @requires {@link module:store~reducers module:store~reducers.uiStatus}
  */
-export class collection extends Component {
+export class login extends Component {
   constructor() {
     super();
     this.state = {
-      selectedTabIndex: 0
+      email: "",
+      password: ""
     };
   }
 
   /**
-   * @function handleTabChange
-   * @memberOf collection
-   * @description Přepisuje [selectedTabIndex]{@link collection} v state tohoto komponentu při přepnutí v Tabs navigation baru
-   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link collection}
+   * @function handleSubmit
+   * @memberOf login
+   * @description Zavolá funkci pro přihlášení uživatele.
+   * @param {event} event - Event, který vyvolal spuštění této funkce.
    */
-  handleTabChange = (_, newValue) => {
+  handleSubmit = event => {
+    event.preventDefault();
+    const userData = {
+      email: this.state.email,
+      password: this.state.password
+    };
+    this.props.loginUser(userData, this.props.history);
+  };
+
+  /**
+   * @function handleChange
+   * @memberOf login
+   * @description Přepisuje data v state tohoto komponentu na základě změn v textových polích formuláře.
+   * @param {event} event - Event, který vyvolal spuštění této funkce.
+   */
+  handleChange = event => {
     this.setState({
-      selectedTabIndex: newValue
+      [event.target.name]: event.target.value
     });
   };
 
-  componentDidMount() {
-    this.props.getCollection(this.props.match.params.colId);
-  }
-
   componentWillUnmount() {
     this.props.clearStatus();
-    this.props.clearCollection();
   }
 
   render() {
     const {
+      classes,
       uiStatus: { status, errorCodes }
     } = this.props;
     return (
       &lt;div className="rootContainer">
-        &lt;Grid container justify="center" spacing={3} style={{ marginLeft: "20px" }}>
-          &lt;Grid item sm={3} lg={3} xl={3}>
-            &lt;CollectionInfo colId={this.props.match.params.colId}>&lt;/CollectionInfo>
-          &lt;/Grid>
-          &lt;Grid item sm={9} lg={9} xl={9}>
+        &lt;Grid container className={classes.form} justify="center">
+          &lt;Grid item sm={5} lg={4} xl={3}>
             &lt;Paper>
-              &lt;div style={{ padding: "25px 50px" }}>
-                &lt;div>
-                  &lt;Tabs value={this.state.selectedTabIndex} onChange={this.handleTabChange}>
-                    &lt;Tab
-                      label={
-                        &lt;div>
-                          &lt;LibraryBooks
-                            item
-                            style={{
-                              display: "inline-block",
-                              marginBottom: "-5px",
-                              marginRight: 5
-                            }}
-                          />
-                          Learn
-                        &lt;/div>
-                      }
-                    />
-                    &lt;Tab
-                      label={
-                        &lt;div>
-                          &lt;Bookmarks
-                            item
-                            style={{
-                              display: "inline-block",
-                              marginBottom: "-5px",
-                              marginRight: 5
-                            }}
-                          />
-                          Decks
-                        &lt;/div>
-                      }
-                    />
-                  &lt;/Tabs>
-                &lt;/div>
-                &lt;Divider>&lt;/Divider>
-                &lt;br />
-
-                {status == "BUSY" &amp;&amp; (
-                  &lt;React.Fragment>
-                    &lt;LinearProgress color="secondary" />
-                    &lt;Typography variant="h5" color="secondary" align="right">
-                      Loading...
-                    &lt;/Typography>
-                  &lt;/React.Fragment>
-                )}
-                {status == "ERROR" &amp;&amp; errorCodes.includes("collection/collection-not-found") &amp;&amp; (
-                  &lt;Typography variant="h6" color="error" align="center">
-                    Error 404: Collection not found!
-                  &lt;/Typography>
-                )}
-
-                {status == "SUCCESS" &amp;&amp; (this.state.selectedTabIndex === 1 ? &lt;CollectionDecks /> : colLearnButtons(this.props.match.params.colId))}
-
-                &lt;br />
+              &lt;div style={{ padding: "15px 15px 15px 15px" }}>
+                &lt;Typography variant="h2" className={classes.pageTitle}>
+                  Login
+                &lt;/Typography>
+                &lt;form noValidate onSubmit={this.handleSubmit}>
+                  &lt;TextField
+                    id="email"
+                    name="email"
+                    type="email"
+                    label="Email"
+                    className={classes.textField}
+                    helperText={
+                      errorCodes.includes("auth/invalid-email")
+                        ? "Must be a valid email adress!"
+                        : errorCodes.includes("auth/user-not-found")
+                        ? "User not found!"
+                        : ""
+                    }
+                    error={errorCodes.includes("auth/invalid-email") ? true : errorCodes.includes("auth/user-not-found") ? true : false}
+                    value={this.state.email}
+                    onChange={this.handleChange}
+                    fullWidth
+                  />
+                  &lt;TextField
+                    id="password"
+                    name="password"
+                    type="password"
+                    label="Password"
+                    className={classes.textField}
+                    helperText={errorCodes.includes("auth/wrong-password") ? "Wrong password!" : ""}
+                    error={errorCodes.includes("auth/wrong-password") ? true : false}
+                    value={this.state.password}
+                    onChange={this.handleChange}
+                    fullWidth
+                  />
+                  &lt;Button type="submit" variant="contained" color="primary" className={classes.button} disabled={status == "BUSY" ? true : false}>
+                    Login
+                    {status == "BUSY" &amp;&amp; &lt;CircularProgress size={30} className={classes.progress} />}
+                  &lt;/Button>
+                  &lt;br />
+                  &lt;small>
+                    Don't have an account? Sign up &lt;Link to="/signup">here&lt;/Link>.
+                  &lt;/small>
+                &lt;/form>
               &lt;/div>
             &lt;/Paper>
           &lt;/Grid>
@@ -227,26 +219,23 @@ export class collection extends Component {
   }
 }
 
-collection.propTypes = {
-  getCollection: PropTypes.func.isRequired,
-  clearCollection: PropTypes.func.isRequired,
-  colUi: PropTypes.object.isRequired,
+login.propTypes = {
+  classes: PropTypes.object.isRequired,
+  loginUser: PropTypes.func.isRequired,
   clearStatus: PropTypes.func.isRequired,
   uiStatus: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  colUi: state.colUi,
   uiStatus: state.uiStatus
 });
 
 const mapActionsToProps = {
-  getCollection,
-  clearCollection,
+  loginUser,
   clearStatus
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(collection);
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(login));
 </code></pre>
         </article>
     </section>

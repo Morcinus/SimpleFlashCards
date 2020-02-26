@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: redux/actions/deckUiActions.js</title>
+    <title>JSDoc: redux/actions/userActions.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>redux/actions/deckUiActions.js</h1>
+                        <h1>redux/actions/userActions.js</h1>
                     </header>
                     
                     
@@ -83,35 +83,102 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import {
-  SET_USER_DECKS,
-  SET_PINNED_DECKS,
-  CLEAR_PINNED_DECKS,
-  CLEAR_USER_DECKS,
-  SET_DECK,
-  CLEAR_DECK,
+  SET_AUTHENTICATED,
+  SET_UNAUTHENTICATED,
+  SET_USER_DATA,
+  SET_ONE_USER_DATA,
+  SET_USER_PROFILE,
+  CLEAR_USER_PROFILE,
   SET_STATUS_BUSY,
   SET_STATUS_ERROR,
-  SET_STATUS_SUCCESS
+  SET_STATUS_SUCCESS,
+  CLEAR_STATUS
 } from "../types";
 import axios from "axios";
 
 /**
  * @category ReduxActions
- * @module deckUiActions
- * @description Zde jsou funkce, které komunikují se serverem ohledně balíčků a vyvolávají změny v [deckUiReducer]{@link module:deckUiReducer} a [uiStatusReducer]{@link module:uiStatusReducer}.
+ * @module userActions
+ * @description Zde jsou funkce, které komunikují se serverem ohledně dat uživatele a vyvolávají změny v [userReduceru]{@link module:userReducer} a [uiStatusReduceru]{@link module:uiStatusReducer}.
  */
 
 /**
- * @function getUserDecks
- * @description Získá ze serveru seznam balíčků vytvořených uživatelem a uloží ho do reduceru.
+ * @function loginUser
+ * @description Přihlásí uživatele. Tím také získá od serveru idToken, který uloží do localStorage. Také nastaví hodnotu authenticated v reduceru.
+ * @param {Object} userData - přihlašovací údaje uživatele
+ * @param {Object} history - historie prohlížeče, slouží k přesměrování na /home
  * @async
  */
-export const getUserDecks = () => dispatch => {
+export const loginUser = (userData, history) => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
-    .get(`/getUserDecks`)
+    .post("/login", userData)
     .then(res => {
-      dispatch({ type: SET_USER_DECKS, payload: res.data });
+      setAuthorizationHeader(res.data.idToken);
+      dispatch({ type: SET_AUTHENTICATED });
+      dispatch({ type: SET_STATUS_SUCCESS });
+      history.push("/home");
+    })
+    .catch(err => {
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      }
+    });
+};
+
+/**
+ * @function signupUser
+ * @description Zaregistruje uživatele. Tím také získá od serveru idToken, který uloží do localStorage. Také nastaví hodnotu authenticated v reduceru.
+ * @param {Object} newUserData - registrační údaje uživatele
+ * @param {Object} history - historie prohlížeče, slouží k přesměrování na /home
+ * @async
+ */
+export const signupUser = (newUserData, history) => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .post("/signup", newUserData)
+    .then(res => {
+      setAuthorizationHeader(res.data.idToken);
+      dispatch({ type: SET_AUTHENTICATED });
+      dispatch({ type: SET_STATUS_SUCCESS });
+      history.push("/home");
+    })
+    .catch(err => {
+      if (err.response.data.errorCodes) {
+        err.response.data.errorCodes.forEach(errorCode => {
+          console.error("Error:", errorCode);
+          dispatch({ type: SET_STATUS_ERROR, payload: errorCode });
+        });
+      } else {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      }
+    });
+};
+
+/**
+ * @function logoutUser
+ * @description Odhlásí uživatele a vymaže idToken.
+ */
+export const logoutUser = () => dispatch => {
+  localStorage.removeItem("FBIdToken");
+  delete axios.defaults.headers.common["Authorization"];
+  dispatch({ type: SET_UNAUTHENTICATED });
+  dispatch({ type: CLEAR_STATUS });
+};
+
+/**
+ * @function getUserPersonalData
+ * @description Získá ze serveru osobní data uživatele a uloží je do reduceru.
+ * @async
+ */
+export const getUserPersonalData = () => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .get("/getUserPersonalData")
+    .then(res => {
+      dispatch({ type: SET_USER_DATA, payload: res.data });
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
@@ -121,24 +188,75 @@ export const getUserDecks = () => dispatch => {
 };
 
 /**
- * @function clearUserDecks
- * @description Vymaže seznam balíčků vytvořených uživatelem z reduceru.
+ * @function setUserPersonalData
+ * @description Odešle na server požadavek o přenastavení osobních dat uživatele.
+ * @param {Object} userData - osobní údaje uživatele
+ * @param {Object} history - historie prohlížeče, slouží k přesměrování na /login
+ * @async
  */
-export const clearUserDecks = () => dispatch => {
-  dispatch({ type: CLEAR_USER_DECKS });
+export const setUserPersonalData = (userData, history) => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+
+  axios
+    .post("/setUserPersonalData", userData)
+    .then(res => {
+      console.log("Success!");
+      dispatch({ type: SET_STATUS_SUCCESS, payload: res.data.successCode });
+      if (userData.username || userData.bio) {
+        dispatch({ type: SET_ONE_USER_DATA, payload: userData });
+      } else if (userData.email) {
+        dispatch(logoutUser());
+        history.push("/login");
+      }
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
 };
 
 /**
- * @function getPinnedDecks
- * @description Získá ze serveru seznam balíčků připnutých uživatelem a uloží ho do reduceru.
+ * @function resetPassword
+ * @description Odešle na server požadavek o změnu uživatelského hesla.
  * @async
  */
-export const getPinnedDecks = () => dispatch => {
+export const resetPassword = () => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+
+  axios
+    .post("/resetPassword")
+    .then(res => {
+      dispatch({ type: SET_STATUS_SUCCESS, payload: res.data.successCode });
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
+
+/**
+ * @function setAuthorizationHeader
+ * @description Uloží idToken do localStorage a nastaví ho jako Authorization header pro HTTP požadavky.
+ * @param {string} token - idToken daného uživatele
+ */
+const setAuthorizationHeader = token => {
+  const FBIDToken = `Bearer ${token}`;
+  localStorage.setItem("FBIdToken", FBIDToken);
+  axios.defaults.headers.common["Authorization"] = FBIDToken;
+};
+
+/**
+ * @function getUserDataByUsername
+ * @description Získá ze serveru data o uživateli na základě jeho uživatelského jména a uloží je do reduceru. Tato funkce se používá při přistupování na cizí uživatelské profily.
+ * @param {string} username - jméno uživatele, o kterém chceme získat informace
+ * @async
+ */
+export const getUserDataByUsername = username => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
-    .get(`/getPinnedDecks`)
+    .get(`/getUserDataByUsername/${username}`)
     .then(res => {
-      dispatch({ type: SET_PINNED_DECKS, payload: res.data });
+      dispatch({ type: SET_USER_PROFILE, payload: res.data });
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
@@ -148,25 +266,16 @@ export const getPinnedDecks = () => dispatch => {
 };
 
 /**
- * @function clearPinnedDecks
- * @description Vymaže seznam balíčků připnutých uživatelem z reduceru.
- */
-export const clearPinnedDecks = () => dispatch => {
-  dispatch({ type: CLEAR_PINNED_DECKS });
-};
-
-/**
- * @function getDeck
- * @description Získá ze serveru prodrobná data o daném balíčku a uloží je do reduceru.
- * @param {string} deckId - ID balíčku, o kterém se mají získat data.
+ * @function getUserData
+ * @description Získá ze serveru data o přihlášeném uživateli a uloží je do reduceru. Tato funkce se používá při přistupování vlastní profil přihlášeného uživatele.
  * @async
  */
-export const getDeck = deckId => dispatch => {
+export const getUserData = () => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
-    .get(`/getDeck/${deckId}`)
+    .get("/getUserData")
     .then(res => {
-      dispatch({ type: SET_DECK, payload: res.data });
+      dispatch({ type: SET_USER_PROFILE, payload: res.data });
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
@@ -176,37 +285,11 @@ export const getDeck = deckId => dispatch => {
 };
 
 /**
- * @function clearDeck
- * @description Smaže data o daném balíčku z reduceru.
+ * @function clearUserData
+ * @description Vymaže z reduceru data o profilu uživatele.
  */
-export const clearDeck = () => dispatch => {
-  dispatch({ type: CLEAR_DECK });
-};
-
-/**
- * @function pinDeck
- * @description Pošle na server požadavek, aby byl připnut daný balíček.
- * @param {string} deckId - ID balíčku, který má být připnut.
- * @async
- */
-export const pinDeck = deckId => dispatch => {
-  axios.post(`/pinDeck/${deckId}`).catch(err => {
-    console.error("Error:", err.response.data.errorCode);
-    dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
-  });
-};
-
-/**
- * @function unpinDeck
- * @description Pošle na server požadavek, aby byl odepnut daný balíček.
- * @param {string} deckId - ID balíčku, který má být odepnut.
- * @async
- */
-export const unpinDeck = deckId => dispatch => {
-  axios.post(`/unpinDeck/${deckId}`).catch(err => {
-    console.error("Error:", err.response.data.errorCode);
-    dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
-  });
+export const clearUserData = () => dispatch => {
+  dispatch({ type: CLEAR_USER_PROFILE });
 };
 </code></pre>
         </article>

@@ -26,7 +26,9 @@ import { clearStatus } from "../redux/actions/uiStatusActions";
  * @class collection
  * @extends Component
  * @category Pages
- * @classdesc Vytvoří stránku dané kolekce.
+ * @classdesc Vytvoří stránku dané kolekce. Uživatel zde vidí všechny podrobné informace o kolekci,
+ * může kolekci sdílet, prohlédnout si její obsah nebo přejít do módu učení. Pokud je uživatel tvůrcem této kolekce,
+ * může také začít balíček upravovat.
  * @property {Object} state - Vnitřní state komponentu
  * @property {number} state.selectedTabIndex - Index pro Tabs komponent na této stránce
  *

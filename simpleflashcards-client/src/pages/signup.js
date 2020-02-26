@@ -19,7 +19,21 @@ import { clearStatus } from "../redux/actions/uiStatusActions";
 const styles = theme => ({
   ...theme.loginAndSignup
 });
-
+/**
+ * @class signup
+ * @extends Component
+ * @category Pages
+ * @classdesc Na této stránce se uživatel může zaregistrovat. Pro registraci vyplní do formuláře email, uživatelské jméno, heslo a potvrzení hesla.
+ * @property {Object} state - Vnitřní state komponentu
+ * @property {string} state.email - Text, který uživatel zadá do formuláře do políčka pro email
+ * @property {string} state.password - Text, který uživatel zadá do formuláře do políčka pro heslo
+ * @property {string} state.confirmPassword - Text, který uživatel zadá do formuláře do políčka pro potvrzení hesla
+ * @property {string} state.username - Text, který uživatel zadá do formuláře do políčka pro uživatelské jméno
+ *
+ * @requires userActions~signupUser
+ * @requires uiStatusActions~clearStatus
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ */
 export class signup extends Component {
   constructor() {
     super();
@@ -31,6 +45,12 @@ export class signup extends Component {
     };
   }
 
+  /**
+   * @function handleSubmit
+   * @memberOf signup
+   * @description Zavolá funkci pro zaregistrování uživatele
+   * @param {event} event - Event, který vyvolal spuštění této funkce
+   */
   handleSubmit = event => {
     event.preventDefault();
     const userData = {
@@ -42,6 +62,12 @@ export class signup extends Component {
     this.props.signupUser(userData, this.props.history);
   };
 
+  /**
+   * @function handleChange
+   * @memberOf signup
+   * @description Přepisuje data v state tohoto komponentu na základě změn v textových polích formuláře
+   * @param {event} event - Event, který vyvolal spuštění této funkce
+   */
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
@@ -155,12 +181,10 @@ signup.propTypes = {
   classes: PropTypes.object.isRequired,
   signupUser: PropTypes.func.isRequired,
   clearStatus: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
   uiStatus: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  user: state.user,
   uiStatus: state.uiStatus
 });
 

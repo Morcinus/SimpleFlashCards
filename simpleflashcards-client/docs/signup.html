@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: colUiReducer</title>
+    <title>JSDoc: signup</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -69,8 +69,8 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Module</p>
-                        <h1>colUiReducer</h1>
+                        <p>Class</p>
+                        <h1>signup</h1>
                     </header>
                     
                     
@@ -82,8 +82,9 @@
 
 <header>
     
+        <h2><span class="attribs"><span class="type-signature"></span></span>signup<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            
+            <div class="class-description"><p>Na této stránce se uživatel může zaregistrovat. Pro registraci vyplní do formuláře email, uživatelské jméno, heslo a potvrzení hesla.</p></div>
         
     
 </header>
@@ -92,139 +93,34 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Uchovává data a informace o kolekcích.</p></div>
-        
+            <div class='vertical-section'>
+                <h3 class="title"><span>Constructor</span></h3>
+                <div class="members">
+                    <div class="member">
 
+
+    
+    <h4 class="name" id="signup">
+        <a class="href-link" href="#signup">#</a>
         
+        <span class="code-name">
             
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="redux_reducers_colUiReducer.js.html" class="button">View Source</a>
-            <span>
-                <a href="redux_reducers_colUiReducer.js.html">redux/reducers/colUiReducer.js</a>, <a href="redux_reducers_colUiReducer.js.html#line22">line 22</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class='vertical-section'>
-            <h3 class="title"><span>Members</span></h3>
-            <div class="members">
+                new signup<span class="signature">()</span><span class="type-signature"></span>
             
-                <div class="member">
-
-    <span class="method-parameter is-pulled-right">
-        <label>Type:</label>
-        
-<span class="param-type">Object</span>
-
-
-    </span>
-
-<h4 class="name" id="~initialState">
-    <a class="href-link" href="#~initialState">#</a>
+        </span>
+    </h4>
     
-        
-            <span class='tag'>inner</span>
-        
-            <span class='tag'>constant</span>
-        
+
     
-    <span class="code-name">
-        initialState
-    </span>
     
-</h4>
 
 
 
 
-<div class="description">
-    <p>Původní stav reduceru</p>
-</div>
+
+
+
+
 
 
 
@@ -256,7 +152,7 @@
         
 <tr class="deep-level-0">
     
-        <td class="name"><code>initialState</code></td>
+        <td class="name"><code>state</code></td>
     
 
     <td class="type">
@@ -272,115 +168,20 @@
 
     
 
-    <td class="description last"><p>původní stav reduceru</p></td>
+    <td class="description last"><p>Vnitřní state komponentu</p></td>
 </tr>
 
   
       
 <tr class="deep-level-1">
     
-        <td class="name"><code>userCollections</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Array.&lt;Object></span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Uchovává kolekce vytvořené daným uživatelem.</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>pinnedCollections</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Array.&lt;Object></span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Uchovává &quot;připnuté&quot; (=uložené) kolekce daného uživatele.</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>collection</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Object</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Uchovává podrobná data o dané kolekci.</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>collectionDialogOpen</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">boolean</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Uchovává informaci, zda je otevřený/uzavřený CollectionDialog.</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>colDialogStatus</code></td>
+        <td class="name"><code>email</code></td>
     
 
     <td class="type">
     
         
 <span class="param-type">string</span>
-|
-
-<span class="param-type">null</span>
 
 
     
@@ -390,20 +191,20 @@
 
     
 
-    <td class="description last"><p>Uchovává status CollectionDialogu, nabývá hodnot &quot;BUSY&quot;, &quot;ERROR&quot;, &quot;SUCCESS&quot;, null.</p></td>
+    <td class="description last"><p>Text, který uživatel zadá do formuláře do políčka pro email</p></td>
 </tr>
 
   
       
 <tr class="deep-level-1">
     
-        <td class="name"><code>colDialogErrorCodes</code></td>
+        <td class="name"><code>password</code></td>
     
 
     <td class="type">
     
         
-<span class="param-type">Array.&lt;String></span>
+<span class="param-type">string</span>
 
 
     
@@ -413,20 +214,20 @@
 
     
 
-    <td class="description last"><p>Uchovává error kódy CollectionDialogu.</p></td>
+    <td class="description last"><p>Text, který uživatel zadá do formuláře do políčka pro heslo</p></td>
 </tr>
 
   
       
 <tr class="deep-level-1">
     
-        <td class="name"><code>colDialogSuccessCodes</code></td>
+        <td class="name"><code>confirmPassword</code></td>
     
 
     <td class="type">
     
         
-<span class="param-type">Array.&lt;String></span>
+<span class="param-type">string</span>
 
 
     
@@ -436,7 +237,30 @@
 
     
 
-    <td class="description last"><p>Uchovává success kódy CollectionDialogu.</p></td>
+    <td class="description last"><p>Text, který uživatel zadá do formuláře do políčka pro potvrzení hesla</p></td>
+</tr>
+
+  
+      
+<tr class="deep-level-1">
+    
+        <td class="name"><code>username</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">string</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Text, který uživatel zadá do formuláře do políčka pro uživatelské jméno</p></td>
 </tr>
 
   
@@ -481,9 +305,9 @@
 
     
         <p class="tag-source">
-            <a href="redux_reducers_colUiReducer.js.html" class="button">View Source</a>
+            <a href="pages_signup.js.html" class="button">View Source</a>
             <span>
-                <a href="redux_reducers_colUiReducer.js.html">redux/reducers/colUiReducer.js</a>, <a href="redux_reducers_colUiReducer.js.html#line40">line 40</a>
+                <a href="pages_signup.js.html">pages/signup.js</a>, <a href="pages_signup.js.html#line22">line 22</a>
             </span>
         </p>
     
@@ -491,12 +315,77 @@
 
 
 
+    <div class="method-parameter columns">
+        <div class="column is-2"><label>Requires:</label></div>
+        <div class="column is-10">
+            <ul>
+                <li><a href="module-userActions.html#~signupUser">module:userActions~signupUser</a></li>
+            
+                <li><a href="module-uiStatusActions.html#~clearStatus">module:uiStatusActions~clearStatus</a></li>
+            
+                <li><a href="module-store.html#~reducers">module:store~reducers.uiStatus</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </div>
-            
+                </div>
             </div>
-        </div>
+        
+    
+    </div>
+    
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>Component</li>
+    </ul>
+
+
+    
+
+    
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li><a href="module-userActions.html#~signupUser">module:userActions~signupUser</a></li>
+        
+            <li><a href="module-uiStatusActions.html#~clearStatus">module:uiStatusActions~clearStatus</a></li>
+        
+            <li><a href="module-store.html#~reducers">module:store~reducers.uiStatus</a></li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -508,16 +397,16 @@
 
 
     
-    <h4 class="name" id="~function">
-        <a class="href-link" href="#~function">#</a>
+    <h4 class="name" id=".handleChange">
+        <a class="href-link" href="#.handleChange">#</a>
         
             
-                <span class='tag'>inner</span>
+                <span class='tag'>static</span>
             
         
         <span class="code-name">
             
-                function<span class="signature">(state, action)</span><span class="type-signature"></span>
+                handleChange<span class="signature">(event)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -526,7 +415,7 @@
     
     
     <div class="description">
-        <p>Mění stav reduceru.</p>
+        <p>Přepisuje data v state tohoto komponentu na základě změn v textových polích formuláře</p>
     </div>
     
 
@@ -564,13 +453,13 @@
         
 <tr class="deep-level-0">
   
-      <td class="name"><code>state</code></td>
+      <td class="name"><code>event</code></td>
   
 
   <td class="type">
   
       
-<span class="param-type">Object</span>
+<span class="param-type">event</span>
 
 
   
@@ -580,32 +469,7 @@
 
   
 
-  <td class="description last"><p>stav reduceru</p></td>
-</tr>
-
-
-    
-
-        
-<tr class="deep-level-0">
-  
-      <td class="name"><code>action</code></td>
-  
-
-  <td class="type">
-  
-      
-<span class="param-type">Object</span>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>akce, která vyvolává změnu v reduceru</p></td>
+  <td class="description last"><p>Event, který vyvolal spuštění této funkce</p></td>
 </tr>
 
 
@@ -650,9 +514,9 @@
 
     
         <p class="tag-source">
-            <a href="redux_reducers_colUiReducer.js.html" class="button">View Source</a>
+            <a href="pages_signup.js.html" class="button">View Source</a>
             <span>
-                <a href="redux_reducers_colUiReducer.js.html">redux/reducers/colUiReducer.js</a>, <a href="redux_reducers_colUiReducer.js.html#line50">line 50</a>
+                <a href="pages_signup.js.html">pages/signup.js</a>, <a href="pages_signup.js.html#line65">line 65</a>
             </span>
         </p>
     
@@ -675,22 +539,156 @@
 
 
 
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
 
-<div class="columns">
-    
-    <div class='param-desc column is-7'><p>nový stav reduceru</p></div>
-    
-    
+
+
 </div>
+            
+                <div class="member">
 
-                
-        </div>
+
+    
+    <h4 class="name" id=".handleSubmit">
+        <a class="href-link" href="#.handleSubmit">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                handleSubmit<span class="signature">(event)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Zavolá funkci pro zaregistrování uživatele</p>
     </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>event</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">event</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Event, který vyvolal spuštění této funkce</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="pages_signup.js.html" class="button">View Source</a>
+            <span>
+                <a href="pages_signup.js.html">pages/signup.js</a>, <a href="pages_signup.js.html#line48">line 48</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

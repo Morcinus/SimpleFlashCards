@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: redux/reducers/userReducer.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -69,8 +71,8 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Title</p>
-                        <h1>Home</h1>
+                        <p>Source</p>
+                        <h1>redux/reducers/userReducer.js</h1>
                     </header>
                     
                     
@@ -78,25 +80,78 @@
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { SET_AUTHENTICATED, SET_UNAUTHENTICATED, SET_USER_DATA, CLEAR_USER_DATA, SET_ONE_USER_DATA, SET_USER_PROFILE, CLEAR_USER_PROFILE } from "../types";
 
+/**
+ * @module userReducer
+ * @category ReduxReducers
+ * @description Uchovává data a informace o uživateli.
+ */
 
-    <h3> </h3>
+/**
+ * @type {Object} initialState
+ * @description Původní stav reduceru
+ * @property {Object} initialState - původní stav reduceru
+ * @property {boolean} initialState.authenticated - Uchovává informaci, zda-li je uživatel přihlášený a autentizovaný.
+ * @property {Object} initialState.credentials - Uchovává data o přihlášeném uživateli.
+ * @property {Object} initialState.userProfile - Uchovává data o profilu uživatele.
+ */
+const initialState = {
+  authenticated: false,
+  credentials: {},
+  userProfile: {}
+};
 
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * @function function
+ * @description Mění stav reduceru.
+ * @param {Object} state - stav reduceru
+ * @param {Object} action - akce, která vyvolává změnu v reduceru
+ * @returns nový stav reduceru
+ */
+export default function(state = initialState, action) {
+  switch (action.type) {
+    case SET_AUTHENTICATED:
+      return {
+        ...state,
+        authenticated: true
+      };
+    case SET_UNAUTHENTICATED:
+      return initialState;
+    case SET_USER_DATA:
+      return {
+        ...state,
+        credentials: action.payload
+      };
+    case SET_ONE_USER_DATA:
+      return {
+        ...state,
+        credentials: { ...state.credentials, ...action.payload }
+      };
+    case CLEAR_USER_DATA:
+      return {
+        ...state,
+        credentials: {}
+      };
+    case SET_USER_PROFILE:
+      return {
+        ...state,
+        userProfile: action.payload
+      };
+    case CLEAR_USER_PROFILE:
+      return {
+        ...state,
+        userProfile: {}
+      };
+    default:
+      return state;
+  }
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

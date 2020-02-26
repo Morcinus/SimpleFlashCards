@@ -1,19 +1,32 @@
-import {
-  SET_AUTHENTICATED,
-  SET_UNAUTHENTICATED,
-  SET_USER_DATA,
-  CLEAR_USER_DATA,
-  SET_ONE_USER_DATA,
-  SET_USER_PROFILE,
-  CLEAR_USER_PROFILE
-} from "../types";
+import { SET_AUTHENTICATED, SET_UNAUTHENTICATED, SET_USER_DATA, CLEAR_USER_DATA, SET_ONE_USER_DATA, SET_USER_PROFILE, CLEAR_USER_PROFILE } from "../types";
 
+/**
+ * @module userReducer
+ * @category ReduxReducers
+ * @description Uchovává data a informace o uživateli.
+ */
+
+/**
+ * @type {Object} initialState
+ * @description Původní stav reduceru
+ * @property {Object} initialState - původní stav reduceru
+ * @property {boolean} initialState.authenticated - Uchovává informaci, zda-li je uživatel přihlášený a autentizovaný.
+ * @property {Object} initialState.credentials - Uchovává data o přihlášeném uživateli.
+ * @property {Object} initialState.userProfile - Uchovává data o profilu uživatele.
+ */
 const initialState = {
   authenticated: false,
   credentials: {},
   userProfile: {}
 };
 
+/**
+ * @function function
+ * @description Mění stav reduceru.
+ * @param {Object} state - stav reduceru
+ * @param {Object} action - akce, která vyvolává změnu v reduceru
+ * @returns nový stav reduceru
+ */
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_AUTHENTICATED:

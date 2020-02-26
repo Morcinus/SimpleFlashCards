@@ -12,6 +12,19 @@ import {
 } from "../types";
 import axios from "axios";
 
+/**
+ * @category ReduxActions
+ * @module userActions
+ * @description Zde jsou funkce, které komunikují se serverem ohledně dat uživatele a vyvolávají změny v [userReduceru]{@link module:userReducer} a [uiStatusReduceru]{@link module:uiStatusReducer}.
+ */
+
+/**
+ * @function loginUser
+ * @description Přihlásí uživatele. Tím také získá od serveru idToken, který uloží do localStorage. Také nastaví hodnotu authenticated v reduceru.
+ * @param {Object} userData - přihlašovací údaje uživatele
+ * @param {Object} history - historie prohlížeče, slouží k přesměrování na /home
+ * @async
+ */
 export const loginUser = (userData, history) => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
@@ -30,6 +43,13 @@ export const loginUser = (userData, history) => dispatch => {
     });
 };
 
+/**
+ * @function signupUser
+ * @description Zaregistruje uživatele. Tím také získá od serveru idToken, který uloží do localStorage. Také nastaví hodnotu authenticated v reduceru.
+ * @param {Object} newUserData - registrační údaje uživatele
+ * @param {Object} history - historie prohlížeče, slouží k přesměrování na /home
+ * @async
+ */
 export const signupUser = (newUserData, history) => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
@@ -53,6 +73,10 @@ export const signupUser = (newUserData, history) => dispatch => {
     });
 };
 
+/**
+ * @function logoutUser
+ * @description Odhlásí uživatele a vymaže idToken.
+ */
 export const logoutUser = () => dispatch => {
   localStorage.removeItem("FBIdToken");
   delete axios.defaults.headers.common["Authorization"];
@@ -60,6 +84,11 @@ export const logoutUser = () => dispatch => {
   dispatch({ type: CLEAR_STATUS });
 };
 
+/**
+ * @function getUserPersonalData
+ * @description Získá ze serveru osobní data uživatele a uloží je do reduceru.
+ * @async
+ */
 export const getUserPersonalData = () => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
@@ -74,6 +103,13 @@ export const getUserPersonalData = () => dispatch => {
     });
 };
 
+/**
+ * @function setUserPersonalData
+ * @description Odešle na server požadavek o přenastavení osobních dat uživatele.
+ * @param {Object} userData - osobní údaje uživatele
+ * @param {Object} history - historie prohlížeče, slouží k přesměrování na /login
+ * @async
+ */
 export const setUserPersonalData = (userData, history) => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
 
@@ -95,6 +131,11 @@ export const setUserPersonalData = (userData, history) => dispatch => {
     });
 };
 
+/**
+ * @function resetPassword
+ * @description Odešle na server požadavek o změnu uživatelského hesla.
+ * @async
+ */
 export const resetPassword = () => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
 
@@ -109,12 +150,23 @@ export const resetPassword = () => dispatch => {
     });
 };
 
+/**
+ * @function setAuthorizationHeader
+ * @description Uloží idToken do localStorage a nastaví ho jako Authorization header pro HTTP požadavky.
+ * @param {string} token - idToken daného uživatele
+ */
 const setAuthorizationHeader = token => {
   const FBIDToken = `Bearer ${token}`;
   localStorage.setItem("FBIdToken", FBIDToken);
   axios.defaults.headers.common["Authorization"] = FBIDToken;
 };
 
+/**
+ * @function getUserDataByUsername
+ * @description Získá ze serveru data o uživateli na základě jeho uživatelského jména a uloží je do reduceru. Tato funkce se používá při přistupování na cizí uživatelské profily.
+ * @param {string} username - jméno uživatele, o kterém chceme získat informace
+ * @async
+ */
 export const getUserDataByUsername = username => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
@@ -129,6 +181,11 @@ export const getUserDataByUsername = username => dispatch => {
     });
 };
 
+/**
+ * @function getUserData
+ * @description Získá ze serveru data o přihlášeném uživateli a uloží je do reduceru. Tato funkce se používá při přistupování vlastní profil přihlášeného uživatele.
+ * @async
+ */
 export const getUserData = () => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
@@ -143,6 +200,10 @@ export const getUserData = () => dispatch => {
     });
 };
 
+/**
+ * @function clearUserData
+ * @description Vymaže z reduceru data o profilu uživatele.
+ */
 export const clearUserData = () => dispatch => {
   dispatch({ type: CLEAR_USER_PROFILE });
 };
