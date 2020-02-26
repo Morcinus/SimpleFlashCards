@@ -1,0 +1,203 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: components/PinnedDecks.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                     
+                        <h1 class="navbar-item">Simple Flashcards Dokumentace</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/Morcinus/SimpleFlashCards" target="_blank">
+                                Github
+                            </a>
+                        </div>
+                    
+                        <div class="navbar-item">
+                            <a href="https://simpleflashcards-4aea0.firebaseapp.com" target="_blank">
+                                Aplikace
+                            </a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Components</h2><h3>Classes</h3><ul><li><a href="ColTable.html">ColTable</a></li><li><a href="DeckTable.html">DeckTable</a></li><li><a href="Navbar.html">Navbar</a></li><li><a href="PinnedCollections.html">PinnedCollections</a></li><li><a href="PinnedDecks.html">PinnedDecks</a></li><li><a href="UserCollections.html">UserCollections</a></li><li><a href="UserDecks.html">UserDecks</a></li></ul></div><div class="category"><h2>Ostatní</h2><h3>Modules</h3><ul><li><a href="module-store.html">store</a></li></ul></div><div class="category"><h2>Pages</h2><h3>Classes</h3><ul><li><a href="collection.html">collection</a></li><li><a href="createDeck.html">createDeck</a></li><li><a href="deck.html">deck</a></li><li><a href="editCollection.html">editCollection</a></li><li><a href="editDeck.html">editDeck</a></li><li><a href="home.html">home</a></li><li><a href="login.html">login</a></li><li><a href="settings.html">settings</a></li><li><a href="signup.html">signup</a></li><li><a href="studyCollection.html">studyCollection</a></li><li><a href="studyDeck.html">studyDeck</a></li><li><a href="userProfile.html">userProfile</a></li></ul></div><div class="category"><h2>ReduxActions</h2><h3>Modules</h3><ul><li><a href="module-colStudyActions.html">colStudyActions</a></li><li><a href="module-colUiActions.html">colUiActions</a></li><li><a href="module-createDeckActions.html">createDeckActions</a></li><li><a href="module-deckStudyActions.html">deckStudyActions</a></li><li><a href="module-deckUiActions.html">deckUiActions</a></li><li><a href="module-editColActions.html">editColActions</a></li><li><a href="module-editDeckActions.html">editDeckActions</a></li><li><a href="module-uiStatusActions.html">uiStatusActions</a></li><li><a href="module-userActions.html">userActions</a></li></ul></div><div class="category"><h2>ReduxReducers</h2><h3>Modules</h3><ul><li><a href="module-colStudyReducer.html">colStudyReducer</a></li><li><a href="module-colUiReducer.html">colUiReducer</a></li><li><a href="module-createDeckReducer.html">createDeckReducer</a></li><li><a href="module-deckStudyReducer.html">deckStudyReducer</a></li><li><a href="module-deckUiReducer.html">deckUiReducer</a></li><li><a href="module-editColReducer.html">editColReducer</a></li><li><a href="module-editDeckReducer.html">editDeckReducer</a></li><li><a href="module-uiStatusReducer.html">uiStatusReducer</a></li><li><a href="module-userReducer.html">userReducer</a></li></ul></div><div class="category"><h2>util</h2><h3>Modules</h3><ul><li><a href="module-functions.html">functions</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>components/PinnedDecks.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
+import PropTypes from "prop-types";
+
+// Material UI
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import LinearProgress from "@material-ui/core/LinearProgress";
+
+// Other
+import { renderDecks } from "../util/functions";
+
+// Redux
+import { connect } from "react-redux";
+import { getPinnedDecks, clearPinnedDecks } from "../redux/actions/deckUiActions";
+import { clearStatus } from "../redux/actions/uiStatusActions";
+
+/**
+ * @class PinnedDecks
+ * @extends Component
+ * @category Components
+ * @classdesc Tento komponent zobrazí balíčky, které byly připnuty uživatelem.
+ *
+ * @requires deckUiActions~getPinnedDecks
+ * @requires deckUiActions~clearPinnedDecks
+ * @requires functions~renderDecks
+ * @requires uiStatusActions~clearStatus
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ * @requires {@link module:store~reducers module:store~reducers.deckUi}
+ */
+export class PinnedDecks extends Component {
+  /**
+   * @function componentDidMount
+   * @memberOf PinnedDecks
+   * @description Stáhne seznam balíčků, které byly připnuty uživatelem.
+   */
+  componentDidMount() {
+    this.props.getPinnedDecks();
+  }
+
+  componentWillUnmount() {
+    this.props.clearStatus();
+    this.props.clearPinnedDecks();
+  }
+
+  render() {
+    const {
+      uiStatus: { status, errorCodes }
+    } = this.props;
+    return (
+      &lt;div>
+        {status == "BUSY" &amp;&amp; (
+          &lt;React.Fragment>
+            &lt;LinearProgress color="secondary" />
+            &lt;Typography variant="h5" color="secondary" align="right">
+              Loading...
+            &lt;/Typography>
+          &lt;/React.Fragment>
+        )}
+        {status == "ERROR" &amp;&amp; errorCodes.includes("deck/no-deck-found") &amp;&amp; (
+          &lt;Typography variant="h6" color="error" align="center">
+            You don't have any pinned decks!
+          &lt;/Typography>
+        )}
+        &lt;Grid container direction="row" justify="flex-start" alignItems="flex-start">
+          {status == "SUCCESS" &amp;&amp; renderDecks(this.props.deckUi.pinnedDecks)}
+        &lt;/Grid>
+      &lt;/div>
+    );
+  }
+}
+
+PinnedDecks.propTypes = {
+  getPinnedDecks: PropTypes.func.isRequired,
+  clearPinnedDecks: PropTypes.func.isRequired,
+  deckUi: PropTypes.object.isRequired,
+  clearStatus: PropTypes.func.isRequired,
+  uiStatus: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  deckUi: state.deckUi,
+  uiStatus: state.uiStatus
+});
+
+const mapActionsToProps = {
+  getPinnedDecks,
+  clearPinnedDecks,
+  clearStatus
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(PinnedDecks);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Feb 26 2020 16:10:30 GMT+0100 (GMT+01:00)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

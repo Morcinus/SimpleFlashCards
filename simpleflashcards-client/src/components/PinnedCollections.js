@@ -14,7 +14,25 @@ import { connect } from "react-redux";
 import { getPinnedCollections, clearPinnedCollections } from "../redux/actions/colUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @class PinnedCollections
+ * @extends Component
+ * @category Components
+ * @classdesc Tento komponent zobrazí kolekce, které byly připnuty uživatelem.
+ *
+ * @requires colUiActions~getPinnedCollections
+ * @requires colUiActions~clearPinnedCollections
+ * @requires functions~renderCollections
+ * @requires uiStatusActions~clearStatus
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ * @requires {@link module:store~reducers module:store~reducers.colUi}
+ */
 export class PinnedCollections extends Component {
+  /**
+   * @function componentDidMount
+   * @memberOf PinnedCollections
+   * @description Stáhne seznam kolekcí, které byly připnuty uživatelem.
+   */
   componentDidMount() {
     this.props.getPinnedCollections();
   }

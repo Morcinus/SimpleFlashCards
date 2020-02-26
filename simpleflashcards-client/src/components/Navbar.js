@@ -32,6 +32,20 @@ const styles = theme => ({
   }
 });
 
+/**
+ * @class Navbar
+ * @extends Component
+ * @category Components
+ * @classdesc Tento komponent zobrazí navigační lištu aplikace.
+ * @property {Object} state - vnitřní state komponentu
+ * @property {number} state.selectedTabIndex - Index pro Tabs komponent
+ * @property {element} state.anchorEl - Obsahuje element, ke kterému se má přichytit vyskakovací menu při kliknutí na ikonu uživatele.
+ * @property {boolean} state.myProfileClicked - Určuje, zda-li uživatel klinul na jeho profil v navigační liště.
+ *
+ * @requires userActions~logoutUser
+ * @requires userActions~getUserData
+ * @requires {@link module:store~reducers module:store~reducers.user}
+ */
 export class Navbar extends Component {
   constructor(props) {
     super(props);
@@ -43,24 +57,46 @@ export class Navbar extends Component {
     this.handleMyProfileClick = this.handleMyProfileClick.bind(this);
   }
 
-  handleChange = (event, newValue) => {
+  /**
+   * @function handleTabChange
+   * @memberOf Navbar
+   * @description Přepisuje [selectedTabIndex]{@link Navbar} v state tohoto komponentu při přepnutí v Tabs navigation baru
+   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link Navbar}
+   */
+  handleTabChange = (_, newValue) => {
     this.setState({
       selectedTabIndex: newValue
     });
   };
 
+  /**
+   * @function handleClick
+   * @memberOf Navbar
+   * @description Při kliknutí na ikonu uživatele přiřadí do anchorEl v state tohoto komponentu daný element.
+   * @param {event} event - Událost, která vyvolala spuštění této funkce.
+   */
   handleClick = event => {
     this.setState({
       anchorEl: event.currentTarget
     });
   };
 
+  /**
+   * @function handleClose
+   * @memberOf Navbar
+   * @description Při zavření vyskakovacího menu nastaví anchorEl v state tohoto komponentu na null.
+   */
   handleClose = () => {
     this.setState({
       anchorEl: null
     });
   };
 
+  /**
+   * @function handleMyProfileClick
+   * @memberOf Navbar
+   * @description Při kliknutí na tlačítko profilu uživatele získá data ze serveru o profilu daného uživatele. Také zavře vyskakovací menu.
+   */
   handleMyProfileClick = () => {
     this.setState({
       myProfileClicked: true
@@ -69,6 +105,12 @@ export class Navbar extends Component {
     this.handleClose();
   };
 
+  /**
+   * @function componentDidUpdate
+   * @memberOf Navbar
+   * @description Po stažení dat o profilu uživatele přesměruje uživatele na jeho profil.
+   * @param {Object} prevProps - předchozí props daného komponentu
+   */
   componentDidUpdate(prevProps) {
     if (this.state.myProfileClicked) {
       if (this.props.user) {
@@ -85,6 +127,11 @@ export class Navbar extends Component {
     }
   }
 
+  /**
+   * @function handleLogout
+   * @memberOf Navbar
+   * @description Při kliknutí na tlačítko k odhlášení odhlásí uživatele.
+   */
   handleLogout = () => {
     this.handleClose();
     this.props.logoutUser();
@@ -105,7 +152,7 @@ export class Navbar extends Component {
                   <Typography variant="h6">Simple Flashcards</Typography>
                 </Box>
                 <Box>
-                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleChange}>
+                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleTabChange}>
                     <Tab
                       label={
                         <div>
@@ -157,7 +204,7 @@ export class Navbar extends Component {
                   <Typography variant="h6">Simple Flashcards</Typography>
                 </Box>
                 <Box>
-                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleChange}>
+                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleTabChange}>
                     <Tab
                       label={
                         <div>

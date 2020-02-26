@@ -14,7 +14,25 @@ import { connect } from "react-redux";
 import { getUserCollections, clearUserCollections } from "../redux/actions/colUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @class UserCollections
+ * @extends Component
+ * @category Components
+ * @classdesc Tento komponent zobrazí kolekce vytvořené daným uživatelem.
+ *
+ * @requires colUiActions~getUserCollections
+ * @requires colUiActions~clearUserCollections
+ * @requires functions~renderCollections
+ * @requires uiStatusActions~clearStatus
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ * @requires {@link module:store~reducers module:store~reducers.colUi}
+ */
 export class UserCollections extends Component {
+  /**
+   * @function componentDidMount
+   * @memberOf UserCollections
+   * @description Stáhne seznam kolekcí, které byly vytvořeny uživatelem.
+   */
   componentDidMount() {
     this.props.getUserCollections();
   }

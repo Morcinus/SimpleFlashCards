@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 // Material UI
@@ -14,7 +14,25 @@ import { connect } from "react-redux";
 import { getPinnedDecks, clearPinnedDecks } from "../redux/actions/deckUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @class PinnedDecks
+ * @extends Component
+ * @category Components
+ * @classdesc Tento komponent zobrazí balíčky, které byly připnuty uživatelem.
+ *
+ * @requires deckUiActions~getPinnedDecks
+ * @requires deckUiActions~clearPinnedDecks
+ * @requires functions~renderDecks
+ * @requires uiStatusActions~clearStatus
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ * @requires {@link module:store~reducers module:store~reducers.deckUi}
+ */
 export class PinnedDecks extends Component {
+  /**
+   * @function componentDidMount
+   * @memberOf PinnedDecks
+   * @description Stáhne seznam balíčků, které byly připnuty uživatelem.
+   */
   componentDidMount() {
     this.props.getPinnedDecks();
   }

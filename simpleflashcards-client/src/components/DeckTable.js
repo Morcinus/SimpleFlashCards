@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import MaterialTable from "material-table";
 
-// Zdroj: Vetsina veci je nakopirovana a lehce poupravena z dokumentace https://material-table.com
+/**
+ * @class DeckTable
+ * @extends Component
+ * @category Components
+ * @classdesc Tento komponent zobrazuje tabulku pro upravování balíčku.
+ * @property {Object} state - Vnitřní state komponentu
+ * @property {Array<Object>} state.columns - Určuje nastavení sloupců material-table tabulky (viz {@link https://material-table.com}).
+ *
+ * @see Tento komponent je založen na material-table {@link https://material-table.com}
+ */
 export class DeckTable extends Component {
   constructor(props) {
     super(props);
@@ -29,6 +38,12 @@ export class DeckTable extends Component {
           grouping: false
         }}
         editable={{
+          /**
+           * @function onRowAdd
+           * @memberOf DeckTable
+           * @description [Material-table]{@link https://material-table.com} funkce, která aktualizuje data tabulky při přidání nového řádku.
+           * @param {Object} newData - Nová data tabulky.
+           */
           onRowAdd: newData =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -41,6 +56,13 @@ export class DeckTable extends Component {
                 resolve();
               }, 1000);
             }),
+          /**
+           * @function onRowUpdate
+           * @memberOf DeckTable
+           * @description [Material-table]{@link https://material-table.com} funkce, která aktualizuje data tabulky při přidání nového řádku.
+           * @param {Object} newData - Nová data tabulky.
+           * @param {Object} oldData - Stará data tabulky.
+           */
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -53,6 +75,12 @@ export class DeckTable extends Component {
                 resolve();
               }, 1000);
             }),
+          /**
+           * @function onRowDelete
+           * @memberOf DeckTable
+           * @description [Material-table]{@link https://material-table.com} funkce, která aktualizuje data tabulky při odebrání řádku.
+           * @param {Object} oldData - Stará data tabulky.
+           */
           onRowDelete: oldData =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -71,6 +99,12 @@ export class DeckTable extends Component {
           {
             icon: "arrow_upward",
             tooltip: "Move Up",
+            /**
+             * @function onClick
+             * @memberOf DeckTable
+             * @description Při kliknutí na tlačítko s šipkou nahoru posune daný řádek v tabulce o jednu pozici výš.
+             * @param {Array<Object>} rowData - Data o řádcích tabulky
+             */
             onClick: (event, rowData) => {
               const data = this.props.data;
               const index = data.indexOf(rowData);
@@ -90,6 +124,12 @@ export class DeckTable extends Component {
           {
             icon: "arrow_downward",
             tooltip: "Move Down",
+            /**
+             * @function onClick
+             * @memberOf DeckTable
+             * @description Při kliknutí na tlačítko s šipkou dolu posune daný řádek v tabulce o jednu pozici níž.
+             * @param {Array<Object>} rowData - Data o řádcích tabulky
+             */
             onClick: (event, rowData) => {
               const data = this.props.data;
               const index = data.indexOf(rowData);

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // Material UI
@@ -15,7 +14,25 @@ import { connect } from "react-redux";
 import { getUserDecks, clearUserDecks } from "../redux/actions/deckUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @class UserDecks
+ * @extends Component
+ * @category Components
+ * @classdesc Tento komponent zobrazí balíčky vytvořené daným uživatelem.
+ *
+ * @requires deckUiActions~getUserDecks
+ * @requires deckUiActions~clearUserDecks
+ * @requires functions~renderDecks
+ * @requires uiStatusActions~clearStatus
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ * @requires {@link module:store~reducers module:store~reducers.deckUi}
+ */
 export class UserDecks extends Component {
+  /**
+   * @function componentDidMount
+   * @memberOf UserDecks
+   * @description Stáhne seznam balíčků, které byly vytvořeny uživatelem.
+   */
   componentDidMount() {
     this.props.getUserDecks();
   }
