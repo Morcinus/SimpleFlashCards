@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: createDeck</title>
+    <title>JSDoc: editDeck</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -70,7 +70,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Class</p>
-                        <h1>createDeck</h1>
+                        <h1>editDeck</h1>
                     </header>
                     
                     
@@ -82,9 +82,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>createDeck<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>editDeck<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Na této stránce může uživatel vytvořit balíček a následně ho nahrát na server.</p></div>
+            <div class="class-description"><p>Na této stránce může uživatel upravovat balíček a následně nahrát novou verzi balíčku na server.</p></div>
         
     
 </header>
@@ -100,12 +100,12 @@
 
 
     
-    <h4 class="name" id="createDeck">
-        <a class="href-link" href="#createDeck">#</a>
+    <h4 class="name" id="editDeck">
+        <a class="href-link" href="#editDeck">#</a>
         
         <span class="code-name">
             
-                new createDeck<span class="signature">()</span><span class="type-signature"></span>
+                new editDeck<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -374,9 +374,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_createDeck.js.html" class="button">View Source</a>
+            <a href="pages_editDeck.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_createDeck.js.html">pages/createDeck.js</a>, <a href="pages_createDeck.js.html#line37">line 37</a>
+                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line39">line 39</a>
             </span>
         </p>
     
@@ -388,17 +388,19 @@
         <div class="column is-2"><label>Requires:</label></div>
         <div class="column is-10">
             <ul>
-                <li><a href="module-createDeckActions.html#~saveDeckDraft">module:createDeckActions~saveDeckDraft</a></li>
+                <li><a href="module-editDeckActions.html#~deleteDeck">module:editDeckActions~deleteDeck</a></li>
             
-                <li><a href="module-createDeckActions.html#~deleteDeckDraft">module:createDeckActions~deleteDeckDraft</a></li>
+                <li><a href="module-editDeckActions.html#~deleteDeckDraft">module:editDeckActions~deleteDeckDraft</a></li>
             
-                <li><a href="module-createDeckActions.html#~uploadDeck">module:createDeckActions~uploadDeck</a></li>
+                <li><a href="module-editDeckActions.html#~updateDeck">module:editDeckActions~updateDeck</a></li>
+            
+                <li><a href="module-editDeckActions.html#~getDeck">module:editDeckActions~getDeck</a></li>
             
                 <li><a href="module-uiStatusActions.html#~clearStatus">module:uiStatusActions~clearStatus</a></li>
             
                 <li><a href="module-store.html#~reducers">module:store~reducers.uiStatus</a></li>
             
-                <li><a href="module-store.html#~reducers">module:store~reducers.deckCreation</a></li>
+                <li><a href="module-store.html#~reducers">module:store~reducers.deckEdit</a></li>
             </ul>
         </div>
     </div>
@@ -445,17 +447,19 @@
         <h3 class="subsection-title">Requires</h3>
 
         <ul>
-            <li><a href="module-createDeckActions.html#~saveDeckDraft">module:createDeckActions~saveDeckDraft</a></li>
+            <li><a href="module-editDeckActions.html#~deleteDeck">module:editDeckActions~deleteDeck</a></li>
         
-            <li><a href="module-createDeckActions.html#~deleteDeckDraft">module:createDeckActions~deleteDeckDraft</a></li>
+            <li><a href="module-editDeckActions.html#~deleteDeckDraft">module:editDeckActions~deleteDeckDraft</a></li>
         
-            <li><a href="module-createDeckActions.html#~uploadDeck">module:createDeckActions~uploadDeck</a></li>
+            <li><a href="module-editDeckActions.html#~updateDeck">module:editDeckActions~updateDeck</a></li>
+        
+            <li><a href="module-editDeckActions.html#~getDeck">module:editDeckActions~getDeck</a></li>
         
             <li><a href="module-uiStatusActions.html#~clearStatus">module:uiStatusActions~clearStatus</a></li>
         
             <li><a href="module-store.html#~reducers">module:store~reducers.uiStatus</a></li>
         
-            <li><a href="module-store.html#~reducers">module:store~reducers.deckCreation</a></li>
+            <li><a href="module-store.html#~reducers">module:store~reducers.deckEdit</a></li>
         </ul>
     
 
@@ -496,7 +500,7 @@
     
     
     <div class="description">
-        <p>Načte návrh balíčku, pokud předtím uživatel balíček neuložil na server nebo nesmazal.</p>
+        <p>Stáhne data balíčku ze serveru.</p>
     </div>
     
 
@@ -545,9 +549,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_createDeck.js.html" class="button">View Source</a>
+            <a href="pages_editDeck.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_createDeck.js.html">pages/createDeck.js</a>, <a href="pages_createDeck.js.html#line80">line 80</a>
+                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line83">line 83</a>
             </span>
         </p>
     
@@ -597,7 +601,7 @@
     
     
     <div class="description">
-        <p>Pokud byl balíček úspěšně vytvořen na serveru, vymaže všechna data ze state komponentu.</p>
+        <p>Po stažení dat balíčku ze serveru je uloží do state tohoto komponentu.</p>
     </div>
     
 
@@ -696,9 +700,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_createDeck.js.html" class="button">View Source</a>
+            <a href="pages_editDeck.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_createDeck.js.html">pages/createDeck.js</a>, <a href="pages_createDeck.js.html#line160">line 160</a>
+                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line92">line 92</a>
             </span>
         </p>
     
@@ -730,8 +734,8 @@
 
 
     
-    <h4 class="name" id=".componentWillUnmount">
-        <a class="href-link" href="#.componentWillUnmount">#</a>
+    <h4 class="name" id=".deleteDeck">
+        <a class="href-link" href="#.deleteDeck">#</a>
         
             
                 <span class='tag'>static</span>
@@ -739,7 +743,7 @@
         
         <span class="code-name">
             
-                componentWillUnmount<span class="signature">()</span><span class="type-signature"></span>
+                deleteDeck<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -748,7 +752,7 @@
     
     
     <div class="description">
-        <p>Uloží návrh balíčku.</p>
+        <p>Pošle na server požadavek o smazání balíčku a vymaže state komponentu.</p>
     </div>
     
 
@@ -797,110 +801,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_createDeck.js.html" class="button">View Source</a>
+            <a href="pages_editDeck.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_createDeck.js.html">pages/createDeck.js</a>, <a href="pages_createDeck.js.html#line96">line 96</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id=".deleteDeckDraft">
-        <a class="href-link" href="#.deleteDeckDraft">#</a>
-        
-            
-                <span class='tag'>static</span>
-            
-        
-        <span class="code-name">
-            
-                deleteDeckDraft<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Vymaže návrh balíčku</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="pages_createDeck.js.html" class="button">View Source</a>
-            <span>
-                <a href="pages_createDeck.js.html">pages/createDeck.js</a>, <a href="pages_createDeck.js.html#line126">line 126</a>
+                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line140">line 140</a>
             </span>
         </p>
     
@@ -1049,9 +952,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_createDeck.js.html" class="button">View Source</a>
+            <a href="pages_editDeck.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_createDeck.js.html">pages/createDeck.js</a>, <a href="pages_createDeck.js.html#line68">line 68</a>
+                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line71">line 71</a>
             </span>
         </p>
     
@@ -1150,9 +1053,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_createDeck.js.html" class="button">View Source</a>
+            <a href="pages_editDeck.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_createDeck.js.html">pages/createDeck.js</a>, <a href="pages_createDeck.js.html#line210">line 210</a>
+                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line209">line 209</a>
             </span>
         </p>
     
@@ -1251,9 +1154,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_createDeck.js.html" class="button">View Source</a>
+            <a href="pages_editDeck.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_createDeck.js.html">pages/createDeck.js</a>, <a href="pages_createDeck.js.html#line199">line 199</a>
+                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line198">line 198</a>
             </span>
         </p>
     
@@ -1402,9 +1305,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_createDeck.js.html" class="button">View Source</a>
+            <a href="pages_editDeck.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_createDeck.js.html">pages/createDeck.js</a>, <a href="pages_createDeck.js.html#line177">line 177</a>
+                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line174">line 174</a>
             </span>
         </p>
     
@@ -1503,9 +1406,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_createDeck.js.html" class="button">View Source</a>
+            <a href="pages_editDeck.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_createDeck.js.html">pages/createDeck.js</a>, <a href="pages_createDeck.js.html#line190">line 190</a>
+                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line189">line 189</a>
             </span>
         </p>
     
@@ -1654,9 +1557,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_createDeck.js.html" class="button">View Source</a>
+            <a href="pages_editDeck.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_createDeck.js.html">pages/createDeck.js</a>, <a href="pages_createDeck.js.html#line114">line 114</a>
+                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line128">line 128</a>
             </span>
         </p>
     
@@ -1706,7 +1609,7 @@
     
     
     <div class="description">
-        <p>Nahraje balíček na server.</p>
+        <p>Nahraje novou verzi balíčku na server.</p>
     </div>
     
 
@@ -1755,9 +1658,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_createDeck.js.html" class="button">View Source</a>
+            <a href="pages_editDeck.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_createDeck.js.html">pages/createDeck.js</a>, <a href="pages_createDeck.js.html#line137">line 137</a>
+                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line151">line 151</a>
             </span>
         </p>
     

@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: redux/reducers/userReducer.js</title>
+    <title>JSDoc: redux/actions/editDeckActions.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>redux/reducers/userReducer.js</h1>
+                        <h1>redux/actions/editDeckActions.js</h1>
                     </header>
                     
                     
@@ -82,73 +82,161 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { SET_AUTHENTICATED, SET_UNAUTHENTICATED, SET_USER_DATA, CLEAR_USER_DATA, SET_ONE_USER_DATA, SET_USER_PROFILE, CLEAR_USER_PROFILE } from "../types";
+            <pre class="prettyprint source linenums"><code>import { SET_EDIT_DECK_DATA, DELETE_EDIT_DECK_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS } from "../types";
+import axios from "axios";
 
 /**
- * @module userReducer
- * @category ReduxReducers
- * @description Uchovává data a informace o uživateli.
+ * @category ReduxActions
+ * @module editDeckActions
+ * @description Zde jsou funkce, které komunikují se serverem ohledně upravování balíčku a vyvolávají změny v [editDeckReduceru]{@link module:editDeckReducer} a [uiStatusReduceru]{@link module:uiStatusReducer}.
  */
 
 /**
- * @type {Object} initialState
- * @description Původní stav reduceru
- * @property {Object} initialState - původní stav reduceru
- * @property {boolean} initialState.authenticated - Uchovává informaci, zda-li je uživatel přihlášený a autentizovaný.
- * @property {Object} initialState.credentials - Uchovává data o přihlášeném uživateli.
- * @property {Object} initialState.userProfile - Uchovává data o profilu uživatele.
+ * @function deleteDeckDraft
+ * @description Vymaže návrh balíčku z reduceru.
  */
-const initialState = {
-  authenticated: false,
-  credentials: {},
-  userProfile: {}
+export const deleteDeckDraft = () => dispatch => {
+  dispatch({ type: DELETE_EDIT_DECK_DATA });
 };
 
 /**
- * @function function
- * @description Mění stav reduceru.
- * @param {Object} state - stav reduceru
- * @param {Object} action - akce, která vyvolává změnu v reduceru
- * @returns nový stav reduceru
+ * @function updateDeck
+ * @description Nahraje na server novou verzi balíčku.
+ * @param {Object} deckData - data balíčku
+ * @param {string} deckId - ID upravovaného balíčku
+ * @async
  */
-export default function(state = initialState, action) {
-  switch (action.type) {
-    case SET_AUTHENTICATED:
-      return {
-        ...state,
-        authenticated: true
+export const updateDeck = (deckData, deckId) => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+
+  // Validate deckData
+  const errorCodes = validateUploadDeckData(deckData);
+  if (errorCodes.length > 0) {
+    errorCodes.forEach(errorCode => {
+      console.error("Error:", errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: errorCode });
+    });
+  } else {
+    // Push cards to export deck
+    let exportDeckCards = [];
+    deckData.deckCards.forEach(card => {
+      let newCard = {
+        body1: card.frontPage,
+        body2: card.backPage,
+        cardId: card.cardId
       };
-    case SET_UNAUTHENTICATED:
-      return initialState;
-    case SET_USER_DATA:
-      return {
-        ...state,
-        credentials: action.payload
-      };
-    case SET_ONE_USER_DATA:
-      return {
-        ...state,
-        credentials: { ...state.credentials, ...action.payload }
-      };
-    case CLEAR_USER_DATA:
-      return {
-        ...state,
-        credentials: {}
-      };
-    case SET_USER_PROFILE:
-      return {
-        ...state,
-        userProfile: action.payload
-      };
-    case CLEAR_USER_PROFILE:
-      return {
-        ...state,
-        userProfile: {}
-      };
-    default:
-      return state;
+      exportDeckCards.push(newCard);
+    });
+
+    // Create export deck data
+    const exportDeckData = {
+      deckName: deckData.deckName,
+      deckCards: exportDeckCards,
+      deckDescription: deckData.deckDescription,
+      private: deckData.private
+    };
+
+    const imageFormData = deckData.imageFormData ? deckData.imageFormData : null;
+
+    axios
+      .post(`/updateDeck/${deckId}`, exportDeckData)
+      .then(res => {
+        // Upload deck image
+        if (imageFormData) {
+          axios
+            .post(`/uploadDeckImage/${deckId}`, imageFormData)
+            .then(() => {
+              dispatch({ type: SET_STATUS_SUCCESS, payload: "updateDeck/deck-updated" });
+            })
+            .catch(err => {
+              console.error("Error:", err.response.data.errorCode);
+              dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+            });
+        } else {
+          dispatch({ type: SET_STATUS_SUCCESS, payload: "updateDeck/deck-updated" });
+        }
+      })
+      .catch(err => {
+        if (err.response.data.errorCodes) {
+          err.response.data.errorCodes.forEach(errorCode => {
+            console.error("Error:", errorCode);
+            dispatch({ type: SET_STATUS_ERROR, payload: errorCode });
+          });
+        } else {
+          console.error("Error:", err.response.data.errorCode);
+          dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+        }
+      });
   }
-}
+};
+
+/**
+ * @function getDeck
+ * @description Získá ze serveru data o balíčku na základě jeho ID.
+ * @param {string} deckId - data balíčku
+ * @async
+ */
+export const getDeck = deckId => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .get(`/getDeck/${deckId}`)
+    .then(res => {
+      dispatch({ type: SET_EDIT_DECK_DATA, payload: res.data.deck });
+      dispatch({ type: SET_STATUS_SUCCESS });
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
+
+/**
+ * @function validateUploadDeckData
+ * @description Ověří, zda jsou data balíčku platná.
+ * @param {Object} deckData - data balíčku
+ * @returns Array&lt;String> - error kódy, pokud jsou všechna data planá, vrací prázdné pole.
+ */
+const validateUploadDeckData = deckData => {
+  let errors = [];
+
+  // DeckName validation
+  if (deckData.deckName !== "") {
+    let deckNameRegex = /^[a-zA-Z0-9 ]+$/;
+    if (!deckData.deckName.match(deckNameRegex)) {
+      errors.push("updateDeck/invalid-deck-name");
+    }
+  } else {
+    errors.push("updateDeck/empty-deck-name");
+  }
+
+  // DeckCards validation
+  if (deckData.deckCards.length &lt;= 0) {
+    errors.push("updateDeck/empty-deck");
+  }
+
+  return errors;
+};
+
+/**
+ * @function deleteDeck
+ * @description Pošle na server požadavek, aby byl daný balíček smazán.
+ * @param {string} deckId - ID balíčku
+ * @async
+ */
+export const deleteDeck = deckId => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .post(`/deleteDeck/${deckId}`)
+    .then(res => {
+      dispatch({ type: DELETE_EDIT_DECK_DATA });
+      dispatch(deleteDeckDraft());
+      dispatch({ type: SET_STATUS_SUCCESS, payload: res.data.successCode });
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
 </code></pre>
         </article>
     </section>

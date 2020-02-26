@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: uiStatusReducer</title>
+    <title>JSDoc: editDeckReducer</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -70,7 +70,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Module</p>
-                        <h1>uiStatusReducer</h1>
+                        <h1>editDeckReducer</h1>
                     </header>
                     
                     
@@ -92,7 +92,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Uchovává informace o stavu aplikace.</p></div>
+            <div class="description"><p>Uchovává data o upravovaném balíčku.</p></div>
         
 
         
@@ -144,9 +144,9 @@
 
     
         <p class="tag-source">
-            <a href="redux_reducers_uiStatusReducer.js.html" class="button">View Source</a>
+            <a href="redux_reducers_editDeckReducer.js.html" class="button">View Source</a>
             <span>
-                <a href="redux_reducers_uiStatusReducer.js.html">redux/reducers/uiStatusReducer.js</a>, <a href="redux_reducers_uiStatusReducer.js.html#line8">line 8</a>
+                <a href="redux_reducers_editDeckReducer.js.html">redux/reducers/editDeckReducer.js</a>, <a href="redux_reducers_editDeckReducer.js.html#line3">line 3</a>
             </span>
         </p>
     
@@ -279,16 +279,13 @@
       
 <tr class="deep-level-1">
     
-        <td class="name"><code>status</code></td>
+        <td class="name"><code>deckName</code></td>
     
 
     <td class="type">
     
         
 <span class="param-type">string</span>
-|
-
-<span class="param-type">null</span>
 
 
     
@@ -298,20 +295,20 @@
 
     
 
-    <td class="description last"><p>Uchovává status aplikace, nabývá hodnot &quot;BUSY&quot;, &quot;ERROR&quot;, &quot;SUCCESS&quot;, null.</p></td>
+    <td class="description last"><p>Uchovává název balíčku.</p></td>
 </tr>
 
   
       
 <tr class="deep-level-1">
     
-        <td class="name"><code>errorCodes</code></td>
+        <td class="name"><code>deckDescription</code></td>
     
 
     <td class="type">
     
         
-<span class="param-type">Array.&lt;String></span>
+<span class="param-type">string</span>
 
 
     
@@ -321,20 +318,20 @@
 
     
 
-    <td class="description last"><p>Uchovává error kódy.</p></td>
+    <td class="description last"><p>Uchovává popis balíčku.</p></td>
 </tr>
 
   
       
 <tr class="deep-level-1">
     
-        <td class="name"><code>successCodes</code></td>
+        <td class="name"><code>deckImage</code></td>
     
 
     <td class="type">
     
         
-<span class="param-type">Array.&lt;String></span>
+<span class="param-type">Object</span>
 
 
     
@@ -344,7 +341,76 @@
 
     
 
-    <td class="description last"><p>Uchovává success kódy.</p></td>
+    <td class="description last"><p>Uchovává obrázek balíčku.</p></td>
+</tr>
+
+  
+      
+<tr class="deep-level-1">
+    
+        <td class="name"><code>deckCards</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">Array.&lt;Object></span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Uchovává karty balíčku.</p></td>
+</tr>
+
+  
+      
+<tr class="deep-level-1">
+    
+        <td class="name"><code>imageUrl</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">string</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Uchovává adresu obrázku balíčku.</p></td>
+</tr>
+
+  
+      
+<tr class="deep-level-1">
+    
+        <td class="name"><code>private</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">boolean</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Uchovává informaci, zda je balíček veřejný či soukromý.</p></td>
 </tr>
 
   
@@ -389,9 +455,9 @@
 
     
         <p class="tag-source">
-            <a href="redux_reducers_uiStatusReducer.js.html" class="button">View Source</a>
+            <a href="redux_reducers_editDeckReducer.js.html" class="button">View Source</a>
             <span>
-                <a href="redux_reducers_uiStatusReducer.js.html">redux/reducers/uiStatusReducer.js</a>, <a href="redux_reducers_uiStatusReducer.js.html#line22">line 22</a>
+                <a href="redux_reducers_editDeckReducer.js.html">redux/reducers/editDeckReducer.js</a>, <a href="redux_reducers_editDeckReducer.js.html#line20">line 20</a>
             </span>
         </p>
     
@@ -558,9 +624,9 @@
 
     
         <p class="tag-source">
-            <a href="redux_reducers_uiStatusReducer.js.html" class="button">View Source</a>
+            <a href="redux_reducers_editDeckReducer.js.html" class="button">View Source</a>
             <span>
-                <a href="redux_reducers_uiStatusReducer.js.html">redux/reducers/uiStatusReducer.js</a>, <a href="redux_reducers_uiStatusReducer.js.html#line28">line 28</a>
+                <a href="redux_reducers_editDeckReducer.js.html">redux/reducers/editDeckReducer.js</a>, <a href="redux_reducers_editDeckReducer.js.html#line29">line 29</a>
             </span>
         </p>
     

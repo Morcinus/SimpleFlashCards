@@ -1,10 +1,27 @@
 import { SET_EDIT_DECK_DATA, DELETE_EDIT_DECK_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS } from "../types";
 import axios from "axios";
 
+/**
+ * @category ReduxActions
+ * @module editDeckActions
+ * @description Zde jsou funkce, které komunikují se serverem ohledně upravování balíčku a vyvolávají změny v [editDeckReduceru]{@link module:editDeckReducer} a [uiStatusReduceru]{@link module:uiStatusReducer}.
+ */
+
+/**
+ * @function deleteDeckDraft
+ * @description Vymaže návrh balíčku z reduceru.
+ */
 export const deleteDeckDraft = () => dispatch => {
   dispatch({ type: DELETE_EDIT_DECK_DATA });
 };
 
+/**
+ * @function updateDeck
+ * @description Nahraje na server novou verzi balíčku.
+ * @param {Object} deckData - data balíčku
+ * @param {string} deckId - ID upravovaného balíčku
+ * @async
+ */
 export const updateDeck = (deckData, deckId) => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
 
@@ -69,6 +86,12 @@ export const updateDeck = (deckData, deckId) => dispatch => {
   }
 };
 
+/**
+ * @function getDeck
+ * @description Získá ze serveru data o balíčku na základě jeho ID.
+ * @param {string} deckId - data balíčku
+ * @async
+ */
 export const getDeck = deckId => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
@@ -83,6 +106,12 @@ export const getDeck = deckId => dispatch => {
     });
 };
 
+/**
+ * @function validateUploadDeckData
+ * @description Ověří, zda jsou data balíčku platná.
+ * @param {Object} deckData - data balíčku
+ * @returns Array<String> - error kódy, pokud jsou všechna data planá, vrací prázdné pole.
+ */
 const validateUploadDeckData = deckData => {
   let errors = [];
 
@@ -104,6 +133,12 @@ const validateUploadDeckData = deckData => {
   return errors;
 };
 
+/**
+ * @function deleteDeck
+ * @description Pošle na server požadavek, aby byl daný balíček smazán.
+ * @param {string} deckId - ID balíčku
+ * @async
+ */
 export const deleteDeck = deckId => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios

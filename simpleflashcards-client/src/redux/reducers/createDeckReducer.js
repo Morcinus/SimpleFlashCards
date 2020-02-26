@@ -3,7 +3,7 @@ import { UPDATE_DECK_DATA, DELETE_DECK_DATA } from "../types";
 /**
  * @module createDeckReducer
  * @category ReduxReducers
- * @description Uchovává data o upravovaném balíčku.
+ * @description Uchovává data o vytvářeném balíčku.
  */
 
 /**

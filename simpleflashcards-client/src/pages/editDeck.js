@@ -36,6 +36,28 @@ const initialState = {
   private: false
 };
 
+/**
+ * @class editDeck
+ * @extends Component
+ * @category Pages
+ * @classdesc Na této stránce může uživatel upravovat balíček a následně nahrát novou verzi balíčku na server.
+ * @property {Object} state - Vnitřní state komponentu
+ * @property {string} state.deckName - Uchovává název balíčku.
+ * @property {string} state.deckDescription - Uchovává popis balíčku.
+ * @property {Object} state.deckImage - Uchovává obrázek balíčku.
+ * @property {Array<Object>} state.deckCards - Uchovává karty balíčku.
+ * @property {string} state.imageUrl - Uchovává adresu obrázku balíčku.
+ * @property {boolean} state.private - Uchovává informaci, zda je balíček veřejný či soukromý.
+ * @property {boolean} state.dialogOpen - Uchovává informaci, zda je dialogové okno otevřené či zavřené.
+ *
+ * @requires editDeckActions~deleteDeck
+ * @requires editDeckActions~deleteDeckDraft
+ * @requires editDeckActions~updateDeck
+ * @requires editDeckActions~getDeck
+ * @requires uiStatusActions~clearStatus
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ * @requires {@link module:store~reducers module:store~reducers.deckEdit}
+ */
 export class editDeck extends Component {
   constructor(props) {
     super(props);
@@ -46,18 +68,34 @@ export class editDeck extends Component {
     this.uploadDeck = this.uploadDeck.bind(this);
   }
 
+  /**
+   * @function handleChange
+   * @memberOf editDeck
+   * @description Přepisuje data v state tohoto komponentu na základě uživatelských změn při vytváření balíčku.
+   * @param {event} event - Event, který vyvolal spuštění této funkce.
+   */
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
     });
   };
 
+  /**
+   * @function componentDidMount
+   * @memberOf editDeck
+   * @description Stáhne data balíčku ze serveru.
+   */
   componentDidMount() {
     this.props.getDeck(this.props.match.params.deckId);
   }
 
+  /**
+   * @function componentDidUpdate
+   * @memberOf editDeck
+   * @description Po stažení dat balíčku ze serveru je uloží do state tohoto komponentu.
+   * @param {Object} prevProps - předchozí props daného komponentu
+   */
   componentDidUpdate(prevProps) {
-    // Load deck data after getDeck()
     if (this.props.deckEdit) {
       if (this.props.deckEdit !== prevProps.deckEdit) {
         let deckCards = [];
@@ -87,19 +125,34 @@ export class editDeck extends Component {
     this.props.clearStatus();
   }
 
-  // Used to communicate with DeckTable
+  /**
+   * @function updateDeckCards
+   * @memberOf editDeck
+   * @description Přepisuje seznam karet balíčku na základě změn v tabulce karet.
+   * @param {Array<Object>} cards - seznam karet v daném balíčku
+   */
   updateDeckCards(cards) {
     this.setState({
       deckCards: cards
     });
   }
 
+  /**
+   * @function deleteDeck
+   * @memberOf editDeck
+   * @description Pošle na server požadavek o smazání balíčku a vymaže state komponentu.
+   */
   deleteDeck() {
     this.setState(initialState);
     this.props.deleteDeck(this.props.match.params.deckId);
     this.handleDialogClose();
   }
 
+  /**
+   * @function uploadDeck
+   * @memberOf editDeck
+   * @description Nahraje novou verzi balíčku na server.
+   */
   uploadDeck() {
     let deckData = {
       deckName: this.state.deckName,
@@ -118,6 +171,12 @@ export class editDeck extends Component {
     this.props.updateDeck(deckData, this.props.match.params.deckId);
   }
 
+  /**
+   * @function handleImageChange
+   * @memberOf editDeck
+   * @description Pokud byl nahrán nový obrázek, změní data o obrázku v state tohoto komponentu.
+   * @param {event} event - Event, který vyvolal spuštění této funkce.
+   */
   handleImageChange = event => {
     if (event.target.files[0]) {
       this.setState({
@@ -127,16 +186,31 @@ export class editDeck extends Component {
     }
   };
 
+  /**
+   * @function handleUploadButtonClick
+   * @memberOf editDeck
+   * @description Pokud uživatel kliknul na obrázek balíčku, otevře okno pro nahrání obrázku.
+   */
   handleUploadButtonClick() {
     document.getElementById("imageInput").click();
   }
 
+  /**
+   * @function handleDialogOpen
+   * @memberOf editDeck
+   * @description Otevře dialogové okno tím, že nastaví ve state komponentu dialogOpen na true.
+   */
   handleDialogOpen = () => {
     this.setState({
       dialogOpen: true
     });
   };
 
+  /**
+   * @function handleDialogClose
+   * @memberOf editDeck
+   * @description Zavře dialogové okno tím, že nastaví ve state komponentu dialogOpen na false.
+   */
   handleDialogClose = () => {
     this.setState({
       dialogOpen: false

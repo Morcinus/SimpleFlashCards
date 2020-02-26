@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: redux/reducers/userReducer.js</title>
+    <title>JSDoc: redux/reducers/editDeckReducer.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>redux/reducers/userReducer.js</h1>
+                        <h1>redux/reducers/editDeckReducer.js</h1>
                     </header>
                     
                     
@@ -82,26 +82,32 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { SET_AUTHENTICATED, SET_UNAUTHENTICATED, SET_USER_DATA, CLEAR_USER_DATA, SET_ONE_USER_DATA, SET_USER_PROFILE, CLEAR_USER_PROFILE } from "../types";
+            <pre class="prettyprint source linenums"><code>import { SET_EDIT_DECK_DATA, DELETE_EDIT_DECK_DATA } from "../types";
 
 /**
- * @module userReducer
+ * @module editDeckReducer
  * @category ReduxReducers
- * @description Uchovává data a informace o uživateli.
+ * @description Uchovává data o upravovaném balíčku.
  */
 
 /**
  * @type {Object} initialState
  * @description Původní stav reduceru
  * @property {Object} initialState - původní stav reduceru
- * @property {boolean} initialState.authenticated - Uchovává informaci, zda-li je uživatel přihlášený a autentizovaný.
- * @property {Object} initialState.credentials - Uchovává data o přihlášeném uživateli.
- * @property {Object} initialState.userProfile - Uchovává data o profilu uživatele.
+ * @property {string} initialState.deckName - Uchovává název balíčku.
+ * @property {string} initialState.deckDescription - Uchovává popis balíčku.
+ * @property {Object} initialState.deckImage - Uchovává obrázek balíčku.
+ * @property {Array&lt;Object>} initialState.deckCards - Uchovává karty balíčku.
+ * @property {string} initialState.imageUrl - Uchovává adresu obrázku balíčku.
+ * @property {boolean} initialState.private - Uchovává informaci, zda je balíček veřejný či soukromý.
  */
 const initialState = {
-  authenticated: false,
-  credentials: {},
-  userProfile: {}
+  deckName: "",
+  deckDescription: "",
+  deckImage: null,
+  deckCards: [],
+  imageUrl: null,
+  private: false
 };
 
 /**
@@ -113,38 +119,17 @@ const initialState = {
  */
 export default function(state = initialState, action) {
   switch (action.type) {
-    case SET_AUTHENTICATED:
+    case SET_EDIT_DECK_DATA:
       return {
         ...state,
-        authenticated: true
+        deckName: action.payload.deckName,
+        deckDescription: action.payload.deckDescription,
+        deckCards: action.payload.cardArray,
+        imageUrl: action.payload.deckImage,
+        private: action.payload.private
       };
-    case SET_UNAUTHENTICATED:
+    case DELETE_EDIT_DECK_DATA:
       return initialState;
-    case SET_USER_DATA:
-      return {
-        ...state,
-        credentials: action.payload
-      };
-    case SET_ONE_USER_DATA:
-      return {
-        ...state,
-        credentials: { ...state.credentials, ...action.payload }
-      };
-    case CLEAR_USER_DATA:
-      return {
-        ...state,
-        credentials: {}
-      };
-    case SET_USER_PROFILE:
-      return {
-        ...state,
-        userProfile: action.payload
-      };
-    case CLEAR_USER_PROFILE:
-      return {
-        ...state,
-        userProfile: {}
-      };
     default:
       return state;
   }
