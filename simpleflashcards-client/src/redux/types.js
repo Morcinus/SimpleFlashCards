@@ -1,3 +1,9 @@
+/**
+ * @module types
+ * @category Ostatní
+ * @description Zde jsou všechny konstanty, které určují typy akcí pro redux.
+ */
+
 // User reducer types
 export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
 export const SET_UNAUTHENTICATED = "SET_UNAUTHENTICATED";

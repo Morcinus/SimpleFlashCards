@@ -2,21 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 // Material UI
-import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
-import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
@@ -27,7 +21,6 @@ import AddBox from "@material-ui/icons/AddBox";
 import Switch from "@material-ui/core/Switch";
 import Box from "@material-ui/core/Box";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 // Other
 import { collectionDefaultImgUrl } from "../util/other";
@@ -47,6 +40,22 @@ const initialState = {
   private: false
 };
 
+/**
+ * @class CollectionDialog
+ * @extends Component
+ * @category Components
+ * @classdesc Tento komponent umožňuje uživateli vytvořit novou kolekci, nebo přidat balíček do již existující kolekce tohoto uživatele.
+ * @property {Object} state - vnitřní state komponentu
+ * @property {string} state.newColName - Text, který uživatel zadá do formuláře do políčka pro název vytvářené kolekce.
+ * @property {boolean} state.private - Určuje, zda bude nově vytvořená kolekce soukromá nebo veřejná.
+ *
+ * @requires colUiActions~closeCollectionDialog
+ * @requires colUiActions~getUserCollectionsWithDeckInfo
+ * @requires colUiActions~clearUserCollections
+ * @requires colUiActions~addDeckToCollection
+ * @requires colUiActions~createCollection
+ * @requires {@link module:store~reducers module:store~reducers.colUi}
+ */
 export class CollectionDialog extends Component {
   constructor(props) {
     super(props);
@@ -56,33 +65,72 @@ export class CollectionDialog extends Component {
     this.handleCreateCollection = this.handleCreateCollection.bind(this);
   }
 
+  /**
+   * @function componentDidMount
+   * @memberOf CollectionDialog
+   * @description Získá seznam kolekcí společně s informacemi, zda-li je balíček již v kolekcích obsažen.
+   */
   componentDidMount() {
     this.props.getUserCollectionsWithDeckInfo(this.props.deckId);
   }
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf CollectionDialog
+   * @description Vymaže seznam kolekcí z reduceru.
+   */
   componentWillUnmount() {
     this.props.clearUserCollections();
   }
 
+  /**
+   * @function handleClose
+   * @memberOf CollectionDialog
+   * @description Zavře toto dialogové okno.
+   */
   handleClose = () => {
     this.props.closeCollectionDialog();
   };
 
+  /**
+   * @function handleAddToCollection
+   * @memberOf CollectionDialog
+   * @description Pošle na server požadavek, aby byl daný balíček přidán do kolekce.
+   * @param {string} colId - ID kolekce, do které má být přidán balíček.
+   * @param {number} i - Index kolekce v poli kolekcí.
+   */
   handleAddToCollection(colId, i) {
     this.props.addDeckToCollection(colId, this.props.deckId, i);
   }
 
+  /**
+   * @function handleCreateCollection
+   * @memberOf CollectionDialog
+   * @description Pošle na server požadavek, aby byla vytvořena nová kolekce s daným názvem, která bude soukromá nebo veřejná a bude obsahovat daný balíček.
+   */
   handleCreateCollection() {
     this.props.createCollection(this.state.newColName, this.props.deckId, this.state.private);
     this.setState(initialState);
   }
 
+  /**
+   * @function handleChange
+   * @memberOf CollectionDialog
+   * @description Přepisuje data v state tohoto komponentu na základě změn v textových polích formuláře.
+   * @param {event} event - Event, který vyvolal spuštění této funkce.
+   */
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
     });
   };
 
+  /**
+   * @function handleSwitchChange
+   * @memberOf CollectionDialog
+   * @description Přepisuje data v state tohoto komponentu na základě přepínání switche pro nastavení přístupnosti kolekce.
+   * @param {event} event - Event, který vyvolal spuštění této funkce.
+   */
   handleSwitchChange = event => {
     this.setState({
       [event.target.name]: event.target.checked

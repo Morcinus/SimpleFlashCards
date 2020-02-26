@@ -10,6 +10,15 @@ import { connect } from "react-redux";
 // Other
 import { renderDecks } from "../util/functions";
 
+/**
+ * @class CollectionDecks
+ * @extends Component
+ * @category Components
+ * @classdesc Tento komponent zobrazí balíčky, které jsou obsaženy v dané kolekci.
+ *
+ * @requires functions~renderDecks
+ * @requires {@link module:store~reducers module:store~reducers.colUi}
+ */
 export class CollectionDecks extends Component {
   constructor(props) {
     super(props);

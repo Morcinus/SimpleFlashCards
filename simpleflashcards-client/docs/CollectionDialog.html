@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: CollectionDialog</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                     
+                        <h1 class="navbar-item">Simple Flashcards Dokumentace</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/Morcinus/SimpleFlashCards" target="_blank">
+                                Github
+                            </a>
+                        </div>
+                    
+                        <div class="navbar-item">
+                            <a href="https://simpleflashcards-4aea0.firebaseapp.com" target="_blank">
+                                Aplikace
+                            </a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Components</h2><h3>Classes</h3><ul><li><a href="CollectionDecks.html">CollectionDecks</a></li><li><a href="CollectionDialog.html">CollectionDialog</a></li><li><a href="CollectionInfo.html">CollectionInfo</a></li><li><a href="ColTable.html">ColTable</a></li><li><a href="DeckCards.html">DeckCards</a></li><li><a href="DeckInfo.html">DeckInfo</a></li><li><a href="DeckTable.html">DeckTable</a></li><li><a href="Navbar.html">Navbar</a></li><li><a href="PinnedCollections.html">PinnedCollections</a></li><li><a href="PinnedDecks.html">PinnedDecks</a></li><li><a href="UserCollections.html">UserCollections</a></li><li><a href="UserDecks.html">UserDecks</a></li></ul></div><div class="category"><h2>Ostatní</h2><h3>Modules</h3><ul><li><a href="module-store.html">store</a></li><li><a href="module-types.html">types</a></li></ul></div><div class="category"><h2>Pages</h2><h3>Classes</h3><ul><li><a href="collection.html">collection</a></li><li><a href="createDeck.html">createDeck</a></li><li><a href="deck.html">deck</a></li><li><a href="editCollection.html">editCollection</a></li><li><a href="editDeck.html">editDeck</a></li><li><a href="home.html">home</a></li><li><a href="login.html">login</a></li><li><a href="settings.html">settings</a></li><li><a href="signup.html">signup</a></li><li><a href="studyCollection.html">studyCollection</a></li><li><a href="studyDeck.html">studyDeck</a></li><li><a href="userProfile.html">userProfile</a></li></ul></div><div class="category"><h2>ReduxActions</h2><h3>Modules</h3><ul><li><a href="module-colStudyActions.html">colStudyActions</a></li><li><a href="module-colUiActions.html">colUiActions</a></li><li><a href="module-createDeckActions.html">createDeckActions</a></li><li><a href="module-deckStudyActions.html">deckStudyActions</a></li><li><a href="module-deckUiActions.html">deckUiActions</a></li><li><a href="module-editColActions.html">editColActions</a></li><li><a href="module-editDeckActions.html">editDeckActions</a></li><li><a href="module-uiStatusActions.html">uiStatusActions</a></li><li><a href="module-userActions.html">userActions</a></li></ul></div><div class="category"><h2>ReduxReducers</h2><h3>Modules</h3><ul><li><a href="module-colStudyReducer.html">colStudyReducer</a></li><li><a href="module-colUiReducer.html">colUiReducer</a></li><li><a href="module-createDeckReducer.html">createDeckReducer</a></li><li><a href="module-deckStudyReducer.html">deckStudyReducer</a></li><li><a href="module-deckUiReducer.html">deckUiReducer</a></li><li><a href="module-editColReducer.html">editColReducer</a></li><li><a href="module-editDeckReducer.html">editDeckReducer</a></li><li><a href="module-uiStatusReducer.html">uiStatusReducer</a></li><li><a href="module-userReducer.html">userReducer</a></li></ul></div><div class="category"><h2>util</h2><h3>Modules</h3><ul><li><a href="module-AuthRoute.html">AuthRoute</a></li><li><a href="module-functions.html">functions</a></li><li><a href="module-other.html">other</a></li><li><a href="module-theme.html">theme</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Class</p>
+                        <h1>CollectionDialog</h1>
+                    </header>
+                    
+                    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>CollectionDialog<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>Tento komponent umožňuje uživateli vytvořit novou kolekci, nebo přidat balíček do již existující kolekce tohoto uživatele.</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class='vertical-section'>
+                <h3 class="title"><span>Constructor</span></h3>
+                <div class="members">
+                    <div class="member">
+
+
+    
+    <h4 class="name" id="CollectionDialog">
+        <a class="href-link" href="#CollectionDialog">#</a>
+        
+        <span class="code-name">
+            
+                new CollectionDialog<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+        
+<tr class="deep-level-0">
+    
+        <td class="name"><code>state</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">Object</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>vnitřní state komponentu</p></td>
+</tr>
+
+  
+      
+<tr class="deep-level-1">
+    
+        <td class="name"><code>newColName</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">string</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Text, který uživatel zadá do formuláře do políčka pro název vytvářené kolekce.</p></td>
+</tr>
+
+  
+      
+<tr class="deep-level-1">
+    
+        <td class="name"><code>private</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">boolean</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Určuje, zda bude nově vytvořená kolekce soukromá nebo veřejná.</p></td>
+</tr>
+
+  
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_CollectionDialog.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_CollectionDialog.js.html">components/CollectionDialog.js</a>, <a href="components_CollectionDialog.js.html#line43">line 43</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+    <div class="method-parameter columns">
+        <div class="column is-2"><label>Requires:</label></div>
+        <div class="column is-10">
+            <ul>
+                <li><a href="module-colUiActions.html#~closeCollectionDialog">module:colUiActions~closeCollectionDialog</a></li>
+            
+                <li><a href="module-colUiActions.html#~getUserCollectionsWithDeckInfo">module:colUiActions~getUserCollectionsWithDeckInfo</a></li>
+            
+                <li><a href="module-colUiActions.html#~clearUserCollections">module:colUiActions~clearUserCollections</a></li>
+            
+                <li><a href="module-colUiActions.html#~addDeckToCollection">module:colUiActions~addDeckToCollection</a></li>
+            
+                <li><a href="module-colUiActions.html#~createCollection">module:colUiActions~createCollection</a></li>
+            
+                <li><a href="module-store.html#~reducers">module:store~reducers.colUi</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+                </div>
+            </div>
+        
+    
+    </div>
+    
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>Component</li>
+    </ul>
+
+
+    
+
+    
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li><a href="module-colUiActions.html#~closeCollectionDialog">module:colUiActions~closeCollectionDialog</a></li>
+        
+            <li><a href="module-colUiActions.html#~getUserCollectionsWithDeckInfo">module:colUiActions~getUserCollectionsWithDeckInfo</a></li>
+        
+            <li><a href="module-colUiActions.html#~clearUserCollections">module:colUiActions~clearUserCollections</a></li>
+        
+            <li><a href="module-colUiActions.html#~addDeckToCollection">module:colUiActions~addDeckToCollection</a></li>
+        
+            <li><a href="module-colUiActions.html#~createCollection">module:colUiActions~createCollection</a></li>
+        
+            <li><a href="module-store.html#~reducers">module:store~reducers.colUi</a></li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h3 class="title"><span>Methods</span></h3>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".componentDidMount">
+        <a class="href-link" href="#.componentDidMount">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                componentDidMount<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Získá seznam kolekcí společně s informacemi, zda-li je balíček již v kolekcích obsažen.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_CollectionDialog.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_CollectionDialog.js.html">components/CollectionDialog.js</a>, <a href="components_CollectionDialog.js.html#line68">line 68</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".componentWillUnmount">
+        <a class="href-link" href="#.componentWillUnmount">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                componentWillUnmount<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Vymaže seznam kolekcí z reduceru.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_CollectionDialog.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_CollectionDialog.js.html">components/CollectionDialog.js</a>, <a href="components_CollectionDialog.js.html#line77">line 77</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".handleAddToCollection">
+        <a class="href-link" href="#.handleAddToCollection">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                handleAddToCollection<span class="signature">(colId, i)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Pošle na server požadavek, aby byl daný balíček přidán do kolekce.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>colId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>ID kolekce, do které má být přidán balíček.</p></td>
+</tr>
+
+
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>i</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">number</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Index kolekce v poli kolekcí.</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_CollectionDialog.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_CollectionDialog.js.html">components/CollectionDialog.js</a>, <a href="components_CollectionDialog.js.html#line95">line 95</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".handleChange">
+        <a class="href-link" href="#.handleChange">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                handleChange<span class="signature">(event)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Přepisuje data v state tohoto komponentu na základě změn v textových polích formuláře.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>event</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">event</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Event, který vyvolal spuštění této funkce.</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_CollectionDialog.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_CollectionDialog.js.html">components/CollectionDialog.js</a>, <a href="components_CollectionDialog.js.html#line116">line 116</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".handleClose">
+        <a class="href-link" href="#.handleClose">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                handleClose<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Zavře toto dialogové okno.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_CollectionDialog.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_CollectionDialog.js.html">components/CollectionDialog.js</a>, <a href="components_CollectionDialog.js.html#line86">line 86</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".handleCreateCollection">
+        <a class="href-link" href="#.handleCreateCollection">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                handleCreateCollection<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Pošle na server požadavek, aby byla vytvořena nová kolekce s daným názvem, která bude soukromá nebo veřejná a bude obsahovat daný balíček.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_CollectionDialog.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_CollectionDialog.js.html">components/CollectionDialog.js</a>, <a href="components_CollectionDialog.js.html#line106">line 106</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id=".handleSwitchChange">
+        <a class="href-link" href="#.handleSwitchChange">#</a>
+        
+            
+                <span class='tag'>static</span>
+            
+        
+        <span class="code-name">
+            
+                handleSwitchChange<span class="signature">(event)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Přepisuje data v state tohoto komponentu na základě přepínání switche pro nastavení přístupnosti kolekce.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>event</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">event</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Event, který vyvolal spuštění této funkce.</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="components_CollectionDialog.js.html" class="button">View Source</a>
+            <span>
+                <a href="components_CollectionDialog.js.html">components/CollectionDialog.js</a>, <a href="components_CollectionDialog.js.html#line128">line 128</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Feb 26 2020 17:20:29 GMT+0100 (GMT+01:00)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

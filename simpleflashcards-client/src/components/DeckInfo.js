@@ -29,6 +29,23 @@ import { connect } from "react-redux";
 import { pinDeck, unpinDeck } from "../redux/actions/deckUiActions";
 import { openCollectionDialog } from "../redux/actions/colUiActions";
 
+/**
+ * @class DeckInfo
+ * @extends Component
+ * @category Components
+ * @classdesc Tento komponent zobrazuje informace o daném balíčku a umožňuje balíček sdílet, připnout ho, přidat ho do kolekce, nebo ho případně upravit.
+ * @property {Object} state - vnitřní state komponentu
+ * @property {boolean} state.popoverOpen - Určuje, zda-li je otevřeno vyskakovací okno na sdílení balíčku.
+ * @property {element} state.anchorEl - Obsahuje element, ke kterému se má přichytit vyskakovací okno při sdílení balíčku.
+ * @property {boolean} state.copiedLink - Určuje, zda-li uživatel zkopíroval odkaz na tento balíček.
+ * @property {boolean} state.isPinned - Určuje, zda-li je balíček připnut uživatelem.
+ *
+ * @requires colUiActions~openCollectionDialog
+ * @requires deckUiActions~pinDeck
+ * @requires deckUiActions~unpinDeck
+ * @requires {@link module:store~reducers module:store~reducers.deckUi}
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ */
 export class DeckInfo extends Component {
   constructor(props) {
     super(props);
@@ -42,9 +59,14 @@ export class DeckInfo extends Component {
     this.handleAddToCollection = this.handleAddToCollection.bind(this);
   }
 
+  /**
+   * @function handleCopyClick
+   * @memberOf DeckInfo
+   * @description Zkopíruje do schránky odkaz na balíček.
+   * @param {string} elementId - ID vyskakovacího okna
+   */
   handleCopyClick = elementId => {
-    // Copy deck link to clipboard
-    // Source: https://stackoverflow.com/questions/39501289/in-reactjs-how-to-copy-text-to-clipboard
+    // Zdroj: https://stackoverflow.com/questions/39501289/in-reactjs-how-to-copy-text-to-clipboard
     let textField = document.createElement("textarea");
     textField.innerText = `${window.location.href}`;
     let parentElement = document.getElementById(elementId);
@@ -58,6 +80,12 @@ export class DeckInfo extends Component {
     });
   };
 
+  /**
+   * @function handlePopoverOpen
+   * @memberOf DeckInfo
+   * @description Otevře vyskakovací okno na sdílení balíčku.
+   * @param {event} event - Událost, která vyvolala spuštění této funkce.
+   */
   handlePopoverOpen = event => {
     this.setState({
       popoverOpen: true,
@@ -65,12 +93,22 @@ export class DeckInfo extends Component {
     });
   };
 
+  /**
+   * @function handlePopoverClose
+   * @memberOf DeckInfo
+   * @description Zavře vyskakovací okno na sdílení balíčku.
+   */
   handlePopoverClose = () => {
     this.setState({
       popoverOpen: false
     });
   };
 
+  /**
+   * @function handlePinButtonClick
+   * @memberOf DeckInfo
+   * @description Nastaví isPinned v state tohoto komponentu na druhou hodnotu.
+   */
   handlePinButtonClick() {
     let prevIsPinned = this.state.isPinned;
     this.setState({
@@ -78,12 +116,22 @@ export class DeckInfo extends Component {
     });
   }
 
+  /**
+   * @function handleAddToCollection
+   * @memberOf DeckInfo
+   * @description Otevře dialogové okno pro přidávání balíčku do kolekcí.
+   */
   handleAddToCollection() {
     this.props.openCollectionDialog();
   }
 
+  /**
+   * @function componentDidUpdate
+   * @memberOf DeckInfo
+   * @description Po stažení dat balíčku ze serveru je uloží honotu isPinned do state tohoto komponentu.
+   * @param {Object} prevProps - předchozí props daného komponentu
+   */
   componentDidUpdate(prevProps) {
-    // Load isPinned from deckUi
     if (this.props.deckUi.deck) {
       if (this.props.deckUi.deck !== prevProps.deckUi.deck) {
         this.setState({
@@ -93,8 +141,12 @@ export class DeckInfo extends Component {
     }
   }
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf DeckInfo
+   * @description Pokud byla změněna hodnota isPinned, nahraje změnu na server.
+   */
   componentWillUnmount() {
-    // Pin/Unpin deck
     if (this.props.deckUi.deck) {
       if (this.props.deckUi.deck.isPinned !== this.state.isPinned) {
         if (this.state.isPinned) {

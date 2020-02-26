@@ -3,15 +3,26 @@ import PropTypes from "prop-types";
 
 // Material UI
 import Grid from "@material-ui/core/Grid";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
 import LoopIcon from "@material-ui/icons/Loop";
 import IconButton from "@material-ui/core/IconButton";
 
 // Redux
 import { connect } from "react-redux";
 
+// Other
+import { renderFlashCards } from "../util/functions";
+
+/**
+ * @class DeckCards
+ * @extends Component
+ * @category Components
+ * @classdesc Tento komponent zobrazuje všechny karty daného balíčku.
+ * @property {Object} state - Vnitřní state komponentu
+ * @property {Array<boolean>} state.cardSides - Určuje, jak jsou otočené jednotlivé kartičky na této stránce. Pro hodnotu false uživatel vidí přední stranu, pro hodnotu true vidí zadní.
+ *
+ * @requires functions~renderFlashCards
+ * @requires {@link module:store~reducers module:store~reducers.deckUi}
+ */
 export class DeckCards extends Component {
   constructor(props) {
     super(props);
@@ -22,10 +33,14 @@ export class DeckCards extends Component {
     this.flipAllCards = this.flipAllCards.bind(this);
   }
 
-  // Flips card
+  /**
+   * @function flipCard
+   * @memberOf DeckCards
+   * @description Otočí kartu na druhou stranu tím, že přepíše hodnotu v cardSides poli v state tohoto komponentu.
+   * @param {number} index - určuje číslo karty, která má být otočena.
+   */
   flipCard(index) {
-    // Changing the array item
-    // Source: https://stackoverflow.com/questions/29537299/react-how-to-update-state-item1-in-state-using-setstate
+    // Zdroj: https://stackoverflow.com/questions/29537299/react-how-to-update-state-item1-in-state-using-setstate
     let cardSides = [...this.state.cardSides];
 
     let cardSide = { ...cardSides[index] };
@@ -36,19 +51,23 @@ export class DeckCards extends Component {
     this.setState({ cardSides });
   }
 
-  // Flips all cards
+  /**
+   * @function flipAllCards
+   * @memberOf DeckCards
+   * @description Otočí všechny karty na stejnou stranu podle toho, na jakou stranu je otočena většina kartiček.
+   */
   flipAllCards() {
     let cardSides = [...this.state.cardSides];
     let falseCount = 0;
     let trueCount = 0;
 
-    // Counting the sides
+    // Počítání stran
     cardSides.forEach(cardSide => {
       if (cardSide) trueCount = trueCount + 1;
       else falseCount = falseCount + 1;
     });
 
-    // Choosing the new side
+    // Vybrání nové strany
     let newSide;
     if (falseCount === 0) {
       newSide = false;
@@ -60,15 +79,19 @@ export class DeckCards extends Component {
       newSide = false;
     }
 
-    // Setting the new side for all cards
+    // Nastavení nové strany pro všechny kartičky
     for (let i = 0; i < cardSides.length; i++) {
       cardSides[i] = newSide;
     }
     this.setState({ cardSides });
   }
 
+  /**
+   * @function componentDidMount
+   * @memberOf DeckCards
+   * @description Pro každou kartu v balíčku nastaví její hodnotu otočení na false (tzn. na její přední stranu).
+   */
   componentDidMount() {
-    // Fill cardSides with false values
     let arrayLength = this.props.deckUi.deck.cardArray.length;
 
     let cardSides = [];
@@ -86,45 +109,11 @@ export class DeckCards extends Component {
           <LoopIcon />
         </IconButton>
         <Grid container direction="row" justify="flex-start" alignItems="flex-start">
-          <RenderCards cardArray={this.props.deckUi.deck.cardArray} cardSides={this.state.cardSides} flipCardFunction={this.flipCard} />
+          {renderFlashCards(this.props.deckUi.deck.cardArray, this.state.cardSides, this.flipCard)}
         </Grid>
       </Fragment>
     );
   }
-}
-
-function RenderCards({ cardArray, cardSides, flipCardFunction }) {
-  let markup = [];
-
-  const frontCardStyle = {
-    width: "145px",
-    height: "170px",
-    marginRight: "20px",
-    backgroundColor: "#fff0c7"
-  };
-
-  const backCardStyle = {
-    width: "145px",
-    height: "170px",
-    marginRight: "20px",
-    backgroundColor: "#ffe499"
-  };
-
-  for (let i = 0; i < cardArray.length; i++) {
-    markup.push(
-      <Grid item>
-        <Card variant="outlined" style={cardSides[i] ? backCardStyle : frontCardStyle}>
-          <CardActionArea style={{ width: "100%", height: "100%", textAlign: "center" }} onClick={() => flipCardFunction(i)}>
-            <Typography variant="h6" style={{ color: "#37474f" }}>
-              {cardSides[i] ? cardArray[i].body2 : cardArray[i].body1}
-            </Typography>
-          </CardActionArea>
-        </Card>
-      </Grid>
-    );
-  }
-
-  return markup;
 }
 
 DeckCards.propTypes = {

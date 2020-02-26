@@ -27,6 +27,22 @@ import { collectionDefaultImgUrl } from "../util/other";
 import { connect } from "react-redux";
 import { pinCollection, unpinCollection } from "../redux/actions/colUiActions";
 
+/**
+ * @class CollectionInfo
+ * @extends Component
+ * @category Components
+ * @classdesc Tento komponent zobrazuje informace o dané kolekci a umožňuje kolekci sdílet, připnout ji nebo ji případně upravit.
+ * @property {Object} state - vnitřní state komponentu
+ * @property {boolean} state.popoverOpen - Určuje, zda-li je otevřeno vyskakovací okno na sdílení kolekce.
+ * @property {element} state.anchorEl - Obsahuje element, ke kterému se má přichytit vyskakovací okno při sdílení kolekce.
+ * @property {boolean} state.copiedLink - Určuje, zda-li uživatel zkopíroval odkaz na tuto kolekci.
+ * @property {boolean} state.isPinned - Určuje, zda-li je kolekce připnuta uživatelem.
+ *
+ * @requires colUiActions~pinCollection
+ * @requires colUiActions~unpinCollection
+ * @requires {@link module:store~reducers module:store~reducers.deckUi}
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ */
 export class CollectionInfo extends Component {
   constructor(props) {
     super(props);
@@ -39,8 +55,13 @@ export class CollectionInfo extends Component {
     this.handlePinButtonClick = this.handlePinButtonClick.bind(this);
   }
 
+  /**
+   * @function handleCopyClick
+   * @memberOf CollectionInfo
+   * @description Zkopíruje do schránky odkaz na kolekci.
+   * @param {string} elementId - ID vyskakovacího okna
+   */
   handleCopyClick = elementId => {
-    // Copy collection link to clipboard
     // Zdroj: https://stackoverflow.com/questions/39501289/in-reactjs-how-to-copy-text-to-clipboard
     let textField = document.createElement("textarea");
     textField.innerText = `${window.location.href}`;
@@ -55,6 +76,12 @@ export class CollectionInfo extends Component {
     });
   };
 
+  /**
+   * @function handlePopoverOpen
+   * @memberOf CollectionInfo
+   * @description Otevře vyskakovací okno na sdílení balíčku.
+   * @param {event} event - Událost, která vyvolala spuštění této funkce.
+   */
   handlePopoverOpen = event => {
     this.setState({
       popoverOpen: true,
@@ -62,12 +89,22 @@ export class CollectionInfo extends Component {
     });
   };
 
+  /**
+   * @function handlePopoverClose
+   * @memberOf CollectionInfo
+   * @description Zavře vyskakovací okno na sdílení balíčku.
+   */
   handlePopoverClose = () => {
     this.setState({
       popoverOpen: false
     });
   };
 
+  /**
+   * @function handlePinButtonClick
+   * @memberOf CollectionInfo
+   * @description Nastaví isPinned v state tohoto komponentu na druhou hodnotu.
+   */
   handlePinButtonClick() {
     let prevIsPinned = this.state.isPinned;
     this.setState({
@@ -75,8 +112,13 @@ export class CollectionInfo extends Component {
     });
   }
 
+  /**
+   * @function componentDidUpdate
+   * @memberOf CollectionInfo
+   * @description Po stažení dat kolekce ze serveru je uloží honotu isPinned do state tohoto komponentu.
+   * @param {Object} prevProps - předchozí props daného komponentu
+   */
   componentDidUpdate(prevProps) {
-    // Load isPinned from colUi
     if (this.props.colUi.collection) {
       if (this.props.colUi.collection !== prevProps.colUi.collection) {
         this.setState({
@@ -86,8 +128,12 @@ export class CollectionInfo extends Component {
     }
   }
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf CollectionInfo
+   * @description Pokud byla změněna hodnota isPinned, nahraje změnu na server.
+   */
   componentWillUnmount() {
-    // Pin/Unpin collection
     if (this.props.colUi.collection) {
       if (this.props.colUi.collection.isPinned !== this.state.isPinned) {
         if (this.state.isPinned) {

@@ -1,3 +1,9 @@
+/**
+ * @module theme
+ * @category util
+ * @description Určuje obecné CSS pro celou aplikaci.
+ */
+
 export default {
   palette: {
     primary: {

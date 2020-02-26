@@ -252,3 +252,45 @@ export function flashCard(card, cardSide, cardFlipFunciton) {
     </Card>
   );
 }
+
+/**
+ * Vytvoří markup pro všechny kartičky, které jsou v daném balíčku.
+ * @function renderFlashCards
+ * @param {Array<Object>} cardArray - Pole kartiček daného balíčku
+ * @param {Array<boolean>} cardSides - Pole které určuje, jak jsou jednotlivé kartičky otočené. Pro hodnotu false uživatel vidí přední stranu, pro hodnotu true vidí zadní.
+ * @param {function} flipCardFunction - Funkce, která při kliknutí na kartičku kartu otočí.
+ * @returns {Array<Object>} Markup kartiček
+ */
+export function renderFlashCards(cardArray, cardSides, flipCardFunction) {
+  let markup = [];
+
+  const frontCardStyle = {
+    width: "145px",
+    height: "170px",
+    marginRight: "20px",
+    backgroundColor: "#fff0c7"
+  };
+
+  const backCardStyle = {
+    width: "145px",
+    height: "170px",
+    marginRight: "20px",
+    backgroundColor: "#ffe499"
+  };
+
+  for (let i = 0; i < cardArray.length; i++) {
+    markup.push(
+      <Grid item>
+        <Card variant="outlined" style={cardSides[i] ? backCardStyle : frontCardStyle}>
+          <CardActionArea style={{ width: "100%", height: "100%", textAlign: "center" }} onClick={() => flipCardFunction(i)}>
+            <Typography variant="h6" style={{ color: "#37474f" }}>
+              {cardSides[i] ? cardArray[i].body2 : cardArray[i].body1}
+            </Typography>
+          </CardActionArea>
+        </Card>
+      </Grid>
+    );
+  }
+
+  return markup;
+}
