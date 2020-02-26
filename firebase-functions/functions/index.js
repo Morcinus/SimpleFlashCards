@@ -32,7 +32,7 @@ const {
   getCollection
 } = require("./functions/collection");
 
-const { getDeckCards, setDeckCardsProgress, getCardsToReview, getDeckUnknownCards, getCardsToLearnAndReview } = require("./functions/deckCards");
+const { setDeckCardsProgress, getCardsToReview, getDeckUnknownCards, getCardsToLearnAndReview } = require("./functions/deckCards");
 
 const { getColCardsToReview, getColUnknownCards, getColCardsToLearnAndReview, setColCardsProgress } = require("./functions/collectionCards");
 

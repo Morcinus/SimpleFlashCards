@@ -26,7 +26,7 @@ import { collectionDefaultImgUrl } from "../util/other";
  * @returns Markup balíčků
  */
 
-export function renderDecks({ deckArray }) {
+export function renderDecks(deckArray) {
   let markup = [];
 
   for (let i = 0; i < deckArray.length; i++) {
@@ -59,7 +59,7 @@ export function renderDecks({ deckArray }) {
  * @param {Array} collectionArray - Pole kolekcí
  * @returns Markup kolekcí
  */
-export function renderCollections({ collectionArray }) {
+export function renderCollections(collectionArray) {
   let markup = [];
 
   for (let i = 0; i < collectionArray.length; i++) {
