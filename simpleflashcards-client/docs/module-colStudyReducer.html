@@ -1,11 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: redux/reducers/uiStatusReducer.js</title>
+    <title>JSDoc: colStudyReducer</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -71,81 +69,503 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Source</p>
-                        <h1>redux/reducers/uiStatusReducer.js</h1>
+                        <p>Module</p>
+                        <h1>colStudyReducer</h1>
                     </header>
                     
                     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import { SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS } from "../types";
+        
+            
+        
+    
+</header>
 
-// UI Status
-const BUSY = "BUSY";
-const ERROR = "ERROR";
-const SUCCESS = "SUCCESS";
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Uchovává data o kolekci, kterou se uživatel učí.</p></div>
+        
 
-/**
- * @module uiStatusReducer
- * @category ReduxReducers
- * @description Uchovává informace o stavu aplikace.
- */
+        
+            
 
-/**
- * @type {Object} initialState
- * @description Původní stav reduceru
- * @property {Object} initialState - původní stav reduceru
- * @property {string|null} initialState.status - Uchovává status aplikace, nabývá hodnot "BUSY", "ERROR", "SUCCESS", null.
- * @property {Array&lt;String>} initialState.errorCodes - Uchovává error kódy.
- * @property {Array&lt;String>} initialState.successCodes - Uchovává success kódy.
- */
-const initialState = {
-  status: null,
-  errorCodes: [],
-  successCodes: []
-};
 
-/**
- * @function function
- * @description Mění stav reduceru.
- * @param {Object} state - stav reduceru
- * @param {Object} action - akce, která vyvolává změnu v reduceru
- * @returns nový stav reduceru
- */
-export default function(state = initialState, action) {
-  switch (action.type) {
-    case SET_STATUS_BUSY:
-      return {
-        ...state,
-        errorCodes: [],
-        successCodes: [],
-        status: BUSY
-      };
-    case SET_STATUS_ERROR:
-      return {
-        ...state,
-        errorCodes: [...state.errorCodes, action.payload],
-        status: ERROR
-      };
-    case SET_STATUS_SUCCESS:
-      return {
-        ...state,
-        status: SUCCESS,
-        successCodes: action.payload ? [...state.successCodes, action.payload] : [...state.successCodes]
-      };
-    case CLEAR_STATUS:
-      return initialState;
-    default:
-      return state;
-  }
-}
-</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="redux_reducers_colStudyReducer.js.html" class="button">View Source</a>
+            <span>
+                <a href="redux_reducers_colStudyReducer.js.html">redux/reducers/colStudyReducer.js</a>, <a href="redux_reducers_colStudyReducer.js.html#line3">line 3</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h3 class="title"><span>Members</span></h3>
+            <div class="members">
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<span class="param-type">Object</span>
+
+
+    </span>
+
+<h4 class="name" id="~initialState">
+    <a class="href-link" href="#~initialState">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        initialState
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Původní stav reduceru</p>
+</div>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+        
+<tr class="deep-level-0">
+    
+        <td class="name"><code>initialState</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">Object</span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>původní stav reduceru</p></td>
+</tr>
+
+  
+      
+<tr class="deep-level-1">
+    
+        <td class="name"><code>currentDeck</code></td>
+    
+
+    <td class="type">
+    
+        
+<span class="param-type">Array.&lt;Object></span>
+
+
+    
+    </td>
+
+    
+
+    
+
+    <td class="description last"><p>Uchovává data o kolekci, kterou se uživatel učí.</p></td>
+</tr>
+
+  
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="redux_reducers_colStudyReducer.js.html" class="button">View Source</a>
+            <span>
+                <a href="redux_reducers_colStudyReducer.js.html">redux/reducers/colStudyReducer.js</a>, <a href="redux_reducers_colStudyReducer.js.html#line15">line 15</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+        <div class='vertical-section'>
+            <h3 class="title"><span>Methods</span></h3>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~function">
+        <a class="href-link" href="#~function">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                function<span class="signature">(state, action)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Mění stav reduceru.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>state</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>stav reduceru</p></td>
+</tr>
+
+
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>action</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>akce, která vyvolává změnu v reduceru</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="redux_reducers_colStudyReducer.js.html" class="button">View Source</a>
+            <span>
+                <a href="redux_reducers_colStudyReducer.js.html">redux/reducers/colStudyReducer.js</a>, <a href="redux_reducers_colStudyReducer.js.html#line19">line 19</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>nový stav reduceru</p></div>
+    
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

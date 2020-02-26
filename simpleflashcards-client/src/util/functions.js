@@ -218,3 +218,37 @@ export function deckLearnButtons(deckId) {
     </Grid>
   );
 }
+
+/**
+ * Vytvoří markup kartičky při studování.
+ * @function flashCard
+ * @param {Object} card - Objekt dané karty
+ * @param {boolean} cardSide - Určuje, jak je otočená kartička. Pro hodnotu false uživatel vidí přední stranu, pro hodnotu true vidí zadní.
+ * @param {function} cardFlipFunciton - Funkce, která při kliknutí na kartičku kartu otočí.
+ * @returns Markup kartičky
+ */
+export function flashCard(card, cardSide, cardFlipFunciton) {
+  return (
+    <Card
+      variant="outlined"
+      style={{
+        width: "350px",
+        height: "350px",
+        backgroundColor: "#fff0c7"
+      }}
+    >
+      <CardActionArea
+        style={{
+          width: "100%",
+          height: "100%",
+          textAlign: "center"
+        }}
+        onClick={cardFlipFunciton}
+      >
+        <Typography variant="h4" style={{ color: "#37474f" }}>
+          {!cardSide ? (card ? card.body1 : "loading...") : card ? card.body2 : "loading..."}
+        </Typography>
+      </CardActionArea>
+    </Card>
+  );
+}

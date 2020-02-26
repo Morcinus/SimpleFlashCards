@@ -1,6 +1,18 @@
 import { SET_STUDY_COLLECTION, CLEAR_STUDY_COLLECTION, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS } from "../types";
 import axios from "axios";
 
+/**
+ * @category ReduxActions
+ * @module colStudyActions
+ * @description Zde jsou funkce, které komunikují se serverem ohledně studování dané kolekce a vyvolávají změny v [colStudyReduceru]{@link module:colStudyReducer} a [uiStatusReduceru]{@link module:uiStatusReducer}.
+ */
+
+/**
+ * @function getColLearnCards
+ * @description Získá ze serveru data kolekce s kartami, které se uživatel ještě neučil.
+ * @param {string} colId - ID dané kolekce
+ * @async
+ */
 export const getColLearnCards = colId => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
@@ -19,6 +31,12 @@ export const getColLearnCards = colId => dispatch => {
     });
 };
 
+/**
+ * @function getColCardsToLearnAndReview
+ * @description Získá ze serveru data kolekce s kartami, které se uživatel ještě neučil ale i s kartami, které by si měl uživatel zopakovat.
+ * @param {string} colId - ID dané kolekce
+ * @async
+ */
 export const getColCardsToLearnAndReview = colId => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
@@ -37,6 +55,12 @@ export const getColCardsToLearnAndReview = colId => dispatch => {
     });
 };
 
+/**
+ * @function getColReviewCards
+ * @description Získá ze serveru data kolekce s kartami, které by si měl uživatel zopakovat.
+ * @param {string} colId - ID dané kolekce
+ * @async
+ */
 export const getColReviewCards = colId => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
@@ -55,6 +79,12 @@ export const getColReviewCards = colId => dispatch => {
     });
 };
 
+/**
+ * @function pushCollectionProgress
+ * @description Nahraje na server pole karet s informacemi o tom, jak se změnil pokrok uživatele u každé karty.
+ * @param {Array<Object>} colProgressCards - Pole karet se zaznamenaným pokrokem uživatele u každé z nich.
+ * @async
+ */
 export const pushCollectionProgress = colProgressCards => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
 
@@ -75,27 +105,39 @@ export const pushCollectionProgress = colProgressCards => dispatch => {
     });
 };
 
+/**
+ * @function clearStudyCollection
+ * @description Vymaže studovanou kolekci z reduceru.
+ */
 export const clearStudyCollection = () => dispatch => {
   dispatch({ type: CLEAR_STUDY_COLLECTION });
 };
 
-// Assigns deckId to each card (="unpacks" the collection object)
+/**
+ * @function unpackCardsFromArrays
+ * @description "Rozbalí" pole s balíčkama karet. Tzn. každé kartě přiřadí ID balíčku, ve kterém je zařazena a všechny karty uloží do jednoho pole.
+ * @returns {Array<Object>} - Vrací pole s kartami, kde má každá karta přiřazený ID balíčku, ze kterého pochází.
+ */
 function unpackCardsFromArrays(deckArray) {
-  let exportDeck = [];
+  let cardDeck = [];
   let deckIds = Object.keys(deckArray);
 
   for (let i = 0; i < deckIds.length; i++) {
     let deck = deckArray[deckIds[i]];
     deck.forEach(card => {
       card.deckId = deckIds[i];
-      exportDeck.push(card);
+      cardDeck.push(card);
     });
   }
 
-  return exportDeck;
+  return cardDeck;
 }
 
-// Groups cards into arrays by their deckId
+/**
+ * @function groupIntoArrays
+ * @description Seskupí karty na základě ID balíčku, ze kterého pochází. Tyto skupiny jsou pak pole, která se nazývají podle ID daných balíčků. Každé kartě je pak smazána hodnota deckId, protože je určena názvem pole, ve kterém se karta nachází.
+ * @returns {Object} - Objekt, ve kterém jsou uloženy všechny karty, které jsou seskupené do polí podle ID balíčků, ze kterých pochází.
+ */
 function groupIntoArrays(cards) {
   let deckArrays = {};
   cards.forEach(card => {

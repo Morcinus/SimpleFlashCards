@@ -8,8 +8,6 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import Typography from "@material-ui/core/Typography";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Close from "@material-ui/icons/Close";
@@ -21,6 +19,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import { connect } from "react-redux";
 import { getLearnAndReviewDeck, getLearnDeck, getReviewDeck, pushDeckProgress, clearStudyDeck } from "../redux/actions/deckStudyActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
+
+// Other
+import { flashCard } from "../util/functions";
 
 // QueryString
 const queryString = require("query-string");
@@ -37,6 +38,7 @@ const queryString = require("query-string");
  * @property {boolean} state.deckFinished - Uchovává informaci, zda-li uživatel už prošel všechny karty v balíčku.
  * @property {boolean} state.dialogOpen - Uchovává informaci, zda je dialogové okno otevřené či zavřené.
  *
+ * @requires functions~flashCard
  * @requires deckStudyActions~getLearnAndReviewDeck
  * @requires deckStudyActions~getLearnDeck
  * @requires deckStudyActions~getReviewDeck
@@ -348,32 +350,6 @@ export class studyDeck extends Component {
       </div>
     );
   }
-}
-
-function flashCard(card, cardSide, cardFlipFunciton) {
-  return (
-    <Card
-      variant="outlined"
-      style={{
-        width: "350px",
-        height: "350px",
-        backgroundColor: "#fff0c7"
-      }}
-    >
-      <CardActionArea
-        style={{
-          width: "100%",
-          height: "100%",
-          textAlign: "center"
-        }}
-        onClick={cardFlipFunciton}
-      >
-        <Typography variant="h4" style={{ color: "#37474f" }}>
-          {!cardSide ? (card ? card.body1 : "loading...") : card ? card.body2 : "loading..."}
-        </Typography>
-      </CardActionArea>
-    </Card>
-  );
 }
 
 studyDeck.propTypes = {

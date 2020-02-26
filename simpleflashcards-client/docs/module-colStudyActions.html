@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: editCollection</title>
+    <title>JSDoc: colStudyActions</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -69,8 +69,8 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Class</p>
-                        <h1>editCollection</h1>
+                        <p>Module</p>
+                        <h1>colStudyActions</h1>
                     </header>
                     
                     
@@ -82,9 +82,8 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>editCollection<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Na této stránce může uživatel upravovat kolekci a následně nahrát novou verzi kolekce na server.</p></div>
+            
         
     
 </header>
@@ -93,26 +92,11 @@
     <div class="container-overview">
     
         
-            <div class='vertical-section'>
-                <h3 class="title"><span>Constructor</span></h3>
-                <div class="members">
-                    <div class="member">
-
-
-    
-    <h4 class="name" id="editCollection">
-        <a class="href-link" href="#editCollection">#</a>
+            <div class="description"><p>Zde jsou funkce, které komunikují se serverem ohledně studování dané kolekce a vyvolávají změny v <a href="module-colStudyReducer.html">colStudyReduceru</a> a <a href="module-uiStatusReducer.html">uiStatusReduceru</a>.</p></div>
         
-        <span class="code-name">
+
+        
             
-                new editCollection<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
 
 
 
@@ -123,151 +107,6 @@
 
 
 
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>state</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Object</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Vnitřní state komponentu</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>colName</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">string</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Uchovává název kolekce.</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>colDescription</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">string</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Uchovává popis kolekce.</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>deckArray</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Array.&lt;Object></span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Uchovává balíčky obsažené v kolekci.</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>private</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">boolean</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Uchovává informaci, zda je kolekce veřejná či soukromá.</p></td>
-</tr>
-
-  
-
-    
-    </tbody>
-</table>
 
 
 
@@ -305,9 +144,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_editCollection.js.html" class="button">View Source</a>
+            <a href="redux_actions_colStudyActions.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line37">line 37</a>
+                <a href="redux_actions_colStudyActions.js.html">redux/actions/colStudyActions.js</a>, <a href="redux_actions_colStudyActions.js.html#line4">line 4</a>
             </span>
         </p>
     
@@ -315,26 +154,6 @@
 
 
 
-    <div class="method-parameter columns">
-        <div class="column is-2"><label>Requires:</label></div>
-        <div class="column is-10">
-            <ul>
-                <li><a href="module-editColActions.html#~deleteCollection">module:editColActions~deleteCollection</a></li>
-            
-                <li>module:editColActions~deleteCollectionDraft</li>
-            
-                <li><a href="module-editColActions.html#~updateCollection">module:editColActions~updateCollection</a></li>
-            
-                <li><a href="module-editColActions.html#~getCollection">module:editColActions~getCollection</a></li>
-            
-                <li><a href="module-uiStatusActions.html#~clearStatus">module:uiStatusActions~clearStatus</a></li>
-            
-                <li><a href="module-store.html#~reducers">module:store~reducers.uiStatus</a></li>
-            
-                <li><a href="module-store.html#~reducers">module:store~reducers.colEdit</a></li>
-            </ul>
-        </div>
-    </div>
 
 
 
@@ -354,44 +173,12 @@
 
 
 
-</div>
-                </div>
-            </div>
         
     
     </div>
     
     
-        <h3 class="subsection-title">Extends</h3>
 
-        
-
-
-    <ul>
-        <li>Component</li>
-    </ul>
-
-
-    
-
-    
-        <h3 class="subsection-title">Requires</h3>
-
-        <ul>
-            <li><a href="module-editColActions.html#~deleteCollection">module:editColActions~deleteCollection</a></li>
-        
-            <li>module:editColActions~deleteCollectionDraft</li>
-        
-            <li><a href="module-editColActions.html#~updateCollection">module:editColActions~updateCollection</a></li>
-        
-            <li><a href="module-editColActions.html#~getCollection">module:editColActions~getCollection</a></li>
-        
-            <li><a href="module-uiStatusActions.html#~clearStatus">module:uiStatusActions~clearStatus</a></li>
-        
-            <li><a href="module-store.html#~reducers">module:store~reducers.uiStatus</a></li>
-        
-            <li><a href="module-store.html#~reducers">module:store~reducers.colEdit</a></li>
-        </ul>
     
 
     
@@ -413,16 +200,16 @@
 
 
     
-    <h4 class="name" id=".componentDidMount">
-        <a class="href-link" href="#.componentDidMount">#</a>
+    <h4 class="name" id="~clearStudyCollection">
+        <a class="href-link" href="#~clearStudyCollection">#</a>
         
             
-                <span class='tag'>static</span>
+                <span class='tag'>inner</span>
             
         
         <span class="code-name">
             
-                componentDidMount<span class="signature">()</span><span class="type-signature"></span>
+                clearStudyCollection<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -431,7 +218,7 @@
     
     
     <div class="description">
-        <p>Stáhne data kolekce ze serveru.</p>
+        <p>Vymaže studovanou kolekci z reduceru.</p>
     </div>
     
 
@@ -480,9 +267,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_editCollection.js.html" class="button">View Source</a>
+            <a href="redux_actions_colStudyActions.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line77">line 77</a>
+                <a href="redux_actions_colStudyActions.js.html">redux/actions/colStudyActions.js</a>, <a href="redux_actions_colStudyActions.js.html#line108">line 108</a>
             </span>
         </p>
     
@@ -514,16 +301,18 @@
 
 
     
-    <h4 class="name" id=".componentDidUpdate">
-        <a class="href-link" href="#.componentDidUpdate">#</a>
+    <h4 class="name" id="~getColCardsToLearnAndReview">
+        <a class="href-link" href="#~getColCardsToLearnAndReview">#</a>
         
             
-                <span class='tag'>static</span>
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
             
         
         <span class="code-name">
             
-                componentDidUpdate<span class="signature">(prevProps)</span><span class="type-signature"></span>
+                getColCardsToLearnAndReview<span class="signature">(colId)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -532,7 +321,7 @@
     
     
     <div class="description">
-        <p>Po stažení dat kolekce ze serveru je uloží do state tohoto komponentu.</p>
+        <p>Získá ze serveru data kolekce s kartami, které se uživatel ještě neučil ale i s kartami, které by si měl uživatel zopakovat.</p>
     </div>
     
 
@@ -570,192 +359,525 @@
         
 <tr class="deep-level-0">
   
-      <td class="name"><code>prevProps</code></td>
+      <td class="name"><code>colId</code></td>
   
 
   <td class="type">
   
       
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>ID dané kolekce</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="redux_actions_colStudyActions.js.html" class="button">View Source</a>
+            <span>
+                <a href="redux_actions_colStudyActions.js.html">redux/actions/colStudyActions.js</a>, <a href="redux_actions_colStudyActions.js.html#line34">line 34</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~getColLearnCards">
+        <a class="href-link" href="#~getColLearnCards">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getColLearnCards<span class="signature">(colId)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Získá ze serveru data kolekce s kartami, které se uživatel ještě neučil.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>colId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>ID dané kolekce</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="redux_actions_colStudyActions.js.html" class="button">View Source</a>
+            <span>
+                <a href="redux_actions_colStudyActions.js.html">redux/actions/colStudyActions.js</a>, <a href="redux_actions_colStudyActions.js.html#line10">line 10</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~getColReviewCards">
+        <a class="href-link" href="#~getColReviewCards">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getColReviewCards<span class="signature">(colId)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Získá ze serveru data kolekce s kartami, které by si měl uživatel zopakovat.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>colId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>ID dané kolekce</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="redux_actions_colStudyActions.js.html" class="button">View Source</a>
+            <span>
+                <a href="redux_actions_colStudyActions.js.html">redux/actions/colStudyActions.js</a>, <a href="redux_actions_colStudyActions.js.html#line58">line 58</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~groupIntoArrays">
+        <a class="href-link" href="#~groupIntoArrays">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                groupIntoArrays<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Seskupí karty na základě ID balíčku, ze kterého pochází. Tyto skupiny jsou pak pole, která se nazývají podle ID daných balíčků. Každé kartě je pak smazána hodnota deckId, protože je určena názvem pole, ve kterém se karta nachází.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="redux_actions_colStudyActions.js.html" class="button">View Source</a>
+            <span>
+                <a href="redux_actions_colStudyActions.js.html">redux/actions/colStudyActions.js</a>, <a href="redux_actions_colStudyActions.js.html#line136">line 136</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><ul>
+<li>Objekt, ve kterém jsou uloženy všechny karty, které jsou seskupené do polí podle ID balíčků, ze kterých pochází.</li>
+</ul></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
 <span class="param-type">Object</span>
 
 
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>předchozí props daného komponentu</p></td>
-</tr>
-
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="pages_editCollection.js.html" class="button">View Source</a>
-            <span>
-                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line86">line 86</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id=".deleteCollection">
-        <a class="href-link" href="#.deleteCollection">#</a>
-        
-            
-                <span class='tag'>static</span>
-            
-        
-        <span class="code-name">
-            
-                deleteCollection<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Pošle na server požadavek o smazání kolekce a vymaže state komponentu.</p>
     </div>
     
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="pages_editCollection.js.html" class="button">View Source</a>
-            <span>
-                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line132">line 132</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                
+        </div>
+    </div>
 
 
 
@@ -766,16 +888,18 @@
 
 
     
-    <h4 class="name" id=".handleChange">
-        <a class="href-link" href="#.handleChange">#</a>
+    <h4 class="name" id="~pushCollectionProgress">
+        <a class="href-link" href="#~pushCollectionProgress">#</a>
         
             
-                <span class='tag'>static</span>
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
             
         
         <span class="code-name">
             
-                handleChange<span class="signature">(event)</span><span class="type-signature"></span>
+                pushCollectionProgress<span class="signature">(colProgressCards)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -784,7 +908,7 @@
     
     
     <div class="description">
-        <p>Přepisuje data v state tohoto komponentu na základě uživatelských změn při upravování kolekce.</p>
+        <p>Nahraje na server pole karet s informacemi o tom, jak se změnil pokrok uživatele u každé karty.</p>
     </div>
     
 
@@ -822,360 +946,7 @@
         
 <tr class="deep-level-0">
   
-      <td class="name"><code>event</code></td>
-  
-
-  <td class="type">
-  
-      
-<span class="param-type">event</span>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>Event, který vyvolal spuštění této funkce.</p></td>
-</tr>
-
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="pages_editCollection.js.html" class="button">View Source</a>
-            <span>
-                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line65">line 65</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id=".handleDialogClose">
-        <a class="href-link" href="#.handleDialogClose">#</a>
-        
-            
-                <span class='tag'>static</span>
-            
-        
-        <span class="code-name">
-            
-                handleDialogClose<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Zavře dialogové okno tím, že nastaví ve state komponentu dialogOpen na false.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="pages_editCollection.js.html" class="button">View Source</a>
-            <span>
-                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line170">line 170</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id=".handleDialogOpen">
-        <a class="href-link" href="#.handleDialogOpen">#</a>
-        
-            
-                <span class='tag'>static</span>
-            
-        
-        <span class="code-name">
-            
-                handleDialogOpen<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Otevře dialogové okno tím, že nastaví ve state komponentu dialogOpen na true.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="pages_editCollection.js.html" class="button">View Source</a>
-            <span>
-                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line159">line 159</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id=".updateDeckArray">
-        <a class="href-link" href="#.updateDeckArray">#</a>
-        
-            
-                <span class='tag'>static</span>
-            
-        
-        <span class="code-name">
-            
-                updateDeckArray<span class="signature">(decks)</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Přepisuje seznam balíčků v kolekci na základě změn v tabulce balíčků.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        
-<tr class="deep-level-0">
-  
-      <td class="name"><code>decks</code></td>
+      <td class="name"><code>colProgressCards</code></td>
   
 
   <td class="type">
@@ -1191,7 +962,7 @@
 
   
 
-  <td class="description last"><p>seznam balíčků v dané kolekci</p></td>
+  <td class="description last"><p>Pole karet se zaznamenaným pokrokem uživatele u každé z nich.</p></td>
 </tr>
 
 
@@ -1236,9 +1007,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_editCollection.js.html" class="button">View Source</a>
+            <a href="redux_actions_colStudyActions.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line120">line 120</a>
+                <a href="redux_actions_colStudyActions.js.html">redux/actions/colStudyActions.js</a>, <a href="redux_actions_colStudyActions.js.html#line82">line 82</a>
             </span>
         </p>
     
@@ -1270,16 +1041,16 @@
 
 
     
-    <h4 class="name" id=".uploadCollection">
-        <a class="href-link" href="#.uploadCollection">#</a>
+    <h4 class="name" id="~unpackCardsFromArrays">
+        <a class="href-link" href="#~unpackCardsFromArrays">#</a>
         
             
-                <span class='tag'>static</span>
+                <span class='tag'>inner</span>
             
         
         <span class="code-name">
             
-                uploadCollection<span class="signature">()</span><span class="type-signature"></span>
+                unpackCardsFromArrays<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span>
             
         </span>
     </h4>
@@ -1288,7 +1059,7 @@
     
     
     <div class="description">
-        <p>Nahraje novou verzi kolekce na server.</p>
+        <p>&quot;Rozbalí&quot; pole s balíčkama karet. Tzn. každé kartě přiřadí ID balíčku, ve kterém je zařazena a všechny karty uloží do jednoho pole.</p>
     </div>
     
 
@@ -1337,9 +1108,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_editCollection.js.html" class="button">View Source</a>
+            <a href="redux_actions_colStudyActions.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line143">line 143</a>
+                <a href="redux_actions_colStudyActions.js.html">redux/actions/colStudyActions.js</a>, <a href="redux_actions_colStudyActions.js.html#line116">line 116</a>
             </span>
         </p>
     
@@ -1361,6 +1132,33 @@
 
 
 
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><ul>
+<li>Vrací pole s kartami, kde má každá karta přiřazený ID balíčku, ze kterého pochází.</li>
+</ul></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Array.&lt;Object></span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
 
 
 

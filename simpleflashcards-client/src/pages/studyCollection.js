@@ -28,9 +28,34 @@ import {
 } from "../redux/actions/colStudyActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+// Other
+import { flashCard } from "../util/functions";
+
 // QueryString
 const queryString = require("query-string");
 
+/**
+ * @class studyCollection
+ * @extends Component
+ * @category Pages
+ * @classdesc Na této stránce uživatel může studovat karty v dané kolekci.
+ * @property {Object} state - Vnitřní state komponentu
+ * @property {boolean} state.cardSide - Jak je otočená kartička, kterou uživatel momentálně studuje. Pro hodnotu false uživatel vidí přední stranu, pro hodnotu true vidí zadní.
+ * @property {Array<Object>} state.cardProgress - Uchovává informace o kartách a pokroku uživatele u každé z nich.
+ * @property {number} state.cardArrayIndex - Uchovává informaci, kolikátou kartu z kolekce uživatel momentálně studuje.
+ * @property {boolean} state.colFinished - Uchovává informaci, zda-li uživatel už prošel všechny karty ve stažené kolekci.
+ * @property {boolean} state.dialogOpen - Uchovává informaci, zda je dialogové okno otevřené či zavřené.
+ *
+ * @requires functions~flashCard
+ * @requires colStudyActions~getColCardsToLearnAndReview
+ * @requires colStudyActions~getColLearnCards
+ * @requires colStudyActions~getColReviewCards
+ * @requires colStudyActions~pushCollectionProgress
+ * @requires colStudyActions~clearStudyCollection
+ * @requires uiStatusActions~clearStatus
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ * @requires {@link module:store~reducers module:store~reducers.colStudy}
+ */
 export class studyCollection extends Component {
   constructor(props) {
     super(props);
@@ -45,14 +70,22 @@ export class studyCollection extends Component {
     this.checkcolFinished = this.checkcolFinished.bind(this);
   }
 
-  // Flips card to front
+  /**
+   * @function setCardSideToFront
+   * @memberOf studyCollection
+   * @description Otočí kartu na přední stranu tím, že přepíše cardSide v state tohoto komponentu.
+   */
   setCardSideToFront() {
     this.setState({
       cardSide: false
     });
   }
 
-  // Flips card
+  /**
+   * @function flipCard
+   * @memberOf studyCollection
+   * @description Otočí kartu na druhou stranu tím, že přepíše cardSide v state tohoto komponentu.
+   */
   flipCard() {
     let currentCardSide = this.state.cardSide;
     this.setState({
@@ -60,7 +93,12 @@ export class studyCollection extends Component {
     });
   }
 
-  // Hard
+  /**
+   * @function setCardProgress
+   * @memberOf studyCollection
+   * @description Nastaví v cardProgress v state tohoto komponentu pokrok uživatele u dané karty.
+   * @param {number} buttonIndex - Číslo tlačítka, na které uživatel kliknul. Podle toho se zapíše, jaký pokrok uživatel udělal.
+   */
   setCardProgress(buttonIndex) {
     let understandingLevel = this.props.colStudy.currentColCards[this.state.cardArrayIndex].understandingLevel
       ? this.props.colStudy.currentColCards[this.state.cardArrayIndex].understandingLevel
@@ -109,6 +147,11 @@ export class studyCollection extends Component {
     );
   }
 
+  /**
+   * @function checkcolFinished
+   * @memberOf studyCollection
+   * @description Zkontroluje, zda-li uživatel prošel všechny karty v stažené kolekci. Pokud ano, nastaví colFinished v state tohoto komponentu na true a nahraje nový pokrok na server.
+   */
   checkcolFinished() {
     if (this.state.cardArrayIndex >= this.props.colStudy.currentColCards.length) {
       this.setState({
@@ -118,6 +161,11 @@ export class studyCollection extends Component {
     }
   }
 
+  /**
+   * @function componentDidMount
+   * @memberOf studyCollection
+   * @description Na základě typu učení stáhne karty dané kolekce ze serveru.
+   */
   componentDidMount() {
     // Parse query string
     let parsedQueryString = queryString.parse(this.props.location.search);
@@ -138,18 +186,33 @@ export class studyCollection extends Component {
     }
   }
 
+  /**
+   * @function handleDialogOpen
+   * @memberOf studyCollection
+   * @description Otevře dialogové okno tím, že nastaví ve state komponentu dialogOpen na true.
+   */
   handleDialogOpen = () => {
     this.setState({
       dialogOpen: true
     });
   };
 
+  /**
+   * @function handleDialogClose
+   * @memberOf studyCollection
+   * @description Zavře dialogové okno tím, že nastaví ve state komponentu dialogOpen na false.
+   */
   handleDialogClose = () => {
     this.setState({
       dialogOpen: false
     });
   };
 
+  /**
+   * @function handleQuit
+   * @memberOf studyCollection
+   * @description Vymaže data o studované kolekci a přesměruje uživatele na /home
+   */
   handleQuit = () => {
     this.props.clearStudyCollection();
     this.props.history.push("/home");
@@ -295,32 +358,6 @@ export class studyCollection extends Component {
       </div>
     );
   }
-}
-
-function flashCard(card, cardSide, cardFlipFunciton) {
-  return (
-    <Card
-      variant="outlined"
-      style={{
-        width: "350px",
-        height: "350px",
-        backgroundColor: "#fff0c7"
-      }}
-    >
-      <CardActionArea
-        style={{
-          width: "100%",
-          height: "100%",
-          textAlign: "center"
-        }}
-        onClick={cardFlipFunciton}
-      >
-        <Typography variant="h4" style={{ color: "#37474f" }}>
-          {!cardSide ? (card ? card.body1 : "loading...") : card ? card.body2 : "loading..."}
-        </Typography>
-      </CardActionArea>
-    </Card>
-  );
 }
 
 studyCollection.propTypes = {

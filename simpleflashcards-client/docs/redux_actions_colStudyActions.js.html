@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: redux/reducers/uiStatusReducer.js</title>
+    <title>JSDoc: redux/actions/colStudyActions.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>redux/reducers/uiStatusReducer.js</h1>
+                        <h1>redux/actions/colStudyActions.js</h1>
                     </header>
                     
                     
@@ -82,66 +82,163 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS } from "../types";
-
-// UI Status
-const BUSY = "BUSY";
-const ERROR = "ERROR";
-const SUCCESS = "SUCCESS";
+            <pre class="prettyprint source linenums"><code>import { SET_STUDY_COLLECTION, CLEAR_STUDY_COLLECTION, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS } from "../types";
+import axios from "axios";
 
 /**
- * @module uiStatusReducer
- * @category ReduxReducers
- * @description Uchovává informace o stavu aplikace.
+ * @category ReduxActions
+ * @module colStudyActions
+ * @description Zde jsou funkce, které komunikují se serverem ohledně studování dané kolekce a vyvolávají změny v [colStudyReduceru]{@link module:colStudyReducer} a [uiStatusReduceru]{@link module:uiStatusReducer}.
  */
 
 /**
- * @type {Object} initialState
- * @description Původní stav reduceru
- * @property {Object} initialState - původní stav reduceru
- * @property {string|null} initialState.status - Uchovává status aplikace, nabývá hodnot "BUSY", "ERROR", "SUCCESS", null.
- * @property {Array&lt;String>} initialState.errorCodes - Uchovává error kódy.
- * @property {Array&lt;String>} initialState.successCodes - Uchovává success kódy.
+ * @function getColLearnCards
+ * @description Získá ze serveru data kolekce s kartami, které se uživatel ještě neučil.
+ * @param {string} colId - ID dané kolekce
+ * @async
  */
-const initialState = {
-  status: null,
-  errorCodes: [],
-  successCodes: []
+export const getColLearnCards = colId => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .get(`/getColUnknownCards/${colId}`)
+    .then(res => {
+      dispatch({
+        type: SET_STUDY_COLLECTION,
+        payload: unpackCardsFromArrays(res.data.cardArray)
+      });
+      dispatch({ type: SET_STATUS_SUCCESS });
+      console.log("SUCCESS");
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
 };
 
 /**
- * @function function
- * @description Mění stav reduceru.
- * @param {Object} state - stav reduceru
- * @param {Object} action - akce, která vyvolává změnu v reduceru
- * @returns nový stav reduceru
+ * @function getColCardsToLearnAndReview
+ * @description Získá ze serveru data kolekce s kartami, které se uživatel ještě neučil ale i s kartami, které by si měl uživatel zopakovat.
+ * @param {string} colId - ID dané kolekce
+ * @async
  */
-export default function(state = initialState, action) {
-  switch (action.type) {
-    case SET_STATUS_BUSY:
-      return {
-        ...state,
-        errorCodes: [],
-        successCodes: [],
-        status: BUSY
-      };
-    case SET_STATUS_ERROR:
-      return {
-        ...state,
-        errorCodes: [...state.errorCodes, action.payload],
-        status: ERROR
-      };
-    case SET_STATUS_SUCCESS:
-      return {
-        ...state,
-        status: SUCCESS,
-        successCodes: action.payload ? [...state.successCodes, action.payload] : [...state.successCodes]
-      };
-    case CLEAR_STATUS:
-      return initialState;
-    default:
-      return state;
+export const getColCardsToLearnAndReview = colId => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .get(`/getColCardsToLearnAndReview/${colId}`)
+    .then(res => {
+      dispatch({
+        type: SET_STUDY_COLLECTION,
+        payload: unpackCardsFromArrays(res.data.cardArray)
+      });
+      dispatch({ type: SET_STATUS_SUCCESS });
+      console.log("SUCCESS");
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
+
+/**
+ * @function getColReviewCards
+ * @description Získá ze serveru data kolekce s kartami, které by si měl uživatel zopakovat.
+ * @param {string} colId - ID dané kolekce
+ * @async
+ */
+export const getColReviewCards = colId => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .get(`/getColCardsToReview/${colId}`)
+    .then(res => {
+      dispatch({
+        type: SET_STUDY_COLLECTION,
+        payload: unpackCardsFromArrays(res.data.cardArray)
+      });
+      dispatch({ type: SET_STATUS_SUCCESS });
+      console.log("SUCCESS");
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
+
+/**
+ * @function pushCollectionProgress
+ * @description Nahraje na server pole karet s informacemi o tom, jak se změnil pokrok uživatele u každé karty.
+ * @param {Array&lt;Object>} colProgressCards - Pole karet se zaznamenaným pokrokem uživatele u každé z nich.
+ * @async
+ */
+export const pushCollectionProgress = colProgressCards => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+
+  colProgressCards = groupIntoArrays(colProgressCards);
+  let pushData = {
+    cardArray: colProgressCards
+  };
+
+  axios
+    .post(`/setColCardsProgress`, pushData)
+    .then(() => {
+      dispatch({ type: CLEAR_STUDY_COLLECTION });
+      dispatch({ type: SET_STATUS_SUCCESS });
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
+
+/**
+ * @function clearStudyCollection
+ * @description Vymaže studovanou kolekci z reduceru.
+ */
+export const clearStudyCollection = () => dispatch => {
+  dispatch({ type: CLEAR_STUDY_COLLECTION });
+};
+
+/**
+ * @function unpackCardsFromArrays
+ * @description "Rozbalí" pole s balíčkama karet. Tzn. každé kartě přiřadí ID balíčku, ve kterém je zařazena a všechny karty uloží do jednoho pole.
+ * @returns {Array&lt;Object>} - Vrací pole s kartami, kde má každá karta přiřazený ID balíčku, ze kterého pochází.
+ */
+function unpackCardsFromArrays(deckArray) {
+  let cardDeck = [];
+  let deckIds = Object.keys(deckArray);
+
+  for (let i = 0; i &lt; deckIds.length; i++) {
+    let deck = deckArray[deckIds[i]];
+    deck.forEach(card => {
+      card.deckId = deckIds[i];
+      cardDeck.push(card);
+    });
   }
+
+  return cardDeck;
+}
+
+/**
+ * @function groupIntoArrays
+ * @description Seskupí karty na základě ID balíčku, ze kterého pochází. Tyto skupiny jsou pak pole, která se nazývají podle ID daných balíčků. Každé kartě je pak smazána hodnota deckId, protože je určena názvem pole, ve kterém se karta nachází.
+ * @returns {Object} - Objekt, ve kterém jsou uloženy všechny karty, které jsou seskupené do polí podle ID balíčků, ze kterých pochází.
+ */
+function groupIntoArrays(cards) {
+  let deckArrays = {};
+  cards.forEach(card => {
+    let deckId = card.deckId;
+
+    // Check if the deckId is in decks already
+    if (deckArrays.hasOwnProperty(deckId)) {
+      // Push card to the existing deck array
+      delete card.deckId;
+      deckArrays[deckId].push(card);
+    } else {
+      // Create a new deck array
+      delete card.deckId;
+      deckArrays[deckId] = [card];
+    }
+  });
+  return deckArrays;
 }
 </code></pre>
         </article>
