@@ -1,5 +1,22 @@
 import { UPDATE_DECK_DATA, DELETE_DECK_DATA } from "../types";
 
+/**
+ * @module createDeckReducer
+ * @category ReduxReducers
+ * @description Uchovává data o upravovaném balíčku.
+ */
+
+/**
+ * @type {Object} initialState
+ * @description Původní stav reduceru
+ * @property {Object} initialState - původní stav reduceru
+ * @property {string} initialState.deckName - Uchovává název balíčku.
+ * @property {string} initialState.deckDescription - Uchovává popis balíčku.
+ * @property {Object} initialState.deckImage - Uchovává obrázek balíčku.
+ * @property {Array<Object>} initialState.deckCards - Uchovává karty balíčku.
+ * @property {string} initialState.imageUrl - Uchovává adresu obrázku balíčku.
+ * @property {boolean} initialState.private - Uchovává informaci, zda je balíček veřejný či soukromý.
+ */
 const initialState = {
   deckName: "",
   deckDescription: "",
@@ -9,6 +26,13 @@ const initialState = {
   private: false
 };
 
+/**
+ * @function function
+ * @description Mění stav reduceru.
+ * @param {Object} state - stav reduceru
+ * @param {Object} action - akce, která vyvolává změnu v reduceru
+ * @returns nový stav reduceru
+ */
 export default function(state = initialState, action) {
   switch (action.type) {
     case UPDATE_DECK_DATA:

@@ -15,6 +15,15 @@ import Tab from "@material-ui/core/Tab";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Bookmarks from "@material-ui/icons/Bookmarks";
 
+/**
+ * @class home
+ * @extends Component
+ * @category Pages
+ * @classdesc Stránka, na které si uživatel může prohlédnout seznam vytvořených a připnutých balíčků a kolekcí.
+ * @property {Object} state - Vnitřní state komponentu
+ * @property {number} state.selectedTabIndex - index pro Tabs komponent na této stránce
+ *
+ */
 export class home extends Component {
   constructor() {
     super();
@@ -23,7 +32,13 @@ export class home extends Component {
     };
   }
 
-  handleChange = (event, newValue) => {
+  /**
+   * @function handleTabChange
+   * @memberOf home
+   * @description Přepisuje [selectedTabIndex]{@link home} v state tohoto komponentu při přepnutí v Tabs navigation baru
+   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link home}
+   */
+  handleTabChange = (_, newValue) => {
     this.setState({
       selectedTabIndex: newValue
     });
@@ -37,7 +52,7 @@ export class home extends Component {
             <Paper>
               <div style={{ padding: "25px 50px" }}>
                 <div>
-                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleChange}>
+                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleTabChange}>
                     <Tab
                       label={
                         <div>

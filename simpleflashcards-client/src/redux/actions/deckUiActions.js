@@ -14,7 +14,7 @@ import axios from "axios";
 /**
  * @category ReduxActions
  * @module deckUiActions
- * @description Zde jsou funkce, které komunikují se serverem ohledně balíčků a vyvolávají změny v [deckUiReducer]{@link module:deckUiReducer} a [uiStatusReducer]{@link module:uiStatusReducer}.
+ * @description Zde jsou funkce, které komunikují se serverem ohledně balíčků a vyvolávají změny v [deckUiReduceru]{@link module:deckUiReducer} a [uiStatusReduceru]{@link module:uiStatusReducer}.
  */
 
 /**

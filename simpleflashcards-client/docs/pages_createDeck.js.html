@@ -1,4 +1,88 @@
-import React, { Component } from "react";
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: pages/createDeck.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                     
+                        <h1 class="navbar-item">Simple Flashcards Dokumentace</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/Morcinus/SimpleFlashCards" target="_blank">
+                                Github
+                            </a>
+                        </div>
+                    
+                        <div class="navbar-item">
+                            <a href="https://simpleflashcards-4aea0.firebaseapp.com" target="_blank">
+                                Aplikace
+                            </a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Ostatní</h2><h3>Modules</h3><ul><li><a href="module-store.html">store</a></li></ul></div><div class="category"><h2>Pages</h2><h3>Classes</h3><ul><li><a href="collection.html">collection</a></li><li><a href="createDeck.html">createDeck</a></li><li><a href="deck.html">deck</a></li><li><a href="home.html">home</a></li><li><a href="login.html">login</a></li><li><a href="signup.html">signup</a></li></ul></div><div class="category"><h2>ReduxActions</h2><h3>Modules</h3><ul><li><a href="module-colUiActions.html">colUiActions</a></li><li><a href="module-createDeckActions.html">createDeckActions</a></li><li><a href="module-deckUiActions.html">deckUiActions</a></li><li><a href="module-uiStatusActions.html">uiStatusActions</a></li><li><a href="module-userActions.html">userActions</a></li></ul></div><div class="category"><h2>ReduxReducers</h2><h3>Modules</h3><ul><li><a href="module-colUiReducer.html">colUiReducer</a></li><li><a href="module-createDeckReducer.html">createDeckReducer</a></li><li><a href="module-deckUiReducer.html">deckUiReducer</a></li><li><a href="module-uiStatusReducer.html">uiStatusReducer</a></li><li><a href="module-userReducer.html">userReducer</a></li></ul></div><div class="category"><h2>util</h2><h3>Modules</h3><ul><li><a href="module-functions.html">functions</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>pages/createDeck.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
 import PropTypes from "prop-types";
 import DeckTable from "../components/DeckTable";
 
@@ -6,7 +90,7 @@ import DeckTable from "../components/DeckTable";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { Divider, TextField, Box, Button } from "@material-ui/core";
+import { Divider, Card, CardContent, TextField, Box, Button } from "@material-ui/core";
 import Photo from "@material-ui/icons/Photo";
 import Delete from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
@@ -43,7 +127,7 @@ const initialState = {
  * @property {string} state.deckName - Uchovává název balíčku.
  * @property {string} state.deckDescription - Uchovává popis balíčku.
  * @property {Object} state.deckImage - Uchovává obrázek balíčku.
- * @property {Array<Object>} state.deckCards - Uchovává karty balíčku.
+ * @property {Array&lt;Object>} state.deckCards - Uchovává karty balíčku.
  * @property {string} state.imageUrl - Uchovává adresu obrázku balíčku.
  * @property {boolean} state.private - Uchovává informaci, zda je balíček veřejný či soukromý.
  * @property {boolean} state.dialogOpen - Uchovává informaci, zda je dialogové okno otevřené či zavřené.
@@ -115,7 +199,7 @@ export class createDeck extends Component {
    * @function updateDeckCards
    * @memberOf createDeck
    * @description Přepisuje seznam karet balíčku na základě změn v tabulce karet.
-   * @param {Array<Object>} cards - seznam karet v daném balíčku
+   * @param {Array&lt;Object>} cards - seznam karet v daném balíčku
    */
   updateDeckCards(cards) {
     this.setState({
@@ -223,27 +307,27 @@ export class createDeck extends Component {
       uiStatus: { status, errorCodes, successCodes }
     } = this.props;
     return (
-      <div className="rootContainer">
-        <Grid container justify="center">
-          <Grid item sm={10} lg={10} xl={10}>
-            <Paper>
-              <div style={{ padding: "25px 50px" }}>
-                {status == "BUSY" && (
-                  <React.Fragment>
-                    <LinearProgress color="secondary" />
-                    <Typography variant="h5" color="secondary" align="right">
+      &lt;div className="rootContainer">
+        &lt;Grid container justify="center">
+          &lt;Grid item sm={10} lg={10} xl={10}>
+            &lt;Paper>
+              &lt;div style={{ padding: "25px 50px" }}>
+                {status == "BUSY" &amp;&amp; (
+                  &lt;React.Fragment>
+                    &lt;LinearProgress color="secondary" />
+                    &lt;Typography variant="h5" color="secondary" align="right">
                       Loading...
-                    </Typography>
-                  </React.Fragment>
+                    &lt;/Typography>
+                  &lt;/React.Fragment>
                 )}
-                <Typography variant="h4">Create new deck</Typography>
-                <Divider></Divider>
-                <br />
-                <Grid container>
-                  <Grid item sm={9} lg={9} xl={9} container direction="row">
-                    <Grid>
+                &lt;Typography variant="h4">Create new deck&lt;/Typography>
+                &lt;Divider>&lt;/Divider>
+                &lt;br />
+                &lt;Grid container>
+                  &lt;Grid item sm={9} lg={9} xl={9} container direction="row">
+                    &lt;Grid>
                       {this.state.deckImage ? (
-                        <Button
+                        &lt;Button
                           style={{
                             width: "110px",
                             height: "130px",
@@ -254,10 +338,10 @@ export class createDeck extends Component {
                           }}
                           onClick={this.handleUploadButtonClick}
                         >
-                          <input type="file" id="imageInput" hidden="hidden" onChange={this.handleImageChange} />
-                        </Button>
+                          &lt;input type="file" id="imageInput" hidden="hidden" onChange={this.handleImageChange} />
+                        &lt;/Button>
                       ) : (
-                        <Button
+                        &lt;Button
                           variant="outlined"
                           style={{
                             width: "110px",
@@ -266,17 +350,17 @@ export class createDeck extends Component {
                           }}
                           onClick={this.handleUploadButtonClick}
                         >
-                          <input type="file" id="imageInput" hidden="hidden" onChange={this.handleImageChange} />
-                          <Typography style={{ textAlign: "center" }} variant="body2">
-                            <Photo></Photo>
+                          &lt;input type="file" id="imageInput" hidden="hidden" onChange={this.handleImageChange} />
+                          &lt;Typography style={{ textAlign: "center" }} variant="body2">
+                            &lt;Photo>&lt;/Photo>
                             CHOOSE COVER (OPTIONAL)
-                          </Typography>
-                        </Button>
+                          &lt;/Typography>
+                        &lt;/Button>
                       )}
-                    </Grid>
-                    <Grid>
-                      <Box style={{ marginBottom: "20px" }}>
-                        <TextField
+                    &lt;/Grid>
+                    &lt;Grid>
+                      &lt;Box style={{ marginBottom: "20px" }}>
+                        &lt;TextField
                           variant="outlined"
                           label="Enter Title"
                           name="deckName"
@@ -293,10 +377,10 @@ export class createDeck extends Component {
                           InputLabelProps={{
                             shrink: true
                           }}
-                        ></TextField>
-                      </Box>
-                      <Box>
-                        <TextField
+                        >&lt;/TextField>
+                      &lt;/Box>
+                      &lt;Box>
+                        &lt;TextField
                           variant="outlined"
                           label="Enter Description (optional)"
                           name="deckDescription"
@@ -305,60 +389,60 @@ export class createDeck extends Component {
                           InputLabelProps={{
                             shrink: true
                           }}
-                        ></TextField>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                  <Grid item sm={3} lg={3} xl={3} container direction="column" justify="flex-start" alignItems="flex-end">
-                    <Grid item container justify="flex-end" alignItems="flex-start">
-                      <IconButton color="primary" variant="contained" onClick={this.handleDialogOpen}>
-                        <Delete></Delete>
-                      </IconButton>
-                      <Button size="large" color="secondary" variant="contained" onClick={this.uploadDeck}>
+                        >&lt;/TextField>
+                      &lt;/Box>
+                    &lt;/Grid>
+                  &lt;/Grid>
+                  &lt;Grid item sm={3} lg={3} xl={3} container direction="column" justify="flex-start" alignItems="flex-end">
+                    &lt;Grid item container justify="flex-end" alignItems="flex-start">
+                      &lt;IconButton color="primary" variant="contained" onClick={this.handleDialogOpen}>
+                        &lt;Delete>&lt;/Delete>
+                      &lt;/IconButton>
+                      &lt;Button size="large" color="secondary" variant="contained" onClick={this.uploadDeck}>
                         Create
-                      </Button>
+                      &lt;/Button>
 
-                      <FormControl variant="outlined" fullWidth>
-                        <FormLabel>Deck visibility</FormLabel>
-                        <Select name="private" value={this.state.private} onChange={this.handleChange}>
-                          <MenuItem value={false}>Public</MenuItem>
-                          <MenuItem value={true}>Private</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                    <Grid>
+                      &lt;FormControl variant="outlined" fullWidth>
+                        &lt;FormLabel>Deck visibility&lt;/FormLabel>
+                        &lt;Select name="private" value={this.state.private} onChange={this.handleChange}>
+                          &lt;MenuItem value={false}>Public&lt;/MenuItem>
+                          &lt;MenuItem value={true}>Private&lt;/MenuItem>
+                        &lt;/Select>
+                      &lt;/FormControl>
+                    &lt;/Grid>
+                    &lt;Grid>
                       {errorCodes.includes("createDeck/empty-deck") ? (
-                        <Typography align="right" color="error">
+                        &lt;Typography align="right" color="error">
                           There must be at least 1 card!
-                        </Typography>
+                        &lt;/Typography>
                       ) : (
-                        successCodes.includes("createDeck/deck-created") && (
-                          <Typography variant="h6" align="right" color="secondary">
+                        successCodes.includes("createDeck/deck-created") &amp;&amp; (
+                          &lt;Typography variant="h6" align="right" color="secondary">
                             Upload was successful!
-                          </Typography>
+                          &lt;/Typography>
                         )
                       )}
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <br />
-                <DeckTable data={this.state.deckCards} updateDeckCards={this.updateDeckCards}></DeckTable>
-              </div>
-            </Paper>
-          </Grid>
-        </Grid>
-        <Dialog open={this.state.dialogOpen} onClose={this.handleDialogClose}>
-          <DialogTitle>{"Are you sure you want to delete this draft?"}</DialogTitle>
-          <DialogActions style={{ justifyContent: "center" }}>
-            <Button onClick={this.handleDialogClose} color="primary" variant="outlined" autoFocus>
+                    &lt;/Grid>
+                  &lt;/Grid>
+                &lt;/Grid>
+                &lt;br />
+                &lt;DeckTable data={this.state.deckCards} updateDeckCards={this.updateDeckCards}>&lt;/DeckTable>
+              &lt;/div>
+            &lt;/Paper>
+          &lt;/Grid>
+        &lt;/Grid>
+        &lt;Dialog open={this.state.dialogOpen} onClose={this.handleDialogClose}>
+          &lt;DialogTitle>{"Are you sure you want to delete this draft?"}&lt;/DialogTitle>
+          &lt;DialogActions style={{ justifyContent: "center" }}>
+            &lt;Button onClick={this.handleDialogClose} color="primary" variant="outlined" autoFocus>
               Cancel
-            </Button>
-            <Button onClick={this.deleteDeckDraft} color="primary" variant="contained">
+            &lt;/Button>
+            &lt;Button onClick={this.deleteDeckDraft} color="primary" variant="contained">
               Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+            &lt;/Button>
+          &lt;/DialogActions>
+        &lt;/Dialog>
+      &lt;/div>
     );
   }
 }
@@ -385,3 +469,31 @@ const mapActionsToProps = {
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(createDeck);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Feb 26 2020 11:46:07 GMT+0100 (GMT+01:00)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

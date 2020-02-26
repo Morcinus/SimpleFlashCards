@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: uiStatusActions</title>
+    <title>JSDoc: createDeckActions</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -70,7 +70,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Module</p>
-                        <h1>uiStatusActions</h1>
+                        <h1>createDeckActions</h1>
                     </header>
                     
                     
@@ -92,7 +92,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Zde jsou funkce, které  vyvolávají změny v <a href="module-uiStatusReducer.html">uiStatusReducer</a>.</p></div>
+            <div class="description"><p>Zde jsou funkce, které komunikují se serverem ohledně vytváření balíčku a vyvolávají změny v <a href="module-createDeckReducer.html">createDeckReduceru</a> a <a href="module-uiStatusReducer.html">uiStatusReduceru</a>.</p></div>
         
 
         
@@ -144,9 +144,9 @@
 
     
         <p class="tag-source">
-            <a href="redux_actions_uiStatusActions.js.html" class="button">View Source</a>
+            <a href="redux_actions_createDeckActions.js.html" class="button">View Source</a>
             <span>
-                <a href="redux_actions_uiStatusActions.js.html">redux/actions/uiStatusActions.js</a>, <a href="redux_actions_uiStatusActions.js.html#line2">line 2</a>
+                <a href="redux_actions_createDeckActions.js.html">redux/actions/createDeckActions.js</a>, <a href="redux_actions_createDeckActions.js.html#line4">line 4</a>
             </span>
         </p>
     
@@ -200,8 +200,8 @@
 
 
     
-    <h4 class="name" id="~clearStatus">
-        <a class="href-link" href="#~clearStatus">#</a>
+    <h4 class="name" id="~deleteDeckDraft">
+        <a class="href-link" href="#~deleteDeckDraft">#</a>
         
             
                 <span class='tag'>inner</span>
@@ -209,7 +209,7 @@
         
         <span class="code-name">
             
-                clearStatus<span class="signature">()</span><span class="type-signature"></span>
+                deleteDeckDraft<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -218,7 +218,7 @@
     
     
     <div class="description">
-        <p>Vymaže všechny hodnoty o stavu aplikace v <a href="module-uiStatusReducer.html">uiStatusReducer</a>.</p>
+        <p>Vymaže návrh balíčku z reduceru.</p>
     </div>
     
 
@@ -267,9 +267,9 @@
 
     
         <p class="tag-source">
-            <a href="redux_actions_uiStatusActions.js.html" class="button">View Source</a>
+            <a href="redux_actions_createDeckActions.js.html" class="button">View Source</a>
             <span>
-                <a href="redux_actions_uiStatusActions.js.html">redux/actions/uiStatusActions.js</a>, <a href="redux_actions_uiStatusActions.js.html#line8">line 8</a>
+                <a href="redux_actions_createDeckActions.js.html">redux/actions/createDeckActions.js</a>, <a href="redux_actions_createDeckActions.js.html#line19">line 19</a>
             </span>
         </p>
     
@@ -291,6 +291,478 @@
 
 
 
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~saveDeckDraft">
+        <a class="href-link" href="#~saveDeckDraft">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                saveDeckDraft<span class="signature">(deckData)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Uloží do reduceru návrh balíčku. Tato funkce je zavolána, pokud uživatel opustí stránku bez uložení balíčku na server.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>deckData</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>data balíčku</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="redux_actions_createDeckActions.js.html" class="button">View Source</a>
+            <span>
+                <a href="redux_actions_createDeckActions.js.html">redux/actions/createDeckActions.js</a>, <a href="redux_actions_createDeckActions.js.html#line10">line 10</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~uploadDeck">
+        <a class="href-link" href="#~uploadDeck">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                uploadDeck<span class="signature">(deckData)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Nahraje na server nově vytvořený balíček.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>deckData</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>data balíčku</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="redux_actions_createDeckActions.js.html" class="button">View Source</a>
+            <span>
+                <a href="redux_actions_createDeckActions.js.html">redux/actions/createDeckActions.js</a>, <a href="redux_actions_createDeckActions.js.html#line27">line 27</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~validateUploadDeckData">
+        <a class="href-link" href="#~validateUploadDeckData">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                validateUploadDeckData<span class="signature">(deckData)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Ověří, zda jsou data balíčku platná.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>deckData</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>data balíčku</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="redux_actions_createDeckActions.js.html" class="button">View Source</a>
+            <span>
+                <a href="redux_actions_createDeckActions.js.html">redux/actions/createDeckActions.js</a>, <a href="redux_actions_createDeckActions.js.html#line97">line 97</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Array<String> - error kódy, pokud jsou všechna data planá, vrací prázdné pole.</p></div>
+    
+    
+</div>
+
+                
+        </div>
+    </div>
 
 
 

@@ -1,14 +1,35 @@
 import { UPDATE_DECK_DATA, DELETE_DECK_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS } from "../types";
 import axios from "axios";
 
+/**
+ * @category ReduxActions
+ * @module createDeckActions
+ * @description Zde jsou funkce, které komunikují se serverem ohledně vytváření balíčku a vyvolávají změny v [createDeckReduceru]{@link module:createDeckReducer} a [uiStatusReduceru]{@link module:uiStatusReducer}.
+ */
+
+/**
+ * @function saveDeckDraft
+ * @description Uloží do reduceru návrh balíčku. Tato funkce je zavolána, pokud uživatel opustí stránku bez uložení balíčku na server.
+ * @param {Object} deckData - data balíčku
+ */
 export const saveDeckDraft = deckData => dispatch => {
   dispatch({ type: UPDATE_DECK_DATA, payload: deckData });
 };
 
+/**
+ * @function deleteDeckDraft
+ * @description Vymaže návrh balíčku z reduceru.
+ */
 export const deleteDeckDraft = () => dispatch => {
   dispatch({ type: DELETE_DECK_DATA });
 };
 
+/**
+ * @function uploadDeck
+ * @description Nahraje na server nově vytvořený balíček.
+ * @param {Object} deckData - data balíčku
+ * @async
+ */
 export const uploadDeck = deckData => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
 
@@ -73,6 +94,12 @@ export const uploadDeck = deckData => dispatch => {
   }
 };
 
+/**
+ * @function validateUploadDeckData
+ * @description Ověří, zda jsou data balíčku platná.
+ * @param {Object} deckData - data balíčku
+ * @returns Array<String> - error kódy, pokud jsou všechna data planá, vrací prázdné pole.
+ */
 const validateUploadDeckData = deckData => {
   let errors = [];
 

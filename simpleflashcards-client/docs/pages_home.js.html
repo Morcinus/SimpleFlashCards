@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: uiStatusActions</title>
+    <title>JSDoc: pages/home.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -69,244 +71,164 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Module</p>
-                        <h1>uiStatusActions</h1>
+                        <p>Source</p>
+                        <h1>pages/home.js</h1>
                     </header>
                     
                     
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Zde jsou funkce, které  vyvolávají změny v <a href="module-uiStatusReducer.html">uiStatusReducer</a>.</p></div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="redux_actions_uiStatusActions.js.html" class="button">View Source</a>
-            <span>
-                <a href="redux_actions_uiStatusActions.js.html">redux/actions/uiStatusActions.js</a>, <a href="redux_actions_uiStatusActions.js.html#line2">line 2</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class='vertical-section'>
-            <h3 class="title"><span>Methods</span></h3>
-            <div class="members">
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id="~clearStatus">
-        <a class="href-link" href="#~clearStatus">#</a>
-        
-            
-                <span class='tag'>inner</span>
-            
-        
-        <span class="code-name">
-            
-                clearStatus<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Vymaže všechny hodnoty o stavu aplikace v <a href="module-uiStatusReducer.html">uiStatusReducer</a>.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="redux_actions_uiStatusActions.js.html" class="button">View Source</a>
-            <span>
-                <a href="redux_actions_uiStatusActions.js.html">redux/actions/uiStatusActions.js</a>, <a href="redux_actions_uiStatusActions.js.html#line8">line 8</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-            </div>
-        </div>
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
+
+// Components
+import UserDecks from "../components/UserDecks";
+import PinnedDecks from "../components/PinnedDecks";
+import UserCollections from "../components/UserCollections";
+import PinnedCollections from "../components/PinnedCollections";
+
+// Material UI
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Divider from "@material-ui/core/Divider";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import LibraryBooks from "@material-ui/icons/LibraryBooks";
+import Bookmarks from "@material-ui/icons/Bookmarks";
+
+/**
+ * @class home
+ * @extends Component
+ * @category Pages
+ * @classdesc Stránka, na které si uživatel může prohlédnout seznam vytvořených a připnutých balíčků a kolekcí.
+ * @property {Object} state - Vnitřní state komponentu
+ * @property {number} state.selectedTabIndex - index pro Tabs komponent na této stránce
+ *
+ */
+export class home extends Component {
+  constructor() {
+    super();
+    this.state = {
+      selectedTabIndex: 0
+    };
+  }
+
+  /**
+   * @function handleTabChange
+   * @memberOf home
+   * @description Přepisuje [selectedTabIndex]{@link home} v state tohoto komponentu při přepnutí v Tabs navigation baru
+   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link home}
+   */
+  handleTabChange = (_, newValue) => {
+    this.setState({
+      selectedTabIndex: newValue
+    });
+  };
+
+  render() {
+    return (
+      &lt;div className="rootContainer">
+        &lt;Grid container justify="center">
+          &lt;Grid item sm={10} lg={10} xl={10}>
+            &lt;Paper>
+              &lt;div style={{ padding: "25px 50px" }}>
+                &lt;div>
+                  &lt;Tabs value={this.state.selectedTabIndex} onChange={this.handleTabChange}>
+                    &lt;Tab
+                      label={
+                        &lt;div>
+                          &lt;LibraryBooks
+                            item
+                            style={{
+                              display: "inline-block",
+                              marginBottom: "-5px",
+                              marginRight: 5
+                            }}
+                          />
+                          My decks
+                        &lt;/div>
+                      }
+                    />
+                    &lt;Tab
+                      label={
+                        &lt;div>
+                          &lt;Bookmarks
+                            item
+                            style={{
+                              display: "inline-block",
+                              marginBottom: "-5px",
+                              marginRight: 5
+                            }}
+                          />
+                          Pinned decks
+                        &lt;/div>
+                      }
+                    />
+                    &lt;Tab
+                      label={
+                        &lt;div>
+                          &lt;LibraryBooks
+                            item
+                            style={{
+                              display: "inline-block",
+                              marginBottom: "-5px",
+                              marginRight: 5
+                            }}
+                          />
+                          My Collections
+                        &lt;/div>
+                      }
+                    />
+                    &lt;Tab
+                      label={
+                        &lt;div>
+                          &lt;Bookmarks
+                            item
+                            style={{
+                              display: "inline-block",
+                              marginBottom: "-5px",
+                              marginRight: 5
+                            }}
+                          />
+                          Pinned Collections
+                        &lt;/div>
+                      }
+                    />
+                  &lt;/Tabs>
+                &lt;/div>
+                &lt;Divider>&lt;/Divider>
+                &lt;br />
+
+                {(() => {
+                  switch (this.state.selectedTabIndex) {
+                    case 1:
+                      return &lt;PinnedDecks />;
+                    case 2:
+                      return &lt;UserCollections />;
+                    case 3:
+                      return &lt;PinnedCollections />;
+                    default:
+                      return &lt;UserDecks />;
+                  }
+                })()}
+
+                &lt;br />
+              &lt;/div>
+            &lt;/Paper>
+          &lt;/Grid>
+        &lt;/Grid>
+      &lt;/div>
+    );
+  }
+}
+
+export default home;
+</code></pre>
+        </article>
+    </section>
 
 
 
