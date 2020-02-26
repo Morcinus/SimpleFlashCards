@@ -6,7 +6,8 @@
     "shell": "firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "engines": {
     "node": "8"
@@ -20,7 +21,9 @@
     "firebase-functions": "^3.0.0"
   },
   "devDependencies": {
-    "firebase-functions-test": "^0.1.6"
+    "better-docs": "^1.4.7",
+    "firebase-functions-test": "^0.1.6",
+    "jsdoc": "^3.6.3"
   },
   "private": true
 }
