@@ -34,6 +34,25 @@ const initialState = {
   private: false
 };
 
+/**
+ * @class editCollection
+ * @extends Component
+ * @category Pages
+ * @classdesc Na této stránce může uživatel upravovat kolekci a následně nahrát novou verzi kolekce na server.
+ * @property {Object} state - Vnitřní state komponentu
+ * @property {string} state.colName - Uchovává název kolekce.
+ * @property {string} state.colDescription - Uchovává popis kolekce.
+ * @property {Array<Object>} state.deckArray - Uchovává balíčky obsažené v kolekci.
+ * @property {boolean} state.private - Uchovává informaci, zda je kolekce veřejná či soukromá.
+ *
+ * @requires editColActions~deleteCollection
+ * @requires editColActions~deleteCollectionDraft
+ * @requires editColActions~updateCollection
+ * @requires editColActions~getCollection
+ * @requires uiStatusActions~clearStatus
+ * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ * @requires {@link module:store~reducers module:store~reducers.colEdit}
+ */
 export class editCollection extends Component {
   constructor(props) {
     super(props);
@@ -43,16 +62,33 @@ export class editCollection extends Component {
     this.uploadCollection = this.uploadCollection.bind(this);
   }
 
+  /**
+   * @function handleChange
+   * @memberOf editCollection
+   * @description Přepisuje data v state tohoto komponentu na základě uživatelských změn při upravování kolekce.
+   * @param {event} event - Event, který vyvolal spuštění této funkce.
+   */
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
     });
   };
 
+  /**
+   * @function componentDidMount
+   * @memberOf editCollection
+   * @description Stáhne data kolekce ze serveru.
+   */
   componentDidMount() {
     this.props.getCollection(this.props.match.params.colId);
   }
 
+  /**
+   * @function componentDidUpdate
+   * @memberOf editCollection
+   * @description Po stažení dat kolekce ze serveru je uloží do state tohoto komponentu.
+   * @param {Object} prevProps - předchozí props daného komponentu
+   */
   componentDidUpdate(prevProps) {
     // Load collection data after getCollection()
     if (this.props.colEdit) {
@@ -81,19 +117,34 @@ export class editCollection extends Component {
     this.props.clearStatus();
   }
 
-  // Used to communicate with ColTable
+  /**
+   * @function updateDeckArray
+   * @memberOf editCollection
+   * @description Přepisuje seznam balíčků v kolekci na základě změn v tabulce balíčků.
+   * @param {Array<Object>} decks - seznam balíčků v dané kolekci
+   */
   updateDeckArray(decks) {
     this.setState({
       deckArray: decks
     });
   }
 
+  /**
+   * @function deleteCollection
+   * @memberOf editCollection
+   * @description Pošle na server požadavek o smazání kolekce a vymaže state komponentu.
+   */
   deleteCollection() {
     this.setState(initialState);
     this.props.deleteCollection(this.props.match.params.colId);
     this.handleDialogClose();
   }
 
+  /**
+   * @function uploadCollection
+   * @memberOf editCollection
+   * @description Nahraje novou verzi kolekce na server.
+   */
   uploadCollection() {
     let colData = {
       colName: this.state.colName,
@@ -105,12 +156,22 @@ export class editCollection extends Component {
     this.props.updateCollection(colData, this.props.match.params.colId);
   }
 
+  /**
+   * @function handleDialogOpen
+   * @memberOf editCollection
+   * @description Otevře dialogové okno tím, že nastaví ve state komponentu dialogOpen na true.
+   */
   handleDialogOpen = () => {
     this.setState({
       dialogOpen: true
     });
   };
 
+  /**
+   * @function handleDialogClose
+   * @memberOf editCollection
+   * @description Zavře dialogové okno tím, že nastaví ve state komponentu dialogOpen na false.
+   */
   handleDialogClose = () => {
     this.setState({
       dialogOpen: false

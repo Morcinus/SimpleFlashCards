@@ -1,10 +1,27 @@
 import { SET_EDIT_COLLECTION_DATA, DELETE_EDIT_COLLECTION_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS } from "../types";
 import axios from "axios";
 
-export const deleteCollectionDraft = () => dispatch => {
+/**
+ * @category ReduxActions
+ * @module editColActions
+ * @description Zde jsou funkce, které komunikují se serverem ohledně upravování kolekcí a vyvolávají změny v [editColReduceru]{@link module:editColReducer} a [uiStatusReduceru]{@link module:uiStatusReducer}.
+ */
+
+/**
+ * @function deleteDeckDraft
+ * @description Vymaže data kolekce z reduceru.
+ */
+export const deleteDeckDraft = () => dispatch => {
   dispatch({ type: DELETE_EDIT_COLLECTION_DATA });
 };
 
+/**
+ * @function updateCollection
+ * @description Nahraje na server novou verzi kolekce.
+ * @param {Object} colData - data kolekce
+ * @param {string} colId - ID upravované kolekce
+ * @async
+ */
 export const updateCollection = (colData, colId) => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
 
@@ -49,6 +66,12 @@ export const updateCollection = (colData, colId) => dispatch => {
   }
 };
 
+/**
+ * @function getCollection
+ * @description Získá ze serveru data o kolekci na základě jejího ID.
+ * @param {string} colId - data kolekce
+ * @async
+ */
 export const getCollection = colId => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
@@ -66,6 +89,12 @@ export const getCollection = colId => dispatch => {
     });
 };
 
+/**
+ * @function validateUploadCollectionData
+ * @description Ověří, zda jsou data kolekci platná.
+ * @param {Object} colData - data kolekce
+ * @returns Array<String> - error kódy, pokud jsou všechna data planá, vrací prázdné pole.
+ */
 const validateUploadCollectionData = colData => {
   let errors = [];
 
@@ -87,6 +116,12 @@ const validateUploadCollectionData = colData => {
   return errors;
 };
 
+/**
+ * @function deleteCollection
+ * @description Pošle na server požadavek, aby byla daná kolekce smazána.
+ * @param {string} colId - ID kolekce
+ * @async
+ */
 export const deleteCollection = colId => dispatch => {
   dispatch({ type: SET_STATUS_BUSY });
   axios

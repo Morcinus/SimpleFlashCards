@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: redux/reducers/uiStatusReducer.js</title>
+    <title>JSDoc: redux/reducers/editColReducer.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>redux/reducers/uiStatusReducer.js</h1>
+                        <h1>redux/reducers/editColReducer.js</h1>
                     </header>
                     
                     
@@ -82,31 +82,28 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS } from "../types";
-
-// UI Status
-const BUSY = "BUSY";
-const ERROR = "ERROR";
-const SUCCESS = "SUCCESS";
+            <pre class="prettyprint source linenums"><code>import { SET_EDIT_COLLECTION_DATA, DELETE_EDIT_COLLECTION_DATA } from "../types";
 
 /**
- * @module uiStatusReducer
+ * @module editColReducer
  * @category ReduxReducers
- * @description Uchovává informace o stavu aplikace.
+ * @description Uchovává data o upravované kolekci.
  */
 
 /**
  * @type {Object} initialState
  * @description Původní stav reduceru
  * @property {Object} initialState - původní stav reduceru
- * @property {string|null} initialState.status - Uchovává status aplikace, nabývá hodnot "BUSY", "ERROR", "SUCCESS", null.
- * @property {Array&lt;String>} initialState.errorCodes - Uchovává error kódy.
- * @property {Array&lt;String>} initialState.successCodes - Uchovává success kódy.
+ * @property {string} initialState.colName - Uchovává název kolekce.
+ * @property {string} initialState.colDescription - Uchovává popis kolekce.
+ * @property {Array&lt;Object>} initialState.deckArray - Uchovává balíčky obsažené v kolekci.
+ * @property {boolean} initialState.private - Uchovává informaci, zda je balíček veřejný či soukromý.
  */
 const initialState = {
-  status: null,
-  errorCodes: [],
-  successCodes: []
+  colName: "",
+  colDescription: "",
+  deckArray: [],
+  private: false
 };
 
 /**
@@ -118,26 +115,15 @@ const initialState = {
  */
 export default function(state = initialState, action) {
   switch (action.type) {
-    case SET_STATUS_BUSY:
+    case SET_EDIT_COLLECTION_DATA:
       return {
         ...state,
-        errorCodes: [],
-        successCodes: [],
-        status: BUSY
+        colName: action.payload.colName,
+        colDescription: action.payload.colDescription,
+        private: action.payload.private,
+        deckArray: action.payload.deckArray
       };
-    case SET_STATUS_ERROR:
-      return {
-        ...state,
-        errorCodes: [...state.errorCodes, action.payload],
-        status: ERROR
-      };
-    case SET_STATUS_SUCCESS:
-      return {
-        ...state,
-        status: SUCCESS,
-        successCodes: action.payload ? [...state.successCodes, action.payload] : [...state.successCodes]
-      };
-    case CLEAR_STATUS:
+    case DELETE_EDIT_COLLECTION_DATA:
       return initialState;
     default:
       return state;

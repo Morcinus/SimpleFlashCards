@@ -71,7 +71,7 @@ export class editDeck extends Component {
   /**
    * @function handleChange
    * @memberOf editDeck
-   * @description Přepisuje data v state tohoto komponentu na základě uživatelských změn při vytváření balíčku.
+   * @description Přepisuje data v state tohoto komponentu na základě uživatelských změn při upravování balíčku.
    * @param {event} event - Event, který vyvolal spuštění této funkce.
    */
   handleChange = event => {

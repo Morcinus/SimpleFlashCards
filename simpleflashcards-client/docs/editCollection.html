@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: editDeck</title>
+    <title>JSDoc: editCollection</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -70,7 +70,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Class</p>
-                        <h1>editDeck</h1>
+                        <h1>editCollection</h1>
                     </header>
                     
                     
@@ -82,9 +82,9 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>editDeck<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>editCollection<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Na této stránce může uživatel upravovat balíček a následně nahrát novou verzi balíčku na server.</p></div>
+            <div class="class-description"><p>Na této stránce může uživatel upravovat kolekci a následně nahrát novou verzi kolekce na server.</p></div>
         
     
 </header>
@@ -100,12 +100,12 @@
 
 
     
-    <h4 class="name" id="editDeck">
-        <a class="href-link" href="#editDeck">#</a>
+    <h4 class="name" id="editCollection">
+        <a class="href-link" href="#editCollection">#</a>
         
         <span class="code-name">
             
-                new editDeck<span class="signature">()</span><span class="type-signature"></span>
+                new editCollection<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -175,7 +175,7 @@
       
 <tr class="deep-level-1">
     
-        <td class="name"><code>deckName</code></td>
+        <td class="name"><code>colName</code></td>
     
 
     <td class="type">
@@ -191,14 +191,14 @@
 
     
 
-    <td class="description last"><p>Uchovává název balíčku.</p></td>
+    <td class="description last"><p>Uchovává název kolekce.</p></td>
 </tr>
 
   
       
 <tr class="deep-level-1">
     
-        <td class="name"><code>deckDescription</code></td>
+        <td class="name"><code>colDescription</code></td>
     
 
     <td class="type">
@@ -214,37 +214,14 @@
 
     
 
-    <td class="description last"><p>Uchovává popis balíčku.</p></td>
+    <td class="description last"><p>Uchovává popis kolekce.</p></td>
 </tr>
 
   
       
 <tr class="deep-level-1">
     
-        <td class="name"><code>deckImage</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Object</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Uchovává obrázek balíčku.</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>deckCards</code></td>
+        <td class="name"><code>deckArray</code></td>
     
 
     <td class="type">
@@ -260,30 +237,7 @@
 
     
 
-    <td class="description last"><p>Uchovává karty balíčku.</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>imageUrl</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">string</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Uchovává adresu obrázku balíčku.</p></td>
+    <td class="description last"><p>Uchovává balíčky obsažené v kolekci.</p></td>
 </tr>
 
   
@@ -306,30 +260,7 @@
 
     
 
-    <td class="description last"><p>Uchovává informaci, zda je balíček veřejný či soukromý.</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>dialogOpen</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">boolean</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Uchovává informaci, zda je dialogové okno otevřené či zavřené.</p></td>
+    <td class="description last"><p>Uchovává informaci, zda je kolekce veřejná či soukromá.</p></td>
 </tr>
 
   
@@ -374,9 +305,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_editDeck.js.html" class="button">View Source</a>
+            <a href="pages_editCollection.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line39">line 39</a>
+                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line37">line 37</a>
             </span>
         </p>
     
@@ -388,19 +319,19 @@
         <div class="column is-2"><label>Requires:</label></div>
         <div class="column is-10">
             <ul>
-                <li><a href="module-editDeckActions.html#~deleteDeck">module:editDeckActions~deleteDeck</a></li>
+                <li><a href="module-editColActions.html#~deleteCollection">module:editColActions~deleteCollection</a></li>
             
-                <li><a href="module-editDeckActions.html#~deleteDeckDraft">module:editDeckActions~deleteDeckDraft</a></li>
+                <li>module:editColActions~deleteCollectionDraft</li>
             
-                <li><a href="module-editDeckActions.html#~updateDeck">module:editDeckActions~updateDeck</a></li>
+                <li><a href="module-editColActions.html#~updateCollection">module:editColActions~updateCollection</a></li>
             
-                <li><a href="module-editDeckActions.html#~getDeck">module:editDeckActions~getDeck</a></li>
+                <li><a href="module-editColActions.html#~getCollection">module:editColActions~getCollection</a></li>
             
                 <li><a href="module-uiStatusActions.html#~clearStatus">module:uiStatusActions~clearStatus</a></li>
             
                 <li><a href="module-store.html#~reducers">module:store~reducers.uiStatus</a></li>
             
-                <li><a href="module-store.html#~reducers">module:store~reducers.deckEdit</a></li>
+                <li><a href="module-store.html#~reducers">module:store~reducers.colEdit</a></li>
             </ul>
         </div>
     </div>
@@ -447,19 +378,19 @@
         <h3 class="subsection-title">Requires</h3>
 
         <ul>
-            <li><a href="module-editDeckActions.html#~deleteDeck">module:editDeckActions~deleteDeck</a></li>
+            <li><a href="module-editColActions.html#~deleteCollection">module:editColActions~deleteCollection</a></li>
         
-            <li><a href="module-editDeckActions.html#~deleteDeckDraft">module:editDeckActions~deleteDeckDraft</a></li>
+            <li>module:editColActions~deleteCollectionDraft</li>
         
-            <li><a href="module-editDeckActions.html#~updateDeck">module:editDeckActions~updateDeck</a></li>
+            <li><a href="module-editColActions.html#~updateCollection">module:editColActions~updateCollection</a></li>
         
-            <li><a href="module-editDeckActions.html#~getDeck">module:editDeckActions~getDeck</a></li>
+            <li><a href="module-editColActions.html#~getCollection">module:editColActions~getCollection</a></li>
         
             <li><a href="module-uiStatusActions.html#~clearStatus">module:uiStatusActions~clearStatus</a></li>
         
             <li><a href="module-store.html#~reducers">module:store~reducers.uiStatus</a></li>
         
-            <li><a href="module-store.html#~reducers">module:store~reducers.deckEdit</a></li>
+            <li><a href="module-store.html#~reducers">module:store~reducers.colEdit</a></li>
         </ul>
     
 
@@ -500,7 +431,7 @@
     
     
     <div class="description">
-        <p>Stáhne data balíčku ze serveru.</p>
+        <p>Stáhne data kolekce ze serveru.</p>
     </div>
     
 
@@ -549,9 +480,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_editDeck.js.html" class="button">View Source</a>
+            <a href="pages_editCollection.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line83">line 83</a>
+                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line77">line 77</a>
             </span>
         </p>
     
@@ -601,7 +532,7 @@
     
     
     <div class="description">
-        <p>Po stažení dat balíčku ze serveru je uloží do state tohoto komponentu.</p>
+        <p>Po stažení dat kolekce ze serveru je uloží do state tohoto komponentu.</p>
     </div>
     
 
@@ -700,9 +631,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_editDeck.js.html" class="button">View Source</a>
+            <a href="pages_editCollection.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line92">line 92</a>
+                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line86">line 86</a>
             </span>
         </p>
     
@@ -734,8 +665,8 @@
 
 
     
-    <h4 class="name" id=".deleteDeck">
-        <a class="href-link" href="#.deleteDeck">#</a>
+    <h4 class="name" id=".deleteCollection">
+        <a class="href-link" href="#.deleteCollection">#</a>
         
             
                 <span class='tag'>static</span>
@@ -743,7 +674,7 @@
         
         <span class="code-name">
             
-                deleteDeck<span class="signature">()</span><span class="type-signature"></span>
+                deleteCollection<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -752,7 +683,7 @@
     
     
     <div class="description">
-        <p>Pošle na server požadavek o smazání balíčku a vymaže state komponentu.</p>
+        <p>Pošle na server požadavek o smazání kolekce a vymaže state komponentu.</p>
     </div>
     
 
@@ -801,9 +732,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_editDeck.js.html" class="button">View Source</a>
+            <a href="pages_editCollection.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line140">line 140</a>
+                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line132">line 132</a>
             </span>
         </p>
     
@@ -853,7 +784,7 @@
     
     
     <div class="description">
-        <p>Přepisuje data v state tohoto komponentu na základě uživatelských změn při upravování balíčku.</p>
+        <p>Přepisuje data v state tohoto komponentu na základě uživatelských změn při upravování kolekce.</p>
     </div>
     
 
@@ -952,9 +883,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_editDeck.js.html" class="button">View Source</a>
+            <a href="pages_editCollection.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line71">line 71</a>
+                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line65">line 65</a>
             </span>
         </p>
     
@@ -1053,9 +984,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_editDeck.js.html" class="button">View Source</a>
+            <a href="pages_editCollection.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line209">line 209</a>
+                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line170">line 170</a>
             </span>
         </p>
     
@@ -1154,9 +1085,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_editDeck.js.html" class="button">View Source</a>
+            <a href="pages_editCollection.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line198">line 198</a>
+                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line159">line 159</a>
             </span>
         </p>
     
@@ -1188,8 +1119,8 @@
 
 
     
-    <h4 class="name" id=".handleImageChange">
-        <a class="href-link" href="#.handleImageChange">#</a>
+    <h4 class="name" id=".updateDeckArray">
+        <a class="href-link" href="#.updateDeckArray">#</a>
         
             
                 <span class='tag'>static</span>
@@ -1197,7 +1128,7 @@
         
         <span class="code-name">
             
-                handleImageChange<span class="signature">(event)</span><span class="type-signature"></span>
+                updateDeckArray<span class="signature">(decks)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -1206,7 +1137,7 @@
     
     
     <div class="description">
-        <p>Pokud byl nahrán nový obrázek, změní data o obrázku v state tohoto komponentu.</p>
+        <p>Přepisuje seznam balíčků v kolekci na základě změn v tabulce balíčků.</p>
     </div>
     
 
@@ -1244,259 +1175,7 @@
         
 <tr class="deep-level-0">
   
-      <td class="name"><code>event</code></td>
-  
-
-  <td class="type">
-  
-      
-<span class="param-type">event</span>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>Event, který vyvolal spuštění této funkce.</p></td>
-</tr>
-
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="pages_editDeck.js.html" class="button">View Source</a>
-            <span>
-                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line174">line 174</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id=".handleUploadButtonClick">
-        <a class="href-link" href="#.handleUploadButtonClick">#</a>
-        
-            
-                <span class='tag'>static</span>
-            
-        
-        <span class="code-name">
-            
-                handleUploadButtonClick<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Pokud uživatel kliknul na obrázek balíčku, otevře okno pro nahrání obrázku.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="pages_editDeck.js.html" class="button">View Source</a>
-            <span>
-                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line189">line 189</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-            
-                <div class="member">
-
-
-    
-    <h4 class="name" id=".updateDeckCards">
-        <a class="href-link" href="#.updateDeckCards">#</a>
-        
-            
-                <span class='tag'>static</span>
-            
-        
-        <span class="code-name">
-            
-                updateDeckCards<span class="signature">(cards)</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
-    <div class="description">
-        <p>Přepisuje seznam karet balíčku na základě změn v tabulce karet.</p>
-    </div>
-    
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        
-<tr class="deep-level-0">
-  
-      <td class="name"><code>cards</code></td>
+      <td class="name"><code>decks</code></td>
   
 
   <td class="type">
@@ -1512,7 +1191,7 @@
 
   
 
-  <td class="description last"><p>seznam karet v daném balíčku</p></td>
+  <td class="description last"><p>seznam balíčků v dané kolekci</p></td>
 </tr>
 
 
@@ -1557,9 +1236,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_editDeck.js.html" class="button">View Source</a>
+            <a href="pages_editCollection.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line128">line 128</a>
+                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line120">line 120</a>
             </span>
         </p>
     
@@ -1591,8 +1270,8 @@
 
 
     
-    <h4 class="name" id=".uploadDeck">
-        <a class="href-link" href="#.uploadDeck">#</a>
+    <h4 class="name" id=".uploadCollection">
+        <a class="href-link" href="#.uploadCollection">#</a>
         
             
                 <span class='tag'>static</span>
@@ -1600,7 +1279,7 @@
         
         <span class="code-name">
             
-                uploadDeck<span class="signature">()</span><span class="type-signature"></span>
+                uploadCollection<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -1609,7 +1288,7 @@
     
     
     <div class="description">
-        <p>Nahraje novou verzi balíčku na server.</p>
+        <p>Nahraje novou verzi kolekce na server.</p>
     </div>
     
 
@@ -1658,9 +1337,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_editDeck.js.html" class="button">View Source</a>
+            <a href="pages_editCollection.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_editDeck.js.html">pages/editDeck.js</a>, <a href="pages_editDeck.js.html#line151">line 151</a>
+                <a href="pages_editCollection.js.html">pages/editCollection.js</a>, <a href="pages_editCollection.js.html#line143">line 143</a>
             </span>
         </p>
     

@@ -1,5 +1,20 @@
 import { SET_EDIT_COLLECTION_DATA, DELETE_EDIT_COLLECTION_DATA } from "../types";
 
+/**
+ * @module editColReducer
+ * @category ReduxReducers
+ * @description Uchovává data o upravované kolekci.
+ */
+
+/**
+ * @type {Object} initialState
+ * @description Původní stav reduceru
+ * @property {Object} initialState - původní stav reduceru
+ * @property {string} initialState.colName - Uchovává název kolekce.
+ * @property {string} initialState.colDescription - Uchovává popis kolekce.
+ * @property {Array<Object>} initialState.deckArray - Uchovává balíčky obsažené v kolekci.
+ * @property {boolean} initialState.private - Uchovává informaci, zda je balíček veřejný či soukromý.
+ */
 const initialState = {
   colName: "",
   colDescription: "",
@@ -7,6 +22,13 @@ const initialState = {
   private: false
 };
 
+/**
+ * @function function
+ * @description Mění stav reduceru.
+ * @param {Object} state - stav reduceru
+ * @param {Object} action - akce, která vyvolává změnu v reduceru
+ * @returns nový stav reduceru
+ */
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_EDIT_COLLECTION_DATA:
