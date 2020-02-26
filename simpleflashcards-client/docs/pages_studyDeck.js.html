@@ -1,4 +1,88 @@
-import React, { Component } from "react";
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: pages/studyDeck.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                     
+                        <h1 class="navbar-item">Simple Flashcards Dokumentace</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/Morcinus/SimpleFlashCards" target="_blank">
+                                Github
+                            </a>
+                        </div>
+                    
+                        <div class="navbar-item">
+                            <a href="https://simpleflashcards-4aea0.firebaseapp.com" target="_blank">
+                                Aplikace
+                            </a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Ostatní</h2><h3>Modules</h3><ul><li><a href="module-store.html">store</a></li></ul></div><div class="category"><h2>Pages</h2><h3>Classes</h3><ul><li><a href="collection.html">collection</a></li><li><a href="createDeck.html">createDeck</a></li><li><a href="deck.html">deck</a></li><li><a href="editCollection.html">editCollection</a></li><li><a href="editDeck.html">editDeck</a></li><li><a href="home.html">home</a></li><li><a href="login.html">login</a></li><li><a href="signup.html">signup</a></li><li><a href="studyDeck.html">studyDeck</a></li></ul></div><div class="category"><h2>ReduxActions</h2><h3>Modules</h3><ul><li><a href="module-colUiActions.html">colUiActions</a></li><li><a href="module-createDeckActions.html">createDeckActions</a></li><li><a href="module-deckStudyActions.html">deckStudyActions</a></li><li><a href="module-deckUiActions.html">deckUiActions</a></li><li><a href="module-editColActions.html">editColActions</a></li><li><a href="module-editDeckActions.html">editDeckActions</a></li><li><a href="module-uiStatusActions.html">uiStatusActions</a></li><li><a href="module-userActions.html">userActions</a></li></ul></div><div class="category"><h2>ReduxReducers</h2><h3>Modules</h3><ul><li><a href="module-colUiReducer.html">colUiReducer</a></li><li><a href="module-createDeckReducer.html">createDeckReducer</a></li><li><a href="module-deckStudyReducer.html">deckStudyReducer</a></li><li><a href="module-deckUiReducer.html">deckUiReducer</a></li><li><a href="module-editColReducer.html">editColReducer</a></li><li><a href="module-editDeckReducer.html">editDeckReducer</a></li><li><a href="module-uiStatusReducer.html">uiStatusReducer</a></li><li><a href="module-userReducer.html">userReducer</a></li></ul></div><div class="category"><h2>util</h2><h3>Modules</h3><ul><li><a href="module-functions.html">functions</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>pages/studyDeck.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -32,7 +116,7 @@ const queryString = require("query-string");
  * @classdesc Na této stránce uživatel může studovat daný balíček
  * @property {Object} state - Vnitřní state komponentu
  * @property {boolean} state.cardSide - Jak je otočená kartička, kterou uživatel momentálně studuje. Pro hodnotu false uživatel vidí přední stranu, pro hodnotu true vidí zadní.
- * @property {Array<Object>} state.cardProgress - Uchovává informace o kartách a pokroku uživatele u každé z nich.
+ * @property {Array&lt;Object>} state.cardProgress - Uchovává informace o kartách a pokroku uživatele u každé z nich.
  * @property {number} state.cardArrayIndex - Uchovává informaci, kolikátou kartu z balíčku uživatel momentálně studuje.
  * @property {boolean} state.deckFinished - Uchovává informaci, zda-li uživatel už prošel všechny karty v balíčku.
  * @property {boolean} state.dialogOpen - Uchovává informaci, zda je dialogové okno otevřené či zavřené.
@@ -216,54 +300,54 @@ export class studyDeck extends Component {
       uiStatus: { status }
     } = this.props;
     return (
-      <div className="rootContainer">
-        <Grid container justify="center" spacing={3} style={{ marginLeft: "20px" }}>
-          <Grid item sm={2} lg={2} xl={2}></Grid>
-          <Grid item sm={8} lg={8} xl={8}>
-            <Paper>
-              <div style={{ padding: "10px 15px 0px 15px" }}>
-                <Box display="flex" flexWrap="nowrap">
-                  <Box>
+      &lt;div className="rootContainer">
+        &lt;Grid container justify="center" spacing={3} style={{ marginLeft: "20px" }}>
+          &lt;Grid item sm={2} lg={2} xl={2}>&lt;/Grid>
+          &lt;Grid item sm={8} lg={8} xl={8}>
+            &lt;Paper>
+              &lt;div style={{ padding: "10px 15px 0px 15px" }}>
+                &lt;Box display="flex" flexWrap="nowrap">
+                  &lt;Box>
                     {this.state.deckFinished ? (
-                      <IconButton component={Link} to="/home">
-                        <Close />
-                      </IconButton>
+                      &lt;IconButton component={Link} to="/home">
+                        &lt;Close />
+                      &lt;/IconButton>
                     ) : (
-                      <IconButton onClick={this.handleDialogOpen}>
-                        <Close />
-                      </IconButton>
+                      &lt;IconButton onClick={this.handleDialogOpen}>
+                        &lt;Close />
+                      &lt;/IconButton>
                     )}
-                  </Box>
+                  &lt;/Box>
                   {status == "BUSY" ? (
-                    <Box flexGrow={1} alignSelf="flex-end">
-                      <LinearProgress color="secondary" />
-                      <Typography variant="h5" color="secondary" align="right">
+                    &lt;Box flexGrow={1} alignSelf="flex-end">
+                      &lt;LinearProgress color="secondary" />
+                      &lt;Typography variant="h5" color="secondary" align="right">
                         Loading...
-                      </Typography>
-                    </Box>
+                      &lt;/Typography>
+                    &lt;/Box>
                   ) : (
-                    <Box flexGrow={1} alignSelf="center">
-                      <LinearProgress
+                    &lt;Box flexGrow={1} alignSelf="center">
+                      &lt;LinearProgress
                         color="secondary"
                         variant="determinate"
                         value={(this.state.cardArrayIndex / this.props.deckStudy.currentDeck.length) * 100}
                       />
-                    </Box>
+                    &lt;/Box>
                   )}
-                </Box>
+                &lt;/Box>
 
-                <br />
+                &lt;br />
 
                 {this.state.deckFinished ? (
-                  <h4>Congratulations! Studying finished.</h4>
+                  &lt;h4>Congratulations! Studying finished.&lt;/h4>
                 ) : (
-                  status !== "BUSY" &&
+                  status !== "BUSY" &amp;&amp;
                   (this.props.deckStudy.currentDeck.length > 0 ? (
-                    <Grid container direction="column" justify="center" alignItems="center">
+                    &lt;Grid container direction="column" justify="center" alignItems="center">
                       {flashCard(this.props.deckStudy.currentDeck[this.state.cardArrayIndex], this.state.cardSide, this.flipCard)}
                       {this.state.cardSide === true ? (
-                        <div style={{ minHeight: "85px" }}>
-                          <Grid
+                        &lt;div style={{ minHeight: "85px" }}>
+                          &lt;Grid
                             container
                             direction="row"
                             justify="center"
@@ -272,7 +356,7 @@ export class studyDeck extends Component {
                               marginTop: "20px"
                             }}
                           >
-                            <Button
+                            &lt;Button
                               size="large"
                               onClick={() => this.setCardProgress(0)}
                               style={{
@@ -281,9 +365,9 @@ export class studyDeck extends Component {
                                 color: "#ffffff"
                               }}
                             >
-                              <strong>Wrong</strong>
-                            </Button>
-                            <Button
+                              &lt;strong>Wrong&lt;/strong>
+                            &lt;/Button>
+                            &lt;Button
                               size="large"
                               onClick={() => this.setCardProgress(1)}
                               style={{
@@ -292,9 +376,9 @@ export class studyDeck extends Component {
                                 color: "#ffffff"
                               }}
                             >
-                              <strong>Hard</strong>
-                            </Button>
-                            <Button
+                              &lt;strong>Hard&lt;/strong>
+                            &lt;/Button>
+                            &lt;Button
                               size="large"
                               onClick={() => this.setCardProgress(2)}
                               style={{
@@ -303,9 +387,9 @@ export class studyDeck extends Component {
                                 color: "#ffffff"
                               }}
                             >
-                              <strong>Good</strong>
-                            </Button>
-                            <Button
+                              &lt;strong>Good&lt;/strong>
+                            &lt;/Button>
+                            &lt;Button
                               size="large"
                               onClick={() => this.setCardProgress(3)}
                               style={{
@@ -314,45 +398,45 @@ export class studyDeck extends Component {
                                 color: "#ffffff"
                               }}
                             >
-                              <strong>Easy</strong>
-                            </Button>
-                          </Grid>
-                        </div>
+                              &lt;strong>Easy&lt;/strong>
+                            &lt;/Button>
+                          &lt;/Grid>
+                        &lt;/div>
                       ) : (
-                        <div style={{ minHeight: "85px" }}></div>
+                        &lt;div style={{ minHeight: "85px" }}>&lt;/div>
                       )}
-                    </Grid>
+                    &lt;/Grid>
                   ) : (
-                    <h4>There is nothing to learn! Try again later...</h4>
+                    &lt;h4>There is nothing to learn! Try again later...&lt;/h4>
                   ))
                 )}
 
-                <br />
-              </div>
-            </Paper>
-          </Grid>
-          <Grid item sm={2} lg={2} xl={2}></Grid>
-        </Grid>
+                &lt;br />
+              &lt;/div>
+            &lt;/Paper>
+          &lt;/Grid>
+          &lt;Grid item sm={2} lg={2} xl={2}>&lt;/Grid>
+        &lt;/Grid>
 
-        <Dialog open={this.state.dialogOpen} onClose={this.handleDialogClose}>
-          <DialogTitle>{"Are you sure you want to quit?"}</DialogTitle>
-          <DialogActions style={{ justifyContent: "center" }}>
-            <Button onClick={this.handleQuit} color="secondary" variant="contained" size="large" autoFocus>
-              <strong>Quit</strong>
-            </Button>
-            <Button onClick={this.handleDialogClose} color="secondary" variant="outlined" size="large">
-              <strong>Cancel</strong>
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+        &lt;Dialog open={this.state.dialogOpen} onClose={this.handleDialogClose}>
+          &lt;DialogTitle>{"Are you sure you want to quit?"}&lt;/DialogTitle>
+          &lt;DialogActions style={{ justifyContent: "center" }}>
+            &lt;Button onClick={this.handleQuit} color="secondary" variant="contained" size="large" autoFocus>
+              &lt;strong>Quit&lt;/strong>
+            &lt;/Button>
+            &lt;Button onClick={this.handleDialogClose} color="secondary" variant="outlined" size="large">
+              &lt;strong>Cancel&lt;/strong>
+            &lt;/Button>
+          &lt;/DialogActions>
+        &lt;/Dialog>
+      &lt;/div>
     );
   }
 }
 
 function flashCard(card, cardSide, cardFlipFunciton) {
   return (
-    <Card
+    &lt;Card
       variant="outlined"
       style={{
         width: "350px",
@@ -360,7 +444,7 @@ function flashCard(card, cardSide, cardFlipFunciton) {
         backgroundColor: "#fff0c7"
       }}
     >
-      <CardActionArea
+      &lt;CardActionArea
         style={{
           width: "100%",
           height: "100%",
@@ -368,11 +452,11 @@ function flashCard(card, cardSide, cardFlipFunciton) {
         }}
         onClick={cardFlipFunciton}
       >
-        <Typography variant="h4" style={{ color: "#37474f" }}>
+        &lt;Typography variant="h4" style={{ color: "#37474f" }}>
           {!cardSide ? (card ? card.body1 : "loading...") : card ? card.body2 : "loading..."}
-        </Typography>
-      </CardActionArea>
-    </Card>
+        &lt;/Typography>
+      &lt;/CardActionArea>
+    &lt;/Card>
   );
 }
 
@@ -402,3 +486,31 @@ const mapActionsToProps = {
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(studyDeck);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Feb 26 2020 12:51:42 GMT+0100 (GMT+01:00)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

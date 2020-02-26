@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: pages/deck.js</title>
+    <title>JSDoc: redux/reducers/deckStudyReducer.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>pages/deck.js</h1>
+                        <h1>redux/reducers/deckStudyReducer.js</h1>
                     </header>
                     
                     
@@ -82,174 +82,44 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
-
-// Material UI
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import Bookmarks from "@material-ui/icons/Bookmarks";
-import LinearProgress from "@material-ui/core/LinearProgress";
-
-// Components
-import DeckInfo from "../components/DeckInfo";
-import DeckCards from "../components/DeckCards";
-import CollectionDialog from "../components/CollectionDialog";
-import { deckLearnButtons } from "../util/functions";
-
-// Redux
-import { connect } from "react-redux";
-import { getDeck, clearDeck } from "../redux/actions/deckUiActions";
-import { clearStatus } from "../redux/actions/uiStatusActions";
+            <pre class="prettyprint source linenums"><code>import { SET_STUDY_DECK, CLEAR_STUDY_DECK } from "../types";
 
 /**
- * @class deck
- * @extends Component
- * @category Pages
- * @classdesc Vytvoří stránku daného balíčku. Uživatel zde vidí všechny podrobné informace o balíčku,
- * může balíček sdílet, prohlédnout si jeho obsah nebo přejít do módu učení. Pokud je uživatel tvůrcem tohoto balíčku,
- * může také začít balíček upravovat.
- * @property {Object} state - Vnitřní state komponentu
- * @property {number} state.selectedTabIndex - Index pro Tabs komponent na této stránce
- *
- * @requires deckUiActions~getDeck
- * @requires deckUiActions~clearDeck
- * @requires functions~deckLearnButtons
- * @requires uiStatusActions~clearStatus
- * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ * @module deckStudyReducer
+ * @category ReduxReducers
+ * @description Uchovává data o balíčku, který se uživatel učí.
  */
 
-export class deck extends Component {
-  constructor() {
-    super();
-    this.state = {
-      selectedTabIndex: 0
-    };
-  }
+/**
+ * @type {Object} initialState
+ * @description Původní stav reduceru
+ * @property {Object} initialState - původní stav reduceru
+ * @property {Array&lt;Object>} initialState.currentDeck - Uchovává data o balíčku, který se uživatel momentálně učí.
+ */
+const initialState = {
+  currentDeck: []
+};
 
-  /**
-   * @function handleTabChange
-   * @memberOf deck
-   * @description Přepisuje [selectedTabIndex]{@link deck} v state tohoto komponentu při přepnutí v Tabs navigation baru
-   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link deck}
-   */
-  handleTabChange = (_, newValue) => {
-    this.setState({
-      selectedTabIndex: newValue
-    });
-  };
-
-  componentDidMount() {
-    this.props.getDeck(this.props.match.params.deckId);
-  }
-
-  componentWillUnmount() {
-    this.props.clearStatus();
-    this.props.clearDeck();
-  }
-
-  render() {
-    const {
-      uiStatus: { status, errorCodes }
-    } = this.props;
-    return (
-      &lt;div className="rootContainer">
-        &lt;Grid container justify="center" spacing={3} style={{ marginLeft: "20px" }}>
-          &lt;Grid item sm={3} lg={3} xl={3}>
-            &lt;DeckInfo deckId={this.props.match.params.deckId}>&lt;/DeckInfo>
-          &lt;/Grid>
-          &lt;Grid item sm={9} lg={9} xl={9}>
-            &lt;Paper>
-              &lt;div style={{ padding: "25px 50px" }}>
-                &lt;div>
-                  &lt;Tabs value={this.state.selectedTabIndex} onChange={this.handleTabChange}>
-                    &lt;Tab
-                      label={
-                        &lt;div>
-                          &lt;LibraryBooks
-                            item
-                            style={{
-                              display: "inline-block",
-                              marginBottom: "-5px",
-                              marginRight: 5
-                            }}
-                          />
-                          Learn
-                        &lt;/div>
-                      }
-                      to="/home"
-                    />
-                    &lt;Tab
-                      label={
-                        &lt;div>
-                          &lt;Bookmarks
-                            item
-                            style={{
-                              display: "inline-block",
-                              marginBottom: "-5px",
-                              marginRight: 5
-                            }}
-                          />
-                          Cards
-                        &lt;/div>
-                      }
-                      to="/create"
-                    />
-                  &lt;/Tabs>
-                &lt;/div>
-                &lt;Divider>&lt;/Divider>
-                &lt;br />
-
-                {status == "BUSY" &amp;&amp; (
-                  &lt;React.Fragment>
-                    &lt;LinearProgress color="secondary" />
-                    &lt;Typography variant="h5" color="secondary" align="right">
-                      Loading...
-                    &lt;/Typography>
-                  &lt;/React.Fragment>
-                )}
-                {status == "ERROR" &amp;&amp; errorCodes.includes("deck/deck-not-found") &amp;&amp; (
-                  &lt;Typography variant="h6" color="error" align="center">
-                    Error 404: Deck not found!
-                  &lt;/Typography>
-                )}
-                {status == "SUCCESS" &amp;&amp; (this.state.selectedTabIndex === 1 ? &lt;DeckCards /> : deckLearnButtons(this.props.match.params.deckId))}
-                &lt;br />
-              &lt;/div>
-            &lt;/Paper>
-          &lt;/Grid>
-        &lt;/Grid>
-        &lt;CollectionDialog deckId={this.props.match.params.deckId} />
-      &lt;/div>
-    );
+/**
+ * @function function
+ * @description Mění stav reduceru.
+ * @param {Object} state - stav reduceru
+ * @param {Object} action - akce, která vyvolává změnu v reduceru
+ * @returns nový stav reduceru
+ */
+export default function(state = initialState, action) {
+  switch (action.type) {
+    case SET_STUDY_DECK:
+      return {
+        ...state,
+        currentDeck: action.payload
+      };
+    case CLEAR_STUDY_DECK:
+      return initialState;
+    default:
+      return state;
   }
 }
-
-deck.propTypes = {
-  getDeck: PropTypes.func.isRequired,
-  clearDeck: PropTypes.func.isRequired,
-  deckUi: PropTypes.object.isRequired,
-  clearStatus: PropTypes.func.isRequired,
-  uiStatus: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-  deckUi: state.deckUi,
-  uiStatus: state.uiStatus
-});
-
-const mapActionsToProps = {
-  getDeck,
-  clearDeck,
-  clearStatus
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(deck);
 </code></pre>
         </article>
     </section>

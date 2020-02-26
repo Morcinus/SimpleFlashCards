@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: pages/deck.js</title>
+    <title>JSDoc: redux/actions/deckStudyActions.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>pages/deck.js</h1>
+                        <h1>redux/actions/deckStudyActions.js</h1>
                     </header>
                     
                     
@@ -82,174 +82,107 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
-
-// Material UI
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import Bookmarks from "@material-ui/icons/Bookmarks";
-import LinearProgress from "@material-ui/core/LinearProgress";
-
-// Components
-import DeckInfo from "../components/DeckInfo";
-import DeckCards from "../components/DeckCards";
-import CollectionDialog from "../components/CollectionDialog";
-import { deckLearnButtons } from "../util/functions";
-
-// Redux
-import { connect } from "react-redux";
-import { getDeck, clearDeck } from "../redux/actions/deckUiActions";
-import { clearStatus } from "../redux/actions/uiStatusActions";
+            <pre class="prettyprint source linenums"><code>import { SET_STUDY_DECK, CLEAR_STUDY_DECK, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS } from "../types";
+import axios from "axios";
 
 /**
- * @class deck
- * @extends Component
- * @category Pages
- * @classdesc Vytvoří stránku daného balíčku. Uživatel zde vidí všechny podrobné informace o balíčku,
- * může balíček sdílet, prohlédnout si jeho obsah nebo přejít do módu učení. Pokud je uživatel tvůrcem tohoto balíčku,
- * může také začít balíček upravovat.
- * @property {Object} state - Vnitřní state komponentu
- * @property {number} state.selectedTabIndex - Index pro Tabs komponent na této stránce
- *
- * @requires deckUiActions~getDeck
- * @requires deckUiActions~clearDeck
- * @requires functions~deckLearnButtons
- * @requires uiStatusActions~clearStatus
- * @requires {@link module:store~reducers module:store~reducers.uiStatus}
+ * @category ReduxActions
+ * @module deckStudyActions
+ * @description Zde jsou funkce, které komunikují se serverem ohledně studování daného balíčku a vyvolávají změny v [deckStudyReduceru]{@link module:deckStudyReducer} a [uiStatusReduceru]{@link module:uiStatusReducer}.
  */
 
-export class deck extends Component {
-  constructor() {
-    super();
-    this.state = {
-      selectedTabIndex: 0
-    };
-  }
-
-  /**
-   * @function handleTabChange
-   * @memberOf deck
-   * @description Přepisuje [selectedTabIndex]{@link deck} v state tohoto komponentu při přepnutí v Tabs navigation baru
-   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link deck}
-   */
-  handleTabChange = (_, newValue) => {
-    this.setState({
-      selectedTabIndex: newValue
+/**
+ * @function getLearnDeck
+ * @description Získá ze serveru data balíčku s kartami, které se uživatel ještě neučil.
+ * @param {string} deckId - ID daného balíčku
+ * @async
+ */
+export const getLearnDeck = deckId => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .get(`/getDeckUnknownCards/${deckId}`)
+    .then(res => {
+      dispatch({ type: SET_STUDY_DECK, payload: res.data });
+      dispatch({ type: SET_STATUS_SUCCESS });
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
     });
+};
+
+/**
+ * @function getLearnAndReviewDeck
+ * @description Získá ze serveru data balíčku s kartami, které se uživatel ještě neučil ale i s kartami, které by si měl uživatel zopakovat.
+ * @param {string} deckId - ID daného balíčku
+ * @async
+ */
+export const getLearnAndReviewDeck = deckId => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .get(`/getCardsToLearnAndReview/${deckId}`)
+    .then(res => {
+      dispatch({ type: SET_STATUS_SUCCESS });
+      dispatch({ type: SET_STUDY_DECK, payload: res.data });
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
+
+/**
+ * @function getReviewDeck
+ * @description Získá ze serveru data balíčku s kartami, které by si měl uživatel zopakovat.
+ * @param {string} deckId - ID daného balíčku
+ * @async
+ */
+export const getReviewDeck = deckId => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  axios
+    .get(`/getCardsToReview/${deckId}`)
+    .then(res => {
+      dispatch({ type: SET_STATUS_SUCCESS });
+      dispatch({ type: SET_STUDY_DECK, payload: res.data });
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
+};
+
+/**
+ * @function pushDeckProgress
+ * @description Nahraje na server balíček s informacemi o tom, jak se změnil pokrok uživatele u každé karty.
+ * @param {string} deckId - ID daného balíčku
+ * @param {Array&lt;Object>} progressDeck - Balíček se zaznamenaným pokrokem uživatele
+ * @async
+ */
+export const pushDeckProgress = (deckId, progressDeck) => dispatch => {
+  dispatch({ type: SET_STATUS_BUSY });
+  let exportData = {
+    cardArray: progressDeck
   };
 
-  componentDidMount() {
-    this.props.getDeck(this.props.match.params.deckId);
-  }
-
-  componentWillUnmount() {
-    this.props.clearStatus();
-    this.props.clearDeck();
-  }
-
-  render() {
-    const {
-      uiStatus: { status, errorCodes }
-    } = this.props;
-    return (
-      &lt;div className="rootContainer">
-        &lt;Grid container justify="center" spacing={3} style={{ marginLeft: "20px" }}>
-          &lt;Grid item sm={3} lg={3} xl={3}>
-            &lt;DeckInfo deckId={this.props.match.params.deckId}>&lt;/DeckInfo>
-          &lt;/Grid>
-          &lt;Grid item sm={9} lg={9} xl={9}>
-            &lt;Paper>
-              &lt;div style={{ padding: "25px 50px" }}>
-                &lt;div>
-                  &lt;Tabs value={this.state.selectedTabIndex} onChange={this.handleTabChange}>
-                    &lt;Tab
-                      label={
-                        &lt;div>
-                          &lt;LibraryBooks
-                            item
-                            style={{
-                              display: "inline-block",
-                              marginBottom: "-5px",
-                              marginRight: 5
-                            }}
-                          />
-                          Learn
-                        &lt;/div>
-                      }
-                      to="/home"
-                    />
-                    &lt;Tab
-                      label={
-                        &lt;div>
-                          &lt;Bookmarks
-                            item
-                            style={{
-                              display: "inline-block",
-                              marginBottom: "-5px",
-                              marginRight: 5
-                            }}
-                          />
-                          Cards
-                        &lt;/div>
-                      }
-                      to="/create"
-                    />
-                  &lt;/Tabs>
-                &lt;/div>
-                &lt;Divider>&lt;/Divider>
-                &lt;br />
-
-                {status == "BUSY" &amp;&amp; (
-                  &lt;React.Fragment>
-                    &lt;LinearProgress color="secondary" />
-                    &lt;Typography variant="h5" color="secondary" align="right">
-                      Loading...
-                    &lt;/Typography>
-                  &lt;/React.Fragment>
-                )}
-                {status == "ERROR" &amp;&amp; errorCodes.includes("deck/deck-not-found") &amp;&amp; (
-                  &lt;Typography variant="h6" color="error" align="center">
-                    Error 404: Deck not found!
-                  &lt;/Typography>
-                )}
-                {status == "SUCCESS" &amp;&amp; (this.state.selectedTabIndex === 1 ? &lt;DeckCards /> : deckLearnButtons(this.props.match.params.deckId))}
-                &lt;br />
-              &lt;/div>
-            &lt;/Paper>
-          &lt;/Grid>
-        &lt;/Grid>
-        &lt;CollectionDialog deckId={this.props.match.params.deckId} />
-      &lt;/div>
-    );
-  }
-}
-
-deck.propTypes = {
-  getDeck: PropTypes.func.isRequired,
-  clearDeck: PropTypes.func.isRequired,
-  deckUi: PropTypes.object.isRequired,
-  clearStatus: PropTypes.func.isRequired,
-  uiStatus: PropTypes.object.isRequired
+  axios
+    .post(`/setDeckCardsProgress/${deckId}`, exportData)
+    .then(() => {
+      dispatch({ type: CLEAR_STUDY_DECK });
+      dispatch({ type: SET_STATUS_SUCCESS });
+    })
+    .catch(err => {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    });
 };
 
-const mapStateToProps = state => ({
-  deckUi: state.deckUi,
-  uiStatus: state.uiStatus
-});
-
-const mapActionsToProps = {
-  getDeck,
-  clearDeck,
-  clearStatus
+/**
+ * @function clearStudyDeck
+ * @description Vymaže studovaný balíček z reduceru.
+ */
+export const clearStudyDeck = () => dispatch => {
+  dispatch({ type: CLEAR_STUDY_DECK });
 };
-
-export default connect(mapStateToProps, mapActionsToProps)(deck);
 </code></pre>
         </article>
     </section>

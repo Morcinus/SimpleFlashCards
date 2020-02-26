@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: signup</title>
+    <title>JSDoc: deckStudyActions</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -69,8 +69,8 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Class</p>
-                        <h1>signup</h1>
+                        <p>Module</p>
+                        <h1>deckStudyActions</h1>
                     </header>
                     
                     
@@ -82,9 +82,8 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>signup<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Na této stránce se uživatel může zaregistrovat. Pro registraci vyplní do formuláře email, uživatelské jméno, heslo a potvrzení hesla.</p></div>
+            
         
     
 </header>
@@ -93,26 +92,11 @@
     <div class="container-overview">
     
         
-            <div class='vertical-section'>
-                <h3 class="title"><span>Constructor</span></h3>
-                <div class="members">
-                    <div class="member">
-
-
-    
-    <h4 class="name" id="signup">
-        <a class="href-link" href="#signup">#</a>
+            <div class="description"><p>Zde jsou funkce, které komunikují se serverem ohledně studování daného balíčku a vyvolávají změny v <a href="module-deckStudyReducer.html">deckStudyReduceru</a> a <a href="module-uiStatusReducer.html">uiStatusReduceru</a>.</p></div>
         
-        <span class="code-name">
+
+        
             
-                new signup<span class="signature">()</span><span class="type-signature"></span>
-            
-        </span>
-    </h4>
-    
-
-    
-    
 
 
 
@@ -123,151 +107,6 @@
 
 
 
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-        
-<tr class="deep-level-0">
-    
-        <td class="name"><code>state</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">Object</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Vnitřní state komponentu</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>email</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">string</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Text, který uživatel zadá do formuláře do políčka pro email</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>password</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">string</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Text, který uživatel zadá do formuláře do políčka pro heslo</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>confirmPassword</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">string</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Text, který uživatel zadá do formuláře do políčka pro potvrzení hesla</p></td>
-</tr>
-
-  
-      
-<tr class="deep-level-1">
-    
-        <td class="name"><code>username</code></td>
-    
-
-    <td class="type">
-    
-        
-<span class="param-type">string</span>
-
-
-    
-    </td>
-
-    
-
-    
-
-    <td class="description last"><p>Text, který uživatel zadá do formuláře do políčka pro uživatelské jméno</p></td>
-</tr>
-
-  
-
-    
-    </tbody>
-</table>
 
 
 
@@ -305,9 +144,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_signup.js.html" class="button">View Source</a>
+            <a href="redux_actions_deckStudyActions.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_signup.js.html">pages/signup.js</a>, <a href="pages_signup.js.html#line22">line 22</a>
+                <a href="redux_actions_deckStudyActions.js.html">redux/actions/deckStudyActions.js</a>, <a href="redux_actions_deckStudyActions.js.html#line4">line 4</a>
             </span>
         </p>
     
@@ -315,18 +154,6 @@
 
 
 
-    <div class="method-parameter columns">
-        <div class="column is-2"><label>Requires:</label></div>
-        <div class="column is-10">
-            <ul>
-                <li><a href="module-userActions.html#~signupUser">module:userActions~signupUser</a></li>
-            
-                <li><a href="module-uiStatusActions.html#~clearStatus">module:uiStatusActions~clearStatus</a></li>
-            
-                <li><a href="module-store.html#~reducers">module:store~reducers.uiStatus</a></li>
-            </ul>
-        </div>
-    </div>
 
 
 
@@ -346,36 +173,12 @@
 
 
 
-</div>
-                </div>
-            </div>
         
     
     </div>
     
     
-        <h3 class="subsection-title">Extends</h3>
 
-        
-
-
-    <ul>
-        <li>Component</li>
-    </ul>
-
-
-    
-
-    
-        <h3 class="subsection-title">Requires</h3>
-
-        <ul>
-            <li><a href="module-userActions.html#~signupUser">module:userActions~signupUser</a></li>
-        
-            <li><a href="module-uiStatusActions.html#~clearStatus">module:uiStatusActions~clearStatus</a></li>
-        
-            <li><a href="module-store.html#~reducers">module:store~reducers.uiStatus</a></li>
-        </ul>
     
 
     
@@ -397,16 +200,16 @@
 
 
     
-    <h4 class="name" id=".handleChange">
-        <a class="href-link" href="#.handleChange">#</a>
+    <h4 class="name" id="~clearStudyDeck">
+        <a class="href-link" href="#~clearStudyDeck">#</a>
         
             
-                <span class='tag'>static</span>
+                <span class='tag'>inner</span>
             
         
         <span class="code-name">
             
-                handleChange<span class="signature">(event)</span><span class="type-signature"></span>
+                clearStudyDeck<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -415,7 +218,7 @@
     
     
     <div class="description">
-        <p>Přepisuje data v state tohoto komponentu na základě změn v textových polích formuláře</p>
+        <p>Vymaže studovaný balíček z reduceru.</p>
     </div>
     
 
@@ -426,56 +229,6 @@
 
 
 
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        
-<tr class="deep-level-0">
-  
-      <td class="name"><code>event</code></td>
-  
-
-  <td class="type">
-  
-      
-<span class="param-type">event</span>
-
-
-  
-  </td>
-
-  
-
-  
-
-  <td class="description last"><p>Event, který vyvolal spuštění této funkce</p></td>
-</tr>
-
-
-    
-    </tbody>
-</table>
 
 
 
@@ -514,9 +267,9 @@
 
     
         <p class="tag-source">
-            <a href="pages_signup.js.html" class="button">View Source</a>
+            <a href="redux_actions_deckStudyActions.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_signup.js.html">pages/signup.js</a>, <a href="pages_signup.js.html#line65">line 65</a>
+                <a href="redux_actions_deckStudyActions.js.html">redux/actions/deckStudyActions.js</a>, <a href="redux_actions_deckStudyActions.js.html#line95">line 95</a>
             </span>
         </p>
     
@@ -548,16 +301,18 @@
 
 
     
-    <h4 class="name" id=".handleSubmit">
-        <a class="href-link" href="#.handleSubmit">#</a>
+    <h4 class="name" id="~getLearnAndReviewDeck">
+        <a class="href-link" href="#~getLearnAndReviewDeck">#</a>
         
             
-                <span class='tag'>static</span>
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
             
         
         <span class="code-name">
             
-                handleSubmit<span class="signature">(event)</span><span class="type-signature"></span>
+                getLearnAndReviewDeck<span class="signature">(deckId)</span><span class="type-signature"></span>
             
         </span>
     </h4>
@@ -566,7 +321,7 @@
     
     
     <div class="description">
-        <p>Zavolá funkci pro zaregistrování uživatele</p>
+        <p>Získá ze serveru data balíčku s kartami, které se uživatel ještě neučil ale i s kartami, které by si měl uživatel zopakovat.</p>
     </div>
     
 
@@ -604,13 +359,13 @@
         
 <tr class="deep-level-0">
   
-      <td class="name"><code>event</code></td>
+      <td class="name"><code>deckId</code></td>
   
 
   <td class="type">
   
       
-<span class="param-type">event</span>
+<span class="param-type">string</span>
 
 
   
@@ -620,7 +375,7 @@
 
   
 
-  <td class="description last"><p>Event, který vyvolal spuštění této funkce</p></td>
+  <td class="description last"><p>ID daného balíčku</p></td>
 </tr>
 
 
@@ -665,9 +420,493 @@
 
     
         <p class="tag-source">
-            <a href="pages_signup.js.html" class="button">View Source</a>
+            <a href="redux_actions_deckStudyActions.js.html" class="button">View Source</a>
             <span>
-                <a href="pages_signup.js.html">pages/signup.js</a>, <a href="pages_signup.js.html#line48">line 48</a>
+                <a href="redux_actions_deckStudyActions.js.html">redux/actions/deckStudyActions.js</a>, <a href="redux_actions_deckStudyActions.js.html#line30">line 30</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~getLearnDeck">
+        <a class="href-link" href="#~getLearnDeck">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getLearnDeck<span class="signature">(deckId)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Získá ze serveru data balíčku s kartami, které se uživatel ještě neučil.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>deckId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>ID daného balíčku</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="redux_actions_deckStudyActions.js.html" class="button">View Source</a>
+            <span>
+                <a href="redux_actions_deckStudyActions.js.html">redux/actions/deckStudyActions.js</a>, <a href="redux_actions_deckStudyActions.js.html#line10">line 10</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~getReviewDeck">
+        <a class="href-link" href="#~getReviewDeck">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                getReviewDeck<span class="signature">(deckId)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Získá ze serveru data balíčku s kartami, které by si měl uživatel zopakovat.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>deckId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>ID daného balíčku</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="redux_actions_deckStudyActions.js.html" class="button">View Source</a>
+            <span>
+                <a href="redux_actions_deckStudyActions.js.html">redux/actions/deckStudyActions.js</a>, <a href="redux_actions_deckStudyActions.js.html#line50">line 50</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~pushDeckProgress">
+        <a class="href-link" href="#~pushDeckProgress">#</a>
+        
+            
+                <span class='tag'>async</span>
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                pushDeckProgress<span class="signature">(deckId, progressDeck)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Nahraje na server balíček s informacemi o tom, jak se změnil pokrok uživatele u každé karty.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>deckId</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">string</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>ID daného balíčku</p></td>
+</tr>
+
+
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>progressDeck</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Array.&lt;Object></span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Balíček se zaznamenaným pokrokem uživatele</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="redux_actions_deckStudyActions.js.html" class="button">View Source</a>
+            <span>
+                <a href="redux_actions_deckStudyActions.js.html">redux/actions/deckStudyActions.js</a>, <a href="redux_actions_deckStudyActions.js.html#line70">line 70</a>
             </span>
         </p>
     
