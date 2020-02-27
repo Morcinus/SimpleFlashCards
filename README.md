@@ -79,7 +79,7 @@ Back-end:
 
 ## Odkazy
 
-- Simple Flashcards
+- [Simple Flashcards](https://simpleflashcards-4aea0.firebaseapp.com)
 - [Stránka o aplikaci](https://morcinus.github.io/SimpleFlashCards/)
 - Uživatelská doukumentace
 - Programátorská dokumentace pro simpleflashcards-client
