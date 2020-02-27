@@ -1,4 +1,88 @@
-const { db } = require("../util/admin");
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: deckCards.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                     
+                        <h1 class="navbar-item">Simple Flashcards Cloud Functions Dokumentace</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/Morcinus/SimpleFlashCards" target="_blank">
+                                Github
+                            </a>
+                        </div>
+                    
+                        <div class="navbar-item">
+                            <a href="https://simpleflashcards-4aea0.firebaseapp.com" target="_blank">
+                                Aplikace
+                            </a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Funkce</h2><h3>Modules</h3><ul><li><a href="module-collection.html">collection</a></li><li><a href="module-deck.html">deck</a></li><li><a href="module-deckCards.html">deckCards</a></li><li><a href="module-user.html">user</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>deckCards.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { db } = require("../util/admin");
 const { compareUnderstandingLevels, findUnknownCards } = require("../util/functions");
 
 /**
@@ -13,7 +97,7 @@ const { compareUnderstandingLevels, findUnknownCards } = require("../util/functi
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
  * @param {string} req.params.deckId - ID balíčku, který se uživatel učil
- * @param {Array<Object>} req.body.cardArray - Pole s kartami, kde je zaznamenán nový pokrok uživatele.
+ * @param {Array&lt;Object>} req.body.cardArray - Pole s kartami, kde je zaznamenán nový pokrok uživatele.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
  * @async
  */
@@ -40,7 +124,7 @@ exports.setDeckCardsProgress = (req, res) => {
       // Aktualizování pole s pokrokovými kartami
       newCardArray.forEach(newCard => {
         // Najde danou pokrokovou kartu
-        for (let i = 0; i < cardArray.length; i++) {
+        for (let i = 0; i &lt; cardArray.length; i++) {
           if (cardArray[i].cardId === newCard.cardId) {
             // Aktualizace pokrokové karty
             cardArray[i] = newCard;
@@ -80,7 +164,7 @@ exports.setDeckCardsProgress = (req, res) => {
  * @param {string} req.user.uid - ID uživatele
  * @param {string} req.params.deckId - ID balíčku, který se chce uživatel učit
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} exportCards - Pole karet.
+ * @returns {Array&lt;Object>} exportCards - Pole karet.
  * @async
  */
 exports.getCardsToReview = (req, res) => {
@@ -145,7 +229,7 @@ exports.getCardsToReview = (req, res) => {
  * @param {string} req.user.uid - ID uživatele
  * @param {string} req.params.deckId - ID balíčku, který se chce uživatel učit
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} exportCards - Pole karet.
+ * @returns {Array&lt;Object>} exportCards - Pole karet.
  * @async
  */
 exports.getDeckUnknownCards = (req, res) => {
@@ -202,7 +286,7 @@ exports.getDeckUnknownCards = (req, res) => {
  * @param {string} req.user.uid - ID uživatele
  * @param {string} req.params.deckId - ID balíčku, který se chce uživatel učit
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} exportCards - Pole karet.
+ * @returns {Array&lt;Object>} exportCards - Pole karet.
  * @async
  */
 exports.getCardsToLearnAndReview = (req, res) => {
@@ -237,8 +321,8 @@ exports.getCardsToLearnAndReview = (req, res) => {
         progressCardsArray = progressCardsArray.sort(compareUnderstandingLevels);
 
         // Pro každou kartu, kterou se má uživatel učit, získá její obsah
-        for (let i = 0; i < progressCardsArray.length; i++) {
-          if (exportCards.length < Math.round(cardLimit / 2)) {
+        for (let i = 0; i &lt; progressCardsArray.length; i++) {
+          if (exportCards.length &lt; Math.round(cardLimit / 2)) {
             // Najde k pokrokové kartě příslušnou kartu
             let exportCard = cardArray.find(({ cardId }) => cardId === progressCardsArray[i].cardId);
 
@@ -258,8 +342,8 @@ exports.getCardsToLearnAndReview = (req, res) => {
       let unknownCardsArray = findUnknownCards(cardArray, progressCardsArray);
 
       // Zaplní zbývající místo v exportCards kartami, které uživatel nezná
-      for (let i = 0; i < unknownCardsArray.length; i++) {
-        if (exportCards.length < cardLimit) {
+      for (let i = 0; i &lt; unknownCardsArray.length; i++) {
+        if (exportCards.length &lt; cardLimit) {
           exportCards.push(unknownCardsArray[i]);
         } else break;
       }
@@ -268,8 +352,8 @@ exports.getCardsToLearnAndReview = (req, res) => {
       if (progressCardsArray.length > 0) {
         // Pokud progressCardsArray ještě obsahuje nějaké karty
         if (progressCardsArray.length > lastProgressCardIndex) {
-          for (let i = lastProgressCardIndex; i < progressCardsArray.length; i++) {
-            if (exportCards.length < cardLimit) {
+          for (let i = lastProgressCardIndex; i &lt; progressCardsArray.length; i++) {
+            if (exportCards.length &lt; cardLimit) {
               // Najde k pokrokové kartě příslušnou kartu
               let exportCard = cardArray.find(({ cardId }) => cardId === progressCardsArray[i].cardId);
 
@@ -293,3 +377,31 @@ exports.getCardsToLearnAndReview = (req, res) => {
       return res.status(500).json({ errorCode: err.code });
     });
 };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Feb 27 2020 13:07:30 GMT+0100 (GMT+01:00)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
