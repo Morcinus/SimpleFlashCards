@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: util/functions.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -69,8 +71,8 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Title</p>
-                        <h1>Home</h1>
+                        <p>Source</p>
+                        <h1>util/functions.js</h1>
                     </header>
                     
                     
@@ -78,25 +80,69 @@
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>module.exports = { compareUnderstandingLevels, findUnknownCards };
 
+/**
+ * @module functions
+ * @category Funkce
+ */
 
-    <h3> </h3>
+/**
+ * @function compareUnderstandingLevels
+ * @description Porovná úroveň pochopení dané karty.
+ * @param {Object} card1 - Karta, která má být porovnána
+ * @param {Object} card2 - Karta, která má být porovnána
+ * @returns {number} Vrací hodnoty -1, 0, 1 podle toho, jestli má první karta nižší, stejnou nebo vyšší úroveň porozumění, než karta druhá.
+ */
+function compareUnderstandingLevels(card1, card2) {
+  if (card1.understandingLevel &lt; card2.understandingLevel) {
+    return -1;
+  }
+  if (card1.understandingLevel > card2.understandingLevel) {
+    return 1;
+  }
+  return 0;
+}
 
+/**
+ * @function findUnknownCards
+ * @description Srovná pole karet a pole pokrokových karet a vybere z pole karet karty, které uživatel ještě nezná.
+ * @param {Array&lt;Object>} cardArray - Pole karet
+ * @param {Array&lt;Object>} progressCardArray - Pole pokrokových karet
+ * @returns {Array&lt;Object>} unknownCardArray - Pole karet, které uživatel nezná.
+ */
+function findUnknownCards(cardArray, progressCardArray) {
+  let unknownCardArray = [];
 
+  // Klonování cardArray (deep clone), aby se nepřepisoval cardArray
+  let cards = JSON.parse(JSON.stringify(cardArray));
 
+  // Smaže v cards poli karty, které uživatel už zná (tj. které jsou v progressCardArray)
+  progressCardArray.forEach(progressCard => {
+    for (let i = 0; i &lt; cards.length; i++) {
+      // If the card is not already deleted
+      if (cards[i])
+        if (cards[i].cardId === progressCard.cardId) {
+          delete cards[i];
+        }
+    }
+  });
 
+  // Vloží zbylé karty (tj. ty, které uživatel nezná) do unknownCardArray
+  cards.forEach(card => {
+    // Pokud nebyla karta smazána
+    if (typeof card !== undefined) {
+      unknownCardArray.push(card);
+    }
+  });
 
-
-
-
-
-
-    
-
-
-
-
-
+  return unknownCardArray;
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

@@ -1,6 +1,17 @@
 module.exports = { compareUnderstandingLevels, findUnknownCards };
 
-// Compares understanding levels of two progress cards
+/**
+ * @module functions
+ * @category Funkce
+ */
+
+/**
+ * @function compareUnderstandingLevels
+ * @description Porovná úroveň pochopení dané karty.
+ * @param {Object} card1 - Karta, která má být porovnána
+ * @param {Object} card2 - Karta, která má být porovnána
+ * @returns {number} Vrací hodnoty -1, 0, 1 podle toho, jestli má první karta nižší, stejnou nebo vyšší úroveň porozumění, než karta druhá.
+ */
 function compareUnderstandingLevels(card1, card2) {
   if (card1.understandingLevel < card2.understandingLevel) {
     return -1;
@@ -11,27 +22,33 @@ function compareUnderstandingLevels(card1, card2) {
   return 0;
 }
 
-// Finds cards the user doesn't know
-function findUnknownCards(cardArrayRef, progressCardArray) {
+/**
+ * @function findUnknownCards
+ * @description Srovná pole karet a pole pokrokových karet a vybere z pole karet karty, které uživatel ještě nezná.
+ * @param {Array<Object>} cardArray - Pole karet
+ * @param {Array<Object>} progressCardArray - Pole pokrokových karet
+ * @returns {Array<Object>} unknownCardArray - Pole karet, které uživatel nezná.
+ */
+function findUnknownCards(cardArray, progressCardArray) {
   let unknownCardArray = [];
 
-  // Clones array so that the original array does not get modified
-  let cardArray = JSON.parse(JSON.stringify(cardArrayRef));
+  // Klonování cardArray (deep clone), aby se nepřepisoval cardArray
+  let cards = JSON.parse(JSON.stringify(cardArray));
 
-  // Deletes cards in cardArray that the user already knows
+  // Smaže v cards poli karty, které uživatel už zná (tj. které jsou v progressCardArray)
   progressCardArray.forEach(progressCard => {
-    for (let i = 0; i < cardArray.length; i++) {
+    for (let i = 0; i < cards.length; i++) {
       // If the card is not already deleted
-      if (cardArray[i])
-        if (cardArray[i].cardId === progressCard.cardId) {
-          delete cardArray[i];
+      if (cards[i])
+        if (cards[i].cardId === progressCard.cardId) {
+          delete cards[i];
         }
     }
   });
 
-  // Pushes the remaining cards (=unknown cards)
-  cardArray.forEach(card => {
-    // If the card was not deleted
+  // Vloží zbylé karty (tj. ty, které uživatel nezná) do unknownCardArray
+  cards.forEach(card => {
+    // Pokud nebyla karta smazána
     if (typeof card !== undefined) {
       unknownCardArray.push(card);
     }

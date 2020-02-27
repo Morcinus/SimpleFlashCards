@@ -1,4 +1,88 @@
-const { db } = require("../util/admin");
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: functions/collectionCards.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                     
+                        <h1 class="navbar-item">Simple Flashcards Cloud Functions Dokumentace</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/Morcinus/SimpleFlashCards" target="_blank">
+                                Github
+                            </a>
+                        </div>
+                    
+                        <div class="navbar-item">
+                            <a href="https://simpleflashcards-4aea0.firebaseapp.com" target="_blank">
+                                Aplikace
+                            </a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Funkce</h2><h3>Modules</h3><ul><li><a href="module-collection.html">collection</a></li><li><a href="module-collectionCards.html">collectionCards</a></li><li><a href="module-deck.html">deck</a></li><li><a href="module-deckCards.html">deckCards</a></li><li><a href="module-functions.html">functions</a></li><li><a href="module-user.html">user</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>functions/collectionCards.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { db } = require("../util/admin");
 const { compareUnderstandingLevels, findUnknownCards } = require("../util/functions");
 
 /**
@@ -11,14 +95,14 @@ const { compareUnderstandingLevels, findUnknownCards } = require("../util/functi
  * @function getProgressCards
  * @description Získá pokrokové karty pro celou kolekci.
  * @param {string} uid - ID uživatele
- * @param {Array<Object>} deckArray - Pole balíčků dané kolekce
- * @returns {Array<Object>} exportCards - Pole pokrokových karet dané kolekce
+ * @param {Array&lt;Object>} deckArray - Pole balíčků dané kolekce
+ * @returns {Array&lt;Object>} exportCards - Pole pokrokových karet dané kolekce
  * @async
  */
 async function getProgressCards(uid, deckArray) {
   let exportCards = [];
 
-  for (let i = 0; i < deckArray.length; i++) {
+  for (let i = 0; i &lt; deckArray.length; i++) {
     await new Promise(function(resolve, reject) {
       db.collection("users")
         .doc(uid)
@@ -52,7 +136,7 @@ async function getProgressCards(uid, deckArray) {
  * @function getExportCards
  * @description Získá karty na základě pokrokových karet, které jsou seskupeny do polí podle balíčků, ve kterých se karty nachází.
  * @param {Object} deckArrays - Objekt, ve kterém jsou karty seskupeny do polí podle ID balíčků, ve kterých se karty nachází.
- * @returns {Array<Object>} exportCards - Pole karet dané kolekce
+ * @returns {Array&lt;Object>} exportCards - Pole karet dané kolekce
  * @async
  */
 async function getExportCards(deckArrays) {
@@ -61,7 +145,7 @@ async function getExportCards(deckArrays) {
   let deckIds = Object.keys(deckArrays);
 
   // Projde každé pole karet
-  for (let i = 0; i < deckIds.length; i++) {
+  for (let i = 0; i &lt; deckIds.length; i++) {
     // Získá daný balíček
     await db
       .collection("decks")
@@ -94,7 +178,7 @@ async function getExportCards(deckArrays) {
 /**
  * @function groupIntoArrays
  * @description Seskupí karty do polí podle ID balíčků, ze kterých karty pochází.
- * @param {Array<Object>} cardArray - Pole karet, které mají být seskupeny
+ * @param {Array&lt;Object>} cardArray - Pole karet, které mají být seskupeny
  * @returns {Object} deckArrays - Objekt, ve kterém jsou karty seskupeny do polí podle ID balíčků, ve kterých se karty nachází.
  * @async
  */
@@ -131,7 +215,7 @@ function groupIntoArrays(cardArray) {
  * @param {string} req.user.uid - ID uživatele
  * @param {string} req.params.colId - ID kolekce, kterou se chce uživatel učit
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} exportCards - Pole karet.
+ * @returns {Array&lt;Object>} exportCards - Pole karet.
  * @async
  */
 exports.getColCardsToReview = (req, res) => {
@@ -182,7 +266,7 @@ exports.getColCardsToReview = (req, res) => {
  * @param {string} req.user.uid - ID uživatele
  * @param {string} req.params.colId - ID kolekce, kterou se chce uživatel učit
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} exportCards - Pole karet.
+ * @returns {Array&lt;Object>} exportCards - Pole karet.
  * @async
  */
 exports.getColUnknownCards = (req, res) => {
@@ -198,7 +282,7 @@ exports.getColUnknownCards = (req, res) => {
 
       let breakLoop = false;
       // Bude procházet balíčky, dokud nedovrší limitu karet
-      for (let i = 0; i < deckArray.length; i++) {
+      for (let i = 0; i &lt; deckArray.length; i++) {
         if (breakLoop) {
           break;
         } else {
@@ -247,9 +331,9 @@ exports.getColUnknownCards = (req, res) => {
             })
             .then(cardArray => {
               // Doplní exportCardsArray, dokud nedovrší limitu karet
-              if (cardArray.length + exportCardsArray.length < cardLimit) {
+              if (cardArray.length + exportCardsArray.length &lt; cardLimit) {
                 // Vloží všechny karty do exportCardsArray
-                for (let j = 0; j < cardArray.length; j++) {
+                for (let j = 0; j &lt; cardArray.length; j++) {
                   let card = cardArray[j];
                   card.deckId = deckArray[i];
                   exportCardsArray.push(card);
@@ -257,7 +341,7 @@ exports.getColUnknownCards = (req, res) => {
                 // Karty nebudou stačit => pokračuje cyklus
                 return;
               } else if (cardArray.length + exportCardsArray.length >= cardLimit) {
-                for (let j = 0; j <= cardLimit - exportCardsArray.length; j++) {
+                for (let j = 0; j &lt;= cardLimit - exportCardsArray.length; j++) {
                   // Vloží karty do exportCardsArray, dokud se nedovrší limitu
                   let card = cardArray[j];
                   card.deckId = deckArray[i];
@@ -294,7 +378,7 @@ exports.getColUnknownCards = (req, res) => {
  * @param {string} req.user.uid - ID uživatele
  * @param {string} req.params.colId - ID kolekce, kterou se chce uživatel učit
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} exportCards - Pole karet.
+ * @returns {Array&lt;Object>} exportCards - Pole karet.
  * @async
  */
 exports.getColCardsToLearnAndReview = (req, res) => {
@@ -319,7 +403,7 @@ exports.getColCardsToLearnAndReview = (req, res) => {
       progressCards = unsortedProgressCards.sort(compareUnderstandingLevels);
 
       // Pokud není dostatek pokrokových karet, upraví unknownCardsLimit
-      if (progressCards.length < Math.round(cardLimit / 2)) {
+      if (progressCards.length &lt; Math.round(cardLimit / 2)) {
         unknownCardsLimit = cardLimit - progressCards.length;
       }
 
@@ -330,7 +414,7 @@ exports.getColCardsToLearnAndReview = (req, res) => {
       let breakLoop = false;
 
       // Bude procházet balíčky, dokud nedovrší limitu karet
-      for (let i = 0; i < deckArray.length; i++) {
+      for (let i = 0; i &lt; deckArray.length; i++) {
         if (breakLoop) {
           break;
         } else {
@@ -367,9 +451,9 @@ exports.getColCardsToLearnAndReview = (req, res) => {
           })
             .then(cardArray => {
               // Doplní exportCardsArray, dokud nedovrší limitu karet
-              if (cardArray.length + exportCardsArray.length < unknownCardsLimit) {
+              if (cardArray.length + exportCardsArray.length &lt; unknownCardsLimit) {
                 // Vloží všechny karty do exportCardsArray
-                for (let j = 0; j < cardArray.length; j++) {
+                for (let j = 0; j &lt; cardArray.length; j++) {
                   let card = cardArray[j];
                   card.deckId = deckArray[i];
                   exportCardsArray.push(card);
@@ -378,7 +462,7 @@ exports.getColCardsToLearnAndReview = (req, res) => {
                 return;
               } else if (cardArray.length + exportCardsArray.length >= unknownCardsLimit) {
                 let exportCardsLength = exportCardsArray.length;
-                for (let j = 0; j < unknownCardsLimit - exportCardsLength; j++) {
+                for (let j = 0; j &lt; unknownCardsLimit - exportCardsLength; j++) {
                   // Vloží karty do exportCardsArray, dokud se nedovrší limitu
                   let card = cardArray[j];
                   card.deckId = deckArray[i];
@@ -398,7 +482,7 @@ exports.getColCardsToLearnAndReview = (req, res) => {
     })
     .then(async () => {
       // Pokud ještě nebyl naplněn limit karet, zaplní zbývající místo v kartami, které si má uživatel zopakovat
-      if (exportCardsArray.length < cardLimit) {
+      if (exportCardsArray.length &lt; cardLimit) {
         let progressCardsLimit = cardLimit - exportCardsArray.length;
 
         // Ořízne pole tak, aby nepřesahovalo limit karet
@@ -432,7 +516,7 @@ exports.getColCardsToLearnAndReview = (req, res) => {
  * @description Nastaví pokrok uživatele pro jednotlivé karty kolekce, které se uživatel učil.
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
- * @param {Array<Object>} req.body.cardArray - Pole s kartami, kde je zaznamenán nový pokrok uživatele.
+ * @param {Array&lt;Object>} req.body.cardArray - Pole s kartami, kde je zaznamenán nový pokrok uživatele.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
  * @async
  */
@@ -444,7 +528,7 @@ exports.setColCardsProgress = (req, res) => {
   new Promise(async (resolve, reject) => {
     let batch = db.batch();
 
-    for (let i = 0; i < deckIds.length; i++) {
+    for (let i = 0; i &lt; deckIds.length; i++) {
       // Najde příslušný dokument o pokroku uživatele
       let progressDocRef = db
         .collection("users")
@@ -459,7 +543,7 @@ exports.setColCardsProgress = (req, res) => {
 
         // Aktualizování pole s pokrokovými kartami daného balíčku
         newCardArray[deckIds[i]].forEach(newCard => {
-          for (let i = 0; i < cardArray.length; i++) {
+          for (let i = 0; i &lt; cardArray.length; i++) {
             if (cardArray[i].cardId === newCard.cardId) {
               // Aktualizace pokrokové karty
               cardArray[i] = newCard;
@@ -497,3 +581,31 @@ exports.setColCardsProgress = (req, res) => {
       return res.status(500).json({ errorCode: err.code });
     });
 };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Feb 27 2020 14:33:23 GMT+0100 (GMT+01:00)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
