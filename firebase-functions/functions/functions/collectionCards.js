@@ -1,7 +1,20 @@
 const { db } = require("../util/admin");
 const { compareUnderstandingLevels, findUnknownCards } = require("../util/functions");
 
-// Finds and returns all progresscards of a collection
+/**
+ * @module collectionCards
+ * @category Funkce
+ * @description Zde jsou funkce, které se starají o učení se kolekcí.
+ */
+
+/**
+ * @function getProgressCards
+ * @description Získá pokrokové karty pro celou kolekci.
+ * @param {string} uid - ID uživatele
+ * @param {Array<Object>} deckArray - Pole balíčků dané kolekce
+ * @returns {Array<Object>} exportCards - Pole pokrokových karet dané kolekce
+ * @async
+ */
 async function getProgressCards(uid, deckArray) {
   let exportCards = [];
 
@@ -35,14 +48,21 @@ async function getProgressCards(uid, deckArray) {
   return exportCards;
 }
 
-// Gets export cards by the grouped progressCards object
+/**
+ * @function getExportCards
+ * @description Získá karty na základě pokrokových karet, které jsou seskupeny do polí podle balíčků, ve kterých se karty nachází.
+ * @param {Object} deckArrays - Objekt, ve kterém jsou karty seskupeny do polí podle ID balíčků, ve kterých se karty nachází.
+ * @returns {Array<Object>} exportCards - Pole karet dané kolekce
+ * @async
+ */
 async function getExportCards(deckArrays) {
   let exportCards = [];
 
   let deckIds = Object.keys(deckArrays);
 
-  // Get each deck
+  // Projde každé pole karet
   for (let i = 0; i < deckIds.length; i++) {
+    // Získá daný balíček
     await db
       .collection("decks")
       .doc(`${deckIds[i]}`)
@@ -50,14 +70,14 @@ async function getExportCards(deckArrays) {
       .then(doc => {
         let cardArray = doc.data().cardArray;
 
-        // Loop through each progressCard in deck
+        // Pro každou kartu, kterou se má uživatel učit, získá její obsah
         deckArrays[deckIds[i]].forEach(progressCard => {
           let progressCardId = progressCard.cardId;
 
-          // Finds the card in cardArray
+          // Najde k pokrokové kartě příslušnou kartu
           let exportCard = cardArray.find(({ cardId }) => cardId === progressCardId);
 
-          // Pushes the card to the export array
+          // Vloží kartu do exportCards a přiřadí jí úroveň pochopení
           if (exportCard) {
             exportCard.understandingLevel = progressCard.understandingLevel;
             exportCard.deckId = deckIds[i];
@@ -71,58 +91,79 @@ async function getExportCards(deckArrays) {
   return exportCards;
 }
 
-// Groups cards into arrays by their deckId
-function groupIntoArrays(cardsRef) {
-  // Clone array (deep clone)
-  let cards = JSON.parse(JSON.stringify(cardsRef));
+/**
+ * @function groupIntoArrays
+ * @description Seskupí karty do polí podle ID balíčků, ze kterých karty pochází.
+ * @param {Array<Object>} cardArray - Pole karet, které mají být seskupeny
+ * @returns {Object} deckArrays - Objekt, ve kterém jsou karty seskupeny do polí podle ID balíčků, ve kterých se karty nachází.
+ * @async
+ */
+function groupIntoArrays(cardArray) {
+  // Klonování cardArray (deep clone)
+  let cards = JSON.parse(JSON.stringify(cardArray));
 
   let deckArrays = {};
   if (cards.length > 0) {
     cards.forEach(card => {
       let deckId = card.deckId;
 
-      // Check if the deckId is in the array already
+      // Zkontroluje, zda-li už je v deckArrays pole s daným ID balíčku
       if (deckArrays.hasOwnProperty(deckId)) {
-        // Push card to the existing deck array
-        delete card.deckId;
+        // Vloží kartu do příslušného pole
         deckArrays[deckId].push(card);
       } else {
-        // Create a new deck array
-        delete card.deckId;
+        // Vytvoří nové pole v deckArrays a přidá do něj kartu
         deckArrays[deckId] = [card];
       }
+
+      // Smaže deckId karty (protože už není potřeba)
+      delete card.deckId;
     });
   }
 
   return deckArrays;
 }
 
-// Gets the cards for review
+/**
+ * @function getColCardsToReview
+ * @description Najde pro uživatele karty k zopakování z dané kolekce (počet karet je určen konstantou cardLimit).
+ * @param {Object} req - Požadavek, který přišel na server.
+ * @param {string} req.user.uid - ID uživatele
+ * @param {string} req.params.colId - ID kolekce, kterou se chce uživatel učit
+ * @param {Object} res - Odpověď na požadavek, který přišel na server.
+ * @returns {Array<Object>} exportCards - Pole karet.
+ * @async
+ */
 exports.getColCardsToReview = (req, res) => {
   const cardLimit = 20;
 
+  // Najde dokument s danou kolekcí
   db.collection("collections")
     .doc(req.params.colId)
     .get()
     .then(colDoc => {
       let deckArray = colDoc.data().deckArray;
 
+      // Získá pokrokové karty dané kolekce
       return getProgressCards(req.user.uid, deckArray);
     })
     .then(progressCards => {
-      // Sorts the array by understandingLevel
+      // Setřídí pole pokrokových karet podle toto, jak dobře je uživatel zná
       progressCards = progressCards.sort(compareUnderstandingLevels);
 
-      // Limits the array
+      // Ořízne pole tak, aby nepřesahovalo limit
       progressCards = progressCards.slice(0, cardLimit);
 
       return progressCards;
     })
     .then(async progressCards => {
-      let groupedArray = groupIntoArrays(progressCards);
+      // Seskupí pokrokové karty do polí podle ID balíčků
+      let groupedProgressCards = groupIntoArrays(progressCards);
 
-      let exportCards = await getExportCards(groupedArray);
+      // Získá k pokrokovým kartám příslušné karty
+      let exportCards = await getExportCards(groupedProgressCards);
 
+      // Seskupí pokrokové karty do polí podle ID balíčků
       return groupIntoArrays(exportCards);
     })
     .then(exportCards => {
@@ -134,27 +175,36 @@ exports.getColCardsToReview = (req, res) => {
     });
 };
 
+/**
+ * @function getColUnknownCards
+ * @description Najde pro uživatele karty z dané kolekce, které ještě uživatel nezná (počet karet je určen konstantou cardLimit).
+ * @param {Object} req - Požadavek, který přišel na server.
+ * @param {string} req.user.uid - ID uživatele
+ * @param {string} req.params.colId - ID kolekce, kterou se chce uživatel učit
+ * @param {Object} res - Odpověď na požadavek, který přišel na server.
+ * @returns {Array<Object>} exportCards - Pole karet.
+ * @async
+ */
 exports.getColUnknownCards = (req, res) => {
   const cardLimit = 5;
   let exportCardsArray = [];
 
-  //Get the collection doc
+  // Najde dokument s danou kolekcí
   db.collection("collections")
     .doc(req.params.colId)
     .get()
     .then(async colDoc => {
-      // Get the array of deckIds
       let deckArray = colDoc.data().deckArray;
 
       let breakLoop = false;
-      // Loop through decks until cardLimit reached
+      // Bude procházet balíčky, dokud nedovrší limitu karet
       for (let i = 0; i < deckArray.length; i++) {
         if (breakLoop) {
           break;
         } else {
           let progressCards = [];
 
-          // Find user deck progress
+          // Najde příslušný dokument o pokroku uživatele
           await db
             .collection("users")
             .doc(req.user.uid)
@@ -162,14 +212,15 @@ exports.getColUnknownCards = (req, res) => {
             .doc(deckArray[i])
             .get()
             .then(doc => {
+              // Pokud existuje příslušný dokument s pokrokem uživatele, najde neznámé karty
               if (doc.exists) {
-                // If user has some progress, find unknown cards
                 progressCards = doc.data().cardArray;
                 return db
                   .collection("decks")
                   .doc(deckArray[i])
                   .get()
                   .then(doc => {
+                    // Najde karty, které uživatel ještě nezná a vloží je do unknownCards
                     let cardArray = doc.data().cardArray;
                     let unknownCards = findUnknownCards(cardArray, progressCards);
                     return unknownCards;
@@ -179,14 +230,14 @@ exports.getColUnknownCards = (req, res) => {
                     return res.status(500).json({ errorCode: err.code });
                   });
               } else {
-                // Else all cards are unknown => just return all cards
+                // Uživatel nezná žádnou kartu => všechny jsou vloženy do unknownCards
                 return db
                   .collection("decks")
                   .doc(deckArray[i])
                   .get()
                   .then(doc => {
-                    let cardArray = doc.data().cardArray;
-                    return cardArray;
+                    let unknownCards = doc.data().cardArray;
+                    return unknownCards;
                   })
                   .catch(err => {
                     console.error(err);
@@ -195,24 +246,24 @@ exports.getColUnknownCards = (req, res) => {
               }
             })
             .then(cardArray => {
-              // Fill exportCardsArray from cardArray until cardLimit reached
+              // Doplní exportCardsArray, dokud nedovrší limitu karet
               if (cardArray.length + exportCardsArray.length < cardLimit) {
-                // Push all cards from card array
+                // Vloží všechny karty do exportCardsArray
                 for (let j = 0; j < cardArray.length; j++) {
                   let card = cardArray[j];
                   card.deckId = deckArray[i];
                   exportCardsArray.push(card);
                 }
-                // Continue the loop
+                // Karty nebudou stačit => pokračuje cyklus
                 return;
               } else if (cardArray.length + exportCardsArray.length >= cardLimit) {
                 for (let j = 0; j <= cardLimit - exportCardsArray.length; j++) {
-                  // Finished, push cards & break loop
+                  // Vloží karty do exportCardsArray, dokud se nedovrší limitu
                   let card = cardArray[j];
                   card.deckId = deckArray[i];
                   exportCardsArray.push(card);
                 }
-                // Break the loop
+                // Dosáhlo se limitu karet => ukončí se cyklus
                 breakLoop = true;
                 return;
               }
@@ -224,6 +275,7 @@ exports.getColUnknownCards = (req, res) => {
         }
       }
 
+      // Seskupí pokrokové karty do polí podle ID balíčků
       return groupIntoArrays(exportCardsArray);
     })
     .then(exportCards => {
@@ -235,6 +287,16 @@ exports.getColUnknownCards = (req, res) => {
     });
 };
 
+/**
+ * @function getColCardsToLearnAndReview
+ * @description Najde pro uživatele karty kolekce, které ještě uživatel nezná, a karty, které by si měl zopakovat (počet karet je určen konstantou cardLimit).
+ * @param {Object} req - Požadavek, který přišel na server.
+ * @param {string} req.user.uid - ID uživatele
+ * @param {string} req.params.colId - ID kolekce, kterou se chce uživatel učit
+ * @param {Object} res - Odpověď na požadavek, který přišel na server.
+ * @returns {Array<Object>} exportCards - Pole karet.
+ * @async
+ */
 exports.getColCardsToLearnAndReview = (req, res) => {
   const cardLimit = 10;
   let unknownCardsLimit = cardLimit / 2;
@@ -242,89 +304,87 @@ exports.getColCardsToLearnAndReview = (req, res) => {
   let exportCardsArray = [];
   let deckArray = [];
 
-  //Get the collection doc
+  // Najde dokument s danou kolekcí
   db.collection("collections")
     .doc(req.params.colId)
     .get()
     .then(colDoc => {
-      // Get the array of deckIds
       deckArray = colDoc.data().deckArray;
 
+      // Získá pokrokové karty dané kolekce
       return getProgressCards(req.user.uid, deckArray);
     })
     .then(unsortedProgressCards => {
-      //console.log(`unsortedProgressCards: ${unsortedProgressCards}`);
-      // Sorts the array by understandingLevel
+      // Setřídí pole pokrokových karet podle toto, jak dobře je uživatel zná
       progressCards = unsortedProgressCards.sort(compareUnderstandingLevels);
-      console.log("ProgressCards0: ", progressCards);
-      // Update the unknownCardsLimit if there is not enough progressCards
+
+      // Pokud není dostatek pokrokových karet, upraví unknownCardsLimit
       if (progressCards.length < Math.round(cardLimit / 2)) {
-        // upravit cardlimit
-        unknownCardsLimit = cardLimit - progressCards.length; // +1???
-        // console.log(`unknownCardsLimit (${unknownCardsLimit}) = (${cardLimit}) - (${progressCards.length})`);
+        unknownCardsLimit = cardLimit - progressCards.length;
       }
+
+      // Seskupí pokrokové karty do polí podle ID balíčků
       return groupIntoArrays(progressCards);
     })
     .then(async groupedProgressCards => {
-      console.log("ProgressCards0,1: ", groupedProgressCards);
-      console.log("ProgressCards0,3: ", progressCards);
       let breakLoop = false;
 
-      // Loop through decks until cardLimit reached
+      // Bude procházet balíčky, dokud nedovrší limitu karet
       for (let i = 0; i < deckArray.length; i++) {
         if (breakLoop) {
           break;
         } else {
-          // Get progress cards of one deck
-          let progressCards2 = groupedProgressCards[deckArray[i]];
+          // Získá pokrokové karty daného balíčku
+          let progressCards = groupedProgressCards[deckArray[i]];
 
-          // Find unknown cards
+          // Najde neznámé karty
           await new Promise((resolve, reject) => {
-            // If user has some progress, find unknown cards
-            if (progressCards2) {
+            // Pokud má uživatel nějaký pokrok v balíčku, najde neznámé karty
+            if (progressCards) {
               return db
                 .collection("decks")
                 .doc(deckArray[i])
                 .get()
                 .then(doc => {
+                  // Najde karty, které uživatel ještě nezná a vloží je do unknownCards
                   let cardArray = doc.data().cardArray;
-                  let unknownCards = findUnknownCards(cardArray, progressCards2);
+                  let unknownCards = findUnknownCards(cardArray, progressCards);
                   resolve(unknownCards);
                 })
                 .catch(error => reject(error));
             } else {
-              // Else all cards are unknown => just return all cards
+              // Uživatel nezná žádnou kartu => všechny jsou vloženy do unknownCards
               return db
                 .collection("decks")
                 .doc(deckArray[i])
                 .get()
                 .then(doc => {
-                  let cardArray = doc.data().cardArray;
-                  resolve(cardArray);
+                  let unknownCards = doc.data().cardArray;
+                  resolve(unknownCards);
                 })
                 .catch(error => reject(error));
             }
           })
             .then(cardArray => {
-              // Fill exportCardsArray with unknownCards until unknownCardsLimit reached
+              // Doplní exportCardsArray, dokud nedovrší limitu karet
               if (cardArray.length + exportCardsArray.length < unknownCardsLimit) {
-                // Push all cards from card array
+                // Vloží všechny karty do exportCardsArray
                 for (let j = 0; j < cardArray.length; j++) {
                   let card = cardArray[j];
                   card.deckId = deckArray[i];
                   exportCardsArray.push(card);
                 }
-                // Continue the loop
+                // Karty nebudou stačit => pokračuje cyklus
                 return;
               } else if (cardArray.length + exportCardsArray.length >= unknownCardsLimit) {
                 let exportCardsLength = exportCardsArray.length;
                 for (let j = 0; j < unknownCardsLimit - exportCardsLength; j++) {
-                  // Finished, push cards & break loop
+                  // Vloží karty do exportCardsArray, dokud se nedovrší limitu
                   let card = cardArray[j];
                   card.deckId = deckArray[i];
                   exportCardsArray.push(card);
                 }
-                // Break the loop
+                // Dosáhlo se limitu karet => ukončí se cyklus
                 breakLoop = true;
                 return;
               }
@@ -335,25 +395,27 @@ exports.getColCardsToLearnAndReview = (req, res) => {
             });
         }
       }
-      console.log("ProgressCards0,2: ", progressCards);
     })
     .then(async () => {
-      // Fill the remaining space with remaining progressCards
+      // Pokud ještě nebyl naplněn limit karet, zaplní zbývající místo v kartami, které si má uživatel zopakovat
       if (exportCardsArray.length < cardLimit) {
-        let progressCardsLimit = cardLimit - exportCardsArray.length; //+1???
+        let progressCardsLimit = cardLimit - exportCardsArray.length;
 
-        console.log(`progressCardsLimit (${progressCardsLimit}) =  ${cardLimit} - ${exportCardsArray.length}`);
+        // Ořízne pole tak, aby nepřesahovalo limit karet
         let slicedProgressCards = progressCards.slice(0, progressCardsLimit);
-        console.log("ProgressCards1: ", slicedProgressCards);
+
+        // Seskupí pokrokové karty do polí podle ID balíčků
         let groupedProgressCards = groupIntoArrays(slicedProgressCards);
-        console.log("ProgressCards2: ", groupedProgressCards);
-        // Get exportCards and push them to exportCardsArray
+
+        // Získá k pokrokovým kartám příslušné karty a vloží je do exportCardsArray
         await getExportCards(groupedProgressCards).then(exportCards => {
           exportCards.forEach(exportCard => {
             exportCardsArray.push(exportCard);
           });
         });
       }
+
+      // Seskupí pokrokové karty do polí podle ID balíčků
       return groupIntoArrays(exportCardsArray);
     })
     .then(exportCards => {
@@ -365,7 +427,15 @@ exports.getColCardsToLearnAndReview = (req, res) => {
     });
 };
 
-// Sets card progress
+/**
+ * @function setDeckCardsProgress
+ * @description Nastaví pokrok uživatele pro jednotlivé karty kolekce, které se uživatel učil.
+ * @param {Object} req - Požadavek, který přišel na server.
+ * @param {string} req.user.uid - ID uživatele
+ * @param {Array<Object>} req.body.cardArray - Pole s kartami, kde je zaznamenán nový pokrok uživatele.
+ * @param {Object} res - Odpověď na požadavek, který přišel na server.
+ * @async
+ */
 exports.setColCardsProgress = (req, res) => {
   let newCardArray = req.body.cardArray;
 
@@ -373,7 +443,9 @@ exports.setColCardsProgress = (req, res) => {
 
   new Promise(async (resolve, reject) => {
     let batch = db.batch();
+
     for (let i = 0; i < deckIds.length; i++) {
+      // Najde příslušný dokument o pokroku uživatele
       let progressDocRef = db
         .collection("users")
         .doc(req.user.uid)
@@ -381,29 +453,31 @@ exports.setColCardsProgress = (req, res) => {
         .doc(deckIds[i]);
 
       await progressDocRef.get().then(doc => {
+        // Získání pokrokových karet (tj. objektů v nichž je zaznamenáno ID karty a pokrok uživatele u této karty)
         let cardArray = [];
-        if (doc.exists) {
-          cardArray = doc.data().cardArray ? doc.data().cardArray : [];
-        }
+        if (doc.exists) cardArray = doc.data().cardArray ? doc.data().cardArray : [];
 
-        // Update the cardArray
+        // Aktualizování pole s pokrokovými kartami daného balíčku
         newCardArray[deckIds[i]].forEach(newCard => {
           for (let i = 0; i < cardArray.length; i++) {
             if (cardArray[i].cardId === newCard.cardId) {
-              // Update the existing card
+              // Aktualizace pokrokové karty
               cardArray[i] = newCard;
               return;
             }
           }
-          // Push the new card
+          // Pokud se nenašla daná pokroková karta v poli, přidá se do pole jako nová
           cardArray.push(newCard);
         });
 
+        // Pokud existuje dokument s pokrokem balíčku
         if (doc.exists) {
+          // Zaktualizuje data
           batch.update(progressDocRef, { cardArray: cardArray });
         } else {
+          // Vytvoří nový dokument a vloží do něj pokrok uživatele
           batch.set(progressDocRef, {
-            deckId: deckIds[i], // Is needed for collectionGroup - progress removing
+            deckId: deckIds[i], // Je to potřeba při hromadném odstraňování pokroku
             cardArray: cardArray
           });
         }

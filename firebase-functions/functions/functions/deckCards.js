@@ -33,9 +33,7 @@ exports.setDeckCardsProgress = (req, res) => {
     return t.get(progressDocRef).then(doc => {
       // Získání pokrokových karet (tj. objektů v nichž je zaznamenáno ID karty a pokrok uživatele u této karty)
       let cardArray = [];
-      if (doc.exists) {
-        cardArray = doc.data().cardArray ? doc.data().cardArray : [];
-      }
+      if (doc.exists) cardArray = doc.data().cardArray ? doc.data().cardArray : [];
 
       // Aktualizování pole s pokrokovými kartami
       newCardArray.forEach(newCard => {
@@ -75,7 +73,7 @@ exports.setDeckCardsProgress = (req, res) => {
 
 /**
  * @function getCardsToReview
- * @description Najde pro uživatele karty k zopakování (počet karet je určen konstantou cardLimit).
+ * @description Najde pro uživatele karty k zopakování z daného balíčku (počet karet je určen konstantou cardLimit).
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
  * @param {string} req.params.deckId - ID balíčku, který se chce uživatel učit
@@ -140,7 +138,7 @@ exports.getCardsToReview = (req, res) => {
 
 /**
  * @function getDeckUnknownCards
- * @description Najde pro uživatele karty, které ještě uživatel nezná (počet karet je určen konstantou cardLimit).
+ * @description Najde pro uživatele karty z daného balíčku, které ještě uživatel nezná (počet karet je určen konstantou cardLimit).
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
  * @param {string} req.params.deckId - ID balíčku, který se chce uživatel učit
@@ -196,7 +194,7 @@ exports.getDeckUnknownCards = (req, res) => {
 };
 
 /**
- * @function getDeckUnknownCards
+ * @function getCardsToLearnAndReview
  * @description Najde pro uživatele karty, které ještě uživatel nezná a karty, které by si měl zopakovat(počet karet je určen konstantou cardLimit).
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
