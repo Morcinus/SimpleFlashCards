@@ -1,4 +1,88 @@
-const { db, admin } = require("../util/admin");
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: deck.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                     
+                        <h1 class="navbar-item">Simple Flashcards Cloud Functions Dokumentace</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/Morcinus/SimpleFlashCards" target="_blank">
+                                Github
+                            </a>
+                        </div>
+                    
+                        <div class="navbar-item">
+                            <a href="https://simpleflashcards-4aea0.firebaseapp.com" target="_blank">
+                                Aplikace
+                            </a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Funkce</h2><h3>Modules</h3><ul><li><a href="module-deck.html">deck</a></li><li><a href="module-user.html">user</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>deck.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { db, admin } = require("../util/admin");
 const config = require("../util/firebaseConfig");
 
 const { Storage } = require("@google-cloud/storage");
@@ -14,8 +98,8 @@ const { Storage } = require("@google-cloud/storage");
  * @function validateDeckData
  * @description Ověří, zda-li obsahuje název balíčku pouze povolené znaky a zda-li je v balíčku alespoň 1 karta.
  * @param {string} deckName - Název balíčku
- * @param {Array<Object>} cardArray - Pole karet
- * @returns {Array<String>} Vrací pole error kódů. Pokud ověření proběhlo bez problému, vrací prázdné pole.
+ * @param {Array&lt;Object>} cardArray - Pole karet
+ * @returns {Array&lt;String>} Vrací pole error kódů. Pokud ověření proběhlo bez problému, vrací prázdné pole.
  */
 const validateDeckData = (deckName, cardArray) => {
   let errors = [];
@@ -31,7 +115,7 @@ const validateDeckData = (deckName, cardArray) => {
   }
 
   // Ověření, zda je v balíčku alespoň 1 karta
-  if (cardArray.length <= 0) {
+  if (cardArray.length &lt;= 0) {
     errors.push("createDeck/empty-deck");
   }
 
@@ -45,7 +129,7 @@ const validateDeckData = (deckName, cardArray) => {
  * @param {string} req.user.uid - ID uživatele
  * @param {string} req.body.deckName - Název vytvářeného balíčku
  * @param {string} req.body.deckDescription - Popisek vytvářeného balíčku
- * @param {Array<Object>} req.body.deckCards - Pole s kartami vytvářeného balíčku
+ * @param {Array&lt;Object>} req.body.deckCards - Pole s kartami vytvářeného balíčku
  * @param {boolean} req.body.private - Informace o tom, zda je balíček veřejný či soukromý.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
  * @returns {string} deckId - ID vytvořeného balíčku.
@@ -104,7 +188,7 @@ exports.createDeck = (req, res) => {
  * @param {string} req.params.deckId - ID upravovaného balíčku
  * @param {string} req.body.deckName - Název upravovaného balíčku
  * @param {string} req.body.deckDescription - Popisek upravovaného balíčku
- * @param {Array<Object>} req.body.deckCards - Pole s kartami upravovaného balíčku
+ * @param {Array&lt;Object>} req.body.deckCards - Pole s kartami upravovaného balíčku
  * @param {boolean} req.body.private - Informace o tom, zda je upravovaný balíček veřejný či soukromý.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
  * @returns {string} successCode
@@ -173,7 +257,7 @@ exports.updateDeck = (req, res) => {
 
           // Odstraní smazané karty z progressCards pole
           deletedCards.forEach(deletedCard => {
-            for (let i = 0; i < progressCards.length; i++) {
+            for (let i = 0; i &lt; progressCards.length; i++) {
               // Pokud není karta ještě smazána, zmaže ji
               if (progressCards[i])
                 if (progressCards[i].cardId === deletedCard.cardId) {
@@ -209,9 +293,9 @@ exports.updateDeck = (req, res) => {
 /**
  * @function findDeletedCards
  * @description Porovná dvě pole a najde v prvním poli (firstArray) karty, které byly již v druhém poli (secondArray) smazány.
- * @param {Array<Object>} firstArray - Pole, ve kterém smazané karty stále jsou.
- * @param {Array<Object>} secondArray - Pole, ve kterém smazané karty již nejsou.
- * @returns {Array<Object>} deletedCards - Pole karet, které byly smazány.
+ * @param {Array&lt;Object>} firstArray - Pole, ve kterém smazané karty stále jsou.
+ * @param {Array&lt;Object>} secondArray - Pole, ve kterém smazané karty již nejsou.
+ * @returns {Array&lt;Object>} deletedCards - Pole karet, které byly smazány.
  * @async
  */
 function findDeletedCards(firstArray, secondArray) {
@@ -349,7 +433,7 @@ function newId() {
   // Alfanumerické znaky
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let newId = "";
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i &lt; 20; i++) {
     newId += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return newId;
@@ -377,7 +461,7 @@ exports.uploadDeckImage = (req, res) => {
 
   busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
     // Ověření typu nahraného souboru
-    if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
+    if (mimetype !== "image/jpeg" &amp;&amp; mimetype !== "image/png") {
       return res.status(400).json({ error: "Wrong file type submitted" });
     }
     // Vytvoření názvu souboru
@@ -481,7 +565,7 @@ exports.unpinDeck = (req, res) => {
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} userDecks - Pole balíčků, které byly vytvořeny uživatelem.
+ * @returns {Array&lt;Object>} userDecks - Pole balíčků, které byly vytvořeny uživatelem.
  * @async
  */
 exports.getUserDecks = (req, res) => {
@@ -522,7 +606,7 @@ exports.getUserDecks = (req, res) => {
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} userDecks - Pole balíčků, které byly připnuty uživatelem.
+ * @returns {Array&lt;Object>} userDecks - Pole balíčků, které byly připnuty uživatelem.
  * @async
  */
 exports.getPinnedDecks = (req, res) => {
@@ -594,7 +678,7 @@ exports.getDeck = (req, res) => {
 
         // Ověření, zda-li je upravující uživatel majitelem balíčku
         let creatorId = deck.creatorId;
-        if (deck.private === true && creatorId !== req.user.uid) {
+        if (deck.private === true &amp;&amp; creatorId !== req.user.uid) {
           // Pokud je balíček soukromý a uživatel není tvůrcem balíčku, nemá přístup k balíčku
           return res.status(403).json();
         } else {
@@ -648,3 +732,31 @@ exports.getDeck = (req, res) => {
     });
 };
 //#endregion
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Feb 27 2020 11:35:27 GMT+0100 (GMT+01:00)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

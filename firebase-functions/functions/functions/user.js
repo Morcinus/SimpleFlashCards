@@ -18,9 +18,9 @@ firebase.initializeApp(config);
 function validateUserSignupData(userData) {
   let errors = [];
 
-  // Email
+  // Ověření emailové adresy
   if (userData.email !== "") {
-    // Regex source: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+    // Regex zdroj: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
     let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!userData.email.match(regex)) {
       errors.push("auth/invalid-email");
@@ -29,7 +29,7 @@ function validateUserSignupData(userData) {
     errors.push("auth/invalid-email");
   }
 
-  // Username
+  // Ověření uživatelského jména
   if (userData.username !== "") {
     let usernameRegex = /^[a-zA-Z0-9]+$/;
     if (!userData.username.match(usernameRegex)) {
@@ -39,7 +39,7 @@ function validateUserSignupData(userData) {
     errors.push("auth/invalid-username");
   }
 
-  // Password
+  // Ověření uživatelského hesla
   if (userData.password !== "") {
     if (userData.password !== userData.confirmPassword) {
       errors.push("auth/passwords-dont-match");
