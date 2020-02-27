@@ -1,4 +1,88 @@
-const { db, admin } = require("../util/admin");
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JSDoc: collection.js</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    
+                     
+                        <h1 class="navbar-item">Simple Flashcards Cloud Functions Dokumentace</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://github.com/Morcinus/SimpleFlashCards" target="_blank">
+                                Github
+                            </a>
+                        </div>
+                    
+                        <div class="navbar-item">
+                            <a href="https://simpleflashcards-4aea0.firebaseapp.com" target="_blank">
+                                Aplikace
+                            </a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Funkce</h2><h3>Modules</h3><ul><li><a href="module-collection.html">collection</a></li><li><a href="module-deck.html">deck</a></li><li><a href="module-user.html">user</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>collection.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { db, admin } = require("../util/admin");
 
 /**
  * @module collection
@@ -11,8 +95,8 @@ const { db, admin } = require("../util/admin");
  * @function validateCreateCollectionData
  * @description Ověří, zda-li obsahuje název kolekce pouze povolené znaky a zda-li je v kolekci alespoň 1 balíček.
  * @param {string} colName - Název kolekce
- * @param {Array<Object>} deckArray - Pole balíčků
- * @returns {Array<String>} Vrací pole error kódů. Pokud ověření proběhlo bez problému, vrací prázdné pole.
+ * @param {Array&lt;Object>} deckArray - Pole balíčků
+ * @returns {Array&lt;String>} Vrací pole error kódů. Pokud ověření proběhlo bez problému, vrací prázdné pole.
  */
 const validateCreateCollectionData = (colName, deckArray) => {
   let errors = [];
@@ -28,7 +112,7 @@ const validateCreateCollectionData = (colName, deckArray) => {
   }
 
   // Ověření, zda je v kolekci alespoň 1 balíček
-  if (deckArray.length <= 0) {
+  if (deckArray.length &lt;= 0) {
     errors.push("createCollection/empty-collection");
   }
 
@@ -42,7 +126,7 @@ const validateCreateCollectionData = (colName, deckArray) => {
  * @param {string} req.user.uid - ID uživatele
  * @param {string} req.body.colName - Název vytvářené kolekce
  * @param {string} req.body.colDescription - Popisek vytvářené kolekce
- * @param {Array<Object>} req.body.deckArray - Pole s balíčky, které obsahuje vytvářená kolekce
+ * @param {Array&lt;Object>} req.body.deckArray - Pole s balíčky, které obsahuje vytvářená kolekce
  * @param {boolean} req.body.private - Informace o tom, zda je kolekce veřejná či soukromá.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
  * @returns {string} successCode
@@ -86,8 +170,8 @@ exports.createCollection = (req, res) => {
  * @function validateCollectionData
  * @description Ověří, zda-li obsahuje název kolekce pouze povolené znaky a zda-li je v kolekci alespoň 1 balíček.
  * @param {string} colName - Název kolekce
- * @param {Array<Object>} deckArray - Pole balíčků
- * @returns {Array<String>} Vrací pole error kódů. Pokud ověření proběhlo bez problému, vrací prázdné pole.
+ * @param {Array&lt;Object>} deckArray - Pole balíčků
+ * @returns {Array&lt;String>} Vrací pole error kódů. Pokud ověření proběhlo bez problému, vrací prázdné pole.
  */
 const validateCollectionData = (colName, deckArray) => {
   let errors = [];
@@ -103,7 +187,7 @@ const validateCollectionData = (colName, deckArray) => {
   }
 
   // Ověření, zda je v kolekci alespoň 1 balíček
-  if (deckArray.length <= 0) {
+  if (deckArray.length &lt;= 0) {
     errors.push("updateCollection/empty-collection");
   }
 
@@ -118,7 +202,7 @@ const validateCollectionData = (colName, deckArray) => {
  * @param {string} req.params.colId - ID upravované kolekce
  * @param {string} req.body.colName - Název upravované kolekce
  * @param {string} req.body.colDescription - Popisek upravované kolekce
- * @param {Array<Object>} req.body.deckArray - Pole s kartami upravované kolekce
+ * @param {Array&lt;Object>} req.body.deckArray - Pole s kartami upravované kolekce
  * @param {boolean} req.body.private - Informace o tom, zda je upravovaná kolekce veřejný či soukromý.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
  * @returns {string} successCode
@@ -318,7 +402,7 @@ exports.unpinCollection = (req, res) => {
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} userCollections - Pole kolekcí, které byly vytvořeny uživatelem.
+ * @returns {Array&lt;Object>} userCollections - Pole kolekcí, které byly vytvořeny uživatelem.
  * @async
  */
 exports.getUserCollections = (req, res) => {
@@ -359,7 +443,7 @@ exports.getUserCollections = (req, res) => {
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} userCollections - Pole kolekcí, které byly vytvořeny uživatelem.
+ * @returns {Array&lt;Object>} userCollections - Pole kolekcí, které byly vytvořeny uživatelem.
  * @async
  */
 exports.getUserCollectionsWithDeckInfo = (req, res) => {
@@ -399,7 +483,7 @@ exports.getUserCollectionsWithDeckInfo = (req, res) => {
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} pinnedCollections - Pole kolekcí, které byly připnuty uživatelem.
+ * @returns {Array&lt;Object>} pinnedCollections - Pole kolekcí, které byly připnuty uživatelem.
  * @async
  */
 exports.getPinnedCollections = (req, res) => {
@@ -472,7 +556,7 @@ exports.getCollection = (req, res) => {
 
         // Ověření, zda-li je upravující uživatel majitelem kolekce
         let creatorId = collection.creatorId;
-        if (collection.private === true && creatorId !== req.user.uid) {
+        if (collection.private === true &amp;&amp; creatorId !== req.user.uid) {
           // Pokud je kolekce soukromá a uživatel není tvůrcem kolekce, nemá přístup ke kolekci
           return res.status(403).json();
         } else {
@@ -559,3 +643,31 @@ exports.getCollection = (req, res) => {
     });
 };
 //#endregion
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Feb 27 2020 12:27:30 GMT+0100 (GMT+01:00)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+        </p>
+    </div>
+</footer>
+
+
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

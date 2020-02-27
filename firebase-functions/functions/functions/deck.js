@@ -486,6 +486,7 @@ exports.unpinDeck = (req, res) => {
  */
 exports.getUserDecks = (req, res) => {
   if (req.user.uid) {
+    // Získá balíčky, které uživatel vytvořil
     db.collection("decks")
       .where("creatorId", "==", req.user.uid)
       .get()
