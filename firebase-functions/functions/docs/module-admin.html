@@ -1,11 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: util/functions.js</title>
+    <title>JSDoc: admin</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -71,78 +69,142 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Source</p>
-                        <h1>util/functions.js</h1>
+                        <p>Module</p>
+                        <h1>admin</h1>
                     </header>
                     
                     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>module.exports = { compareUnderstandingLevels, findUnknownCards };
+        
+    
+</header>
 
-/**
- * @module functions
- * @category Funkce
- */
+<article>
+    <div class="container-overview">
+    
+        
 
-/**
- * @function compareUnderstandingLevels
- * @description Porovná úroveň pochopení dané karty.
- * @param {Object} card1 - Karta, která má být porovnána
- * @param {Object} card2 - Karta, která má být porovnána
- * @returns {number} Vrací hodnoty -1, 0, 1 podle toho, jestli má první karta nižší, stejnou nebo vyšší úroveň porozumění, než karta druhá.
- */
-function compareUnderstandingLevels(card1, card2) {
-  if (card1.understandingLevel &lt; card2.understandingLevel) {
-    return -1;
-  }
-  if (card1.understandingLevel > card2.understandingLevel) {
-    return 1;
-  }
-  return 0;
-}
+        
+    
+    </div>
+    
+    
 
-/**
- * @function findUnknownCards
- * @description Srovná pole karet a pole pokrokových karet a vybere z pole karet karty, které uživatel ještě nezná.
- * @param {Array&lt;Object>} cardArray - Pole karet
- * @param {Array&lt;Object>} progressCardArray - Pole pokrokových karet
- * @returns {Array&lt;Object>} unknownCardArray - Pole karet, které uživatel nezná.
- */
-function findUnknownCards(cardArray, progressCardArray) {
-  let unknownCardArray = [];
+    
+        <h3 class="subsection-title">Requires</h3>
 
-  // Klonování cardArray (deep clone), aby se nepřepisoval cardArray
-  let cards = JSON.parse(JSON.stringify(cardArray));
+        <ul>
+            <li>firebase-admin</li>
+        </ul>
+    
 
-  // Smaže v cards poli karty, které uživatel už zná (tj. které jsou v progressCardArray)
-  progressCardArray.forEach(progressCard => {
-    for (let i = 0; i &lt; cards.length; i++) {
-      // If the card is not already deleted
-      if (cards[i])
-        if (cards[i].cardId === progressCard.cardId) {
-          delete cards[i];
-        }
-    }
-  });
+    
 
-  // Vloží zbylé karty (tj. ty, které uživatel nezná) do unknownCardArray
-  cards.forEach(card => {
-    // Pokud nebyla karta smazána
-    if (typeof card !== undefined) {
-      unknownCardArray.push(card);
-    }
-  });
+    
 
-  return unknownCardArray;
-}
-</code></pre>
-        </article>
-    </section>
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h3 class="title"><span>Members</span></h3>
+            <div class="members">
+            
+                <div class="member">
+
+<h4 class="name" id="~db">
+    <a class="href-link" href="#~db">#</a>
+    
+        
+            <span class='tag'>inner</span>
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        db
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Firestore Databáze</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="util_admin.js.html" class="button">View Source</a>
+            <span>
+                <a href="util_admin.js.html">util/admin.js</a>, <a href="util_admin.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

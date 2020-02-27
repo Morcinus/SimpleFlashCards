@@ -5,7 +5,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: util/functions.js</title>
+    <title>JSDoc: util/authMiddleware.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -72,7 +72,7 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Source</p>
-                        <h1>util/functions.js</h1>
+                        <h1>util/authMiddleware.js</h1>
                     </header>
                     
                     
@@ -82,64 +82,55 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>module.exports = { compareUnderstandingLevels, findUnknownCards };
+            <pre class="prettyprint source linenums"><code>const { admin, db } = require("./admin");
 
 /**
- * @module functions
- * @category Funkce
+ * @module authMiddleware
+ * @category util
+ * @description Slouží k ověřování uživatele pomocí idTokenu
+ * @param {Object} req - HTTP požadavek
+ * @param {Object} res - HTTP odpověď na požadavek
+ * @param {function} next - Callback funkce
  */
 
-/**
- * @function compareUnderstandingLevels
- * @description Porovná úroveň pochopení dané karty.
- * @param {Object} card1 - Karta, která má být porovnána
- * @param {Object} card2 - Karta, která má být porovnána
- * @returns {number} Vrací hodnoty -1, 0, 1 podle toho, jestli má první karta nižší, stejnou nebo vyšší úroveň porozumění, než karta druhá.
- */
-function compareUnderstandingLevels(card1, card2) {
-  if (card1.understandingLevel &lt; card2.understandingLevel) {
-    return -1;
+// Zdroj https://youtu.be/Fz1f7NLvcu4
+module.exports = (req, res, next) => {
+  // Přiřazení ID tokenu
+  let idToken;
+  if (req.headers.authorization &amp;&amp; req.headers.authorization.startsWith("Bearer ")) {
+    idToken = req.headers.authorization.split("Bearer ")[1];
+  } else {
+    return res.status(403).json({ error: "Unauthorized request!" });
   }
-  if (card1.understandingLevel > card2.understandingLevel) {
-    return 1;
-  }
-  return 0;
-}
 
-/**
- * @function findUnknownCards
- * @description Srovná pole karet a pole pokrokových karet a vybere z pole karet karty, které uživatel ještě nezná.
- * @param {Array&lt;Object>} cardArray - Pole karet
- * @param {Array&lt;Object>} progressCardArray - Pole pokrokových karet
- * @returns {Array&lt;Object>} unknownCardArray - Pole karet, které uživatel nezná.
- */
-function findUnknownCards(cardArray, progressCardArray) {
-  let unknownCardArray = [];
+  // Ověření ID Tokenu
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then(decodedToken => {
+      req.user = decodedToken;
 
-  // Klonování cardArray (deep clone), aby se nepřepisoval cardArray
-  let cards = JSON.parse(JSON.stringify(cardArray));
-
-  // Smaže v cards poli karty, které uživatel už zná (tj. které jsou v progressCardArray)
-  progressCardArray.forEach(progressCard => {
-    for (let i = 0; i &lt; cards.length; i++) {
-      // If the card is not already deleted
-      if (cards[i])
-        if (cards[i].cardId === progressCard.cardId) {
-          delete cards[i];
-        }
-    }
-  });
-
-  // Vloží zbylé karty (tj. ty, které uživatel nezná) do unknownCardArray
-  cards.forEach(card => {
-    // Pokud nebyla karta smazána
-    if (typeof card !== undefined) {
-      unknownCardArray.push(card);
-    }
-  });
-
-  return unknownCardArray;
-}
+      // Najde dokument s daty uživatele v databázi
+      return db
+        .collection("users")
+        .doc(req.user.uid)
+        .get();
+    })
+    .then(doc => {
+      // Pokud existuje uživatel v databázi
+      if (doc.exists) {
+        // Přiřadí uživatelské jméno do req.user.username
+        req.user.username = doc.data().username;
+        return next();
+      } else {
+        return res.status(403).json("User not found!");
+      }
+    })
+    .catch(error => {
+      console.error("Error while verifying token ", error);
+      return res.status(403).json(error);
+    });
+};
 </code></pre>
         </article>
     </section>
