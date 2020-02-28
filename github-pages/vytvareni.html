@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Simple Flashcards - uřivatelské dokumentace</title>
+    <!-- Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- FontAwesome JS -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.8.2/js/all.js"
+      integrity="sha384-DJ25uNYET2XCl5ZF++U8eNxPWqcKohUUBUpKGlNLMchM7q4Wjg2CUpjHLaL8yYPH"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css" />
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="assets/plugins/prism/prism.css" />
+    <link rel="stylesheet" href="assets/plugins/elegant_font/css/style.css" />
+
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+
+  <body class="body-purple">
+    <!-- GITHUB BUTTON JS -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <div class="page-wrapper">
+      <!-- ******Header****** -->
+      <header id="header" class="header">
+        <div class="container">
+          <div class="branding">
+            <h1 class="logo">
+              <span aria-hidden="true" class="icon_documents_alt icon"></span>
+              <span class="text-highlight">Simple Flashcards</span><br /><span class="text-bold">Uživatelská dokumentace</span>
+            </h1>
+          </div>
+          <!--//branding-->
+
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Domů</a></li>
+            <li class="breadcrumb-item active">Vytváření a úprava balíčků a kolekcí</li>
+          </ol>
+
+          <div class="top-search-box">
+            <div>
+              <div class="mb-2">
+                <button type="button" class="btn btn-secondary">
+                  <a href="https://morcinus.github.io/simpleflashcards-client-docs/" target="_blank" style="color:inherit"> Vývojářská dokumentace </a>
+                </button>
+                <button type="button" class="btn btn-secondary">
+                  <a href="https://simpleflashcards-4aea0.firebaseapp.com/" target="_blank" style="color:inherit"> Simple Flashcards </a>
+                </button>
+                <button type="button" class="btn btn-secondary">
+                  <a href="https://github.com/Morcinus/SimpleFlashCards/" target="_blank" style="color:inherit"><i class="fab fa-github"></i> GitHub </a>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--//container-->
+      </header>
+      <!--//header-->
+      <div class="doc-wrapper">
+        <div class="container">
+          <div id="doc-header" class="doc-header text-center">
+            <h1 class="doc-title"><i class="icon fa fa-hammer"></i> Vytváření a úprava balíčků a kolekcí</h1>
+            <div class="meta"><i class="far fa-clock"></i> Naposledy upraveno: 28.02.2020</div>
+          </div>
+          <!--//doc-header-->
+          <div class="doc-body row">
+            <div class="doc-content col-md-9 col-12 order-1">
+              <div class="content-inner">
+                <section id="section-vytvareni-balicku" class="doc-section">
+                  <h2 class="section-title">Vytváření balíčku</h2>
+                  <div class="section-block">
+                    <p>
+                      Pro vytvoření nového balíčku klikněte na tlačítko Create vpravo v navigační liště aplikace.
+                    </p>
+                  </div>
+
+                  <div id="section-block-jmeno-a-popis-balicku" class="section-block">
+                    <h3 class="block-title">Jméno a popis balíčku</h3>
+                    <p>
+                      Pro vytovření balíčku musíte zadat jméno balíčku. To můžete udělat v textovém poli "Enter Title" vlevo nahoře. Hned pod tím můžete v
+                      textovém poli "Enter Description" zadat popisek balíčku. Toto pole ovšem není povinné
+                    </p>
+                  </div>
+
+                  <div id="section-block-obrazek-balicku" class="section-block">
+                    <h3 class="block-title">Obrázek balíčku</h3>
+                    <p>
+                      Kliknutím na levé horní tlačítko "CHOOSE COVER" můžete nahrát obrázek, který se bude uživatelům zobrazovat, když uvidí tento balíček.
+                      Pokud žádný obrázek nenahrajete, bude se zobrazovat základní obrázek.
+                    </p>
+                  </div>
+
+                  <div id="section-block-nastaveni-pristupnosti-balicku" class="section-block">
+                    <h3 class="block-title">Nastavení přístupnosti balíčku</h3>
+                    <p>
+                      Vpravo nahoře můžete vybrat, zda bude balíček přístupný ostatním lidem, nebo jen Vám. Pokud chcete, aby byl balíček soukromý, vyberte v
+                      "Deck visibility" možnost "Private". Pokud chcete, aby byl balíček veřejný, vyberte možnost "Public".
+                    </p>
+                  </div>
+
+                  <div id="section-block-pridavani-karet" class="section-block">
+                    <h3 class="block-title">Přidávání karet do balíčku</h3>
+                    <p>
+                      Karty můžete přidávat v tabulce "Cards" tlačítkem v pravém horním rohu tabulky. Po kliknutí na toto tlačítko vyplňte přední stranu karty
+                      (tj. otázku) ve sloupci "Front Page" a zadní stranu karty (tj. odpověď na otázku) ve sloupci "Back Page". Potom potvrďte přidání karty
+                      tlačítkem ve sloupci "Actions". Tam můžete také případně přidání karty zrušit.
+                    </p>
+                  </div>
+
+                  <div id="section-block-upravovani-karet" class="section-block">
+                    <h3 class="block-title">Upravování karet balíčku</h3>
+                    <p>
+                      Již přidané karty můžete libovolně posouvat, upravovat a odstraňovat pomocí tlačítek v tabulce "Cards" ve sloupci Actions.
+                    </p>
+                  </div>
+
+                  <div id="section-block-odstraneni-navrhu-balicku" class="section-block">
+                    <h3 class="block-title">Odstranění návrhu balíčku</h3>
+                    <p>
+                      Pro odstranění návrhu balíčku klikněte na ikonu koše vpravo nahoře vedle tlačítka Create. Odstranění potom potvrďte stisknutím tlačítka
+                      DELETE.
+                    </p>
+                  </div>
+
+                  <div id="section-block-ulozeni-balicku" class="section-block">
+                    <h3 class="block-title">Uložení balíčku</h3>
+                    <p>
+                      Pro vytvoření balíčku je třeba balíček uložit stisknutím tlačítka "Create" v pravém horním rohu stránky.
+                    </p>
+                  </div>
+
+                  <div class="callout-block callout-danger">
+                    <div class="icon-holder">
+                      <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <!--//icon-holder-->
+                    <div class="content">
+                      <h4 class="callout-title">Pozor</h4>
+                      <p>
+                        Po dokončení vytváření balíčku musíte balíček uložit stisknutím tlačítka "Create" v pravém horním rohu stránky. Jinak nebude Váš balíček
+                        uložen.
+                      </p>
+                    </div>
+                    <!--//content-->
+                  </div>
+                </section>
+                <!--//doc-section-->
+
+                <section id="section-upravovani-balicku" class="doc-section">
+                  <h2 class="section-title">Upravování vytvořeného balíčku</h2>
+                  <div class="section-block">
+                    <p>
+                      Pokud chcete upravit balíček, který jste vytvořili, přejděte na stránku balíčku (např. z domovské obrazovky v sekci "My Decks"). Poté
+                      klikněte na tlačítko "Edit Deck" v levém dolním rohu stránky. Poté budete moci upravovat balíček stejným způsobem, jako při vytváření
+                      balíčku.
+                    </p>
+                  </div>
+
+                  <div class="callout-block callout-danger">
+                    <div class="icon-holder">
+                      <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <!--//icon-holder-->
+                    <div class="content">
+                      <h4 class="callout-title">Pozor</h4>
+                      <p>
+                        Po upravení balíčku musíte balíček uložit stisknutím tlačítka "SAVE" v pravém horním rohu stránky. Jinak nebudou Vaše změny uloženy.
+                      </p>
+                    </div>
+                    <!--//content-->
+                  </div>
+
+                  <div id="section-block-odstraneni-balicku" class="section-block">
+                    <h3 class="block-title">Odstranění balíčku</h3>
+                    <p>
+                      Pokud chcete balíček odstranit, klikněte na tlačítko s ikonou koše vedle tlačítka "Save". Smazání pak potvrďte v dialogovém oknu
+                      stisknutím tlačítka DELETE. Pozor, smazání balíčku nelze vzít zpět.
+                    </p>
+                  </div>
+                  <!--//section-block-->
+                </section>
+                <!--//doc-section-->
+
+                <section id="section-vytvareni-kolekce" class="doc-section">
+                  <h2 class="section-title">Vytváření kolekce</h2>
+                  <div class="section-block">
+                    <p>
+                      Pokud chcete vytvořit kolekce, přejděte na stánku balíčku, který chcete v kolekci mít. Poté klikněte na tlačítko "Add to collection" v
+                      levém dolním rohu. Otevře se dialogové okno. Zde v sekci "Add to new collection" vyplňte název kolekce. Pokud chcete, aby byla kolekce
+                      soukromá, klikněte na přepínač vedle nápisu "Make Private". Pro dokončení vytváření kolekce klikněte na tlačítko s plusem vedle pole pro
+                      zadání jména kolekce.
+                    </p>
+                  </div>
+
+                  <!--//section-block-->
+                </section>
+                <!--//doc-section-->
+
+                <section id="section-upravovani-kolekce" class="doc-section">
+                  <h2 class="section-title">Upravování kolekce</h2>
+                  <div class="section-block">
+                    <p>
+                      Pro upravení kolekce musíte být na stránce dané kolekce. Tam se můžete dostat například z domovské obrazovky v sekci "My Colection". Na
+                      stránce dané kolekce pak klikněte na tlačítko "Edit Collection" v levém dolním rohu.
+                    </p>
+                  </div>
+
+                  <div id="section-block-jmeno-a-popis-kolekce" class="section-block">
+                    <h3 class="block-title">Jméno a popis kolekce</h3>
+                    <p>
+                      Na stránce pro úpravu kolekce pak můžete změnit jméno a popis kolekce. To můžete udělat v textových polích uprostřed stánky nahoře. Pro
+                      změnu jména změňte text v poli "Enter Title" a pro změnu popisu změňte text v poli "Enter Description".
+                    </p>
+                  </div>
+
+                  <div id="section-block-nastaveni-pristupnosti-kolekce" class="section-block">
+                    <h3 class="block-title">Nastavení přístupnosti kolekce</h3>
+                    <p>
+                      Vpravo nahoře můžete vybrat, zda bude kolekce přístupná ostatním lidem, nebo jen Vám. Pokud chcete, aby byla kolekce soukromá, vyberte v
+                      "Collection visibility" možnost "Private". Pokud chcete, aby byla kolece veřejná, vyberte možnost "Public".
+                    </p>
+                  </div>
+
+                  <div id="section-block-pridavani-balicku" class="section-block">
+                    <h3 class="block-title">Přidávání balíčků do kolekce</h3>
+                    <p>
+                      Pro přidání balíčku do kolekce jděte na stránku balíčku, který chcete přidat. Zde pak klikněte na tlačítko "Add to collection". Otevře se
+                      dialogové okno. Zde pak klikněte v sekci "Add to existing collection" na tlačítko pro přidání vedle kolekce, do které chcete balíček
+                      přidat. Pokud je tlačítko šedivé, znamená to, že již balíček v kolekci je.
+                    </p>
+                  </div>
+
+                  <div id="section-block-upravovani-balicku" class="section-block">
+                    <h3 class="block-title">Upravování balíčků v kolekci</h3>
+                    <p>
+                      Již přidané balíčky můžete libovolně posouvat a odstraňovat z kolekce pomocí tlačítek v tabulce "Collection Decks" ve sloupci Actions.
+                    </p>
+                  </div>
+
+                  <div id="section-block-ulozeni-kolekce" class="section-block">
+                    <h3 class="block-title">Uložení kolekce</h3>
+                    <p>
+                      Pro uložení kolekce stiskněte tlačítko "Save" v pravém horním rohu stránky.
+                    </p>
+                  </div>
+
+                  <div class="callout-block callout-danger">
+                    <div class="icon-holder">
+                      <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <!--//icon-holder-->
+                    <div class="content">
+                      <h4 class="callout-title">Pozor</h4>
+                      <p>
+                        Po dokončení úpravy kolekce musíte kolekci uložit stisknutím tlačítka "Save" v pravém horním rohu stránky. Jinak nebude Vaše kolekce
+                        uložena.
+                      </p>
+                    </div>
+                    <!--//content-->
+                  </div>
+
+                  <div id="section-block-odstraneni-kolekce" class="section-block">
+                    <h3 class="block-title">Odstranění kolekce</h3>
+                    <p>
+                      Pro odstranění kolekce klikněte na ikonu koše vpravo nahoře vedle tlačítka "Save". Odstranění potom potvrďte stisknutím tlačítka DELETE.
+                      Pozor, smazání kolekce nelze vzít zpět. (Pozn. Smazána bude pouze kolekce. Samotné balíčky smazány nebudou.)
+                    </p>
+                  </div>
+                </section>
+                <!--//doc-section-->
+
+                <section id="section-kam-dal" class="doc-section">
+                  <h2 class="section-title">Kam dál?</h2>
+                  <div class="section-block">
+                    <div class="row">
+                      <div class="col-md-6 col-12">
+                        <h6>V dokumentaci doporučujeme pokračovat zde:</h6>
+                        <ul class="list list-unstyled">
+                          <li>
+                            <a href="#dasdsa" class="btn btn-blue"><i class="fas fa-cogs"></i> Profil & nastavení</a>
+                          </li>
+                          <li>
+                            <a href="#asdsa" class="btn btn-primary"><i class="fas fa-clone"></i> Balíčky</a>
+                          </li>
+                          <li>
+                            <a href="#dsas" class="btn btn-green"><i class="fas fa-box"></i> Kolekce</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <!--//section-block-->
+                </section>
+                <!--//doc-section-->
+              </div>
+              <!--//content-inner-->
+            </div>
+
+            <!--//doc-content-->
+            <div class="doc-sidebar col-md-3 col-12 order-0 d-none d-md-flex">
+              <div id="doc-nav" class="doc-nav">
+                <nav id="doc-menu" class="nav doc-menu flex-column sticky">
+                  <a class="nav-link scrollto" href="#section-vytvareni-balicku">Vytváření balíčku</a>
+                  <nav class="doc-sub-menu nav flex-column">
+                    <a class="nav-link scrollto" href="#section-block-jmeno-a-popis-balicku">Jméno a popis balíčku</a>
+                    <a class="nav-link scrollto" href="#section-block-obrazek-balicku">Obrázek balíčku </a>
+                    <a class="nav-link scrollto" href="#section-block-nastaveni-pristupnosti-balicku">Nastavení přístupnosti balíčku</a>
+                    <a class="nav-link scrollto" href="#section-block-pridavani-karet">Přidávání karet do balíčku </a>
+                    <a class="nav-link scrollto" href="#section-block-upravovani-karet">Upravování karet balíčku </a>
+                    <a class="nav-link scrollto" href="#section-block-odstraneni-navrhu-balicku">Odstranění návrhu balíčku </a>
+                    <a class="nav-link scrollto" href="#section-block-ulozeni-balicku">Uložení balíčku </a>
+                  </nav>
+                  <a class="nav-link scrollto" href="#section-upravovani-balicku">Upravování vytvořeného balíčku</a>
+                  <nav class="doc-sub-menu nav flex-column">
+                    <a class="nav-link scrollto" href="#section-block-odstraneni-balicku">Odstranění balíčku</a>
+                  </nav>
+                  <!--//nav-->
+                  <a class="nav-link scrollto" href="#section-vytvareni-kolekce">Vytváření kolekce</a>
+                  <a class="nav-link scrollto" href="#section-upravovani-kolekce">Upravování kolekce</a>
+                  <nav class="doc-sub-menu nav flex-column">
+                    <a class="nav-link scrollto" href="#section-block-jmeno-a-popis-kolekce">Jméno a popis kolekce</a>
+                    <a class="nav-link scrollto" href="#section-block-nastaveni-pristupnosti-kolekce">Nastavení přístupnosti kolekce</a>
+                    <a class="nav-link scrollto" href="#section-block-pridavani-balicku">Přidávání balíčků do kolekce</a>
+                    <a class="nav-link scrollto" href="#section-block-upravovani-balicku">Upravování balíčků v kolekci</a>
+                    <a class="nav-link scrollto" href="#section-block-ulozeni-kolekce">Uložení kolekce</a>
+                    <a class="nav-link scrollto" href="#section-block-odstraneni-kolekce">Odstranění kolekce</a>
+                  </nav>
+                  <!--//nav-->
+                  <a class="nav-link scrollto" href="#section-kam-dal">Kam dál?</a>
+                </nav>
+                <!--//doc-menu-->
+              </div>
+            </div>
+            <!--//doc-sidebar-->
+          </div>
+          <!--//doc-body-->
+        </div>
+        <!--//container-->
+      </div>
+      <!--//doc-wrapper-->
+    </div>
+    <!--//page-wrapper-->
+
+    <footer id="footer" class="footer text-center">
+      <div class="container">
+        <!--/* This template is released under the Creative Commons Attribution 3.0 License. Please keep the attribution link below when using for your own project. Thank you for your support. :) If you'd like to use the template without the attribution, you can buy the commercial license via our website: themes.3rdwavemedia.com */-->
+        <small class="copyright"
+          >Designed with <i class="fas fa-heart"></i> by <a href="https://themes.3rdwavemedia.com/" target="_blank">Xiaoying Riley</a> for developers</small
+        >
+      </div>
+      <!--//container-->
+    </footer>
+    <!--//footer-->
+
+    <!-- Main Javascript -->
+    <script type="text/javascript" src="assets/plugins/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/prism/prism.js"></script>
+    <script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script>
+    <script type="text/javascript" src="assets/plugins/stickyfill/dist/stickyfill.min.js"></script>
+    <script type="text/javascript" src="assets/js/main.js"></script>
+  </body>
+</html>
