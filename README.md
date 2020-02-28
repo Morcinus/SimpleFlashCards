@@ -81,6 +81,6 @@ Back-end:
 
 - [Simple Flashcards](https://simpleflashcards-4aea0.firebaseapp.com)
 - [Stránka o aplikaci](https://morcinus.github.io/SimpleFlashCards/)
-- Uživatelská doukumentace
+- [Uživatelská doukumentace](https://morcinus.github.io/SimpleFlashCards/)
 - [Programátorská dokumentace pro simpleflashcards-client](https://morcinus.github.io/simpleflashcards-client-docs/)
 - [Programátorská dokumentace pro firebase-functions](https://morcinus.github.io/simpleflashcards-fb-functions-docs/)
