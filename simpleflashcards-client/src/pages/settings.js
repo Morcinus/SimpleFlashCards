@@ -8,10 +8,10 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Lock from "@material-ui/icons/Lock";
-import Person from "@material-ui/icons/Person";
-import Mail from "@material-ui/icons/Mail";
-import Notes from "@material-ui/icons/Notes";
+import LockIcon from "@material-ui/icons/Lock";
+import PersonIcon from "@material-ui/icons/Person";
+import MailIcon from "@material-ui/icons/Mail";
+import NotesIcon from "@material-ui/icons/Notes";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -157,7 +157,7 @@ export class settings extends Component {
                 <List subheader={<ListSubheader>Profile Settings</ListSubheader>}>
                   <ListItem>
                     <ListItemIcon>
-                      <Person />
+                      <PersonIcon />
                     </ListItemIcon>
                     <ListItemText
                       primary={
@@ -196,7 +196,7 @@ export class settings extends Component {
                   </ListItem>
                   <ListItem>
                     <ListItemIcon>
-                      <Notes />
+                      <NotesIcon />
                     </ListItemIcon>
                     <ListItemText
                       primary={
@@ -236,7 +236,7 @@ export class settings extends Component {
                 <List subheader={<ListSubheader>Account Settings</ListSubheader>}>
                   <ListItem>
                     <ListItemIcon>
-                      <Mail />
+                      <MailIcon />
                     </ListItemIcon>
                     <Grid container direction="column" justify="flex-start" alignItems="flex-start">
                       <ListItemText
@@ -295,7 +295,7 @@ export class settings extends Component {
                   </ListItem>
                   <ListItem>
                     <ListItemIcon>
-                      <Lock />
+                      <LockIcon />
                     </ListItemIcon>
                     <ListItemText
                       primary="Password"

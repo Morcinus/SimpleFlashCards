@@ -17,7 +17,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import DoneIcon from "@material-ui/icons/Done";
 import CloseIcon from "@material-ui/icons/Close";
-import AddBox from "@material-ui/icons/AddBox";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 import Switch from "@material-ui/core/Switch";
 import Box from "@material-ui/core/Box";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -181,7 +181,7 @@ export class CollectionDialog extends Component {
                         </IconButton>
                       ) : (
                         <IconButton edge="end" onClick={this.handleCreateCollection}>
-                          <AddBox />
+                          <AddBoxIcon />
                         </IconButton>
                       )}
                     </ListItemSecondaryAction>
@@ -224,7 +224,7 @@ export class CollectionDialog extends Component {
                             onClick={() => this.handleAddToCollection(collection.colId, i)}
                             disabled={collection.containsDeck}
                           >
-                            <AddBox />
+                            <AddBoxIcon />
                           </IconButton>
                         </ListItemSecondaryAction>
                       </ListItem>

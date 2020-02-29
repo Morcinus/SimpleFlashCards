@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { Divider, TextField, Box, Button } from "@material-ui/core";
-import Delete from "@material-ui/icons/Delete";
+import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -290,7 +290,7 @@ export class editCollection extends Component {
                           <Grid className={classes.grid} item container>
                             <Box className={classes.box}>
                               <IconButton color="primary" variant="contained" onClick={this.handleDialogOpen}>
-                                <Delete></Delete>
+                                <DeleteIcon></DeleteIcon>
                               </IconButton>
                               <Button size="large" color="secondary" variant="contained" onClick={this.uploadCollection}>
                                 Save

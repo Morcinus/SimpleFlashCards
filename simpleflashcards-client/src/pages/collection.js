@@ -8,8 +8,8 @@ import Divider from "@material-ui/core/Divider";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import Bookmarks from "@material-ui/icons/Bookmarks";
+import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
+import BookmarksIcon from "@material-ui/icons/Bookmarks";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -101,7 +101,7 @@ export class collection extends Component {
                       <Tab
                         label={
                           <div>
-                            <LibraryBooks
+                            <LibraryBooksIcon
                               item
                               style={{
                                 display: "inline-block",
@@ -116,7 +116,7 @@ export class collection extends Component {
                       <Tab
                         label={
                           <div>
-                            <Bookmarks
+                            <BookmarksIcon
                               item
                               style={{
                                 display: "inline-block",

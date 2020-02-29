@@ -13,11 +13,11 @@ import Card from "@material-ui/core/Card";
 import Input from "@material-ui/core/Input";
 import Box from "@material-ui/core/Box";
 import MUILink from "@material-ui/core/Link";
-import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
-import Bookmark from "@material-ui/icons/Bookmark";
-import Share from "@material-ui/icons/Share";
-import Edit from "@material-ui/icons/Edit";
-import Lock from "@material-ui/icons/Lock";
+import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
+import ShareIcon from "@material-ui/icons/Share";
+import EditIcon from "@material-ui/icons/Edit";
+import LockIcon from "@material-ui/icons/Lock";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Hidden from "@material-ui/core/Hidden";
@@ -196,7 +196,7 @@ export class CollectionInfo extends Component {
 
               <Grid item>
                 <Typography variant="h5">
-                  {this.props.colUi.collection.private && <Lock></Lock>}
+                  {this.props.colUi.collection.private && <LockIcon></LockIcon>}
                   {this.props.colUi.collection.colName}
                 </Typography>
                 <Typography>{this.props.colUi.collection.colDescription}</Typography>
@@ -228,11 +228,11 @@ export class CollectionInfo extends Component {
                 >
                   {this.state.isPinned ? (
                     <Fragment>
-                      <Bookmark /> <Typography> Pinned</Typography>
+                      <BookmarkIcon /> <Typography> Pinned</Typography>
                     </Fragment>
                   ) : (
                     <Fragment>
-                      <BookmarkBorder /> <Typography> Pin</Typography>
+                      <BookmarkBorderIcon /> <Typography> Pin</Typography>
                     </Fragment>
                   )}
                 </Button>
@@ -240,7 +240,7 @@ export class CollectionInfo extends Component {
 
               <Grid item xs={3} md={12} lg={6} container justify="center">
                 <Button onClick={this.handlePopoverOpen} item variant="outlined" color="primary" size="large">
-                  <Share /> <Typography> Share</Typography>
+                  <ShareIcon /> <Typography> Share</Typography>
                 </Button>
               </Grid>
               <Popover
@@ -273,7 +273,7 @@ export class CollectionInfo extends Component {
               <Grid item xs={3} md={12} lg={6} container justify="center">
                 {this.props.colUi.collection.isCreator && (
                   <Button item variant="text" color="primary" size="large" component={Link} to={`/editCollection/${this.props.colId}`}>
-                    <Edit /> <Typography> Edit Collection</Typography>
+                    <EditIcon /> <Typography> Edit Collection</Typography>
                   </Button>
                 )}
               </Grid>

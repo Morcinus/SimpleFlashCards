@@ -7,8 +7,8 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { Divider, TextField, Box, Button } from "@material-ui/core";
-import Photo from "@material-ui/icons/Photo";
-import Delete from "@material-ui/icons/Delete";
+import PhotoIcon from "@material-ui/icons/Photo";
+import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -303,7 +303,7 @@ export class editDeck extends Component {
                             >
                               <input type="file" id="imageInput" hidden="hidden" onChange={this.handleImageChange} />
                               <Typography style={{ textAlign: "center" }} variant="body2">
-                                <Photo></Photo>
+                                <PhotoIcon></PhotoIcon>
                                 CHOOSE COVER (OPTIONAL)
                               </Typography>
                             </Button>
@@ -350,7 +350,7 @@ export class editDeck extends Component {
                         <Grid className={classes.grid} item container>
                           <Box className={classes.box}>
                             <IconButton color="primary" variant="contained" onClick={this.handleDialogOpen}>
-                              <Delete></Delete>
+                              <DeleteIcon></DeleteIcon>
                             </IconButton>
                             <Button size="large" color="secondary" variant="contained" onClick={this.uploadDeck}>
                               Save

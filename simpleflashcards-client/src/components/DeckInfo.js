@@ -13,12 +13,12 @@ import Card from "@material-ui/core/Card";
 import Input from "@material-ui/core/Input";
 import Box from "@material-ui/core/Box";
 import MUILink from "@material-ui/core/Link";
-import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
-import Bookmark from "@material-ui/icons/Bookmark";
-import Share from "@material-ui/icons/Share";
-import Edit from "@material-ui/icons/Edit";
-import LibraryAdd from "@material-ui/icons/LibraryAdd";
-import Lock from "@material-ui/icons/Lock";
+import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
+import ShareIcon from "@material-ui/icons/Share";
+import EditIcon from "@material-ui/icons/Edit";
+import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
+import LockIcon from "@material-ui/icons/Lock";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Hidden from "@material-ui/core/Hidden";
@@ -212,7 +212,7 @@ export class DeckInfo extends Component {
 
               <Grid item>
                 <Typography variant="h5">
-                  {this.props.deckUi.deck.private && <Lock></Lock>}
+                  {this.props.deckUi.deck.private && <LockIcon></LockIcon>}
                   {this.props.deckUi.deck.deckName}
                 </Typography>
 
@@ -239,11 +239,11 @@ export class DeckInfo extends Component {
                 <Button item variant={this.state.isPinned ? "contained" : "outlined"} color="primary" size="large" onClick={this.handlePinButtonClick}>
                   {this.state.isPinned ? (
                     <Fragment>
-                      <Bookmark /> <Typography> Pinned</Typography>
+                      <BookmarkIcon /> <Typography> Pinned</Typography>
                     </Fragment>
                   ) : (
                     <Fragment>
-                      <BookmarkBorder /> <Typography> Pin</Typography>
+                      <BookmarkBorderIcon /> <Typography> Pin</Typography>
                     </Fragment>
                   )}
                 </Button>
@@ -251,7 +251,7 @@ export class DeckInfo extends Component {
 
               <Grid item xs={3} md={12} lg={6} container justify="center">
                 <Button onClick={this.handlePopoverOpen} variant="outlined" color="primary" size="large">
-                  <Share /> <Typography> Share</Typography>
+                  <ShareIcon /> <Typography> Share</Typography>
                 </Button>
               </Grid>
               <Popover
@@ -284,7 +284,7 @@ export class DeckInfo extends Component {
               <Grid item xs={3} md={12} lg={6} container justify="center">
                 {this.props.deckUi.deck.isCreator && (
                   <Button variant="text" color="primary" component={Link} to={`/editDeck/${this.props.deckId}`}>
-                    <Edit style={{ marginRight: "5px" }} />
+                    <EditIcon style={{ marginRight: "5px" }} />
                     <Typography variant="body2">
                       Edit <br /> Deck
                     </Typography>
@@ -294,7 +294,7 @@ export class DeckInfo extends Component {
 
               <Grid item xs={3} md={12} lg={6} container justify="center">
                 <Button item variant="text" color="primary" onClick={this.handleAddToCollection}>
-                  <LibraryAdd style={{ marginRight: "5px" }} />
+                  <LibraryAddIcon style={{ marginRight: "5px" }} />
                   <Typography variant="body2">
                     Add to <br /> Collection
                   </Typography>

@@ -11,16 +11,16 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
-import ExitToApp from "@material-ui/icons/ExitToApp";
-import Settings from "@material-ui/icons/Settings";
-import Face from "@material-ui/icons/Face";
-import Home from "@material-ui/icons/Home";
-import Queue from "@material-ui/icons/Queue";
-import PersonAdd from "@material-ui/icons/PersonAdd";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import SettingsIcon from "@material-ui/icons/Settings";
+import FaceIcon from "@material-ui/icons/Face";
+import HomeIcon from "@material-ui/icons/Home";
+import QueueIcon from "@material-ui/icons/Queue";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 // Redux
 import { connect } from "react-redux";
@@ -156,7 +156,7 @@ export class Navbar extends Component {
                     <Tab
                       label={
                         <div>
-                          <ExitToApp
+                          <ExitToAppIcon
                             item
                             style={{
                               display: "inline-block",
@@ -173,7 +173,7 @@ export class Navbar extends Component {
                     <Tab
                       label={
                         <div>
-                          <PersonAdd
+                          <PersonAddIcon
                             item
                             style={{
                               display: "inline-block",
@@ -208,7 +208,7 @@ export class Navbar extends Component {
                     <Tab
                       label={
                         <div>
-                          <Home
+                          <HomeIcon
                             item
                             style={{
                               display: "inline-block",
@@ -225,7 +225,7 @@ export class Navbar extends Component {
                     <Tab
                       label={
                         <div>
-                          <Queue
+                          <QueueIcon
                             item
                             style={{
                               display: "inline-block",
@@ -243,20 +243,20 @@ export class Navbar extends Component {
                 </Box>
                 <Box>
                   <IconButton onClick={this.handleClick} color="inherit">
-                    <AccountCircle />
+                    <AccountCircleIcon />
                   </IconButton>
 
                   <Menu id="simple-menu" anchorEl={this.state.anchorEl} keepMounted open={Boolean(this.state.anchorEl)} onClose={this.handleClose}>
                     <MenuItem onClick={this.handleMyProfileClick}>
-                      <Face style={{ marginRight: 5 }} />
+                      <FaceIcon style={{ marginRight: 5 }} />
                       My Profile
                     </MenuItem>
                     <MenuItem onClick={this.handleClose} component={Link} to="/settings">
-                      <Settings style={{ marginRight: 5 }} />
+                      <SettingsIcon style={{ marginRight: 5 }} />
                       Settings
                     </MenuItem>
                     <MenuItem onClick={this.handleLogout} component={Link} to="/login">
-                      <ExitToApp style={{ marginRight: 5 }} />
+                      <ExitToAppIcon style={{ marginRight: 5 }} />
                       Logout
                     </MenuItem>
                   </Menu>
