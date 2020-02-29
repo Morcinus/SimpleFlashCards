@@ -219,9 +219,8 @@ export class studyDeck extends Component {
     } = this.props;
     return (
       <div className="rootContainer">
-        <Grid container justify="center" spacing={3} style={{ marginLeft: "20px" }}>
-          <Grid item sm={2} lg={2} xl={2}></Grid>
-          <Grid item sm={8} lg={8} xl={8}>
+        <Grid container justify="center">
+          <Grid item xs={12} sm={10} md={8} lg={6}>
             <Paper>
               <div style={{ padding: "10px 15px 0px 15px" }}>
                 <Box display="flex" flexWrap="nowrap">
@@ -333,7 +332,6 @@ export class studyDeck extends Component {
               </div>
             </Paper>
           </Grid>
-          <Grid item sm={2} lg={2} xl={2}></Grid>
         </Grid>
 
         <Dialog open={this.state.dialogOpen} onClose={this.handleDialogClose}>
