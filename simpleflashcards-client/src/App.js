@@ -11,11 +11,11 @@ import { logoutUser } from "./redux/actions/userActions";
 // Material UI
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
-// import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 // Components
 import Navbar from "./components/Navbar";
 import AuthRoute from "./util/AuthRoute";
+import PrivateRoute from "./util/PrivateRoute";
 
 // Util
 import themeFile from "./util/theme";
@@ -33,11 +33,13 @@ import collection from "./pages/collection";
 import studyCollection from "./pages/studyCollection";
 import editCollection from "./pages/editCollection";
 import userProfile from "./pages/userProfile";
+
 //Axios
 import axios from "axios";
 
 const theme = createMuiTheme(themeFile);
 
+// Nastavení API url
 axios.defaults.baseURL = "https://europe-west1-simpleflashcards-4aea0.cloudfunctions.net/api";
 
 const token = localStorage.FBIdToken;
@@ -45,8 +47,8 @@ if (token) {
   const decodedToken = jwtDecode(token);
   console.log(decodedToken);
   if (decodedToken.exp * 1000 < Date.now()) {
-    window.location.href = "/login";
     store.dispatch(logoutUser());
+    window.location.href = "/login";
   } else {
     store.dispatch({ type: SET_AUTHENTICATED });
     axios.defaults.headers.common["Authorization"] = token;
@@ -63,16 +65,16 @@ function App() {
             <Route exact path="/" render={() => <Redirect to="/login" />} />
             <AuthRoute exact path="/signup" component={signup} />
             <AuthRoute exact path="/login" component={login} />
-            <Route exact path="/home" component={home} />
-            <Route exact path="/createDeck" component={createDeck} />
-            <Route exact path="/editDeck/:deckId" component={editDeck} />
-            <Route exact path="/deck/:deckId" component={deck} />
-            <Route exact path="/studyDeck/:deckId" component={studyDeck} />
-            <Route exact path="/collection/:colId" component={collection} />
-            <Route exact path="/studyCollection/:colId" component={studyCollection} />
-            <Route exact path="/editCollection/:colId" component={editCollection} />
-            <Route exact path="/settings" component={settings} />
-            <Route exact path="/user/:username" component={userProfile} />
+            <PrivateRoute exact path="/home" component={home} />
+            <PrivateRoute exact path="/createDeck" component={createDeck} />
+            <PrivateRoute exact path="/editDeck/:deckId" component={editDeck} />
+            <PrivateRoute exact path="/deck/:deckId" component={deck} />
+            <PrivateRoute exact path="/studyDeck/:deckId" component={studyDeck} />
+            <PrivateRoute exact path="/collection/:colId" component={collection} />
+            <PrivateRoute exact path="/studyCollection/:colId" component={studyCollection} />
+            <PrivateRoute exact path="/editCollection/:colId" component={editCollection} />
+            <PrivateRoute exact path="/settings" component={settings} />
+            <PrivateRoute exact path="/user/:username" component={userProfile} />
           </Switch>
         </BrowserRouter>
       </MuiThemeProvider>
