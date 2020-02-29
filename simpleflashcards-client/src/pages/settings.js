@@ -146,7 +146,7 @@ export class settings extends Component {
     return (
       <div className="rootContainer">
         <Grid container justify="center">
-          <Grid item sm={6} lg={6} xl={6}>
+          <Grid item xs={12} sm={9} md={6} lg={5} xl={4}>
             <Paper>
               <div style={{ padding: "25px 50px" }}>
                 <Typography variant="h5">Settings</Typography>
