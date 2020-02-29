@@ -29,6 +29,14 @@ import { collectionDefaultImgUrl } from "../util/other";
 export function renderDecks(deckArray) {
   let markup = [];
 
+  const textStyle = {
+    display: "inline-block",
+    maxWidth: "100px",
+    whiteSpace: "nowrap",
+    overflow: "hidden !important",
+    textOverflow: "ellipsis"
+  };
+
   for (let i = 0; i < deckArray.length; i++) {
     markup.push(
       <Grid item>
@@ -45,7 +53,7 @@ export function renderDecks(deckArray) {
             <CardMedia style={{ width: "100%", height: "100%" }} image={deckArray[i].deckImage ? deckArray[i].deckImage : defaultDeckImageUrl}></CardMedia>
           </CardActionArea>
         </Card>
-        <Typography>{deckArray[i].deckName}</Typography>
+        <Typography style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "145px" }}>{deckArray[i].deckName}</Typography>
       </Grid>
     );
   }
@@ -77,7 +85,7 @@ export function renderCollections(collectionArray) {
             <CardMedia style={{ width: "100%", height: "100%" }} image={collectionDefaultImgUrl}></CardMedia>
           </CardActionArea>
         </Card>
-        <Typography>{collectionArray[i].colName}</Typography>
+        <Typography style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "145px" }}>{collectionArray[i].colName}</Typography>
       </Grid>
     );
   }
