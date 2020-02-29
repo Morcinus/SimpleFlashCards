@@ -19,6 +19,8 @@ import Share from "@material-ui/icons/Share";
 import Edit from "@material-ui/icons/Edit";
 import Lock from "@material-ui/icons/Lock";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Hidden from "@material-ui/core/Hidden";
 
 // Other
 import { collectionDefaultImgUrl } from "../util/other";
@@ -26,6 +28,14 @@ import { collectionDefaultImgUrl } from "../util/other";
 // Redux
 import { connect } from "react-redux";
 import { pinCollection, unpinCollection } from "../redux/actions/colUiActions";
+
+const styles = theme => ({
+  descriptionGrid: {
+    [theme.breakpoints.down("md")]: {
+      flexDirection: "row"
+    }
+  }
+});
 
 /**
  * @class CollectionInfo
@@ -147,10 +157,11 @@ export class CollectionInfo extends Component {
 
   render() {
     const {
+      classes,
       uiStatus: { status }
     } = this.props;
     return (
-      <Grid container direction="column">
+      <Grid>
         {status == "BUSY" && (
           <React.Fragment>
             <Card
@@ -169,60 +180,69 @@ export class CollectionInfo extends Component {
           </React.Fragment>
         )}
         {status == "SUCCESS" && this.props.colUi.collection && (
-          <React.Fragment>
-            <Card
-              variant="outlined"
-              style={{
-                width: "174px",
-                height: "204px"
-              }}
-            >
-              <CardMedia style={{ width: "100%", height: "100%" }} image={collectionDefaultImgUrl}></CardMedia>
-            </Card>
+          <Grid>
+            <Grid className={classes.descriptionGrid} container spacing={2}>
+              <Grid item>
+                <Card
+                  variant="outlined"
+                  style={{
+                    width: "174px",
+                    height: "204px"
+                  }}
+                >
+                  <CardMedia style={{ width: "100%", height: "100%" }} image={collectionDefaultImgUrl}></CardMedia>
+                </Card>
+              </Grid>
 
-            <br />
+              <Grid item>
+                <Typography variant="h5">
+                  {this.props.colUi.collection.private && <Lock></Lock>}
+                  {this.props.colUi.collection.colName}
+                </Typography>
+                <Typography>{this.props.colUi.collection.colDescription}</Typography>
 
-            <Typography variant="h5">
-              {this.props.colUi.collection.private && <Lock></Lock>}
-              {this.props.colUi.collection.colName}
-            </Typography>
-            <Typography>{this.props.colUi.collection.colDescription}</Typography>
+                <br />
 
-            <br />
+                <Typography>
+                  Created by:
+                  <MUILink to={`/user/${this.props.colUi.collection.creatorName}`} component={Link}>
+                    {this.props.colUi.collection.creatorName}
+                  </MUILink>
+                </Typography>
+              </Grid>
+            </Grid>
 
-            <Typography>
-              Created by:
-              <MUILink to={`/user/${this.props.colUi.collection.creatorName}`} component={Link}>
-                {this.props.colUi.collection.creatorName}
-              </MUILink>
-            </Typography>
+            <Hidden smDown>
+              <br />
+              <Divider></Divider>
+            </Hidden>
 
-            <br />
-            <Divider></Divider>
+            <Grid direction="row" container style={{ marginTop: "20px" }} spacing={1}>
+              <Grid item xs={3} md={12} lg={6} container justify="center">
+                <Button
+                  item
+                  variant={this.state.isPinned !== null ? (this.state.isPinned ? "contained" : "outlined") : "text"}
+                  color="primary"
+                  size="large"
+                  onClick={this.handlePinButtonClick}
+                >
+                  {this.state.isPinned ? (
+                    <Fragment>
+                      <Bookmark /> <Typography> Pinned</Typography>
+                    </Fragment>
+                  ) : (
+                    <Fragment>
+                      <BookmarkBorder /> <Typography> Pin</Typography>
+                    </Fragment>
+                  )}
+                </Button>
+              </Grid>
 
-            <Grid container direction="row" justify="center" alignItems="center" style={{ marginTop: "20px" }}>
-              <Button
-                item
-                variant={this.state.isPinned !== null ? (this.state.isPinned ? "contained" : "outlined") : "text"}
-                color="primary"
-                style={{ marginRight: "20px" }}
-                size="large"
-                onClick={this.handlePinButtonClick}
-              >
-                {this.state.isPinned ? (
-                  <Fragment>
-                    <Bookmark /> <Typography> Pinned</Typography>
-                  </Fragment>
-                ) : (
-                  <Fragment>
-                    <BookmarkBorder /> <Typography> Pin</Typography>
-                  </Fragment>
-                )}
-              </Button>
-
-              <Button onClick={this.handlePopoverOpen} item variant="outlined" color="primary" size="large">
-                <Share /> <Typography> Share</Typography>
-              </Button>
+              <Grid item xs={3} md={12} lg={6} container justify="center">
+                <Button onClick={this.handlePopoverOpen} item variant="outlined" color="primary" size="large">
+                  <Share /> <Typography> Share</Typography>
+                </Button>
+              </Grid>
               <Popover
                 open={this.state.popoverOpen}
                 anchorEl={this.state.anchorEl}
@@ -249,15 +269,16 @@ export class CollectionInfo extends Component {
                   </Grid>
                 </Box>
               </Popover>
+
+              <Grid item xs={3} md={12} lg={6} container justify="center">
+                {this.props.colUi.collection.isCreator && (
+                  <Button item variant="text" color="primary" size="large" component={Link} to={`/editCollection/${this.props.colId}`}>
+                    <Edit /> <Typography> Edit Collection</Typography>
+                  </Button>
+                )}
+              </Grid>
             </Grid>
-            <Grid container justify="center" style={{ marginTop: "20px" }}>
-              {this.props.colUi.collection.isCreator && (
-                <Button item variant="text" color="primary" size="large" component={Link} to={`/editCollection/${this.props.colId}`}>
-                  <Edit /> <Typography> Edit Collection</Typography>
-                </Button>
-              )}
-            </Grid>
-          </React.Fragment>
+          </Grid>
         )}
       </Grid>
     );
@@ -268,7 +289,8 @@ CollectionInfo.propTypes = {
   pinCollection: PropTypes.func.isRequired,
   unpinCollection: PropTypes.func.isRequired,
   colUi: PropTypes.object.isRequired,
-  uiStatus: PropTypes.object.isRequired
+  uiStatus: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -281,4 +303,4 @@ const mapActionsToProps = {
   unpinCollection
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(CollectionInfo);
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(CollectionInfo));
