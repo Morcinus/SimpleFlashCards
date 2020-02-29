@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
     idToken = req.headers.authorization.split("Bearer ")[1];
   } else {
-    return res.status(403).json({ error: "Unauthorized request!" });
+    return res.status(403).json({ errorCode: "user/unauthorized" });
   }
 
   // Ověření ID Tokenu
@@ -39,7 +39,7 @@ module.exports = (req, res, next) => {
         req.user.username = doc.data().username;
         return next();
       } else {
-        return res.status(403).json("User not found!");
+        return res.status(403).json({ errorCode: "user/user-not-found" });
       }
     })
     .catch(error => {

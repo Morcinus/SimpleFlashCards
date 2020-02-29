@@ -141,10 +141,16 @@ export class collection extends Component {
                       </Typography>
                     </React.Fragment>
                   )}
-                  {status == "ERROR" && errorCodes.includes("collection/collection-not-found") && (
+                  {status == "ERROR" && errorCodes.includes("collection/collection-not-found") ? (
                     <Typography variant="h6" color="error" align="center">
                       Error 404: Collection not found!
                     </Typography>
+                  ) : (
+                    errorCodes.includes("collection/access-denied") && (
+                      <Typography variant="h6" color="error" align="center">
+                        This collection is private! You don't have permission to view this collection!
+                      </Typography>
+                    )
                   )}
 
                   {status == "SUCCESS" &&

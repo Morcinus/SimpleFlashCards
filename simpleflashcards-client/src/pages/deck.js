@@ -145,10 +145,16 @@ export class deck extends Component {
                       </Typography>
                     </React.Fragment>
                   )}
-                  {status == "ERROR" && errorCodes.includes("deck/deck-not-found") && (
+                  {status == "ERROR" && errorCodes.includes("deck/deck-not-found") ? (
                     <Typography variant="h6" color="error" align="center">
                       Error 404: Deck not found!
                     </Typography>
+                  ) : (
+                    errorCodes.includes("deck/access-denied") && (
+                      <Typography variant="h6" color="error" align="center">
+                        This deck is private! You don't have permission to view this deck!
+                      </Typography>
+                    )
                   )}
                   {status == "SUCCESS" &&
                     (this.state.selectedTabIndex === 1 ? (

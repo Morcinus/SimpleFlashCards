@@ -474,7 +474,8 @@ exports.getCollection = (req, res) => {
         let creatorId = collection.creatorId;
         if (collection.private === true && creatorId !== req.user.uid) {
           // Pokud je kolekce soukromá a uživatel není tvůrcem kolekce, nemá přístup ke kolekci
-          return res.status(403).json();
+          console.log("Tu");
+          return res.status(403).json({ errorCode: "collection/access-denied" });
         } else {
           // Najde uživatelské jméno tvůrce této kolekce
           return db

@@ -597,7 +597,8 @@ exports.getDeck = (req, res) => {
         let creatorId = deck.creatorId;
         if (deck.private === true && creatorId !== req.user.uid) {
           // Pokud je balíček soukromý a uživatel není tvůrcem balíčku, nemá přístup k balíčku
-          return res.status(403).json();
+          console.log("Tu");
+          return res.status(403).json({ errorCode: "deck/access-denied" });
         } else {
           // Najde uživatelské jméno tvůrce tohoto balíčku
           return db
