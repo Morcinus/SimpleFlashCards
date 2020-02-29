@@ -251,7 +251,7 @@ export class createDeck extends Component {
     return (
       <div className="rootContainer">
         <Grid container justify="center">
-          <Grid item xs={12} sm={12} md={10} lg={10} xl={10}>
+          <Grid item xs={12} sm={10} md={10} lg={8} xl={6}>
             <Paper>
               <div className={classes.container}>
                 {status == "BUSY" && (
