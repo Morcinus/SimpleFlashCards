@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 // Components
 import UserDecks from "../components/UserDecks";
@@ -14,6 +15,15 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Bookmarks from "@material-ui/icons/Bookmarks";
+import withStyles from "@material-ui/core/styles/withStyles";
+
+const styles = theme => ({
+  container: {
+    [theme.breakpoints.up("md")]: {
+      padding: "25px 50px"
+    }
+  }
+});
 
 /**
  * @class home
@@ -45,14 +55,15 @@ export class home extends Component {
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <div className="rootContainer">
         <Grid container justify="center">
-          <Grid item sm={10} lg={10} xl={10}>
+          <Grid item sm={12} lg={10} xl={10}>
             <Paper>
-              <div style={{ padding: "25px 50px" }}>
+              <div className={classes.container}>
                 <div>
-                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleTabChange}>
+                  <Tabs value={this.state.selectedTabIndex} onChange={this.handleTabChange} variant="scrollable" scrollButtons="auto">
                     <Tab
                       label={
                         <div>
@@ -141,4 +152,8 @@ export class home extends Component {
   }
 }
 
-export default home;
+UserDecks.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(home);

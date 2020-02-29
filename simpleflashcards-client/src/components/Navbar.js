@@ -146,7 +146,7 @@ export class Navbar extends Component {
       <div>
         <AppBar position="fixed">
           <Grid container justify="center">
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={10} style={{ marginLeft: 10 }}>
               <Box display="flex" flexDirection="row" alignItems="center">
                 <Box flexGrow={1}>
                   <Typography variant="h6">Simple Flashcards</Typography>
@@ -198,7 +198,7 @@ export class Navbar extends Component {
       <div>
         <AppBar position="fixed">
           <Grid container justify="center">
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={10} style={{ marginLeft: 10 }}>
               <Box display="flex" flexDirection="row" alignItems="center">
                 <Box flexGrow={1}>
                   <Typography variant="h6">Simple Flashcards</Typography>

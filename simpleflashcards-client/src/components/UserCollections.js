@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import withStyles from "@material-ui/core/styles/withStyles";
 
 // Other
 import { renderCollections } from "../util/functions";
@@ -13,6 +14,17 @@ import { renderCollections } from "../util/functions";
 import { connect } from "react-redux";
 import { getUserCollections, clearUserCollections } from "../redux/actions/colUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
+
+const styles = theme => ({
+  deckGrid: {
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "center"
+    },
+    [theme.breakpoints.up("md")]: {
+      justifyContent: "flex-start"
+    }
+  }
+});
 
 /**
  * @class UserCollections
@@ -44,6 +56,7 @@ export class UserCollections extends Component {
 
   render() {
     const {
+      classes,
       uiStatus: { status, errorCodes }
     } = this.props;
     return (
@@ -61,7 +74,7 @@ export class UserCollections extends Component {
             You don't have any collections!
           </Typography>
         )}
-        <Grid container direction="row" justify="flex-start" alignItems="flex-start">
+        <Grid className={classes.deckGrid} container direction="row" justify="flex-start" alignItems="flex-start">
           {status == "SUCCESS" && renderCollections(this.props.colUi.userCollections)}
         </Grid>
       </div>
@@ -74,7 +87,8 @@ UserCollections.propTypes = {
   clearUserCollections: PropTypes.func.isRequired,
   colUi: PropTypes.object.isRequired,
   clearStatus: PropTypes.func.isRequired,
-  uiStatus: PropTypes.object.isRequired
+  uiStatus: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -88,4 +102,4 @@ const mapActionsToProps = {
   clearStatus
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(UserCollections);
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(UserCollections));

@@ -18,11 +18,36 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormLabel from "@material-ui/core/FormLabel";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import withStyles from "@material-ui/core/styles/withStyles";
 
 // Redux
 import { connect } from "react-redux";
 import { saveDeckDraft, deleteDeckDraft, uploadDeck } from "../redux/actions/createDeckActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
+
+const styles = theme => ({
+  container: {
+    [theme.breakpoints.down("sm")]: {
+      padding: "25px 10px"
+    },
+    [theme.breakpoints.up("md")]: {
+      padding: "25px 50px"
+    }
+  },
+  grid: {
+    [theme.breakpoints.up("xs")]: {
+      flexDirection: "column-reverse",
+      alignItems: "flex-start"
+    },
+    [theme.breakpoints.up("md")]: {
+      flexDirection: "column",
+      alignItems: "flex-end"
+    }
+  },
+  box: {
+    [theme.breakpoints.down("sm")]: { flexDirection: "row-reverse", display: "flex", marginTop: "10px" }
+  }
+});
 
 const initialState = {
   deckName: "",
@@ -220,14 +245,15 @@ export class createDeck extends Component {
 
   render() {
     const {
+      classes,
       uiStatus: { status, errorCodes, successCodes }
     } = this.props;
     return (
       <div className="rootContainer">
         <Grid container justify="center">
-          <Grid item sm={10} lg={10} xl={10}>
+          <Grid item xs={12} sm={12} md={10} lg={10} xl={10}>
             <Paper>
-              <div style={{ padding: "25px 50px" }}>
+              <div className={classes.container}>
                 {status == "BUSY" && (
                   <React.Fragment>
                     <LinearProgress color="secondary" />
@@ -240,7 +266,7 @@ export class createDeck extends Component {
                 <Divider></Divider>
                 <br />
                 <Grid container>
-                  <Grid item sm={9} lg={9} xl={9} container direction="row">
+                  <Grid item sm={12} md={9} lg={9} xl={9} container direction="row">
                     <Grid>
                       {this.state.deckImage ? (
                         <Button
@@ -309,14 +335,16 @@ export class createDeck extends Component {
                       </Box>
                     </Grid>
                   </Grid>
-                  <Grid item sm={3} lg={3} xl={3} container direction="column" justify="flex-start" alignItems="flex-end">
-                    <Grid item container justify="flex-end" alignItems="flex-start">
-                      <IconButton color="primary" variant="contained" onClick={this.handleDialogOpen}>
-                        <Delete></Delete>
-                      </IconButton>
-                      <Button size="large" color="secondary" variant="contained" onClick={this.uploadDeck}>
-                        Create
-                      </Button>
+                  <Grid item sm={12} md={3} lg={3} xl={3} container>
+                    <Grid className={classes.grid} item container>
+                      <Box className={classes.box}>
+                        <IconButton color="primary" variant="contained" onClick={this.handleDialogOpen}>
+                          <Delete></Delete>
+                        </IconButton>
+                        <Button size="large" color="secondary" variant="contained" onClick={this.uploadDeck}>
+                          Create
+                        </Button>
+                      </Box>
 
                       <FormControl variant="outlined" fullWidth>
                         <FormLabel>Deck visibility</FormLabel>
@@ -369,7 +397,8 @@ createDeck.propTypes = {
   uploadDeck: PropTypes.func.isRequired,
   deckCreation: PropTypes.object.isRequired,
   uiStatus: PropTypes.object.isRequired,
-  clearStatus: PropTypes.func.isRequired
+  clearStatus: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -384,4 +413,4 @@ const mapActionsToProps = {
   clearStatus
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(createDeck);
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(createDeck));

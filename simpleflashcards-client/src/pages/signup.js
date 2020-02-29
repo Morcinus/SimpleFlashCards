@@ -86,7 +86,7 @@ export class signup extends Component {
     return (
       <div className="rootContainer">
         <Grid container className={classes.form} justify="center">
-          <Grid item sm={5} lg={4} xl={3}>
+          <Grid item sm={8} md={5} lg={4} xl={3}>
             <Paper>
               <div style={{ padding: "15px 15px 15px 15px" }}>
                 <Typography variant="h2" className={classes.pageTitle}>
