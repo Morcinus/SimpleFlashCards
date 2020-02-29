@@ -49,28 +49,9 @@ export class ColTable extends Component {
         }}
         editable={{
           /**
-           * @function onRowUpdate
-           * @memberOf ColTable
-           * @description [Material-table]{@link https://material-table.com} funkce, která aktualizuje data tabulky při přidání nového řádku.
-           * @param {Object} newData - Nová data tabulky.
-           * @param {Object} oldData - Stará data tabulky.
-           */
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                {
-                  const data = this.props.data;
-                  const index = data.indexOf(oldData);
-                  data[index] = newData;
-                  this.setState({ data }, () => resolve());
-                }
-                resolve();
-              }, 1000);
-            }),
-          /**
            * @function onRowDelete
            * @memberOf ColTable
-           * @description [Material-table]{@link https://material-table.com} funkce, která aktualizuje data tabulky při odebrání řádku.
+           * @description [Material-table]{@link https://material-table.com} funkce, která umožňuje odstraňování řádků tabulky.
            * @param {Object} oldData - Stará data tabulky.
            */
           onRowDelete: oldData =>

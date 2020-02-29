@@ -41,7 +41,7 @@ export class DeckTable extends Component {
           /**
            * @function onRowAdd
            * @memberOf DeckTable
-           * @description [Material-table]{@link https://material-table.com} funkce, která aktualizuje data tabulky při přidání nového řádku.
+           * @description [Material-table]{@link https://material-table.com} funkce, která umožňuje přidávání nových řádků do tabulky.
            * @param {Object} newData - Nová data tabulky.
            */
           onRowAdd: newData =>
@@ -59,7 +59,7 @@ export class DeckTable extends Component {
           /**
            * @function onRowUpdate
            * @memberOf DeckTable
-           * @description [Material-table]{@link https://material-table.com} funkce, která aktualizuje data tabulky při přidání nového řádku.
+           * @description [Material-table]{@link https://material-table.com} funkce, která umožňuje upravování řádků tabulky.
            * @param {Object} newData - Nová data tabulky.
            * @param {Object} oldData - Stará data tabulky.
            */
@@ -78,7 +78,7 @@ export class DeckTable extends Component {
           /**
            * @function onRowDelete
            * @memberOf DeckTable
-           * @description [Material-table]{@link https://material-table.com} funkce, která aktualizuje data tabulky při odebrání řádku.
+           * @description [Material-table]{@link https://material-table.com} funkce, která umožňuje odstraňování řádků tabulky.
            * @param {Object} oldData - Stará data tabulky.
            */
           onRowDelete: oldData =>
