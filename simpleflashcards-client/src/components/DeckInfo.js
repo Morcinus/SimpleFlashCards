@@ -20,6 +20,8 @@ import Edit from "@material-ui/icons/Edit";
 import LibraryAdd from "@material-ui/icons/LibraryAdd";
 import Lock from "@material-ui/icons/Lock";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Hidden from "@material-ui/core/Hidden";
 
 // Other
 import defaultDeckImageUrl from "../util/other";
@@ -28,6 +30,14 @@ import defaultDeckImageUrl from "../util/other";
 import { connect } from "react-redux";
 import { pinDeck, unpinDeck } from "../redux/actions/deckUiActions";
 import { openCollectionDialog } from "../redux/actions/colUiActions";
+
+const styles = theme => ({
+  descriptionGrid: {
+    [theme.breakpoints.down("md")]: {
+      flexDirection: "row"
+    }
+  }
+});
 
 /**
  * @class DeckInfo
@@ -160,10 +170,11 @@ export class DeckInfo extends Component {
 
   render() {
     const {
+      classes,
       uiStatus: { status }
     } = this.props;
     return (
-      <Grid container direction="column">
+      <Grid>
         {status == "BUSY" && (
           <React.Fragment>
             <Card
@@ -182,63 +193,67 @@ export class DeckInfo extends Component {
           </React.Fragment>
         )}
         {status == "SUCCESS" && this.props.deckUi.deck && (
-          <React.Fragment>
-            <Card
-              variant="outlined"
-              style={{
-                width: "174px",
-                height: "204px"
-              }}
-            >
-              <CardMedia
-                style={{ width: "100%", height: "100%" }}
-                image={this.props.deckUi.deck.deckImage ? this.props.deckUi.deck.deckImage : defaultDeckImageUrl}
-              ></CardMedia>
-            </Card>
+          <Grid>
+            <Grid className={classes.descriptionGrid} container spacing={2}>
+              <Grid item>
+                <Card
+                  variant="outlined"
+                  style={{
+                    width: "174px",
+                    height: "204px"
+                  }}
+                >
+                  <CardMedia
+                    style={{ width: "100%", height: "100%" }}
+                    image={this.props.deckUi.deck.deckImage ? this.props.deckUi.deck.deckImage : defaultDeckImageUrl}
+                  ></CardMedia>
+                </Card>
+              </Grid>
 
-            <br />
+              <Grid item>
+                <Typography variant="h5">
+                  {this.props.deckUi.deck.private && <Lock></Lock>}
+                  {this.props.deckUi.deck.deckName}
+                </Typography>
 
-            <Typography variant="h5">
-              {this.props.deckUi.deck.private && <Lock></Lock>}
-              {this.props.deckUi.deck.deckName}
-            </Typography>
-            <Typography>{this.props.deckUi.deck.deckDescription}</Typography>
+                <Typography>{this.props.deckUi.deck.deckDescription}</Typography>
 
-            <br />
+                <br />
 
-            <Typography>
-              Created by:
-              <MUILink to={`/user/${this.props.deckUi.deck.creatorName}`} component={Link}>
-                {this.props.deckUi.deck.creatorName}
-              </MUILink>
-            </Typography>
+                <Typography>
+                  Created by:
+                  <MUILink to={`/user/${this.props.deckUi.deck.creatorName}`} component={Link}>
+                    {this.props.deckUi.deck.creatorName}
+                  </MUILink>
+                </Typography>
+              </Grid>
+            </Grid>
 
-            <br />
-            <Divider></Divider>
+            <Hidden smDown>
+              <br />
+              <Divider></Divider>
+            </Hidden>
 
-            <Grid container direction="row" justify="center" alignItems="center" style={{ marginTop: "20px" }}>
-              <Button
-                item
-                variant={this.state.isPinned ? "contained" : "outlined"}
-                color="primary"
-                style={{ marginRight: "20px" }}
-                size="large"
-                onClick={this.handlePinButtonClick}
-              >
-                {this.state.isPinned ? (
-                  <Fragment>
-                    <Bookmark /> <Typography> Pinned</Typography>
-                  </Fragment>
-                ) : (
-                  <Fragment>
-                    <BookmarkBorder /> <Typography> Pin</Typography>
-                  </Fragment>
-                )}
-              </Button>
+            <Grid direction="row" container style={{ marginTop: "20px" }} spacing={1}>
+              <Grid item xs={3} md={12} lg={6} container justify="center">
+                <Button item variant={this.state.isPinned ? "contained" : "outlined"} color="primary" size="large" onClick={this.handlePinButtonClick}>
+                  {this.state.isPinned ? (
+                    <Fragment>
+                      <Bookmark /> <Typography> Pinned</Typography>
+                    </Fragment>
+                  ) : (
+                    <Fragment>
+                      <BookmarkBorder /> <Typography> Pin</Typography>
+                    </Fragment>
+                  )}
+                </Button>
+              </Grid>
 
-              <Button onClick={this.handlePopoverOpen} item variant="outlined" color="primary" size="large">
-                <Share /> <Typography> Share</Typography>
-              </Button>
+              <Grid item xs={3} md={12} lg={6} container justify="center">
+                <Button onClick={this.handlePopoverOpen} variant="outlined" color="primary" size="large">
+                  <Share /> <Typography> Share</Typography>
+                </Button>
+              </Grid>
               <Popover
                 open={this.state.popoverOpen}
                 anchorEl={this.state.anchorEl}
@@ -265,26 +280,28 @@ export class DeckInfo extends Component {
                   </Grid>
                 </Box>
               </Popover>
-            </Grid>
 
-            <Grid container direction="row" justify="center" alignItems="center" style={{ marginTop: "20px" }}>
-              {this.props.deckUi.deck.isCreator && (
-                <Button item variant="text" color="primary" component={Link} to={`/editDeck/${this.props.deckId}`} style={{ marginRight: "20px" }}>
-                  <Edit style={{ marginRight: "5px" }} />
+              <Grid item xs={3} md={12} lg={6} container justify="center">
+                {this.props.deckUi.deck.isCreator && (
+                  <Button variant="text" color="primary" component={Link} to={`/editDeck/${this.props.deckId}`}>
+                    <Edit style={{ marginRight: "5px" }} />
+                    <Typography variant="body2">
+                      Edit <br /> Deck
+                    </Typography>
+                  </Button>
+                )}
+              </Grid>
+
+              <Grid item xs={3} md={12} lg={6} container justify="center">
+                <Button item variant="text" color="primary" onClick={this.handleAddToCollection}>
+                  <LibraryAdd style={{ marginRight: "5px" }} />
                   <Typography variant="body2">
-                    Edit <br /> Deck
+                    Add to <br /> Collection
                   </Typography>
                 </Button>
-              )}
-
-              <Button item variant="text" color="primary" onClick={this.handleAddToCollection}>
-                <LibraryAdd style={{ marginRight: "5px" }} />
-                <Typography variant="body2">
-                  Add to <br /> Collection
-                </Typography>
-              </Button>
+              </Grid>
             </Grid>
-          </React.Fragment>
+          </Grid>
         )}
       </Grid>
     );
@@ -296,7 +313,8 @@ DeckInfo.propTypes = {
   unpinDeck: PropTypes.func.isRequired,
   openCollectionDialog: PropTypes.func.isRequired,
   deckUi: PropTypes.object.isRequired,
-  uiStatus: PropTypes.object.isRequired
+  uiStatus: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -310,4 +328,4 @@ const mapActionsToProps = {
   openCollectionDialog
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(DeckInfo);
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(DeckInfo));

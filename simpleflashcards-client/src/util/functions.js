@@ -175,13 +175,11 @@ export function deckLearnButtons(deckId) {
   const smallCardStyle = {
     width: "175px",
     height: "175px",
-    marginRight: "20px",
     backgroundColor: "#bff27e"
   };
   const largeCardStyle = {
     width: "200px",
     height: "200px",
-    marginRight: "20px",
     backgroundColor: "#91cc47"
   };
   const linkStyle = {
@@ -189,33 +187,39 @@ export function deckLearnButtons(deckId) {
   };
 
   return (
-    <Grid container direction="row" justify="space-evenly" alignItems="center">
-      <Card variant="outlined" style={smallCardStyle}>
-        <Link to={`/studyDeck/${deckId}?lessonType=learn`} style={linkStyle}>
-          <CardActionArea style={cardActionStyle}>
-            <MenuBook style={iconStyle}></MenuBook>
-            <Typography style={textStyle}>LEARN NEW</Typography>
-          </CardActionArea>
-        </Link>
-      </Card>
-      <Card variant="outlined" style={largeCardStyle}>
-        <Link to={`/studyDeck/${deckId}?lessonType=study`} style={linkStyle}>
-          <CardActionArea style={cardActionStyle}>
-            <MenuBook style={iconStyle}></MenuBook>
-            <FitnessCenter style={iconStyle}></FitnessCenter>
-            <Typography style={textStyle}>LEARN & REVIEW</Typography>
-          </CardActionArea>
-        </Link>
-      </Card>
-      <Card variant="outlined" style={smallCardStyle}>
-        <Link to={`/studyDeck/${deckId}?lessonType=review`} style={linkStyle}>
-          <CardActionArea style={cardActionStyle}>
-            <FitnessCenter style={iconStyle}></FitnessCenter>
-            <Typography style={textStyle}>REVIEW OLD</Typography>
-          </CardActionArea>
-        </Link>
-      </Card>
-    </Grid>
+    <React.Fragment>
+      <Grid item>
+        <Card variant="outlined" style={smallCardStyle}>
+          <Link to={`/studyDeck/${deckId}?lessonType=learn`} style={linkStyle}>
+            <CardActionArea style={cardActionStyle}>
+              <MenuBook style={iconStyle}></MenuBook>
+              <Typography style={textStyle}>LEARN NEW</Typography>
+            </CardActionArea>
+          </Link>
+        </Card>
+      </Grid>
+      <Grid item>
+        <Card variant="outlined" style={largeCardStyle}>
+          <Link to={`/studyDeck/${deckId}?lessonType=study`} style={linkStyle}>
+            <CardActionArea style={cardActionStyle}>
+              <MenuBook style={iconStyle}></MenuBook>
+              <FitnessCenter style={iconStyle}></FitnessCenter>
+              <Typography style={textStyle}>LEARN & REVIEW</Typography>
+            </CardActionArea>
+          </Link>
+        </Card>
+      </Grid>
+      <Grid item>
+        <Card variant="outlined" style={smallCardStyle}>
+          <Link to={`/studyDeck/${deckId}?lessonType=review`} style={linkStyle}>
+            <CardActionArea style={cardActionStyle}>
+              <FitnessCenter style={iconStyle}></FitnessCenter>
+              <Typography style={textStyle}>REVIEW OLD</Typography>
+            </CardActionArea>
+          </Link>
+        </Card>
+      </Grid>
+    </React.Fragment>
   );
 }
 

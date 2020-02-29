@@ -108,7 +108,7 @@ export class DeckCards extends Component {
         <IconButton onClick={this.flipAllCards}>
           <LoopIcon />
         </IconButton>
-        <Grid container direction="row" justify="flex-start" alignItems="flex-start">
+        <Grid container direction="row" justify="flex-start" alignItems="flex-start" spacing={2}>
           {renderFlashCards(this.props.deckUi.deck.cardArray, this.state.cardSides, this.flipCard)}
         </Grid>
       </Fragment>
