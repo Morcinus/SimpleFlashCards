@@ -91,8 +91,7 @@ exports.signup = (req, res) => {
       const userInfo = {
         email: userData.email,
         username: userData.username,
-        bio: "",
-        profileImg: ""
+        bio: ""
       };
 
       // Přidání uživatele do Firestore databáze.
