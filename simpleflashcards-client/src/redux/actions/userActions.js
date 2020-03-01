@@ -20,9 +20,9 @@ import axios from "axios";
 
 /**
  * @function loginUser
- * @description Přihlásí uživatele. Tím také získá od serveru idToken, který uloží do localStorage. Také nastaví hodnotu authenticated v reduceru.
- * @param {Object} userData - přihlašovací údaje uživatele
- * @param {Object} history - historie prohlížeče, slouží k přesměrování na /home
+ * @description Přihlásí uživatele. Tím také získá od serveru idToken, který uloží do localStorage. Také nastaví hodnotu authenticated v [userReduceru]{@link module:userReducer}.
+ * @param {Object} userData - Přihlašovací údaje uživatele.
+ * @param {Object} history - Historie prohlížeče, slouží k přesměrování na /home.
  * @async
  */
 export const loginUser = (userData, history) => dispatch => {
@@ -45,9 +45,9 @@ export const loginUser = (userData, history) => dispatch => {
 
 /**
  * @function signupUser
- * @description Zaregistruje uživatele. Tím také získá od serveru idToken, který uloží do localStorage. Také nastaví hodnotu authenticated v reduceru.
- * @param {Object} newUserData - registrační údaje uživatele
- * @param {Object} history - historie prohlížeče, slouží k přesměrování na /home
+ * @description Zaregistruje uživatele. Tím také získá od serveru idToken, který uloží do localStorage. Také nastaví hodnotu authenticated v [userReduceru]{@link module:userReducer}.
+ * @param {Object} newUserData - Registrační údaje uživatele.
+ * @param {Object} history - Historie prohlížeče, slouží k přesměrování na /home.
  * @async
  */
 export const signupUser = (newUserData, history) => dispatch => {
@@ -86,7 +86,7 @@ export const logoutUser = () => dispatch => {
 
 /**
  * @function getUserPersonalData
- * @description Získá ze serveru osobní data uživatele a uloží je do reduceru.
+ * @description Získá ze serveru osobní data uživatele a uloží je do [userReduceru]{@link module:userReducer}.
  * @async
  */
 export const getUserPersonalData = () => dispatch => {
@@ -106,8 +106,8 @@ export const getUserPersonalData = () => dispatch => {
 /**
  * @function setUserPersonalData
  * @description Odešle na server požadavek o přenastavení osobních dat uživatele.
- * @param {Object} userData - osobní údaje uživatele
- * @param {Object} history - historie prohlížeče, slouží k přesměrování na /login
+ * @param {Object} userData - Osobní údaje uživatele.
+ * @param {Object} history - Historie prohlížeče, slouží k přesměrování na /login.
  * @async
  */
 export const setUserPersonalData = (userData, history) => dispatch => {
@@ -153,7 +153,7 @@ export const resetPassword = () => dispatch => {
 /**
  * @function setAuthorizationHeader
  * @description Uloží idToken do localStorage a nastaví ho jako Authorization header pro HTTP požadavky.
- * @param {string} token - idToken daného uživatele
+ * @param {string} token - IdToken daného uživatele.
  */
 const setAuthorizationHeader = token => {
   const FBIDToken = `Bearer ${token}`;
@@ -163,8 +163,8 @@ const setAuthorizationHeader = token => {
 
 /**
  * @function getUserDataByUsername
- * @description Získá ze serveru data o uživateli na základě jeho uživatelského jména a uloží je do reduceru. Tato funkce se používá při přistupování na cizí uživatelské profily.
- * @param {string} username - jméno uživatele, o kterém chceme získat informace
+ * @description Získá ze serveru data o uživateli na základě jeho uživatelského jména a uloží je do [userReduceru]{@link module:userReducer}. Tato funkce se používá při přistupování na cizí uživatelské profily.
+ * @param {string} username - Jméno uživatele, o kterém aplikace získává informace.
  * @async
  */
 export const getUserDataByUsername = username => dispatch => {
@@ -183,7 +183,7 @@ export const getUserDataByUsername = username => dispatch => {
 
 /**
  * @function getUserData
- * @description Získá ze serveru data o přihlášeném uživateli a uloží je do reduceru. Tato funkce se používá při přistupování vlastní profil přihlášeného uživatele.
+ * @description Získá ze serveru data o přihlášeném uživateli a uloží je do [userReduceru]{@link module:userReducer}. Tato funkce se používá při přistupování vlastní profil přihlášeného uživatele.
  * @async
  */
 export const getUserData = () => dispatch => {
@@ -202,7 +202,7 @@ export const getUserData = () => dispatch => {
 
 /**
  * @function clearUserData
- * @description Vymaže z reduceru data o profilu uživatele.
+ * @description Vymaže z [userReduceru]{@link module:userReducer} data o profilu uživatele.
  */
 export const clearUserData = () => dispatch => {
   dispatch({ type: CLEAR_USER_PROFILE });

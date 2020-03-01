@@ -26,6 +26,12 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { connect } from "react-redux";
 import { logoutUser, getUserData } from "../redux/actions/userActions";
 
+/**
+ * @function styles
+ * @memberof Navbar
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   tab: {
     backgroundColor: theme.palette.background.paper
@@ -36,11 +42,12 @@ const styles = theme => ({
  * @class Navbar
  * @extends Component
  * @category Components
- * @classdesc Tento komponent zobrazí navigační lištu aplikace.
- * @property {Object} state - vnitřní state komponentu
- * @property {number} state.selectedTabIndex - Index pro Tabs komponent
+ * @classdesc Tento komponent zobrazuje navigační lištu aplikace.
+ * @param {Object} props - Vstupní data pro daný komponent.
+ * @property {Object} state - Vnitřní state komponentu.
+ * @property {number} state.selectedTabIndex - Index pro Tabs komponent.
  * @property {element} state.anchorEl - Obsahuje element, ke kterému se má přichytit vyskakovací menu při kliknutí na ikonu uživatele.
- * @property {boolean} state.myProfileClicked - Určuje, zda-li uživatel klinul na jeho profil v navigační liště.
+ * @property {boolean} state.myProfileClicked - Určuje, zda-li uživatel kliknul na jeho profil v navigační liště.
  *
  * @requires userActions~logoutUser
  * @requires userActions~getUserData
@@ -60,8 +67,8 @@ export class Navbar extends Component {
   /**
    * @function handleTabChange
    * @memberOf Navbar
-   * @description Přepisuje [selectedTabIndex]{@link Navbar} v state tohoto komponentu při přepnutí v Tabs navigation baru
-   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link Navbar}
+   * @description Přepisuje [selectedTabIndex]{@link Navbar} v state tohoto komponentu při přepnutí v Tabs navigation baru.
+   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link Navbar}.
    */
   handleTabChange = (_, newValue) => {
     this.setState({
@@ -109,7 +116,7 @@ export class Navbar extends Component {
    * @function componentDidUpdate
    * @memberOf Navbar
    * @description Po stažení dat o profilu uživatele přesměruje uživatele na jeho profil.
-   * @param {Object} prevProps - předchozí props daného komponentu
+   * @param {Object} prevProps - Předchozí props daného komponentu.
    */
   componentDidUpdate(prevProps) {
     if (this.state.myProfileClicked) {
@@ -130,7 +137,7 @@ export class Navbar extends Component {
   /**
    * @function handleLogout
    * @memberOf Navbar
-   * @description Při kliknutí na tlačítko k odhlášení odhlásí uživatele.
+   * @description Při kliknutí na tlačítko k odhlášení odhlásí daného uživatele.
    */
   handleLogout = () => {
     this.handleClose();

@@ -16,6 +16,12 @@ import { connect } from "react-redux";
 import { loginUser } from "../redux/actions/userActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @function styles
+ * @memberof login
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   ...theme.loginAndSignup
 });
@@ -24,9 +30,9 @@ const styles = theme => ({
  * @extends Component
  * @category Pages
  * @classdesc Na této stránce se uživatel může přihlásit pomocí emailu a hesla.
- * @property {Object} state - vnitřní state komponentu
- * @property {string} state.email - Text, který uživatel zadá do formuláře do políčka pro email
- * @property {string} state.password - Text, který uživatel zadá do formuláře do políčka pro heslo
+ * @property {Object} state - Vnitřní state komponentu.
+ * @property {string} state.email - Text, který uživatel zadá do formuláře do políčka pro email.
+ * @property {string} state.password - Text, který uživatel zadá do formuláře do políčka pro heslo.
  *
  * @requires userActions~loginUser
  * @requires uiStatusActions~clearStatus
@@ -68,6 +74,11 @@ export class login extends Component {
     });
   };
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf login
+   * @description Vymaže status aplikace v reduceru.
+   */
   componentWillUnmount() {
     this.props.clearStatus();
   }

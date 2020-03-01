@@ -6,14 +6,17 @@ import PropTypes from "prop-types";
 /**
  * @module AuthRoute
  * @category util
- * @description Pokud je uživatel přihlášen a dostane se na "/login" nebo "/signup" stránku, automaticky ho přesměruje na "/home".
+ * @description React Route, která přesměruje uživatele na "/home", pokud je uživatel přihlášen a dostane se na stránku "/login" nebo "/signup".
  */
 
 /**
- * @const AuthRoute
- * @description Pokud je uživatel přihlášen a dostane se na "/login" nebo "/signup" stránku, automaticky ho přesměruje na "/home".
+ * @function AuthRoute
+ * @description React Route, která přesměruje uživatele na "/home", pokud je uživatel přihlášen a dostane se na stránku "/login" nebo "/signup".
+ * @param {Object} component - Komponent, který chce uživatel zobrazit.
+ * @param {boolean} authenticated - Informace, zda je uživatel přihlášen či ne.
  * @requires {@link module:store~reducers module:store~reducers.user}
  */
+
 // Zdroj: https://www.youtube.com/watch?v=vzkGTZFjbiE&list=PLMhAeHCz8S38ryyeMiBPPUnFAiWnoPvWP&index=17
 const AuthRoute = ({ component: Component, authenticated, ...rest }) => (
   <Route {...rest} render={props => (authenticated === true ? <Redirect to="/home"></Redirect> : <Component {...props} />)} />

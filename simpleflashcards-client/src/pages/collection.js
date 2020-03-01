@@ -23,6 +23,12 @@ import { connect } from "react-redux";
 import { getCollection, clearCollection } from "../redux/actions/colUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @function styles
+ * @memberof collection
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   grid: {
     [theme.breakpoints.down("sm")]: {
@@ -43,8 +49,8 @@ const styles = theme => ({
  * @classdesc Vytvoří stránku dané kolekce. Uživatel zde vidí všechny podrobné informace o kolekci,
  * může kolekci sdílet, prohlédnout si její obsah nebo přejít do módu učení. Pokud je uživatel tvůrcem této kolekce,
  * může také začít balíček upravovat.
- * @property {Object} state - Vnitřní state komponentu
- * @property {number} state.selectedTabIndex - Index pro Tabs komponent na této stránce
+ * @property {Object} state - Vnitřní state komponentu.
+ * @property {number} state.selectedTabIndex - Index pro Tabs komponent na této stránce.
  *
  * @requires colUiActions~getCollection
  * @requires colUiActions~clearCollection
@@ -63,8 +69,8 @@ export class collection extends Component {
   /**
    * @function handleTabChange
    * @memberOf collection
-   * @description Přepisuje [selectedTabIndex]{@link collection} v state tohoto komponentu při přepnutí v Tabs navigation baru
-   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link collection}
+   * @description Přepisuje [selectedTabIndex]{@link collection} v state tohoto komponentu při přepnutí v Tabs navigation baru.
+   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link collection}.
    */
   handleTabChange = (_, newValue) => {
     this.setState({
@@ -76,6 +82,11 @@ export class collection extends Component {
     this.props.getCollection(this.props.match.params.colId);
   }
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf collection
+   * @description Vymaže status aplikace a informace o dané kolekci z reduceru.
+   */
   componentWillUnmount() {
     this.props.clearStatus();
     this.props.clearCollection();

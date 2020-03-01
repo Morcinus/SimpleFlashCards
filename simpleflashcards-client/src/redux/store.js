@@ -25,8 +25,8 @@ const middleware = [thunk];
 /**
  * @constant reducers
  * @type {Object} reducers
- * @description Seznam všech reducerů
- * @property {Object} reducers - Seznam všech reducerů
+ * @description Seznam všech reducerů.
+ * @property {Object} reducers - Seznam všech reducerů.
  * @property {Object} reducers.user - [userReducer]{@link module:userReducer}
  * @property {Object} reducers.uiStatus - [uiStatusReducer]{@link module:uiStatusReducer}
  * @property {Object} reducers.deckCreation - [createDeckReducer]{@link module:createDeckReducer}

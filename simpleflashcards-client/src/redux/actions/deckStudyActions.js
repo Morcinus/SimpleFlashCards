@@ -9,8 +9,8 @@ import axios from "axios";
 
 /**
  * @function getLearnDeck
- * @description Získá ze serveru data balíčku s kartami, které se uživatel ještě neučil.
- * @param {string} deckId - ID daného balíčku
+ * @description Získá ze serveru data balíčku s kartami, které se uživatel ještě neučil. Data následně uloží do [deckStudyReduceru]{@link module:deckStudyReducer}.
+ * @param {string} deckId - ID daného balíčku.
  * @async
  */
 export const getLearnDeck = deckId => dispatch => {
@@ -29,8 +29,8 @@ export const getLearnDeck = deckId => dispatch => {
 
 /**
  * @function getLearnAndReviewDeck
- * @description Získá ze serveru data balíčku s kartami, které se uživatel ještě neučil ale i s kartami, které by si měl uživatel zopakovat.
- * @param {string} deckId - ID daného balíčku
+ * @description Získá ze serveru data balíčku s kartami, které se uživatel ještě neučil ale i s kartami, které by si měl uživatel zopakovat. Data následně uloží do [deckStudyReduceru]{@link module:deckStudyReducer}.
+ * @param {string} deckId - ID daného balíčku.
  * @async
  */
 export const getLearnAndReviewDeck = deckId => dispatch => {
@@ -49,8 +49,8 @@ export const getLearnAndReviewDeck = deckId => dispatch => {
 
 /**
  * @function getReviewDeck
- * @description Získá ze serveru data balíčku s kartami, které by si měl uživatel zopakovat.
- * @param {string} deckId - ID daného balíčku
+ * @description Získá ze serveru data balíčku s kartami, které by si měl uživatel zopakovat. Data následně uloží do [deckStudyReduceru]{@link module:deckStudyReducer}.
+ * @param {string} deckId - ID daného balíčku.
  * @async
  */
 export const getReviewDeck = deckId => dispatch => {
@@ -70,7 +70,7 @@ export const getReviewDeck = deckId => dispatch => {
 /**
  * @function pushDeckProgress
  * @description Nahraje na server balíček s informacemi o tom, jak se změnil pokrok uživatele u každé karty.
- * @param {string} deckId - ID daného balíčku
+ * @param {string} deckId - ID daného balíčku.
  * @param {Array<Object>} progressDeck - Balíček se zaznamenaným pokrokem uživatele
  * @async
  */
@@ -94,7 +94,7 @@ export const pushDeckProgress = (deckId, progressDeck) => dispatch => {
 
 /**
  * @function clearStudyDeck
- * @description Vymaže studovaný balíček z reduceru.
+ * @description Vymaže studovaný balíček z [deckStudyReduceru]{@link module:deckStudyReducer}.
  */
 export const clearStudyDeck = () => dispatch => {
   dispatch({ type: CLEAR_STUDY_DECK });

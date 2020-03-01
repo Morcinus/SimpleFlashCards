@@ -21,12 +21,12 @@ import axios from "axios";
 /**
  * @category ReduxActions
  * @module colUiActions
- * @description Zde jsou funkce, které komunikují se serverem ohledně kolekcí a vyvolávají změny v [colUiReducer]{@link module:colUiReducer} a [uiStatusReducer]{@link module:uiStatusReducer}.
+ * @description Zde jsou funkce, které komunikují se serverem ohledně kolekcí a vyvolávají změny v [colUiReduceru]{@link module:colUiReducer} a [uiStatusReduceru]{@link module:uiStatusReducer}.
  */
 
 /**
  * @function getUserCollections
- * @description Získá ze serveru seznam kolekcí vytvořených uživatelem a uloží ho do reduceru.
+ * @description Získá ze serveru seznam kolekcí vytvořených uživatelem a uloží ho do [colUiReduceru]{@link module:colUiReducer}.
  * @async
  */
 export const getUserCollections = () => dispatch => {
@@ -45,7 +45,7 @@ export const getUserCollections = () => dispatch => {
 
 /**
  * @function clearUserCollections
- * @description Vymaže seznam kolekcí vytvořených uživatelem z reduceru.
+ * @description Vymaže seznam kolekcí vytvořených uživatelem z [colUiReduceru]{@link module:colUiReducer}.
  */
 export const clearUserCollections = () => dispatch => {
   dispatch({ type: CLEAR_USER_COLLECTIONS });
@@ -53,7 +53,7 @@ export const clearUserCollections = () => dispatch => {
 
 /**
  * @function getPinnedCollections
- * @description Získá ze serveru seznam kolekcí připnutých uživatelem a uloží ho do reduceru.
+ * @description Získá ze serveru seznam kolekcí připnutých uživatelem a uloží ho do [colUiReduceru]{@link module:colUiReducer}.
  * @async
  */
 export const getPinnedCollections = () => dispatch => {
@@ -72,7 +72,7 @@ export const getPinnedCollections = () => dispatch => {
 
 /**
  * @function clearPinnedCollections
- * @description Vymaže seznam kolekcí připnutých uživatelem z reduceru.
+ * @description Vymaže seznam kolekcí připnutých uživatelem z [colUiReduceru]{@link module:colUiReducer}.
  */
 export const clearPinnedCollections = () => dispatch => {
   dispatch({ type: CLEAR_PINNED_COLLECTIONS });
@@ -80,7 +80,7 @@ export const clearPinnedCollections = () => dispatch => {
 
 /**
  * @function getUserCollectionsWithDeckInfo
- * @description Získá ze serveru seznam kolekcí vytvořených uživatelem společně s informacemi, zda je daný balíček v kolekcích obsažen nebo ne. Tento seznam pak funkce uloží ho do reduceru.
+ * @description Získá ze serveru seznam kolekcí vytvořených uživatelem společně s informacemi, zda je daný balíček v kolekcích obsažen nebo ne. Tento seznam pak funkce uloží ho do [colUiReduceru]{@link module:colUiReducer}.
  * @param {string} deckId - ID balíčku, o kterém se má zjistit, zda je obsažen v kolekci.
  * @async
  */
@@ -100,7 +100,7 @@ export const getUserCollectionsWithDeckInfo = deckId => dispatch => {
 
 /**
  * @function getCollection
- * @description Získá ze serveru prodrobná data o dané kolekci a uloží je do reduceru.
+ * @description Získá ze serveru prodrobná data o dané kolekci a uloží je do [colUiReduceru]{@link module:colUiReducer}.
  * @param {string} colId - ID kolekce, o které se mají získat data.
  * @async
  */
@@ -120,7 +120,7 @@ export const getCollection = colId => dispatch => {
 
 /**
  * @function clearCollection
- * @description Smaže data o dané kolekci z reduceru.
+ * @description Smaže data o dané kolekci z [colUiReduceru]{@link module:colUiReducer}.
  */
 export const clearCollection = () => dispatch => {
   dispatch({ type: CLEAR_COLLECTION });
@@ -154,7 +154,7 @@ export const unpinCollection = colId => dispatch => {
 
 /**
  * @function openCollectionDialog
- * @description Pošle action do reduceru, která nastaví [collectionDialogOpen]{@link module:colUiReducer~initialState} na true. Tím otevře CollectionDialog.
+ * @description Pošle action do [colUiReduceru]{@link module:colUiReducer}, která nastaví [collectionDialogOpen]{@link module:colUiReducer~initialState} na true. Tím otevře CollectionDialog.
  */
 export const openCollectionDialog = () => dispatch => {
   dispatch({ type: OPEN_COLLECTION_DIALOG });
@@ -162,7 +162,7 @@ export const openCollectionDialog = () => dispatch => {
 
 /**
  * @function closeCollectionDialog
- * @description Pošle action do reduceru, která nastaví [collectionDialogOpen]{@link module:colUiReducer~initialState} na false. Tím zavře CollectionDialog.
+ * @description Pošle action do [colUiReduceru]{@link module:colUiReducer}, která nastaví [collectionDialogOpen]{@link module:colUiReducer~initialState} na false. Tím zavře CollectionDialog.
  */
 export const closeCollectionDialog = () => dispatch => {
   dispatch({ type: CLOSE_COLLECTION_DIALOG });
@@ -230,7 +230,7 @@ export const createCollection = (colName, deckId, privateCol) => dispatch => {
  * @function validateUploadCollectionName
  * @description Ověří, zda je název kolekce platný.
  * @param {string} colName - Název kolekce, který má být ověřen.
- * @returns null | error kód (string)
+ * @returns {null | string} Vrací null nebo error kód.
  */
 const validateUploadCollectionName = colName => {
   // CollectionName validation

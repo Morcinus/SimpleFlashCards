@@ -1,13 +1,17 @@
 /**
  * @module theme
  * @category util
- * @description Určuje obecné CSS pro celou aplikaci.
+ * @description Určuje CSS aplikace.
+ *
+ * @property {Object} palette - Paleta barev pro [Material UI]{@link https://material-ui.com/customization/palette/}.
+ * @property {Object} shape.borderRadius - Určuje zaoblení rohů elementů.
+ * @property {Object} loginAndSignup - Určuje CSS pro stránky [login]{@link login} a [signup]{@link signup}.
  */
 
 export default {
   palette: {
     primary: {
-      main: "#37474f", // main: "#37474f"
+      main: "#37474f",
       light: "#62727b",
       dark: "#102027",
       contrastText: "#ffffff"

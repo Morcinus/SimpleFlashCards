@@ -16,6 +16,12 @@ import { connect } from "react-redux";
 import { signupUser } from "../redux/actions/userActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @function styles
+ * @memberof signup
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   ...theme.loginAndSignup
 });
@@ -24,11 +30,11 @@ const styles = theme => ({
  * @extends Component
  * @category Pages
  * @classdesc Na této stránce se uživatel může zaregistrovat. Pro registraci vyplní do formuláře email, uživatelské jméno, heslo a potvrzení hesla.
- * @property {Object} state - Vnitřní state komponentu
- * @property {string} state.email - Text, který uživatel zadá do formuláře do políčka pro email
- * @property {string} state.password - Text, který uživatel zadá do formuláře do políčka pro heslo
- * @property {string} state.confirmPassword - Text, který uživatel zadá do formuláře do políčka pro potvrzení hesla
- * @property {string} state.username - Text, který uživatel zadá do formuláře do políčka pro uživatelské jméno
+ * @property {Object} state - Vnitřní state komponentu.
+ * @property {string} state.email - Text, který uživatel zadá do formuláře do políčka pro email.
+ * @property {string} state.password - Text, který uživatel zadá do formuláře do políčka pro heslo.
+ * @property {string} state.confirmPassword - Text, který uživatel zadá do formuláře do políčka pro potvrzení hesla.
+ * @property {string} state.username - Text, který uživatel zadá do formuláře do políčka pro uživatelské jméno.
  *
  * @requires userActions~signupUser
  * @requires uiStatusActions~clearStatus
@@ -48,8 +54,8 @@ export class signup extends Component {
   /**
    * @function handleSubmit
    * @memberOf signup
-   * @description Zavolá funkci pro zaregistrování uživatele
-   * @param {event} event - Event, který vyvolal spuštění této funkce
+   * @description Zavolá funkci pro zaregistrování uživatele.
+   * @param {event} event - Event, který vyvolal spuštění této funkce.
    */
   handleSubmit = event => {
     event.preventDefault();
@@ -65,8 +71,8 @@ export class signup extends Component {
   /**
    * @function handleChange
    * @memberOf signup
-   * @description Přepisuje data v state tohoto komponentu na základě změn v textových polích formuláře
-   * @param {event} event - Event, který vyvolal spuštění této funkce
+   * @description Přepisuje data v state tohoto komponentu na základě změn v textových polích formuláře.
+   * @param {event} event - Event, který vyvolal spuštění této funkce.
    */
   handleChange = event => {
     this.setState({
@@ -74,6 +80,11 @@ export class signup extends Component {
     });
   };
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf signup
+   * @description Vymaže status aplikace v reduceru.
+   */
   componentWillUnmount() {
     this.props.clearStatus();
   }

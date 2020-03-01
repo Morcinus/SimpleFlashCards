@@ -27,6 +27,12 @@ import { connect } from "react-redux";
 import { deleteDeck, deleteDeckDraft, updateDeck, getDeck } from "../redux/actions/editDeckActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @function styles
+ * @memberof editDeck
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   container: {
     [theme.breakpoints.down("sm")]: {
@@ -66,7 +72,8 @@ const initialState = {
  * @extends Component
  * @category Pages
  * @classdesc Na této stránce může uživatel upravovat balíček a následně nahrát novou verzi balíčku na server.
- * @property {Object} state - Vnitřní state komponentu
+ * @param {Object} props - Vstupní data pro daný komponent.
+ * @property {Object} state - Vnitřní state komponentu.
  * @property {string} state.deckName - Uchovává název balíčku.
  * @property {string} state.deckDescription - Uchovává popis balíčku.
  * @property {Object} state.deckImage - Uchovává obrázek balíčku.
@@ -118,7 +125,7 @@ export class editDeck extends Component {
    * @function componentDidUpdate
    * @memberOf editDeck
    * @description Po stažení dat balíčku ze serveru je uloží do state tohoto komponentu.
-   * @param {Object} prevProps - předchozí props daného komponentu
+   * @param {Object} prevProps - Předchozí props daného komponentu.
    */
   componentDidUpdate(prevProps) {
     if (this.props.deckEdit) {
@@ -146,6 +153,11 @@ export class editDeck extends Component {
     }
   }
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf editDeck
+   * @description Vymaže status aplikace v reduceru.
+   */
   componentWillUnmount() {
     this.props.clearStatus();
   }
@@ -154,7 +166,7 @@ export class editDeck extends Component {
    * @function updateDeckCards
    * @memberOf editDeck
    * @description Přepisuje seznam karet balíčku na základě změn v tabulce karet.
-   * @param {Array<Object>} cards - seznam karet v daném balíčku
+   * @param {Array<Object>} cards - Seznam karet v daném balíčku.
    */
   updateDeckCards(cards) {
     this.setState({

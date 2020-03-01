@@ -8,8 +8,8 @@ import { UPDATE_DECK_DATA, DELETE_DECK_DATA } from "../types";
 
 /**
  * @type {Object} initialState
- * @description Původní stav reduceru
- * @property {Object} initialState - původní stav reduceru
+ * @description Původní stav reduceru.
+ * @property {Object} initialState - Původní stav reduceru.
  * @property {string} initialState.deckName - Uchovává název balíčku.
  * @property {string} initialState.deckDescription - Uchovává popis balíčku.
  * @property {Object} initialState.deckImage - Uchovává obrázek balíčku.
@@ -29,9 +29,9 @@ const initialState = {
 /**
  * @function function
  * @description Mění stav reduceru.
- * @param {Object} state - stav reduceru
- * @param {Object} action - akce, která vyvolává změnu v reduceru
- * @returns nový stav reduceru
+ * @param {Object} state - Stav reduceru.
+ * @param {Object} action - Akce, která vyvolává změnu v reduceru.
+ * @returns {Object} Nový stav reduceru.
  */
 export default function(state = initialState, action) {
   switch (action.type) {

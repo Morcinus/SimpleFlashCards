@@ -31,6 +31,12 @@ import { connect } from "react-redux";
 import { pinDeck, unpinDeck } from "../redux/actions/deckUiActions";
 import { openCollectionDialog } from "../redux/actions/colUiActions";
 
+/**
+ * @function styles
+ * @memberof DeckInfo
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   descriptionGrid: {
     [theme.breakpoints.down("md")]: {
@@ -43,8 +49,9 @@ const styles = theme => ({
  * @class DeckInfo
  * @extends Component
  * @category Components
- * @classdesc Tento komponent zobrazuje informace o daném balíčku a umožňuje balíček sdílet, připnout ho, přidat ho do kolekce, nebo ho případně upravit.
- * @property {Object} state - vnitřní state komponentu
+ * @classdesc Tento komponent zobrazuje informace o balíčku na stránce daného balíčku. Komponent umožňuje balíček sdílet, připnout ho, přidat ho do kolekce, nebo ho případně upravit.
+ * @param {Object} props - Vstupní data pro daný komponent.
+ * @property {Object} state - Vnitřní state komponentu.
  * @property {boolean} state.popoverOpen - Určuje, zda-li je otevřeno vyskakovací okno na sdílení balíčku.
  * @property {element} state.anchorEl - Obsahuje element, ke kterému se má přichytit vyskakovací okno při sdílení balíčku.
  * @property {boolean} state.copiedLink - Určuje, zda-li uživatel zkopíroval odkaz na tento balíček.
@@ -73,7 +80,7 @@ export class DeckInfo extends Component {
    * @function handleCopyClick
    * @memberOf DeckInfo
    * @description Zkopíruje do schránky odkaz na balíček.
-   * @param {string} elementId - ID vyskakovacího okna
+   * @param {string} elementId - ID vyskakovacího okna.
    */
   handleCopyClick = elementId => {
     // Zdroj: https://stackoverflow.com/questions/39501289/in-reactjs-how-to-copy-text-to-clipboard
@@ -138,8 +145,8 @@ export class DeckInfo extends Component {
   /**
    * @function componentDidUpdate
    * @memberOf DeckInfo
-   * @description Po stažení dat balíčku ze serveru je uloží honotu isPinned do state tohoto komponentu.
-   * @param {Object} prevProps - předchozí props daného komponentu
+   * @description Po stažení dat balíčku ze serveru uloží hodnotu isPinned do state tohoto komponentu.
+   * @param {Object} prevProps - Předchozí props daného komponentu.
    */
   componentDidUpdate(prevProps) {
     if (this.props.deckUi.deck) {
@@ -154,7 +161,7 @@ export class DeckInfo extends Component {
   /**
    * @function componentWillUnmount
    * @memberOf DeckInfo
-   * @description Pokud byla změněna hodnota isPinned, nahraje změnu na server.
+   * @description Pokud byla změněna hodnota isPinned, nahraje změnu na server. Tím buď připne nebo odepne daný balíček.
    */
   componentWillUnmount() {
     if (this.props.deckUi.deck) {

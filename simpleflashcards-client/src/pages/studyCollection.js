@@ -38,8 +38,9 @@ const queryString = require("query-string");
  * @class studyCollection
  * @extends Component
  * @category Pages
- * @classdesc Na této stránce uživatel může studovat karty v dané kolekci.
- * @property {Object} state - Vnitřní state komponentu
+ * @classdesc Na této stránce uživatel může studovat karty z dané kolekce.
+ * @param {Object} props - Vstupní data pro daný komponent.
+ * @property {Object} state - Vnitřní state komponentu.
  * @property {boolean} state.cardSide - Jak je otočená kartička, kterou uživatel momentálně studuje. Pro hodnotu false uživatel vidí přední stranu, pro hodnotu true vidí zadní.
  * @property {Array<Object>} state.cardProgress - Uchovává informace o kartách a pokroku uživatele u každé z nich.
  * @property {number} state.cardArrayIndex - Uchovává informaci, kolikátou kartu z kolekce uživatel momentálně studuje.
@@ -67,7 +68,7 @@ export class studyCollection extends Component {
       dialogOpen: false
     };
     this.flipCard = this.flipCard.bind(this);
-    this.checkcolFinished = this.checkcolFinished.bind(this);
+    this.checkColFinished = this.checkColFinished.bind(this);
   }
 
   /**
@@ -142,17 +143,17 @@ export class studyCollection extends Component {
         cardArrayIndex: prevState.cardArrayIndex + 1
       }),
       () => {
-        this.checkcolFinished();
+        this.checkColFinished();
       }
     );
   }
 
   /**
-   * @function checkcolFinished
+   * @function checkColFinished
    * @memberOf studyCollection
    * @description Zkontroluje, zda-li uživatel prošel všechny karty v stažené kolekci. Pokud ano, nastaví colFinished v state tohoto komponentu na true a nahraje nový pokrok na server.
    */
-  checkcolFinished() {
+  checkColFinished() {
     if (this.state.cardArrayIndex >= this.props.colStudy.currentColCards.length) {
       this.setState({
         colFinished: true
@@ -211,13 +212,18 @@ export class studyCollection extends Component {
   /**
    * @function handleQuit
    * @memberOf studyCollection
-   * @description Vymaže data o studované kolekci a přesměruje uživatele na /home
+   * @description Vymaže data o studované kolekci a přesměruje uživatele na /home.
    */
   handleQuit = () => {
     this.props.clearStudyCollection();
     this.props.history.push("/home");
   };
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf studyCollection
+   * @description Vymaže status aplikace v reduceru.
+   */
   componentWillUnmount() {
     this.props.clearStatus();
   }

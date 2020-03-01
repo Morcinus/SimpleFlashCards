@@ -8,8 +8,9 @@ import defaultDeckImageUrl from "../util/other";
  * @class ColTable
  * @extends Component
  * @category Components
- * @classdesc Tento komponent zobrazuje tabulku pro upravování kolekcí.
- * @property {Object} state - Vnitřní state komponentu
+ * @classdesc Tento komponent zobrazuje tabulku pro upravování kolekcí. Je převážně založen na knihovně {@link https://material-table.com}.
+ * @param {Object} props - Vstupní data pro daný komponent.
+ * @property {Object} state - Vnitřní state komponentu.
  * @property {Array<Object>} state.columns - Určuje nastavení sloupců material-table tabulky (viz {@link https://material-table.com}).
  *
  * @see Tento komponent je založen na material-table {@link https://material-table.com}
@@ -51,7 +52,7 @@ export class ColTable extends Component {
           /**
            * @function onRowDelete
            * @memberOf ColTable
-           * @description [Material-table]{@link https://material-table.com} funkce, která umožňuje odstraňování řádků tabulky.
+           * @description [Material-table]{@link https://material-table.com} funkce, která umožňuje odstraňování řádků z tabulky.
            * @param {Object} oldData - Stará data tabulky.
            */
           onRowDelete: oldData =>
@@ -75,8 +76,8 @@ export class ColTable extends Component {
             /**
              * @function onClick
              * @memberOf ColTable
-             * @description Při kliknutí na tlačítko s šipkou nahoru posune daný řádek v tabulce o jednu pozici výš.
-             * @param {Array<Object>} rowData - Data o řádcích tabulky
+             * @description Při kliknutí na tlačítko s šipkou nahoru posune daný řádek v tabulce o jednu pozici výše.
+             * @param {Array<Object>} rowData - Data o řádcích tabulky.
              */
             onClick: (event, rowData) => {
               const data = this.props.data;
@@ -101,7 +102,7 @@ export class ColTable extends Component {
              * @function onClick
              * @memberOf DeckTable
              * @description Při kliknutí na tlačítko s šipkou dolu posune daný řádek v tabulce o jednu pozici níž.
-             * @param {Array<Object>} rowData - Data o řádcích tabulky
+             * @param {Array<Object>} rowData - Data o řádcích tabulky.
              */
             onClick: (event, rowData) => {
               const data = this.props.data;

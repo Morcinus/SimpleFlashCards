@@ -30,7 +30,7 @@ import { clearStatus } from "../redux/actions/uiStatusActions";
  * @extends Component
  * @category Pages
  * @classdesc Na této stránce může uživatel měnit své údaje: uživatelské jméno, popisek profilu, email a heslo.
- * @property {Object} state - Vnitřní state komponentu
+ * @property {Object} state - Vnitřní state komponentu.
  * @property {string} state.username - Text, který uchovává uživatelské jméno.
  * @property {string} state.bio - Text, který uchovává popis uživatelského profilu.
  * @property {string} state.email - Text, který uchovává email uživatele.
@@ -69,7 +69,7 @@ export class settings extends Component {
    * @function componentDidUpdate
    * @memberOf settings
    * @description Po stažení osobních údajů uživatele ze serveru je uloží do state tohoto komponentu.
-   * @param {Object} prevProps - předchozí props daného komponentu
+   * @param {Object} prevProps - Předchozí props daného komponentu.
    */
   componentDidUpdate(prevProps) {
     if (this.props.user.credentials) {
@@ -83,6 +83,11 @@ export class settings extends Component {
     }
   }
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf settings
+   * @description Vymaže status aplikace v reduceru.
+   */
   componentWillUnmount() {
     this.props.clearStatus();
   }
@@ -103,7 +108,7 @@ export class settings extends Component {
    * @function handleSave
    * @memberOf settings
    * @description Nahraje změněná osobní data uživatele na server.
-   * @param {string} variableName - Název proměnné, která se má nahrát na server
+   * @param {string} variableName - Název proměnné, která má být nahrána na server.
    */
   handleSave(variableName) {
     let userData = {

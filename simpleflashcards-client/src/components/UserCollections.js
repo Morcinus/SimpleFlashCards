@@ -15,6 +15,12 @@ import { connect } from "react-redux";
 import { getUserCollections, clearUserCollections } from "../redux/actions/colUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @function styles
+ * @memberof UserCollections
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   deckGrid: {
     [theme.breakpoints.down("sm")]: {
@@ -30,7 +36,7 @@ const styles = theme => ({
  * @class UserCollections
  * @extends Component
  * @category Components
- * @classdesc Tento komponent zobrazí kolekce vytvořené daným uživatelem.
+ * @classdesc Tento komponent zobrazuje kolekce vytvořené daným uživatelem.
  *
  * @requires colUiActions~getUserCollections
  * @requires colUiActions~clearUserCollections
@@ -49,6 +55,11 @@ export class UserCollections extends Component {
     this.props.getUserCollections();
   }
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf UserCollections
+   * @description Vymaže status aplikace a kolekce vytvořené uživatelem reduceru.
+   */
   componentWillUnmount() {
     this.props.clearStatus();
     this.props.clearUserCollections();

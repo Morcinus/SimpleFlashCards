@@ -15,6 +15,12 @@ import { connect } from "react-redux";
 import { getUserDecks, clearUserDecks } from "../redux/actions/deckUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @function styles
+ * @memberof UserDecks
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   deckGrid: {
     [theme.breakpoints.down("sm")]: {
@@ -30,7 +36,7 @@ const styles = theme => ({
  * @class UserDecks
  * @extends Component
  * @category Components
- * @classdesc Tento komponent zobrazí balíčky vytvořené daným uživatelem.
+ * @classdesc Tento komponent zobrazuje balíčky vytvořené daným uživatelem.
  *
  * @requires deckUiActions~getUserDecks
  * @requires deckUiActions~clearUserDecks
@@ -49,6 +55,11 @@ export class UserDecks extends Component {
     this.props.getUserDecks();
   }
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf UserDecks
+   * @description Vymaže status aplikace a uživatelem vytvořené balíčky z reduceru.
+   */
   componentWillUnmount() {
     this.props.clearStatus();
     this.props.clearUserDecks();

@@ -24,6 +24,12 @@ import { connect } from "react-redux";
 import { getDeck, clearDeck } from "../redux/actions/deckUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @function styles
+ * @memberof deck
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   grid: {
     [theme.breakpoints.down("sm")]: {
@@ -44,8 +50,8 @@ const styles = theme => ({
  * @classdesc Vytvoří stránku daného balíčku. Uživatel zde vidí všechny podrobné informace o balíčku,
  * může balíček sdílet, prohlédnout si jeho obsah nebo přejít do módu učení. Pokud je uživatel tvůrcem tohoto balíčku,
  * může také začít balíček upravovat.
- * @property {Object} state - Vnitřní state komponentu
- * @property {number} state.selectedTabIndex - Index pro Tabs komponent na této stránce
+ * @property {Object} state - Vnitřní state komponentu.
+ * @property {number} state.selectedTabIndex - Index pro Tabs komponent na této stránce.
  *
  * @requires deckUiActions~getDeck
  * @requires deckUiActions~clearDeck
@@ -65,8 +71,8 @@ export class deck extends Component {
   /**
    * @function handleTabChange
    * @memberOf deck
-   * @description Přepisuje [selectedTabIndex]{@link deck} v state tohoto komponentu při přepnutí v Tabs navigation baru
-   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link deck}
+   * @description Přepisuje [selectedTabIndex]{@link deck} v state tohoto komponentu při přepnutí v Tabs navigation baru.
+   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link deck}.
    */
   handleTabChange = (_, newValue) => {
     this.setState({
@@ -78,6 +84,11 @@ export class deck extends Component {
     this.props.getDeck(this.props.match.params.deckId);
   }
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf deck
+   * @description Vymaže status aplikace a informace o daném balíčku z reduceru.
+   */
   componentWillUnmount() {
     this.props.clearStatus();
     this.props.clearDeck();

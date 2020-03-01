@@ -13,8 +13,8 @@ const SUCCESS = "SUCCESS";
 
 /**
  * @type {Object} initialState
- * @description Původní stav reduceru
- * @property {Object} initialState - původní stav reduceru
+ * @description Původní stav reduceru.
+ * @property {Object} initialState - Původní stav reduceru.
  * @property {string|null} initialState.status - Uchovává status aplikace, nabývá hodnot "BUSY", "ERROR", "SUCCESS", null.
  * @property {Array<String>} initialState.errorCodes - Uchovává error kódy.
  * @property {Array<String>} initialState.successCodes - Uchovává success kódy.
@@ -28,9 +28,9 @@ const initialState = {
 /**
  * @function function
  * @description Mění stav reduceru.
- * @param {Object} state - stav reduceru
- * @param {Object} action - akce, která vyvolává změnu v reduceru
- * @returns nový stav reduceru
+ * @param {Object} state - Stav reduceru.
+ * @param {Object} action - Akce, která vyvolává změnu v reduceru.
+ * @returns {Object} Nový stav reduceru.
  */
 export default function(state = initialState, action) {
   switch (action.type) {

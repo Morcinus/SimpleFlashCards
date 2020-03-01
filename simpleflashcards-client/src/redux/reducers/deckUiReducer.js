@@ -8,8 +8,8 @@ import { SET_USER_DECKS, SET_PINNED_DECKS, CLEAR_PINNED_DECKS, CLEAR_USER_DECKS,
 
 /**
  * @type {Object} initialState
- * @description Původní stav reduceru
- * @property {Object} initialState - původní stav reduceru
+ * @description Původní stav reduceru.
+ * @property {Object} initialState - Původní stav reduceru.
  * @property {Array<Object>} initialState.userDecks - Uchovává balíčky vytvořené daným uživatelem.
  * @property {Array<Object>} initialState.pinnedDecks - Uchovává "připnuté" (=uložené) balíčky daného uživatele.
  * @property {Object} initialState.deck - Uchovává podrobná data o daném balíčku.
@@ -23,9 +23,9 @@ const initialState = {
 /**
  * @function function
  * @description Mění stav reduceru.
- * @param {Object} state - stav reduceru
- * @param {Object} action - akce, která vyvolává změnu v reduceru
- * @returns nový stav reduceru
+ * @param {Object} state - Stav reduceru.
+ * @param {Object} action - Akce, která vyvolává změnu v reduceru.
+ * @returns {Object} Nový stav reduceru.
  */
 export default function(state = initialState, action) {
   switch (action.type) {

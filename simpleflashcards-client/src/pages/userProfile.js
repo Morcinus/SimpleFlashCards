@@ -20,7 +20,7 @@ import { clearStatus } from "../redux/actions/uiStatusActions";
  * @class userProfile
  * @extends Component
  * @category Pages
- * @classdesc Na této stránce se zobrazuje profil daného uživatele
+ * @classdesc Na této stránce se zobrazuje profil daného uživatele.
  *
  * @requires userActions~getUserDataByUsername
  * @requires userActions~clearUserData
@@ -51,6 +51,11 @@ export class userProfile extends Component {
     else this.props.getUserDataByUsername(this.props.match.params.username);
   }
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf userProfile
+   * @description Vymaže status aplikace a informace o profilu daného uživatele z reduceru.
+   */
   componentWillUnmount() {
     this.props.clearUserData();
     this.props.clearStatus();

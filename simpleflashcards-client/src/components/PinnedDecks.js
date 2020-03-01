@@ -15,6 +15,12 @@ import { connect } from "react-redux";
 import { getPinnedDecks, clearPinnedDecks } from "../redux/actions/deckUiActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @function styles
+ * @memberof PinnedDecks
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   deckGrid: {
     [theme.breakpoints.down("sm")]: {
@@ -30,7 +36,7 @@ const styles = theme => ({
  * @class PinnedDecks
  * @extends Component
  * @category Components
- * @classdesc Tento komponent zobrazí balíčky, které byly připnuty uživatelem.
+ * @classdesc Tento komponent zobrazuje balíčky, které byly připnuty uživatelem.
  *
  * @requires deckUiActions~getPinnedDecks
  * @requires deckUiActions~clearPinnedDecks
@@ -49,6 +55,11 @@ export class PinnedDecks extends Component {
     this.props.getPinnedDecks();
   }
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf PinnedDecks
+   * @description Vymaže status aplikace a připnuté balíčky z reduceru.
+   */
   componentWillUnmount() {
     this.props.clearStatus();
     this.props.clearPinnedDecks();

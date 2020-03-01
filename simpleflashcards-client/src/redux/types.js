@@ -1,7 +1,7 @@
 /**
  * @module types
  * @category Ostatní
- * @description Zde jsou všechny konstanty, které určují typy akcí pro redux.
+ * @description Zde jsou všechny konstanty, které určují typy akcí pro Redux.
  */
 
 // User reducer types

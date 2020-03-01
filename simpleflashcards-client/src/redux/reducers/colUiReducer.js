@@ -27,8 +27,8 @@ const SUCCESS = "SUCCESS";
 
 /**
  * @type {Object} initialState
- * @description Původní stav reduceru
- * @property {Object} initialState - původní stav reduceru
+ * @description Původní stav reduceru.
+ * @property {Object} initialState - Původní stav reduceru.
  * @property {Array<Object>} initialState.userCollections - Uchovává kolekce vytvořené daným uživatelem.
  * @property {Array<Object>} initialState.pinnedCollections - Uchovává "připnuté" (=uložené) kolekce daného uživatele.
  * @property {Object} initialState.collection - Uchovává podrobná data o dané kolekci.
@@ -50,9 +50,9 @@ const initialState = {
 /**
  * @function function
  * @description Mění stav reduceru.
- * @param {Object} state - stav reduceru
- * @param {Object} action - akce, která vyvolává změnu v reduceru
- * @returns nový stav reduceru
+ * @param {Object} state - Stav reduceru.
+ * @param {Object} action - Akce, která vyvolává změnu v reduceru.
+ * @returns {Object} Nový stav reduceru.
  */
 export default function(state = initialState, action) {
   switch (action.type) {

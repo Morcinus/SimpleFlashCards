@@ -9,8 +9,8 @@ import axios from "axios";
 
 /**
  * @function getColLearnCards
- * @description Získá ze serveru data kolekce s kartami, které se uživatel ještě neučil.
- * @param {string} colId - ID dané kolekce
+ * @description Získá ze serveru data kolekce s kartami, které se uživatel ještě neučil. Data následně uloží do [colStudyReduceru]{@link module:colStudyReducer}.
+ * @param {string} colId - ID dané kolekce.
  * @async
  */
 export const getColLearnCards = colId => dispatch => {
@@ -23,7 +23,6 @@ export const getColLearnCards = colId => dispatch => {
         payload: unpackCardsFromArrays(res.data.cardArray)
       });
       dispatch({ type: SET_STATUS_SUCCESS });
-      console.log("SUCCESS");
     })
     .catch(err => {
       console.error("Error:", err.response.data.errorCode);
@@ -33,8 +32,8 @@ export const getColLearnCards = colId => dispatch => {
 
 /**
  * @function getColCardsToLearnAndReview
- * @description Získá ze serveru data kolekce s kartami, které se uživatel ještě neučil ale i s kartami, které by si měl uživatel zopakovat.
- * @param {string} colId - ID dané kolekce
+ * @description Získá ze serveru data kolekce s kartami, které se uživatel ještě neučil ale i s kartami, které by si měl uživatel zopakovat. Data následně uloží do [colStudyReduceru]{@link module:colStudyReducer}.
+ * @param {string} colId - ID dané kolekce.
  * @async
  */
 export const getColCardsToLearnAndReview = colId => dispatch => {
@@ -57,8 +56,8 @@ export const getColCardsToLearnAndReview = colId => dispatch => {
 
 /**
  * @function getColReviewCards
- * @description Získá ze serveru data kolekce s kartami, které by si měl uživatel zopakovat.
- * @param {string} colId - ID dané kolekce
+ * @description Získá ze serveru data kolekce s kartami, které by si měl uživatel zopakovat. Data následně uloží do [colStudyReduceru]{@link module:colStudyReducer}.
+ * @param {string} colId - ID dané kolekce.
  * @async
  */
 export const getColReviewCards = colId => dispatch => {
@@ -107,7 +106,7 @@ export const pushCollectionProgress = colProgressCards => dispatch => {
 
 /**
  * @function clearStudyCollection
- * @description Vymaže studovanou kolekci z reduceru.
+ * @description Vymaže studovanou kolekci z [colStudyReduceru]{@link module:colStudyReducer}.
  */
 export const clearStudyCollection = () => dispatch => {
   dispatch({ type: CLEAR_STUDY_COLLECTION });

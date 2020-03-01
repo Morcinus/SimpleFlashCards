@@ -1,4 +1,4 @@
-import { SET_EDIT_COLLECTION_DATA, DELETE_EDIT_COLLECTION_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS } from "../types";
+import { SET_EDIT_COLLECTION_DATA, DELETE_EDIT_COLLECTION_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS } from "../types";
 import axios from "axios";
 
 /**
@@ -9,7 +9,7 @@ import axios from "axios";
 
 /**
  * @function deleteCollectionDraft
- * @description Vymaže data kolekce z reduceru.
+ * @description Vymaže data kolekce z [editColReduceru]{@link module:editColReducer}.
  */
 export const deleteCollectionDraft = () => dispatch => {
   dispatch({ type: DELETE_EDIT_COLLECTION_DATA });
@@ -18,8 +18,8 @@ export const deleteCollectionDraft = () => dispatch => {
 /**
  * @function updateCollection
  * @description Nahraje na server novou verzi kolekce.
- * @param {Object} colData - data kolekce
- * @param {string} colId - ID upravované kolekce
+ * @param {Object} colData - Data kolekce.
+ * @param {string} colId - ID upravované kolekce.
  * @async
  */
 export const updateCollection = (colData, colId) => dispatch => {
@@ -68,8 +68,8 @@ export const updateCollection = (colData, colId) => dispatch => {
 
 /**
  * @function getCollection
- * @description Získá ze serveru data o kolekci na základě jejího ID.
- * @param {string} colId - data kolekce
+ * @description Získá ze serveru data o kolekci na základě jejího ID. Data pak uloží do [editColReduceru]{@link module:editColReducer}.
+ * @param {string} colId - Data kolekce.
  * @async
  */
 export const getCollection = colId => dispatch => {
@@ -92,8 +92,8 @@ export const getCollection = colId => dispatch => {
 /**
  * @function validateUploadCollectionData
  * @description Ověří, zda jsou data kolekci platná.
- * @param {Object} colData - data kolekce
- * @returns Array<String> - error kódy, pokud jsou všechna data planá, vrací prázdné pole.
+ * @param {Object} colData - Data kolekce.
+ * @returns {Array<String>} Vrací pole error kódů. Pokud jsou všechna data planá, vrací prázdné pole.
  */
 const validateUploadCollectionData = colData => {
   let errors = [];
@@ -119,7 +119,7 @@ const validateUploadCollectionData = colData => {
 /**
  * @function deleteCollection
  * @description Pošle na server požadavek, aby byla daná kolekce smazána.
- * @param {string} colId - ID kolekce
+ * @param {string} colId - ID kolekce.
  * @async
  */
 export const deleteCollection = colId => dispatch => {

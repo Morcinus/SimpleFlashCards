@@ -9,8 +9,8 @@ import axios from "axios";
 
 /**
  * @function saveDeckDraft
- * @description Uloží do reduceru návrh balíčku. Tato funkce je zavolána, pokud uživatel opustí stránku bez uložení balíčku na server.
- * @param {Object} deckData - data balíčku
+ * @description Uloží do [createDeckReduceru]{@link module:createDeckReducer} návrh balíčku. Tato funkce je zavolána, pokud uživatel opustí stránku bez uložení balíčku na server.
+ * @param {Object} deckData - Data balíčku.
  */
 export const saveDeckDraft = deckData => dispatch => {
   dispatch({ type: UPDATE_DECK_DATA, payload: deckData });
@@ -18,7 +18,7 @@ export const saveDeckDraft = deckData => dispatch => {
 
 /**
  * @function deleteDeckDraft
- * @description Vymaže návrh balíčku z reduceru.
+ * @description Vymaže návrh balíčku z [createDeckReduceru]{@link module:createDeckReducer}.
  */
 export const deleteDeckDraft = () => dispatch => {
   dispatch({ type: DELETE_DECK_DATA });
@@ -27,7 +27,7 @@ export const deleteDeckDraft = () => dispatch => {
 /**
  * @function uploadDeck
  * @description Nahraje na server nově vytvořený balíček.
- * @param {Object} deckData - data balíčku
+ * @param {Object} deckData - Data balíčku.
  * @async
  */
 export const uploadDeck = deckData => dispatch => {
@@ -97,8 +97,8 @@ export const uploadDeck = deckData => dispatch => {
 /**
  * @function validateUploadDeckData
  * @description Ověří, zda jsou data balíčku platná.
- * @param {Object} deckData - data balíčku
- * @returns Array<String> - error kódy, pokud jsou všechna data planá, vrací prázdné pole.
+ * @param {Object} deckData - Data balíčku.
+ * @returns {Array<String>} Vrací pole error kódů. Pokud jsou všechna data planá, vrací prázdné pole.
  */
 const validateUploadDeckData = deckData => {
   let errors = [];

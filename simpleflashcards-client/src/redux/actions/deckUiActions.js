@@ -19,7 +19,7 @@ import axios from "axios";
 
 /**
  * @function getUserDecks
- * @description Získá ze serveru seznam balíčků vytvořených uživatelem a uloží ho do reduceru.
+ * @description Získá ze serveru seznam balíčků vytvořených uživatelem a uloží ho do [deckUiReduceru]{@link module:deckUiReducer}.
  * @async
  */
 export const getUserDecks = () => dispatch => {
@@ -38,7 +38,7 @@ export const getUserDecks = () => dispatch => {
 
 /**
  * @function clearUserDecks
- * @description Vymaže seznam balíčků vytvořených uživatelem z reduceru.
+ * @description Vymaže seznam balíčků vytvořených uživatelem z [deckUiReduceru]{@link module:deckUiReducer}.
  */
 export const clearUserDecks = () => dispatch => {
   dispatch({ type: CLEAR_USER_DECKS });
@@ -46,7 +46,7 @@ export const clearUserDecks = () => dispatch => {
 
 /**
  * @function getPinnedDecks
- * @description Získá ze serveru seznam balíčků připnutých uživatelem a uloží ho do reduceru.
+ * @description Získá ze serveru seznam balíčků připnutých uživatelem a uloží ho do [deckUiReduceru]{@link module:deckUiReducer}.
  * @async
  */
 export const getPinnedDecks = () => dispatch => {
@@ -65,7 +65,7 @@ export const getPinnedDecks = () => dispatch => {
 
 /**
  * @function clearPinnedDecks
- * @description Vymaže seznam balíčků připnutých uživatelem z reduceru.
+ * @description Vymaže seznam balíčků připnutých uživatelem z [deckUiReduceru]{@link module:deckUiReducer}.
  */
 export const clearPinnedDecks = () => dispatch => {
   dispatch({ type: CLEAR_PINNED_DECKS });
@@ -73,7 +73,7 @@ export const clearPinnedDecks = () => dispatch => {
 
 /**
  * @function getDeck
- * @description Získá ze serveru prodrobná data o daném balíčku a uloží je do reduceru.
+ * @description Získá ze serveru prodrobná data o daném balíčku a uloží je do [deckUiReduceru]{@link module:deckUiReducer}.
  * @param {string} deckId - ID balíčku, o kterém se mají získat data.
  * @async
  */
@@ -93,7 +93,7 @@ export const getDeck = deckId => dispatch => {
 
 /**
  * @function clearDeck
- * @description Smaže data o daném balíčku z reduceru.
+ * @description Smaže data o daném balíčku z [deckUiReduceru]{@link module:deckUiReducer}.
  */
 export const clearDeck = () => dispatch => {
   dispatch({ type: CLEAR_DECK });

@@ -16,8 +16,9 @@ import { renderFlashCards } from "../util/functions";
  * @class DeckCards
  * @extends Component
  * @category Components
- * @classdesc Tento komponent zobrazuje všechny karty daného balíčku.
- * @property {Object} state - Vnitřní state komponentu
+ * @classdesc Tento komponent zobrazuje všechny karty balíčku na stránce daného balíčku.
+ * @param {Object} props - Vstupní data pro daný komponent.
+ * @property {Object} state - Vnitřní state komponentu.
  * @property {Array<boolean>} state.cardSides - Určuje, jak jsou otočené jednotlivé kartičky na této stránce. Pro hodnotu false uživatel vidí přední stranu, pro hodnotu true vidí zadní.
  *
  * @requires functions~renderFlashCards
@@ -37,7 +38,7 @@ export class DeckCards extends Component {
    * @function flipCard
    * @memberOf DeckCards
    * @description Otočí kartu na druhou stranu tím, že přepíše hodnotu v cardSides poli v state tohoto komponentu.
-   * @param {number} index - určuje číslo karty, která má být otočena.
+   * @param {number} index - Určuje index karty, která má být otočena.
    */
   flipCard(index) {
     // Zdroj: https://stackoverflow.com/questions/29537299/react-how-to-update-state-item1-in-state-using-setstate

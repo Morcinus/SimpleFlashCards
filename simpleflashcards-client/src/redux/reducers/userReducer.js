@@ -8,8 +8,8 @@ import { SET_AUTHENTICATED, SET_UNAUTHENTICATED, SET_USER_DATA, CLEAR_USER_DATA,
 
 /**
  * @type {Object} initialState
- * @description Původní stav reduceru
- * @property {Object} initialState - původní stav reduceru
+ * @description Původní stav reduceru.
+ * @property {Object} initialState - Původní stav reduceru.
  * @property {boolean} initialState.authenticated - Uchovává informaci, zda-li je uživatel přihlášený a autentizovaný.
  * @property {Object} initialState.credentials - Uchovává data o přihlášeném uživateli.
  * @property {Object} initialState.userProfile - Uchovává data o profilu uživatele.
@@ -23,9 +23,9 @@ const initialState = {
 /**
  * @function function
  * @description Mění stav reduceru.
- * @param {Object} state - stav reduceru
- * @param {Object} action - akce, která vyvolává změnu v reduceru
- * @returns nový stav reduceru
+ * @param {Object} state - Stav reduceru.
+ * @param {Object} action - Akce, která vyvolává změnu v reduceru.
+ * @returns {Object} Nový stav reduceru.
  */
 export default function(state = initialState, action) {
   switch (action.type) {

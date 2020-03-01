@@ -25,6 +25,12 @@ import { connect } from "react-redux";
 import { saveDeckDraft, deleteDeckDraft, uploadDeck } from "../redux/actions/createDeckActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @function styles
+ * @memberof createDeck
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   container: {
     [theme.breakpoints.down("sm")]: {
@@ -64,7 +70,8 @@ const initialState = {
  * @extends Component
  * @category Pages
  * @classdesc Na této stránce může uživatel vytvořit balíček a následně ho nahrát na server.
- * @property {Object} state - Vnitřní state komponentu
+ * @param {Object} props - Vstupní data pro daný komponent.
+ * @property {Object} state - Vnitřní state komponentu.
  * @property {string} state.deckName - Uchovává název balíčku.
  * @property {string} state.deckDescription - Uchovává popis balíčku.
  * @property {Object} state.deckImage - Uchovává obrázek balíčku.
@@ -105,7 +112,7 @@ export class createDeck extends Component {
   /**
    * @function componentDidMount
    * @memberOf createDeck
-   * @description Načte návrh balíčku, pokud předtím uživatel balíček neuložil na server nebo nesmazal.
+   * @description Načte návrh balíčku, pokud předtím uživatel návrh balíčku neuložil na server nebo ho nesmazal.
    */
   componentDidMount() {
     this.setState({
@@ -121,7 +128,7 @@ export class createDeck extends Component {
   /**
    * @function componentWillUnmount
    * @memberOf createDeck
-   * @description Uloží návrh balíčku.
+   * @description Uloží návrh balíčku do reduceru a vymaže status aplikace v reduceru.
    */
   componentWillUnmount() {
     let deckData = {
@@ -140,7 +147,7 @@ export class createDeck extends Component {
    * @function updateDeckCards
    * @memberOf createDeck
    * @description Přepisuje seznam karet balíčku na základě změn v tabulce karet.
-   * @param {Array<Object>} cards - seznam karet v daném balíčku
+   * @param {Array<Object>} cards - Seznam karet v daném balíčku.
    */
   updateDeckCards(cards) {
     this.setState({
@@ -151,7 +158,7 @@ export class createDeck extends Component {
   /**
    * @function deleteDeckDraft
    * @memberOf createDeck
-   * @description Vymaže návrh balíčku
+   * @description Vymaže návrh balíčku z reduceru a ze state tohoto komponentu.
    */
   deleteDeckDraft() {
     this.setState(initialState);
@@ -186,7 +193,7 @@ export class createDeck extends Component {
    * @function componentDidUpdate
    * @memberOf createDeck
    * @description Pokud byl balíček úspěšně vytvořen na serveru, vymaže všechna data ze state komponentu.
-   * @param {Object} prevProps - předchozí props daného komponentu
+   * @param {Object} prevProps - Předchozí props daného komponentu.
    */
   componentDidUpdate(prevProps) {
     // Remove data if the deck was created

@@ -30,8 +30,9 @@ const queryString = require("query-string");
  * @class studyDeck
  * @extends Component
  * @category Pages
- * @classdesc Na této stránce uživatel může studovat daný balíček
- * @property {Object} state - Vnitřní state komponentu
+ * @classdesc Na této stránce uživatel může studovat daný balíček.
+ * @param {Object} props - Vstupní data pro daný komponent.
+ * @property {Object} state - Vnitřní state komponentu.
  * @property {boolean} state.cardSide - Jak je otočená kartička, kterou uživatel momentálně studuje. Pro hodnotu false uživatel vidí přední stranu, pro hodnotu true vidí zadní.
  * @property {Array<Object>} state.cardProgress - Uchovává informace o kartách a pokroku uživatele u každé z nich.
  * @property {number} state.cardArrayIndex - Uchovává informaci, kolikátou kartu z balíčku uživatel momentálně studuje.
@@ -202,13 +203,18 @@ export class studyDeck extends Component {
   /**
    * @function handleQuit
    * @memberOf studyDeck
-   * @description Vymaže data o studovaném balíčku a přesměruje uživatele na /home
+   * @description Vymaže data o studovaném balíčku a přesměruje uživatele na /home.
    */
   handleQuit = () => {
     this.props.clearStudyDeck();
     this.props.history.push("/home");
   };
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf studyDeck
+   * @description Vymaže status aplikace v reduceru.
+   */
   componentWillUnmount() {
     this.props.clearStatus();
   }

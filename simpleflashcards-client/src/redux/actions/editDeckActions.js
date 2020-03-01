@@ -9,7 +9,7 @@ import axios from "axios";
 
 /**
  * @function deleteDeckDraft
- * @description Vymaže návrh balíčku z reduceru.
+ * @description Vymaže návrh balíčku z [editDeckReduceru]{@link module:editDeckReducer}.
  */
 export const deleteDeckDraft = () => dispatch => {
   dispatch({ type: DELETE_EDIT_DECK_DATA });
@@ -18,8 +18,8 @@ export const deleteDeckDraft = () => dispatch => {
 /**
  * @function updateDeck
  * @description Nahraje na server novou verzi balíčku.
- * @param {Object} deckData - data balíčku
- * @param {string} deckId - ID upravovaného balíčku
+ * @param {Object} deckData - Data balíčku.
+ * @param {string} deckId - ID upravovaného balíčku.
  * @async
  */
 export const updateDeck = (deckData, deckId) => dispatch => {
@@ -88,7 +88,7 @@ export const updateDeck = (deckData, deckId) => dispatch => {
 
 /**
  * @function getDeck
- * @description Získá ze serveru data o balíčku na základě jeho ID.
+ * @description Získá ze serveru data o balíčku na základě jeho ID. Data pak uloží do [editDeckReduceru]{@link module:editDeckReducer}.
  * @param {string} deckId - data balíčku
  * @async
  */
@@ -109,8 +109,8 @@ export const getDeck = deckId => dispatch => {
 /**
  * @function validateUploadDeckData
  * @description Ověří, zda jsou data balíčku platná.
- * @param {Object} deckData - data balíčku
- * @returns Array<String> - error kódy, pokud jsou všechna data planá, vrací prázdné pole.
+ * @param {Object} deckData - Data balíčku.
+ * @returns {Array<String>} Vrací pole error kódů. Pokud jsou všechna data planá, vrací prázdné pole.
  */
 const validateUploadDeckData = deckData => {
   let errors = [];
@@ -136,7 +136,7 @@ const validateUploadDeckData = deckData => {
 /**
  * @function deleteDeck
  * @description Pošle na server požadavek, aby byl daný balíček smazán.
- * @param {string} deckId - ID balíčku
+ * @param {string} deckId - ID balíčku.
  * @async
  */
 export const deleteDeck = deckId => dispatch => {

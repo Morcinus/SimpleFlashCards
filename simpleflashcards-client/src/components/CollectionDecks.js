@@ -14,7 +14,8 @@ import { renderDecks } from "../util/functions";
  * @class CollectionDecks
  * @extends Component
  * @category Components
- * @classdesc Tento komponent zobrazí balíčky, které jsou obsaženy v dané kolekci.
+ * @classdesc Tento komponent zobrazuje balíčky, které jsou obsaženy v dané kolekci.
+ * @param {Object} props - Vstupní data pro daný komponent.
  *
  * @requires functions~renderDecks
  * @requires {@link module:store~reducers module:store~reducers.colUi}

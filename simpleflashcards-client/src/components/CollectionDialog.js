@@ -44,8 +44,9 @@ const initialState = {
  * @class CollectionDialog
  * @extends Component
  * @category Components
- * @classdesc Tento komponent umožňuje uživateli vytvořit novou kolekci, nebo přidat balíček do již existující kolekce tohoto uživatele.
- * @property {Object} state - vnitřní state komponentu
+ * @classdesc Tento komponent vytváří dialogové okno, které umožňuje uživateli vytvořit novou kolekci, nebo přidat balíček do již existující kolekce tohoto uživatele.
+ * @param {Object} props - Vstupní data pro daný komponent.
+ * @property {Object} state - Vnitřní state komponentu.
  * @property {string} state.newColName - Text, který uživatel zadá do formuláře do políčka pro název vytvářené kolekce.
  * @property {boolean} state.private - Určuje, zda bude nově vytvořená kolekce soukromá nebo veřejná.
  *
@@ -68,7 +69,7 @@ export class CollectionDialog extends Component {
   /**
    * @function componentDidMount
    * @memberOf CollectionDialog
-   * @description Získá seznam kolekcí společně s informacemi, zda-li je balíček již v kolekcích obsažen.
+   * @description Získá seznam kolekcí, které uživatel vytvořil společně s informacemi, zda je balíček v kolekcích obsažen či ne.
    */
   componentDidMount() {
     this.props.getUserCollectionsWithDeckInfo(this.props.deckId);
@@ -96,8 +97,8 @@ export class CollectionDialog extends Component {
    * @function handleAddToCollection
    * @memberOf CollectionDialog
    * @description Pošle na server požadavek, aby byl daný balíček přidán do kolekce.
-   * @param {string} colId - ID kolekce, do které má být přidán balíček.
-   * @param {number} i - Index kolekce v poli kolekcí.
+   * @param {string} colId - ID kolekce, do které má být balíček přidán.
+   * @param {number} i - Index kolekce v poli kolekcí, do které má být balíček přidán.
    */
   handleAddToCollection(colId, i) {
     this.props.addDeckToCollection(colId, this.props.deckId, i);
@@ -106,7 +107,7 @@ export class CollectionDialog extends Component {
   /**
    * @function handleCreateCollection
    * @memberOf CollectionDialog
-   * @description Pošle na server požadavek, aby byla vytvořena nová kolekce s daným názvem, která bude soukromá nebo veřejná a bude obsahovat daný balíček.
+   * @description Pošle na server požadavek, aby byla vytvořena nová kolekce s názvem, který uživatel zadal. Kolekce bude soukromá nebo veřejná a bude obsahovat balíček, na jehož stránce se uživatel nachází.
    */
   handleCreateCollection() {
     this.props.createCollection(this.state.newColName, this.props.deckId, this.state.private);

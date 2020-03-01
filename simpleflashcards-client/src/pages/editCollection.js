@@ -26,6 +26,12 @@ import { connect } from "react-redux";
 import { deleteCollection, deleteCollectionDraft, updateCollection, getCollection } from "../redux/actions/editColActions";
 import { clearStatus } from "../redux/actions/uiStatusActions";
 
+/**
+ * @function styles
+ * @memberof editCollection
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   tableBox: {
     // [theme.breakpoints.down("sm")]: {
@@ -72,7 +78,8 @@ const initialState = {
  * @extends Component
  * @category Pages
  * @classdesc Na této stránce může uživatel upravovat kolekci a následně nahrát novou verzi kolekce na server.
- * @property {Object} state - Vnitřní state komponentu
+ * @param {Object} props - Vstupní data pro daný komponent.
+ * @property {Object} state - Vnitřní state komponentu.
  * @property {string} state.colName - Uchovává název kolekce.
  * @property {string} state.colDescription - Uchovává popis kolekce.
  * @property {Array<Object>} state.deckArray - Uchovává balíčky obsažené v kolekci.
@@ -120,7 +127,7 @@ export class editCollection extends Component {
    * @function componentDidUpdate
    * @memberOf editCollection
    * @description Po stažení dat kolekce ze serveru je uloží do state tohoto komponentu.
-   * @param {Object} prevProps - předchozí props daného komponentu
+   * @param {Object} prevProps - Předchozí props daného komponentu.
    */
   componentDidUpdate(prevProps) {
     // Load collection data after getCollection()
@@ -146,6 +153,11 @@ export class editCollection extends Component {
     }
   }
 
+  /**
+   * @function componentWillUnmount
+   * @memberOf editCollection
+   * @description Vymaže status aplikace v reduceru.
+   */
   componentWillUnmount() {
     this.props.clearStatus();
   }
@@ -154,7 +166,7 @@ export class editCollection extends Component {
    * @function updateDeckArray
    * @memberOf editCollection
    * @description Přepisuje seznam balíčků v kolekci na základě změn v tabulce balíčků.
-   * @param {Array<Object>} decks - seznam balíčků v dané kolekci
+   * @param {Array<Object>} decks - Seznam balíčků v dané kolekci.
    */
   updateDeckArray(decks) {
     this.setState({

@@ -8,8 +8,8 @@ import { SET_EDIT_COLLECTION_DATA, DELETE_EDIT_COLLECTION_DATA } from "../types"
 
 /**
  * @type {Object} initialState
- * @description Původní stav reduceru
- * @property {Object} initialState - původní stav reduceru
+ * @description Původní stav reduceru.
+ * @property {Object} initialState - Původní stav reduceru.
  * @property {string} initialState.colName - Uchovává název kolekce.
  * @property {string} initialState.colDescription - Uchovává popis kolekce.
  * @property {Array<Object>} initialState.deckArray - Uchovává balíčky obsažené v kolekci.
@@ -25,9 +25,9 @@ const initialState = {
 /**
  * @function function
  * @description Mění stav reduceru.
- * @param {Object} state - stav reduceru
- * @param {Object} action - akce, která vyvolává změnu v reduceru
- * @returns nový stav reduceru
+ * @param {Object} state - Stav reduceru.
+ * @param {Object} action - Akce, která vyvolává změnu v reduceru.
+ * @returns {Object} Nový stav reduceru.
  */
 export default function(state = initialState, action) {
   switch (action.type) {

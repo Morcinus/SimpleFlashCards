@@ -29,6 +29,12 @@ import { collectionDefaultImgUrl } from "../util/other";
 import { connect } from "react-redux";
 import { pinCollection, unpinCollection } from "../redux/actions/colUiActions";
 
+/**
+ * @function styles
+ * @memberof CollectionInfo
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   descriptionGrid: {
     [theme.breakpoints.down("md")]: {
@@ -41,8 +47,9 @@ const styles = theme => ({
  * @class CollectionInfo
  * @extends Component
  * @category Components
- * @classdesc Tento komponent zobrazuje informace o dané kolekci a umožňuje kolekci sdílet, připnout ji nebo ji případně upravit.
- * @property {Object} state - vnitřní state komponentu
+ * @classdesc Tento komponent zobrazuje informace o kolekci na stránce dané kolekce. Komponent umožňuje kolekci sdílet, připnout ji nebo ji případně upravit.
+ * @param {Object} props - Vstupní data pro daný komponent.
+ * @property {Object} state - Vnitřní state komponentu.
  * @property {boolean} state.popoverOpen - Určuje, zda-li je otevřeno vyskakovací okno na sdílení kolekce.
  * @property {element} state.anchorEl - Obsahuje element, ke kterému se má přichytit vyskakovací okno při sdílení kolekce.
  * @property {boolean} state.copiedLink - Určuje, zda-li uživatel zkopíroval odkaz na tuto kolekci.
@@ -69,7 +76,7 @@ export class CollectionInfo extends Component {
    * @function handleCopyClick
    * @memberOf CollectionInfo
    * @description Zkopíruje do schránky odkaz na kolekci.
-   * @param {string} elementId - ID vyskakovacího okna
+   * @param {string} elementId - ID vyskakovacího okna.
    */
   handleCopyClick = elementId => {
     // Zdroj: https://stackoverflow.com/questions/39501289/in-reactjs-how-to-copy-text-to-clipboard
@@ -126,7 +133,7 @@ export class CollectionInfo extends Component {
    * @function componentDidUpdate
    * @memberOf CollectionInfo
    * @description Po stažení dat kolekce ze serveru je uloží honotu isPinned do state tohoto komponentu.
-   * @param {Object} prevProps - předchozí props daného komponentu
+   * @param {Object} prevProps - Předchozí props daného komponentu.
    */
   componentDidUpdate(prevProps) {
     if (this.props.colUi.collection) {
@@ -141,7 +148,7 @@ export class CollectionInfo extends Component {
   /**
    * @function componentWillUnmount
    * @memberOf CollectionInfo
-   * @description Pokud byla změněna hodnota isPinned, nahraje změnu na server.
+   * @description Pokud byla změněna hodnota isPinned, nahraje změnu na server. Tím buď připne nebo odepne danou kolekci.
    */
   componentWillUnmount() {
     if (this.props.colUi.collection) {

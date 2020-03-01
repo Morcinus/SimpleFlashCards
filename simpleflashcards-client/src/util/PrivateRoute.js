@@ -10,8 +10,10 @@ import PropTypes from "prop-types";
  */
 
 /**
- * @const PrivateRoute
+ * @function PrivateRoute
  * @description Toto je React Route pro stránky, na kterých je třeba, aby byl uživatel přihlášen. Pokud není přihlášen, bude přesměrován na /login.
+ * @param {Object} component - Komponent, který chce uživatel zobrazit.
+ * @param {boolean} authenticated - Informace, zda je uživatel přihlášen či ne.
  * @requires {@link module:store~reducers module:store~reducers.user}
  */
 

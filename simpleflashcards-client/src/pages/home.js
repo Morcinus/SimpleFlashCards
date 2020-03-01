@@ -17,6 +17,12 @@ import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
 import withStyles from "@material-ui/core/styles/withStyles";
 
+/**
+ * @function styles
+ * @memberof home
+ * @description Určuje CSS pro daný komponent.
+ * @param {Object} theme - Theme (CSS) celé aplikace.
+ */
 const styles = theme => ({
   container: {
     [theme.breakpoints.up("md")]: {
@@ -29,9 +35,9 @@ const styles = theme => ({
  * @class home
  * @extends Component
  * @category Pages
- * @classdesc Stránka, na které si uživatel může prohlédnout seznam vytvořených a připnutých balíčků a kolekcí.
- * @property {Object} state - Vnitřní state komponentu
- * @property {number} state.selectedTabIndex - index pro Tabs komponent na této stránce
+ * @classdesc Domovská stránka aplikace, na které si uživatel může prohlédnout seznam kolekcí a balíčků, které vytvořil nebo připnul.
+ * @property {Object} state - Vnitřní state komponentu.
+ * @property {number} state.selectedTabIndex - Index pro Tabs komponent na této stránce.
  *
  */
 export class home extends Component {
@@ -45,8 +51,8 @@ export class home extends Component {
   /**
    * @function handleTabChange
    * @memberOf home
-   * @description Přepisuje [selectedTabIndex]{@link home} v state tohoto komponentu při přepnutí v Tabs navigation baru
-   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link home}
+   * @description Přepisuje [selectedTabIndex]{@link home} v state tohoto komponentu při přepnutí v Tabs navigation baru.
+   * @param {number} newValue - Nová hodnota pro [selectedTabIndex]{@link home}.
    */
   handleTabChange = (_, newValue) => {
     this.setState({

@@ -1,11 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: components/DeckTable.js</title>
+    <title>JSDoc: PrivateRoute</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -71,183 +69,328 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Source</p>
-                        <h1>components/DeckTable.js</h1>
+                        <p>Module</p>
+                        <h1>PrivateRoute</h1>
                     </header>
                     
                     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
-import MaterialTable from "material-table";
+        
+            
+        
+    
+</header>
 
-/**
- * @class DeckTable
- * @extends Component
- * @category Components
- * @classdesc Tento komponent zobrazuje tabulku pro upravování balíčku. Je převážně založen na knihovně {@link https://material-table.com}.
- * @param {Object} props - Vstupní data pro daný komponent.
- * @property {Object} state - Vnitřní state komponentu.
- * @property {Array&lt;Object>} state.columns - Určuje nastavení sloupců material-table tabulky (viz {@link https://material-table.com}).
- *
- * @see Tento komponent je založen na material-table {@link https://material-table.com}
- */
-export class DeckTable extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      columns: [
-        { title: "Index", field: "index", editable: "never" },
-        { title: "Front Page", field: "frontPage" },
-        { title: "Back Page", field: "backPage" }
-      ]
-    };
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Toto je React Route pro stránky, na kterých je třeba, aby byl uživatel přihlášen. Pokud není přihlášen, bude přesměrován na /login.</p></div>
+        
 
-    this.tableRef = React.createRef();
-  }
-  render() {
-    return (
-      &lt;MaterialTable
-        tableRef={this.tableRef}
-        title="Cards"
-        columns={this.state.columns}
-        data={this.props.data}
-        options={{
-          search: false,
-          actionsColumnIndex: -1,
-          paging: false,
-          grouping: false
-        }}
-        editable={{
-          /**
-           * @function onRowAdd
-           * @memberOf DeckTable
-           * @description [Material-table]{@link https://material-table.com} funkce, která umožňuje přidávání nových řádků do tabulky.
-           * @param {Object} newData - Nová data tabulky.
-           */
-          onRowAdd: newData =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                {
-                  const data = this.props.data;
-                  newData.index = this.props.data.length + 1;
-                  data.push(newData);
-                  this.setState({ data }, () => resolve());
-                }
-                resolve();
-              }, 1000);
-            }),
-          /**
-           * @function onRowUpdate
-           * @memberOf DeckTable
-           * @description [Material-table]{@link https://material-table.com} funkce, která umožňuje upravování řádků tabulky.
-           * @param {Object} newData - Nová data tabulky.
-           * @param {Object} oldData - Stará data tabulky.
-           */
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                {
-                  const data = this.props.data;
-                  const index = data.indexOf(oldData);
-                  data[index] = newData;
-                  this.setState({ data }, () => resolve());
-                }
-                resolve();
-              }, 1000);
-            }),
-          /**
-           * @function onRowDelete
-           * @memberOf DeckTable
-           * @description [Material-table]{@link https://material-table.com} funkce, která umožňuje odstraňování řádků tabulky.
-           * @param {Object} oldData - Stará data tabulky.
-           */
-          onRowDelete: oldData =>
-            new Promise((resolve, reject) => {
-              setTimeout(() => {
-                {
-                  let data = this.props.data;
-                  const index = data.indexOf(oldData);
-                  data.splice(index, 1);
-                  this.props.updateDeckCards(data);
-                  resolve();
-                }
-                resolve();
-              }, 1000);
-            })
-        }}
-        actions={[
-          {
-            icon: "arrow_upward",
-            tooltip: "Move Up",
-            /**
-             * @function onClick
-             * @memberOf DeckTable
-             * @description Při kliknutí na tlačítko s šipkou nahoru posune daný řádek v tabulce o jednu pozici výše.
-             * @param {Array&lt;Object>} rowData - Data o řádcích tabulky.
-             */
-            onClick: (event, rowData) => {
-              const data = this.props.data;
-              const index = data.indexOf(rowData);
-              if (index - 1 >= 0) {
-                let rowData2 = data[index - 1];
+        
+            
 
-                // Switches the rows
-                rowData2.index = rowData2.index + 1;
-                rowData.index = rowData.index - 1;
 
-                data[index - 1] = rowData;
-                data[index] = rowData2;
-              }
-              this.props.updateDeckCards(data);
-            }
-          },
-          {
-            icon: "arrow_downward",
-            tooltip: "Move Down",
-            /**
-             * @function onClick
-             * @memberOf DeckTable
-             * @description Při kliknutí na tlačítko s šipkou dolu posune daný řádek v tabulce o jednu pozici níže.
-             * @param {Array&lt;Object>} rowData - Data o řádcích tabulky.
-             */
-            onClick: (event, rowData) => {
-              const data = this.props.data;
-              const index = data.indexOf(rowData);
-              if (index + 1 &lt; data.length) {
-                let rowData2 = data[index + 1];
 
-                // Switches the rows
-                rowData2.index = rowData2.index - 1;
-                rowData.index = rowData.index + 1;
 
-                data[index + 1] = rowData;
-                data[index] = rowData2;
-              }
-              this.props.updateDeckCards(data);
-            }
-          }
-        ]}
-        localization={{
-          body: {
-            editRow: {
-              deleteText: "Are you sure you want to delete this card?"
-            }
-          }
-        }}
-      />
-    );
-  }
-}
 
-export default DeckTable;
-</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="util_PrivateRoute.js.html" class="button">View Source</a>
+            <span>
+                <a href="util_PrivateRoute.js.html">util/PrivateRoute.js</a>, <a href="util_PrivateRoute.js.html#line6">line 6</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h3 class="title"><span>Methods</span></h3>
+            <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="~PrivateRoute">
+        <a class="href-link" href="#~PrivateRoute">#</a>
+        
+            
+                <span class='tag'>inner</span>
+            
+        
+        <span class="code-name">
+            
+                PrivateRoute<span class="signature">(component, authenticated)</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Toto je React Route pro stránky, na kterých je třeba, aby byl uživatel přihlášen. Pokud není přihlášen, bude přesměrován na /login.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>component</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">Object</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Komponent, který chce uživatel zobrazit.</p></td>
+</tr>
+
+
+    
+
+        
+<tr class="deep-level-0">
+  
+      <td class="name"><code>authenticated</code></td>
+  
+
+  <td class="type">
+  
+      
+<span class="param-type">boolean</span>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Informace, zda je uživatel přihlášen či ne.</p></td>
+</tr>
+
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="util_PrivateRoute.js.html" class="button">View Source</a>
+            <span>
+                <a href="util_PrivateRoute.js.html">util/PrivateRoute.js</a>, <a href="util_PrivateRoute.js.html#line12">line 12</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+    <div class="method-parameter columns">
+        <div class="column is-2"><label>Requires:</label></div>
+        <div class="column is-10">
+            <ul>
+                <li><a href="module-store.html#~reducers">module:store~reducers.user</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -260,7 +403,7 @@ export default DeckTable;
 
 <footer class="footer">
     <div class="content has-text-centered">
-        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Sun Mar 01 2020 13:05:55 GMT+0100 (GMT+01:00)</p>
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Sun Mar 01 2020 13:05:56 GMT+0100 (GMT+01:00)</p>
         <p class="sidebar-created-by">
             <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
             <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

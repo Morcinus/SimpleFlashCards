@@ -22,19 +22,18 @@ import { collectionDefaultImgUrl } from "../util/other";
 /**
  * Vytvoří markup s obrázky a názvy balíčků.
  * @function renderDecks
- * @param {Array} deckArray - Pole balíčků
- * @returns Markup balíčků
+ * @param {Array} deckArray - Pole balíčků.
+ * @returns {Array} Pole markupu balíčků.
  */
 
 export function renderDecks(deckArray) {
   let markup = [];
 
   const textStyle = {
-    display: "inline-block",
-    maxWidth: "100px",
     whiteSpace: "nowrap",
-    overflow: "hidden !important",
-    textOverflow: "ellipsis"
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    maxWidth: "145px"
   };
 
   for (let i = 0; i < deckArray.length; i++) {
@@ -53,7 +52,7 @@ export function renderDecks(deckArray) {
             <CardMedia style={{ width: "100%", height: "100%" }} image={deckArray[i].deckImage ? deckArray[i].deckImage : defaultDeckImageUrl}></CardMedia>
           </CardActionArea>
         </Card>
-        <Typography style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "145px" }}>{deckArray[i].deckName}</Typography>
+        <Typography style={textStyle}>{deckArray[i].deckName}</Typography>
       </Grid>
     );
   }
@@ -64,11 +63,18 @@ export function renderDecks(deckArray) {
 /**
  * Vytvoří markup s obrázky a názvy kolekcí.
  * @function renderCollections
- * @param {Array} collectionArray - Pole kolekcí
- * @returns Markup kolekcí
+ * @param {Array} collectionArray - Pole kolekcí.
+ * @returns {Array} Pole markupu kolekcí.
  */
 export function renderCollections(collectionArray) {
   let markup = [];
+
+  const textStyle = {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    maxWidth: "145px"
+  };
 
   for (let i = 0; i < collectionArray.length; i++) {
     markup.push(
@@ -85,7 +91,7 @@ export function renderCollections(collectionArray) {
             <CardMedia style={{ width: "100%", height: "100%" }} image={collectionDefaultImgUrl}></CardMedia>
           </CardActionArea>
         </Card>
-        <Typography style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "145px" }}>{collectionArray[i].colName}</Typography>
+        <Typography style={textStyle}>{collectionArray[i].colName}</Typography>
       </Grid>
     );
   }
@@ -96,8 +102,8 @@ export function renderCollections(collectionArray) {
 /**
  * Vytvoří markup tlačítek na učení karet dané kolekce.
  * @function colLearnButtons
- * @param {string} colId - ID kolekce
- * @returns Markup tlačítek
+ * @param {string} colId - ID kolekce.
+ * @returns Markup tlačítek.
  */
 export function colLearnButtons(colId) {
   const cardActionStyle = {
@@ -167,8 +173,8 @@ export function colLearnButtons(colId) {
 /**
  * Vytvoří markup tlačítek na učení karet daného balíčku.
  * @function deckLearnButtons
- * @param {string} deckId - ID balíčku
- * @returns Markup tlačítek
+ * @param {string} deckId - ID balíčku.
+ * @returns Markup tlačítek.
  */
 export function deckLearnButtons(deckId) {
   const cardActionStyle = {
@@ -238,10 +244,10 @@ export function deckLearnButtons(deckId) {
 /**
  * Vytvoří markup kartičky při studování.
  * @function flashCard
- * @param {Object} card - Objekt dané karty
+ * @param {Object} card - Objekt dané karty.
  * @param {boolean} cardSide - Určuje, jak je otočená kartička. Pro hodnotu false uživatel vidí přední stranu, pro hodnotu true vidí zadní.
  * @param {function} cardFlipFunciton - Funkce, která při kliknutí na kartičku kartu otočí.
- * @returns Markup kartičky
+ * @returns Markup kartičky.
  */
 export function flashCard(card, cardSide, cardFlipFunciton) {
   return (
@@ -272,10 +278,10 @@ export function flashCard(card, cardSide, cardFlipFunciton) {
 /**
  * Vytvoří markup pro všechny kartičky, které jsou v daném balíčku.
  * @function renderFlashCards
- * @param {Array<Object>} cardArray - Pole kartiček daného balíčku
+ * @param {Array<Object>} cardArray - Pole kartiček daného balíčku.
  * @param {Array<boolean>} cardSides - Pole které určuje, jak jsou jednotlivé kartičky otočené. Pro hodnotu false uživatel vidí přední stranu, pro hodnotu true vidí zadní.
  * @param {function} flipCardFunction - Funkce, která při kliknutí na kartičku kartu otočí.
- * @returns {Array<Object>} Markup kartiček
+ * @returns {Array} Markup kartiček.
  */
 export function renderFlashCards(cardArray, cardSides, flipCardFunction) {
   let markup = [];
