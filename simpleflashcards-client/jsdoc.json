@@ -11,15 +11,23 @@
     "cleverLinks": false,
     "monospaceLinks": false,
     "better-docs": {
-      "name": "Simple Flashcards Dokumentace",
+      "name": "Simple Flashcards Client dokumentace",
       "navigation": [
+        {
+          "label": "Aplikace",
+          "href": "https://simpleflashcards-4aea0.firebaseapp.com"
+        },
         {
           "label": "Github",
           "href": "https://github.com/Morcinus/SimpleFlashCards"
         },
         {
-          "label": "Aplikace",
-          "href": "https://simpleflashcards-4aea0.firebaseapp.com"
+          "label": "Simple Flashcards Cloud Functions dokumentace",
+          "href": "https://morcinus.github.io/simpleflashcards-fb-functions-docs/"
+        },
+        {
+          "label": "Uživatelské dukumentace",
+          "href": "https://morcinus.github.io/simpleflashcards-user-docs/"
         }
       ]
     }
