@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: admin</title>
+    <title>JSDoc: index.js</title>
 
     <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -69,142 +71,114 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Module</p>
-                        <h1>admin</h1>
+                        <p>Source</p>
+                        <h1>index.js</h1>
                     </header>
                     
                     
 
 
 
-
-<section>
-
-<header>
     
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const functions = require("firebase-functions");
 
-<article>
-    <div class="container-overview">
-    
-        
+// Express
+const express = require("express");
+const app = express();
 
-        
-    
-    </div>
-    
-    
+const authMiddleware = require("./util/authMiddleware");
 
-    
-        <h3 class="subsection-title">Requires</h3>
+// Cors
+const cors = require("cors")({ origin: true });
+app.use(cors);
+app.options("*", cors);
 
-        <ul>
-            <li><a href="https://www.npmjs.com/package/firebase-admin">https://www.npmjs.com/package/firebase-admin</a></li>
-        </ul>
-    
+const { signup, login, resetPassword, getUserPersonalData, setUserPersonalData, getUserDataByUsername, getUserData } = require("./functions/user");
 
-    
+const { createDeck, updateDeck, deleteDeck, pinDeck, unpinDeck, getUserDecks, getPinnedDecks, getDeck, uploadDeckImage } = require("./functions/deck");
 
-    
+const {
+  createCollection,
+  updateCollection,
+  addDeckToCollection,
+  deleteCollection,
+  pinCollection,
+  unpinCollection,
+  getUserCollections,
+  getUserCollectionsWithDeckInfo,
+  getPinnedCollections,
+  getCollection
+} = require("./functions/collection");
 
-    
+const { setDeckCardsProgress, getCardsToReview, getDeckUnknownCards, getCardsToLearnAndReview } = require("./functions/deckCards");
 
-    
+const { getColCardsToReview, getColUnknownCards, getColCardsToLearnAndReview, setColCardsProgress } = require("./functions/collectionCards");
 
-    
-        <div class='vertical-section'>
-            <h3 class="title"><span>Members</span></h3>
-            <div class="members">
-            
-                <div class="member">
+// User routes
+app.post("/signup", signup);
+app.post("/login", login);
+app.post("/resetPassword", authMiddleware, resetPassword);
+app.get("/getUserPersonalData", authMiddleware, getUserPersonalData);
+app.post("/setUserPersonalData", authMiddleware, setUserPersonalData);
+app.get("/getUserDataByUsername/:username", getUserDataByUsername);
+app.get("/getUserData", authMiddleware, getUserData);
 
-<h4 class="name" id="~db">
-    <a class="href-link" href="#~db">#</a>
-    
-        
-            <span class='tag'>inner</span>
-        
-            <span class='tag'>constant</span>
-        
-    
-    <span class="code-name">
-        db
-    </span>
-    
-</h4>
+// DECK ROUTES
+// Deck Editing
+app.post("/createDeck", authMiddleware, createDeck);
+app.post("/updateDeck/:deckId", authMiddleware, updateDeck);
+app.post("/deleteDeck/:deckId", authMiddleware, deleteDeck);
+app.post("/uploadDeckImage/:deckId", authMiddleware, uploadDeckImage);
 
+// Deck Pinning
+app.post("/pinDeck/:deckId", authMiddleware, pinDeck);
+app.post("/unpinDeck/:deckId", authMiddleware, unpinDeck);
 
+// Deck UI
+app.get("/getUserDecks", authMiddleware, getUserDecks);
+app.get("/getPinnedDecks", authMiddleware, getPinnedDecks);
+app.get("/getDeck/:deckId", authMiddleware, getDeck);
 
+// COLLECTION ROUTES
+// Collection Editing
+app.post("/createCollection", authMiddleware, createCollection);
+app.post("/updateCollection/:colId", authMiddleware, updateCollection);
+app.post("/addDeckToCollection/:colId/:deckId", authMiddleware, addDeckToCollection);
+app.post("/deleteCollection/:colId", authMiddleware, deleteCollection);
 
-<div class="description">
-    <p>Firestore Databáze</p>
-</div>
+// Collection Pinning
+app.post("/pinCollection/:colId", authMiddleware, pinCollection);
+app.post("/unpinCollection/:colId", authMiddleware, unpinCollection);
 
+// Collection UI
+app.get("/getUserCollections", authMiddleware, getUserCollections);
+app.get("/getUserCollectionsWithDeckInfo/:deckId", authMiddleware, getUserCollectionsWithDeckInfo);
+app.get("/getPinnedCollections", authMiddleware, getPinnedCollections);
+app.get("/getCollection/:colId", authMiddleware, getCollection);
 
+// Deck card routes
+app.get("/getCardsToReview/:deckId", authMiddleware, getCardsToReview);
+app.get("/getDeckUnknownCards/:deckId", authMiddleware, getDeckUnknownCards);
+app.get("/getCardsToLearnAndReview/:deckId", authMiddleware, getCardsToLearnAndReview);
+app.post("/setDeckCardsProgress/:deckId", authMiddleware, setDeckCardsProgress);
 
+// Collection Card routes
+app.get("/getColCardsToReview/:colId", authMiddleware, getColCardsToReview);
+app.get("/getColUnknownCards/:colId", authMiddleware, getColUnknownCards);
+app.get("/getColCardsToLearnAndReview/:colId", authMiddleware, getColCardsToLearnAndReview);
+app.post("/setColCardsProgress", authMiddleware, setColCardsProgress);
 
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="util_admin.js.html" class="button">View Source</a>
-            <span>
-                <a href="util_admin.js.html">util/admin.js</a>, <a href="util_admin.js.html#line12">line 12</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-</div>
-            
-            </div>
-        </div>
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+/**
+ * @module index
+ * @category Ostatní
+ * @description Zde se z jednotlivých funkcí vytvoří API.
+ */
+exports.api = functions.region("europe-west1").https.onRequest(app);
+</code></pre>
+        </article>
+    </section>
 
 
 

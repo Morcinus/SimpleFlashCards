@@ -10,14 +10,14 @@ const { db, admin } = require("../util/admin");
 /**
  * @function validateCreateCollectionData
  * @description Ověří, zda-li obsahuje název kolekce pouze povolené znaky a zda-li je v kolekci alespoň 1 balíček.
- * @param {string} colName - Název kolekce
- * @param {Array<Object>} deckArray - Pole balíčků
+ * @param {string} colName - Název kolekce.
+ * @param {Array<Object>} deckArray - Pole balíčků.
  * @returns {Array<String>} Vrací pole error kódů. Pokud ověření proběhlo bez problému, vrací prázdné pole.
  */
 const validateCreateCollectionData = (colName, deckArray) => {
   let errors = [];
 
-  // Ověření názvu kolekce
+  // Ověření názvu kolekce.
   if (colName !== "") {
     let colNameRegex = /^[a-zA-Z0-9 ]+$/;
     if (!colName.match(colNameRegex)) {
@@ -27,7 +27,7 @@ const validateCreateCollectionData = (colName, deckArray) => {
     errors.push("createCollection/empty-collection-name");
   }
 
-  // Ověření, zda je v kolekci alespoň 1 balíček
+  // Ověření, zda je v kolekci alespoň 1 balíček.
   if (deckArray.length <= 0) {
     errors.push("createCollection/empty-collection");
   }
@@ -39,17 +39,17 @@ const validateCreateCollectionData = (colName, deckArray) => {
  * @function createCollection
  * @description Vytvoří v soubor s daty kolekce v databázi.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
- * @param {string} req.body.colName - Název vytvářené kolekce
- * @param {string} req.body.colDescription - Popisek vytvářené kolekce
- * @param {Array<Object>} req.body.deckArray - Pole s balíčky, které obsahuje vytvářená kolekce
+ * @param {string} req.user.uid - ID uživatele.
+ * @param {string} req.body.colName - Název vytvářené kolekce.
+ * @param {string} req.body.colDescription - Popisek vytvářené kolekce.
+ * @param {Array<Object>} req.body.deckArray - Pole s balíčky, které obsahuje vytvářená kolekce.
  * @param {boolean} req.body.private - Informace o tom, zda je kolekce veřejná či soukromá.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {string} successCode
+ * @returns {string} Pokud funkce proběhla úspěšně, vrací "successCode". Pokud nastala chyba, vrací errorový kód ("errorCode").
  * @async
  */
 exports.createCollection = (req, res) => {
-  // Validate collection data
+  // Ověření dat kolekce
   const errorCodes = validateCreateCollectionData(req.body.colName, req.body.deckArray);
   if (errorCodes.length > 0) {
     return res.status(400).json({ errorCodes: errorCodes });
@@ -85,14 +85,14 @@ exports.createCollection = (req, res) => {
 /**
  * @function validateCollectionData
  * @description Ověří, zda-li obsahuje název kolekce pouze povolené znaky a zda-li je v kolekci alespoň 1 balíček.
- * @param {string} colName - Název kolekce
- * @param {Array<Object>} deckArray - Pole balíčků
+ * @param {string} colName - Název kolekce.
+ * @param {Array<Object>} deckArray - Pole balíčků.
  * @returns {Array<String>} Vrací pole error kódů. Pokud ověření proběhlo bez problému, vrací prázdné pole.
  */
 const validateCollectionData = (colName, deckArray) => {
   let errors = [];
 
-  // Ověření názvu kolekce
+  // Ověření názvu kolekce.
   if (colName !== "") {
     let colNameRegex = /^[a-zA-Z0-9 ]+$/;
     if (!colName.match(colNameRegex)) {
@@ -102,7 +102,7 @@ const validateCollectionData = (colName, deckArray) => {
     errors.push("updateCollection/empty-collection-name");
   }
 
-  // Ověření, zda je v kolekci alespoň 1 balíček
+  // Ověření, zda je v kolekci alespoň 1 balíček.
   if (deckArray.length <= 0) {
     errors.push("updateCollection/empty-collection");
   }
@@ -114,18 +114,18 @@ const validateCollectionData = (colName, deckArray) => {
  * @function updateCollection
  * @description Upraví v soubor s daty kolekce v databázi.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
- * @param {string} req.params.colId - ID upravované kolekce
- * @param {string} req.body.colName - Název upravované kolekce
- * @param {string} req.body.colDescription - Popisek upravované kolekce
- * @param {Array<Object>} req.body.deckArray - Pole s kartami upravované kolekce
+ * @param {string} req.user.uid - ID uživatele.
+ * @param {string} req.params.colId - ID upravované kolekce.
+ * @param {string} req.body.colName - Název upravované kolekce.
+ * @param {string} req.body.colDescription - Popisek upravované kolekce.
+ * @param {Array<Object>} req.body.deckArray - Pole s kartami upravované kolekce.
  * @param {boolean} req.body.private - Informace o tom, zda je upravovaná kolekce veřejný či soukromý.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {string} successCode
+ * @returns {string} Pokud funkce proběhla úspěšně, vrací "successCode". Pokud nastala chyba, vrací errorový kód ("errorCode").
  * @async
  */
 exports.updateCollection = (req, res) => {
-  // Ověření dat kolekce
+  // Ověření dat kolekce.
   const errorCodes = validateCollectionData(req.body.colName, req.body.deckArray);
   if (errorCodes.length > 0) {
     return res.status(400).json({ errorCodes: errorCodes });
@@ -142,13 +142,13 @@ exports.updateCollection = (req, res) => {
     .doc(req.params.colId)
     .get()
     .then(doc => {
-      // Ověření, zda-li je upravující uživatel majitelem kolekce
+      // Ověření, zda-li je upravující uživatel majitelem kolekce.
       let creatorId = doc.data().creatorId;
       if (creatorId !== req.user.uid) {
-        // Není majitelem, není oprávněn kolekci měnit
+        // Není majitelem, není oprávněn kolekci měnit.
         return res.status(401).json();
       } else {
-        // Upravení kolekce
+        // Upravení kolekce.
         db.collection("collections")
           .doc(req.params.colId)
           .update(colData);
@@ -167,23 +167,24 @@ exports.updateCollection = (req, res) => {
  * @function addDeckToCollection
  * @description Přidá daný balíček do kolekce.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
- * @param {string} req.params.colId - ID kolekce, do které má být balíček přidán
+ * @param {string} req.user.uid - ID uživatele.
+ * @param {string} req.params.colId - ID kolekce, do které má být balíček přidán.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
  * @async
+ * @returns {string} Pokud nastala chyba, vrací errorový kód.
  */
 exports.addDeckToCollection = (req, res) => {
   db.collection("collections")
     .doc(req.params.colId)
     .get()
     .then(doc => {
-      // Ověření, zda-li je uživatel majitelem kolekce
+      // Ověření, zda-li je uživatel majitelem kolekce.
       let creatorId = doc.data().creatorId;
       if (creatorId !== req.user.uid) {
-        // Není majitelem, není oprávněn do kolekce přidávat balíčky
+        // Není majitelem, není oprávněn do kolekce přidávat balíčky.
         return res.status(401).json();
       } else {
-        // Přidání balíčku do seznamu balíčku v souboru kolekce
+        // Přidání balíčku do seznamu balíčku v souboru kolekce.
         db.collection("collections")
           .doc(req.params.colId)
           .update({
@@ -204,9 +205,9 @@ exports.addDeckToCollection = (req, res) => {
  * @function deleteCollection
  * @description Odstraní kolekci z databáze.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
+ * @param {string} req.user.uid - ID uživatele.
  * @param {string} req.params.colId - ID kolekce, která má být odstraněna.
- * @returns {string} successCode
+ * @returns {string} Pokud funkce proběhla úspěšně, vrací "successCode". Pokud nastala chyba, vrací errorový kód ("errorCode").
  * @async
  */
 exports.deleteCollection = (req, res) => {
@@ -264,10 +265,11 @@ exports.deleteCollection = (req, res) => {
  * @function pinCollection
  * @description Připne uživateli danou kolekci.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
+ * @param {string} req.user.uid - ID uživatele.
  * @param {string} req.params.colId - ID kolekce, která má být připnuta.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
  * @async
+ * @returns {string} Pokud nastala chyba, vrací errorový kód.
  */
 exports.pinCollection = (req, res) => {
   if (req.params.colId) {
@@ -289,9 +291,10 @@ exports.pinCollection = (req, res) => {
  * @function unpinCollection
  * @description Odepne uživateli danou kolekci.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
+ * @param {string} req.user.uid - ID uživatele.
  * @param {string} req.params.colId - ID kolekce, která má být odepnuta.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
+ * @returns {string} Pokud nastala chyba, vrací errorový kód.
  * @async
  */
 exports.unpinCollection = (req, res) => {
@@ -316,21 +319,21 @@ exports.unpinCollection = (req, res) => {
  * @function getUserCollections
  * @description Získá seznam kolekcí vytvořených daným uživatelem.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
+ * @param {string} req.user.uid - ID uživatele.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} userCollections - Pole kolekcí, které byly vytvořeny uživatelem.
+ * @returns {Array<Object> | string} Vrací pole kolekcí, které byly vytvořeny uživatelem nebo errorové kódy.
  * @async
  */
 exports.getUserCollections = (req, res) => {
   if (req.user.uid) {
-    // Získá kolekce, které uživatel vytvořil
+    // Získá kolekce, které uživatel vytvořil.
     db.collection("collections")
       .where("creatorId", "==", req.user.uid)
       .get()
       .then(querySnapshot => {
         let userCollections = [];
 
-        // Vytvoří pole kolekcí
+        // Vytvoří pole kolekcí.
         querySnapshot.forEach(doc => {
           colData = {
             colName: doc.data().colName,
@@ -357,9 +360,9 @@ exports.getUserCollections = (req, res) => {
  * @function getUserCollections
  * @description Získá seznam kolekcí vytvořených daným uživatelem společně s informací, zda-li je daný balíček obsažen v jednotlivých kolekcích.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
+ * @param {string} req.user.uid - ID uživatele.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} userCollections - Pole kolekcí, které byly vytvořeny uživatelem.
+ * @returns {Array<Object> | string} Vrací pole kolekcí, které byly vytvořeny uživatelem nebo errorové kódy.
  * @async
  */
 exports.getUserCollectionsWithDeckInfo = (req, res) => {
@@ -397,9 +400,9 @@ exports.getUserCollectionsWithDeckInfo = (req, res) => {
  * @function getPinnedCollections
  * @description Získá seznam kolekcí připnutých daným uživatelem.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
+ * @param {string} req.user.uid - ID uživatele.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} pinnedCollections - Pole kolekcí, které byly připnuty uživatelem.
+ * @returns {Array<Object> | string} Vrací pole kolekcí, které byly připnuty uživatelem, nebo errorové kódy.
  * @async
  */
 exports.getPinnedCollections = (req, res) => {
@@ -414,7 +417,7 @@ exports.getPinnedCollections = (req, res) => {
         let promises = [];
 
         if (pinnedCollections) {
-          // Vyhledá informace o každé připnuté kolekci
+          // Vyhledá informace o každé připnuté kolekci.
           pinnedCollections.forEach(colId => {
             promises.push(
               db
@@ -422,7 +425,7 @@ exports.getPinnedCollections = (req, res) => {
                 .doc(colId)
                 .get()
                 .then(doc => {
-                  // Přidá kolekci do exportCollections
+                  // Přidá kolekci do exportCollections.
                   let colData = {
                     colName: doc.data().colName,
                     colId: doc.id
@@ -434,7 +437,7 @@ exports.getPinnedCollections = (req, res) => {
           });
         }
 
-        // Počká, až se dokončí forEach cyklus
+        // Počká, až se dokončí forEach cyklus.
         return Promise.all(promises);
       })
       .then(() => {
@@ -454,10 +457,10 @@ exports.getPinnedCollections = (req, res) => {
  * @function getCollection
  * @description Získá data dané kolekce.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
- * @param {string} req.params.colId - ID dané kolekce
+ * @param {string} req.user.uid - ID uživatele.
+ * @param {string} req.params.colId - ID dané kolekce.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Object} collection - Data o dané kolekci.
+ * @returns {Object | string} Vrací data o dané kolekci nebo errorové kódy.
  * @async
  */
 exports.getCollection = (req, res) => {
@@ -470,14 +473,13 @@ exports.getCollection = (req, res) => {
       if (colDoc.exists) {
         collection = colDoc.data();
 
-        // Ověření, zda-li je upravující uživatel majitelem kolekce
+        // Ověření, zda-li je upravující uživatel majitelem kolekce.
         let creatorId = collection.creatorId;
         if (collection.private === true && creatorId !== req.user.uid) {
-          // Pokud je kolekce soukromá a uživatel není tvůrcem kolekce, nemá přístup ke kolekci
-          console.log("Tu");
+          // Pokud je kolekce soukromá a uživatel není tvůrcem kolekce, nemá přístup ke kolekci.
           return res.status(403).json({ errorCode: "collection/access-denied" });
         } else {
-          // Najde uživatelské jméno tvůrce této kolekce
+          // Najde uživatelské jméno tvůrce této kolekce.
           return db
             .collection("users")
             .doc(collection.creatorId)
@@ -492,7 +494,7 @@ exports.getCollection = (req, res) => {
       }
     })
     .then(collection => {
-      // Zjistí, zda-li je kolekce připnuta uživatelem
+      // Zjistí, zda-li je kolekce připnuta uživatelem.
       return db
         .collection("users")
         .doc(req.user.uid)
@@ -500,7 +502,7 @@ exports.getCollection = (req, res) => {
         .then(userDoc => {
           let pinnedCollections = userDoc.data().pinnedCollections;
 
-          // Zjistí, zda-li je kolekce připnuta uživatelem
+          // Zjistí, zda-li je kolekce připnuta uživatelem.
           let isPinned = false;
           if (pinnedCollections) {
             pinnedCollections.forEach(pinnedCollection => {
@@ -511,7 +513,7 @@ exports.getCollection = (req, res) => {
           }
           collection.isPinned = isPinned;
 
-          // Zjistí, zda-li je uživatel tvůrcem kolekce
+          // Zjistí, zda-li je uživatel tvůrcem kolekce.
           let isCreator = collection.creatorId === req.user.uid ? true : false;
           collection.isCreator = isCreator;
 
@@ -519,14 +521,14 @@ exports.getCollection = (req, res) => {
         });
     })
     .then(collection => {
-      // Získá informace o balíčkách v kolekci (deckName, deckImage, deckId)
+      // Získá informace o balíčkách v kolekci (deckName, deckImage, deckId).
       let deckArray = collection.deckArray;
       let promises = [];
 
       if (deckArray) {
         let exportDecks = [];
 
-        // Vyhledá informace o každém balíčku v kolekci
+        // Vyhledá informace o každém balíčku v kolekci.
         deckArray.forEach(deckId => {
           promises.push(
             db
@@ -534,7 +536,7 @@ exports.getCollection = (req, res) => {
               .doc(deckId)
               .get()
               .then(doc => {
-                // Přidá balíček do exportDecks
+                // Přidá balíček do exportDecks.
                 let deckData = {
                   deckName: doc.data().deckName,
                   deckImage: doc.data().deckImage,
@@ -548,7 +550,7 @@ exports.getCollection = (req, res) => {
         collection.deckArray = exportDecks;
       }
 
-      // Počká, až se dokončí forEach cyklus
+      // Počká, až se dokončí forEach cyklus.
       return Promise.all(promises);
     })
     .then(() => {

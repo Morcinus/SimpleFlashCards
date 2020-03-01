@@ -12,13 +12,13 @@ firebase.initializeApp(config);
 /**
  * @function validateUserSignupData
  * @description Ověří registrační data uživatele.
- * @param {Object} userData - Registrační data uživatele
+ * @param {Object} userData - Registrační data uživatele.
  * @returns {Array<String>} Vrací pole error kódů. Pokud ověření proběhlo bez problému, vrací prázdné pole.
  */
 function validateUserSignupData(userData) {
   let errors = [];
 
-  // Ověření emailové adresy
+  // Ověření emailové adresy.
   if (userData.email !== "") {
     // Regex zdroj: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
     let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -29,7 +29,7 @@ function validateUserSignupData(userData) {
     errors.push("auth/invalid-email");
   }
 
-  // Ověření uživatelského jména
+  // Ověření uživatelského jména.
   if (userData.username !== "") {
     let usernameRegex = /^[a-zA-Z0-9]+$/;
     if (!userData.username.match(usernameRegex)) {
@@ -39,7 +39,7 @@ function validateUserSignupData(userData) {
     errors.push("auth/invalid-username");
   }
 
-  // Ověření uživatelského hesla
+  // Ověření uživatelského hesla.
   if (userData.password !== "") {
     if (userData.password !== userData.confirmPassword) {
       errors.push("auth/passwords-dont-match");
@@ -59,7 +59,7 @@ function validateUserSignupData(userData) {
  * @param {string} req.body.password - Heslo, se kterým chce být uživatel zaregistrován.
  * @param {string} req.body.confirmPassword - Potvrzení hesla.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {string} idToken
+ * @returns {string} Vrací idToken. Pokud nastala chyba, vrací errorový kód.
  * @async
  */
 exports.signup = (req, res) => {
@@ -70,7 +70,7 @@ exports.signup = (req, res) => {
     confirmPassword: req.body.confirmPassword
   };
 
-  // Ověření registračních dat
+  // Ověření registračních dat.
   const errorCodes = validateUserSignupData(userData);
   if (errorCodes.length > 0) {
     return res.status(400).json({ errorCodes: errorCodes });
@@ -80,7 +80,7 @@ exports.signup = (req, res) => {
     .where("username", "==", `${userData.username}`)
     .get()
     .then(querySnapshot => {
-      // Vytvoření uživatelského účtu v Firebase Authentication
+      // Vytvoření uživatelského účtu v Firebase Authentication.
       if (querySnapshot.empty) {
         return firebase.auth().createUserWithEmailAndPassword(userData.email, userData.password);
       } else {
@@ -95,7 +95,7 @@ exports.signup = (req, res) => {
         profileImg: ""
       };
 
-      // Přidání uživatele do Firestore databáze
+      // Přidání uživatele do Firestore databáze.
       db.collection("users")
         .doc(data.user.uid)
         .set(userInfo);
@@ -119,7 +119,7 @@ exports.signup = (req, res) => {
  * @param {string} req.body.email - Přihlašovací email uživatele.
  * @param {string} req.body.password - Přihlašovací heslo uživatele.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {string} idToken
+ * @returns {string} Vrací idToken. Pokud nastala chyba, vrací errorový kód.
  * @async
  */
 exports.login = (req, res) => {
@@ -128,12 +128,12 @@ exports.login = (req, res) => {
     password: req.body.password
   };
 
-  // Přihlásí uživatele pomocí služby Firebase Authentication
+  // Přihlásí uživatele pomocí služby Firebase Authentication.
   firebase
     .auth()
     .signInWithEmailAndPassword(userData.email, userData.password)
     .then(data => {
-      // Získání idTokenu
+      // Získání idTokenu.
       return data.user.getIdToken();
     })
     .then(idToken => {
@@ -151,7 +151,7 @@ exports.login = (req, res) => {
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {string} successCode
+ * @returns {string} Pokud funkce proběhla úspěšně, vrací "successCode". Pokud nastala chyba, vrací errorový kód ("errorCode").
  * @async
  */
 exports.resetPassword = (req, res) => {
@@ -161,7 +161,7 @@ exports.resetPassword = (req, res) => {
     .then(userRecord => {
       let email = userRecord.toJSON().email;
 
-      // Odešle email pro změnu hesla
+      // Odešle email pro změnu hesla.
       return firebase.auth().sendPasswordResetEmail(email);
     })
     .then(() => {
@@ -178,7 +178,7 @@ exports.resetPassword = (req, res) => {
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Object} userData - data o uživateli
+ * @returns {Object | string} Vrací data o uživateli. Pokud nastala chyba, vrací errorový kód.
  * @async
  */
 exports.getUserPersonalData = (req, res) => {
@@ -207,7 +207,7 @@ exports.getUserPersonalData = (req, res) => {
  * @returns {string | null} Vrací errorový kód. Pokud ověření proběhlo bez problému, vrací null.
  */
 function validateEmail(email) {
-  // Ověření emailové adresy
+  // Ověření emailové adresy.
   if (email !== "") {
     // Regex source: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
     let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -228,7 +228,7 @@ function validateEmail(email) {
  * @returns {string | null} Vrací errorový kód. Pokud ověření proběhlo bez problému, vrací null.
  */
 function validateBio(bio) {
-  // Ověření popisu profilu
+  // Ověření popisu profilu.
   if (bio != null) {
     if (bio.length > 250) {
       return "settings/too-long-bio";
@@ -266,18 +266,18 @@ function validateUsername(username) {
  * @param {string} req.body.bio - Nový popisek uživatelského profilu
  * @param {string} req.body.email - Nový email uživatele
  * @param {Object} req.body.password - Heslo pro potvrzení změny emailu
- * @returns {string} successCode
+ * @returns {string} Pokud funkce proběhla úspěšně, vrací "successCode". Pokud nastala chyba, vrací errorový kód ("errorCode").
  * @async
  */
 exports.setUserPersonalData = (req, res) => {
   if (typeof req.body.username !== "undefined") {
-    // Ověření uživatelského jména
+    // Ověření uživatelského jména.
     const errorCode = validateUsername(req.body.username);
     if (errorCode !== null) {
       return res.status(400).json({ errorCode: errorCode });
     }
 
-    // Změnění uživatelského jména v databázi
+    // Změnění uživatelského jména v databázi.
     db.collection("users")
       .where("username", "==", `${req.body.username}`)
       .get()
@@ -298,13 +298,13 @@ exports.setUserPersonalData = (req, res) => {
         return res.status(500).json({ errorCode: error.code });
       });
   } else if (typeof req.body.bio !== "undefined") {
-    // Ověření popisku uživatelského profilu
+    // Ověření popisku uživatelského profilu.
     const errorCode = validateBio(req.body.bio);
     if (errorCode !== null) {
       return res.status(400).json({ errorCode: errorCode });
     }
 
-    // Změnění popisku uživatelského profilu v databázi
+    // Změnění popisku uživatelského profilu v databázi.
     db.collection("users")
       .doc(req.user.uid)
       .update({ bio: req.body.bio })
@@ -315,13 +315,13 @@ exports.setUserPersonalData = (req, res) => {
         return res.status(500).json({ errorCode: error.code });
       });
   } else if (typeof req.body.email !== "undefined" && typeof req.body.password !== "undefined") {
-    // Ověření správného zápisu emailové adresy
+    // Ověření správného zápisu emailové adresy.
     const errorCode = validateEmail(req.body.email);
     if (errorCode !== null) {
       return res.status(400).json({ errorCode: errorCode });
     }
 
-    // Změnění emailu uživatele ve Firebase Authentication a ve Firestore databázi
+    // Změnění emailu uživatele ve Firebase Authentication a ve Firestore databázi.
     firebase
       .auth()
       .signInWithEmailAndPassword(req.user.email, req.body.password)
@@ -354,9 +354,9 @@ exports.setUserPersonalData = (req, res) => {
  * @function getUserDataByUsername
  * @description Získá z databáze data o uživateli pomocí jeho uživatelského jména.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.params.username - Uživatelské jméno
+ * @param {string} req.params.username - Uživatelské jméno.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Object} userData - data o uživateli
+ * @returns {Object | string} Vrací data o uživateli.  Pokud nastala chyba, vrací errorový kód.
  * @async
  */
 exports.getUserDataByUsername = (req, res) => {
@@ -374,7 +374,7 @@ exports.getUserDataByUsername = (req, res) => {
           createdCollections: doc.data().createdCollections
         };
 
-        // Získání balíčků vytvořených daným uživatelem
+        // Získání balíčků vytvořených daným uživatelem.
         if (doc.data().createdDecks) {
           return db
             .collection("decks")
@@ -383,7 +383,7 @@ exports.getUserDataByUsername = (req, res) => {
             .then(querySnapshot => {
               let userDecks = [];
               querySnapshot.forEach(doc => {
-                // Pokud je balíček veřejný
+                // Pokud je balíček veřejný.
                 if (!doc.data().private) {
                   exportDeck = {
                     deckName: doc.data().deckName,
@@ -404,7 +404,7 @@ exports.getUserDataByUsername = (req, res) => {
       }
     })
     .then(userData => {
-      // Získání kolekcí vytvořených daným uživatelem
+      // Získání kolekcí vytvořených daným uživatelem.
       if (doc.data().createdCollections) {
         return db
           .collection("collections")
@@ -413,7 +413,7 @@ exports.getUserDataByUsername = (req, res) => {
           .then(querySnapshot => {
             let userCollections = [];
             querySnapshot.forEach(doc => {
-              // Pokud je kolekce veřejná
+              // Pokud je kolekce veřejná.
               if (!doc.data().private) {
                 colData = {
                   colName: doc.data().colName,
@@ -443,7 +443,7 @@ exports.getUserDataByUsername = (req, res) => {
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Object} userData - data o uživateli
+ * @returns {Object | string} Vrací data o uživateli. Pokud nastala chyba, vrací errorový kód.
  * @async
  */
 exports.getUserData = (req, res) => {
@@ -460,7 +460,7 @@ exports.getUserData = (req, res) => {
           createdCollections: doc.data().createdCollections
         };
 
-        // Získání balíčků vytvořených daným uživatelem
+        // Získání balíčků vytvořených daným uživatelem.
         if (doc.data().createdDecks) {
           return db
             .collection("decks")
@@ -469,7 +469,7 @@ exports.getUserData = (req, res) => {
             .then(querySnapshot => {
               let userDecks = [];
               querySnapshot.forEach(doc => {
-                // Pokud je balíček veřejný
+                // Pokud je balíček veřejný.
                 if (!doc.data().private) {
                   exportDeck = {
                     deckName: doc.data().deckName,
@@ -490,7 +490,7 @@ exports.getUserData = (req, res) => {
       }
     })
     .then(userData => {
-      // Získání kolekcí vytvořených daným uživatelem
+      // Získání kolekcí vytvořených daným uživatelem.
       if (doc.data().createdCollections) {
         return db
           .collection("collections")
@@ -499,7 +499,7 @@ exports.getUserData = (req, res) => {
           .then(querySnapshot => {
             let userCollections = [];
             querySnapshot.forEach(doc => {
-              // Pokud je kolekce veřejná
+              // Pokud je kolekce veřejná.
               if (!doc.data().private) {
                 colData = {
                   colName: doc.data().colName,

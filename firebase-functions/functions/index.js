@@ -8,12 +8,8 @@ const authMiddleware = require("./util/authMiddleware");
 
 // Cors
 const cors = require("cors")({ origin: true });
-//const cors = require("cors");
-// app.use(cors({ origin: "http://localhost:3000" }));
-//app.options("*", cors();
 app.use(cors);
 app.options("*", cors);
-//response.set("Access-Control-Allow-Origin", "*");
 
 const { signup, login, resetPassword, getUserPersonalData, setUserPersonalData, getUserDataByUsername, getUserData } = require("./functions/user");
 
@@ -51,9 +47,11 @@ app.post("/createDeck", authMiddleware, createDeck);
 app.post("/updateDeck/:deckId", authMiddleware, updateDeck);
 app.post("/deleteDeck/:deckId", authMiddleware, deleteDeck);
 app.post("/uploadDeckImage/:deckId", authMiddleware, uploadDeckImage);
+
 // Deck Pinning
 app.post("/pinDeck/:deckId", authMiddleware, pinDeck);
 app.post("/unpinDeck/:deckId", authMiddleware, unpinDeck);
+
 // Deck UI
 app.get("/getUserDecks", authMiddleware, getUserDecks);
 app.get("/getPinnedDecks", authMiddleware, getPinnedDecks);
@@ -65,9 +63,11 @@ app.post("/createCollection", authMiddleware, createCollection);
 app.post("/updateCollection/:colId", authMiddleware, updateCollection);
 app.post("/addDeckToCollection/:colId/:deckId", authMiddleware, addDeckToCollection);
 app.post("/deleteCollection/:colId", authMiddleware, deleteCollection);
+
 // Collection Pinning
 app.post("/pinCollection/:colId", authMiddleware, pinCollection);
 app.post("/unpinCollection/:colId", authMiddleware, unpinCollection);
+
 // Collection UI
 app.get("/getUserCollections", authMiddleware, getUserCollections);
 app.get("/getUserCollectionsWithDeckInfo/:deckId", authMiddleware, getUserCollectionsWithDeckInfo);
@@ -86,5 +86,9 @@ app.get("/getColUnknownCards/:colId", authMiddleware, getColUnknownCards);
 app.get("/getColCardsToLearnAndReview/:colId", authMiddleware, getColCardsToLearnAndReview);
 app.post("/setColCardsProgress", authMiddleware, setColCardsProgress);
 
-// Api
+/**
+ * @module index
+ * @category Ostatní
+ * @description Zde se z jednotlivých funkcí vytvoří API.
+ */
 exports.api = functions.region("europe-west1").https.onRequest(app);

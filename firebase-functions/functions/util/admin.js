@@ -1,7 +1,7 @@
 /**
  * @module admin
  * @category util
- * @requires {@link firebase-admin}
+ * @requires {@link https://www.npmjs.com/package/firebase-admin}
  */
 
 const admin = require("firebase-admin");

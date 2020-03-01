@@ -62,7 +62,7 @@
             <div class="column is-3" id="sidebarNav">
                 <div class="sidebar">
                     <nav>
-                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Funkce</h2><h3>Modules</h3><ul><li><a href="module-collection.html">collection</a></li><li><a href="module-collectionCards.html">collectionCards</a></li><li><a href="module-deck.html">deck</a></li><li><a href="module-deckCards.html">deckCards</a></li><li><a href="module-functions.html">functions</a></li><li><a href="module-user.html">user</a></li></ul></div><div class="category"><h2>util</h2><h3>Modules</h3><ul><li><a href="module-admin.html">admin</a></li><li><a href="module-authMiddleware.html">authMiddleware</a></li></ul></div>
+                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Funkce</h2><h3>Modules</h3><ul><li><a href="module-collection.html">collection</a></li><li><a href="module-collectionCards.html">collectionCards</a></li><li><a href="module-deck.html">deck</a></li><li><a href="module-deckCards.html">deckCards</a></li><li><a href="module-functions.html">functions</a></li><li><a href="module-user.html">user</a></li></ul></div><div class="category"><h2>Ostatní</h2><h3>Modules</h3><ul><li><a href="module-index.html">index</a></li></ul></div><div class="category"><h2>util</h2><h3>Modules</h3><ul><li><a href="module-admin.html">admin</a></li><li><a href="module-authMiddleware.html">authMiddleware</a></li></ul></div>
                     </nav>
                 </div>
             </div>
@@ -211,7 +211,7 @@
         
         <span class="code-name">
             
-                addDeckToCollection<span class="signature">(req, res)</span><span class="type-signature"></span>
+                addDeckToCollection<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {string}</span>
             
         </span>
     </h4>
@@ -298,7 +298,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -321,7 +321,7 @@
 
   
 
-  <td class="description last"><p>ID kolekce, do které má být balíček přidán</p></td>
+  <td class="description last"><p>ID kolekce, do které má být balíček přidán.</p></td>
 </tr>
 
   
@@ -417,6 +417,31 @@
 
 
 
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Pokud nastala chyba, vrací errorový kód.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">string</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
 
 
 
@@ -525,7 +550,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -548,7 +573,7 @@
 
   
 
-  <td class="description last"><p>Název vytvářené kolekce</p></td>
+  <td class="description last"><p>Název vytvářené kolekce.</p></td>
 </tr>
 
   
@@ -571,7 +596,7 @@
 
   
 
-  <td class="description last"><p>Popisek vytvářené kolekce</p></td>
+  <td class="description last"><p>Popisek vytvářené kolekce.</p></td>
 </tr>
 
   
@@ -594,7 +619,7 @@
 
   
 
-  <td class="description last"><p>Pole s balíčky, které obsahuje vytvářená kolekce</p></td>
+  <td class="description last"><p>Pole s balíčky, které obsahuje vytvářená kolekce.</p></td>
 </tr>
 
   
@@ -722,7 +747,7 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>successCode</p></div>
+    <div class='param-desc column is-7'><p>Pokud funkce proběhla úspěšně, vrací &quot;successCode&quot;. Pokud nastala chyba, vrací errorový kód (&quot;errorCode&quot;).</p></div>
     
     
     <div class='column is-5 has-text-left'>
@@ -846,7 +871,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -918,7 +943,7 @@
         <p class="tag-source">
             <a href="functions_collection.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line203">line 203</a>
+                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line204">line 204</a>
             </span>
         </p>
     
@@ -949,7 +974,7 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>successCode</p></div>
+    <div class='param-desc column is-7'><p>Pokud funkce proběhla úspěšně, vrací &quot;successCode&quot;. Pokud nastala chyba, vrací errorový kód (&quot;errorCode&quot;).</p></div>
     
     
     <div class='column is-5 has-text-left'>
@@ -986,7 +1011,7 @@
         
         <span class="code-name">
             
-                getCollection<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Object}</span>
+                getCollection<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Object|string}</span>
             
         </span>
     </h4>
@@ -1073,7 +1098,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -1096,7 +1121,7 @@
 
   
 
-  <td class="description last"><p>ID dané kolekce</p></td>
+  <td class="description last"><p>ID dané kolekce.</p></td>
 </tr>
 
   
@@ -1170,7 +1195,7 @@
         <p class="tag-source">
             <a href="functions_collection.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line453">line 453</a>
+                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line456">line 456</a>
             </span>
         </p>
     
@@ -1201,13 +1226,16 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>collection - Data o dané kolekci.</p></div>
+    <div class='param-desc column is-7'><p>Vrací data o dané kolekci nebo errorové kódy.</p></div>
     
     
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
 <span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
 
 
     </div>
@@ -1238,7 +1266,7 @@
         
         <span class="code-name">
             
-                getPinnedCollections<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span>
+                getPinnedCollections<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Array.&lt;Object>|string}</span>
             
         </span>
     </h4>
@@ -1325,7 +1353,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -1399,7 +1427,7 @@
         <p class="tag-source">
             <a href="functions_collection.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line396">line 396</a>
+                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line399">line 399</a>
             </span>
         </p>
     
@@ -1430,13 +1458,16 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>pinnedCollections - Pole kolekcí, které byly připnuty uživatelem.</p></div>
+    <div class='param-desc column is-7'><p>Vrací pole kolekcí, které byly připnuty uživatelem, nebo errorové kódy.</p></div>
     
     
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
 <span class="param-type">Array.&lt;Object></span>
+|
+
+<span class="param-type">string</span>
 
 
     </div>
@@ -1467,7 +1498,7 @@
         
         <span class="code-name">
             
-                getUserCollections<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span>
+                getUserCollections<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Array.&lt;Object>|string}</span>
             
         </span>
     </h4>
@@ -1554,7 +1585,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -1628,7 +1659,7 @@
         <p class="tag-source">
             <a href="functions_collection.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line315">line 315</a>
+                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line318">line 318</a>
             </span>
         </p>
     
@@ -1659,13 +1690,16 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>userCollections - Pole kolekcí, které byly vytvořeny uživatelem.</p></div>
+    <div class='param-desc column is-7'><p>Vrací pole kolekcí, které byly vytvořeny uživatelem nebo errorové kódy.</p></div>
     
     
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
 <span class="param-type">Array.&lt;Object></span>
+|
+
+<span class="param-type">string</span>
 
 
     </div>
@@ -1696,7 +1730,7 @@
         
         <span class="code-name">
             
-                getUserCollections<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span>
+                getUserCollections<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Array.&lt;Object>|string}</span>
             
         </span>
     </h4>
@@ -1783,7 +1817,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -1857,7 +1891,7 @@
         <p class="tag-source">
             <a href="functions_collection.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line356">line 356</a>
+                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line359">line 359</a>
             </span>
         </p>
     
@@ -1888,13 +1922,16 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>userCollections - Pole kolekcí, které byly vytvořeny uživatelem.</p></div>
+    <div class='param-desc column is-7'><p>Vrací pole kolekcí, které byly vytvořeny uživatelem nebo errorové kódy.</p></div>
     
     
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
 <span class="param-type">Array.&lt;Object></span>
+|
+
+<span class="param-type">string</span>
 
 
     </div>
@@ -1925,7 +1962,7 @@
         
         <span class="code-name">
             
-                pinCollection<span class="signature">(req, res)</span><span class="type-signature"></span>
+                pinCollection<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {string}</span>
             
         </span>
     </h4>
@@ -2012,7 +2049,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -2109,7 +2146,7 @@
         <p class="tag-source">
             <a href="functions_collection.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line263">line 263</a>
+                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line264">line 264</a>
             </span>
         </p>
     
@@ -2132,6 +2169,31 @@
 
 
 
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Pokud nastala chyba, vrací errorový kód.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">string</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
 
 
 
@@ -2152,7 +2214,7 @@
         
         <span class="code-name">
             
-                unpinCollection<span class="signature">(req, res)</span><span class="type-signature"></span>
+                unpinCollection<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {string}</span>
             
         </span>
     </h4>
@@ -2239,7 +2301,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -2336,7 +2398,7 @@
         <p class="tag-source">
             <a href="functions_collection.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line288">line 288</a>
+                <a href="functions_collection.js.html">functions/collection.js</a>, <a href="functions_collection.js.html#line290">line 290</a>
             </span>
         </p>
     
@@ -2358,6 +2420,31 @@
 
 
 
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Pokud nastala chyba, vrací errorový kód.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">string</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
 
 
 
@@ -2466,7 +2553,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -2489,7 +2576,7 @@
 
   
 
-  <td class="description last"><p>ID upravované kolekce</p></td>
+  <td class="description last"><p>ID upravované kolekce.</p></td>
 </tr>
 
   
@@ -2512,7 +2599,7 @@
 
   
 
-  <td class="description last"><p>Název upravované kolekce</p></td>
+  <td class="description last"><p>Název upravované kolekce.</p></td>
 </tr>
 
   
@@ -2535,7 +2622,7 @@
 
   
 
-  <td class="description last"><p>Popisek upravované kolekce</p></td>
+  <td class="description last"><p>Popisek upravované kolekce.</p></td>
 </tr>
 
   
@@ -2558,7 +2645,7 @@
 
   
 
-  <td class="description last"><p>Pole s kartami upravované kolekce</p></td>
+  <td class="description last"><p>Pole s kartami upravované kolekce.</p></td>
 </tr>
 
   
@@ -2686,7 +2773,7 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>successCode</p></div>
+    <div class='param-desc column is-7'><p>Pokud funkce proběhla úspěšně, vrací &quot;successCode&quot;. Pokud nastala chyba, vrací errorový kód (&quot;errorCode&quot;).</p></div>
     
     
     <div class='column is-5 has-text-left'>
@@ -2784,7 +2871,7 @@
 
   
 
-  <td class="description last"><p>Název kolekce</p></td>
+  <td class="description last"><p>Název kolekce.</p></td>
 </tr>
 
 
@@ -2809,7 +2896,7 @@
 
   
 
-  <td class="description last"><p>Pole balíčků</p></td>
+  <td class="description last"><p>Pole balíčků.</p></td>
 </tr>
 
 
@@ -2985,7 +3072,7 @@
 
   
 
-  <td class="description last"><p>Název kolekce</p></td>
+  <td class="description last"><p>Název kolekce.</p></td>
 </tr>
 
 
@@ -3010,7 +3097,7 @@
 
   
 
-  <td class="description last"><p>Pole balíčků</p></td>
+  <td class="description last"><p>Pole balíčků.</p></td>
 </tr>
 
 
@@ -3132,7 +3219,7 @@
 
 <footer class="footer">
     <div class="content has-text-centered">
-        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Feb 27 2020 14:55:52 GMT+0100 (GMT+01:00)</p>
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Sun Mar 01 2020 13:58:53 GMT+0100 (GMT+01:00)</p>
         <p class="sidebar-created-by">
             <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
             <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

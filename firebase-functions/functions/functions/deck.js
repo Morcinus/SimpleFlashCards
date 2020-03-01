@@ -13,14 +13,14 @@ const { Storage } = require("@google-cloud/storage");
 /**
  * @function validateDeckData
  * @description Ověří, zda-li obsahuje název balíčku pouze povolené znaky a zda-li je v balíčku alespoň 1 karta.
- * @param {string} deckName - Název balíčku
- * @param {Array<Object>} cardArray - Pole karet
+ * @param {string} deckName - Název balíčku.
+ * @param {Array<Object>} cardArray - Pole karet.
  * @returns {Array<String>} Vrací pole error kódů. Pokud ověření proběhlo bez problému, vrací prázdné pole.
  */
 const validateDeckData = (deckName, cardArray) => {
   let errors = [];
 
-  // Ověření názvu balíčku
+  // Ověření názvu balíčku.
   if (deckName !== "") {
     let deckNameRegex = /^[a-zA-Z0-9 ]+$/;
     if (!deckName.match(deckNameRegex)) {
@@ -30,7 +30,7 @@ const validateDeckData = (deckName, cardArray) => {
     errors.push("createDeck/empty-deck-name");
   }
 
-  // Ověření, zda je v balíčku alespoň 1 karta
+  // Ověření, zda je v balíčku alespoň 1 karta.
   if (cardArray.length <= 0) {
     errors.push("createDeck/empty-deck");
   }
@@ -42,23 +42,23 @@ const validateDeckData = (deckName, cardArray) => {
  * @function createDeck
  * @description Vytvoří v soubor s daty balíčku v databázi.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
- * @param {string} req.body.deckName - Název vytvářeného balíčku
- * @param {string} req.body.deckDescription - Popisek vytvářeného balíčku
- * @param {Array<Object>} req.body.deckCards - Pole s kartami vytvářeného balíčku
+ * @param {string} req.user.uid - ID uživatele.
+ * @param {string} req.body.deckName - Název vytvářeného balíčku.
+ * @param {string} req.body.deckDescription - Popisek vytvářeného balíčku.
+ * @param {Array<Object>} req.body.deckCards - Pole s kartami vytvářeného balíčku.
  * @param {boolean} req.body.private - Informace o tom, zda je balíček veřejný či soukromý.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {string} deckId - ID vytvořeného balíčku.
+ * @returns {string} Vrací ID vytvořeného balíčku. Pokud nastala chyba, vrací errorový kód.
  * @async
  */
 exports.createDeck = (req, res) => {
-  // Ověření dat balíčku
+  // Ověření dat balíčku.
   const errorCodes = validateDeckData(req.body.deckName, req.body.deckCards);
   if (errorCodes.length > 0) {
     return res.status(400).json({ errorCodes: errorCodes });
   }
 
-  // Vygenerování ID pro každou kartu v balíčku
+  // Vygenerování ID pro každou kartu v balíčku.
   let cardArray = [];
   req.body.deckCards.forEach(card => {
     let newCard = card;
@@ -66,7 +66,7 @@ exports.createDeck = (req, res) => {
     cardArray.push(newCard);
   });
 
-  // Vytvoření deckData
+  // Vytvoření deckData.
   const deckData = {
     creatorId: req.user.uid,
     deckName: req.body.deckName,
@@ -75,11 +75,11 @@ exports.createDeck = (req, res) => {
     private: req.body.private
   };
 
-  // Přídání balíčku do databáze
+  // Přídání balíčku do databáze.
   db.collection("decks")
     .add(deckData)
     .then(docReference => {
-      // Zapsání balíčku do seznamu balíčků vytvořených daným uživatelem
+      // Zapsání balíčku do seznamu balíčků vytvořených daným uživatelem.
       db.collection("users")
         .doc(req.user.uid)
         .update({
@@ -100,18 +100,18 @@ exports.createDeck = (req, res) => {
  * @function updateDeck
  * @description Upraví v soubor s daty balíčku v databázi.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
- * @param {string} req.params.deckId - ID upravovaného balíčku
- * @param {string} req.body.deckName - Název upravovaného balíčku
- * @param {string} req.body.deckDescription - Popisek upravovaného balíčku
- * @param {Array<Object>} req.body.deckCards - Pole s kartami upravovaného balíčku
+ * @param {string} req.user.uid - ID uživatele.
+ * @param {string} req.params.deckId - ID upravovaného balíčku.
+ * @param {string} req.body.deckName - Název upravovaného balíčku.
+ * @param {string} req.body.deckDescription - Popisek upravovaného balíčku.
+ * @param {Array<Object>} req.body.deckCards - Pole s kartami upravovaného balíčku.
  * @param {boolean} req.body.private - Informace o tom, zda je upravovaný balíček veřejný či soukromý.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {string} successCode
+ * @returns {string} Pokud funkce proběhla úspěšně, vrací "successCode". Pokud nastala chyba, vrací errorový kód ("errorCode").
  * @async
  */
 exports.updateDeck = (req, res) => {
-  // Ověření dat balíčku
+  // Ověření dat balíčku.
   const errorCodes = validateDeckData(req.body.deckName, req.body.deckCards);
   if (errorCodes.length > 0) {
     return res.status(400).json({ errorCodes: errorCodes });
@@ -120,18 +120,18 @@ exports.updateDeck = (req, res) => {
   let deckDocRef = db.collection("decks").doc(req.params.deckId);
   let deletedCards = [];
 
-  // Spuštění databázové transakce
+  // Spuštění databázové transakce.
   db.runTransaction(t => {
     return t
       .get(deckDocRef)
       .then(doc => {
-        // Ověření, zda-li je upravující uživatel majitelem balíčku
+        // Ověření, zda-li je upravující uživatel majitelem balíčku.
         let creatorId = doc.data().creatorId;
         if (creatorId !== req.user.uid) {
-          // Není majitelem, není oprávněn balíček měnit
+          // Není majitelem, není oprávněn balíček měnit.
           return res.status(401).json();
         } else {
-          // Vygenerování ID pro každou kartu v balíčku
+          // Vygenerování ID pro každou kartu v balíčku.
           let cardArray = [];
           req.body.deckCards.forEach(card => {
             if (!card.cardId) {
@@ -143,7 +143,7 @@ exports.updateDeck = (req, res) => {
             }
           });
 
-          // Vytvoření nových deckData
+          // Vytvoření nových deckData.
           let deckData = {
             deckName: req.body.deckName,
             deckDescription: req.body.deckDescription ? req.body.deckDescription : null,
@@ -151,15 +151,15 @@ exports.updateDeck = (req, res) => {
             private: req.body.private
           };
 
-          // Upravení balíčku
+          // Upravení balíčku.
           t.update(deckDocRef, deckData);
 
-          // Najde karty, které byly z balíčku odstraněny
+          // Najde karty, které byly z balíčku odstraněny.
           let oldCardArray = doc.data().cardArray;
           let newCardArray = req.body.deckCards;
           deletedCards = findDeletedCards(oldCardArray, newCardArray);
 
-          // Najde všechny soubory, kde je zaznamenán pokrok učení tohoto balíčku
+          // Najde všechny soubory, kde je zaznamenán pokrok učení tohoto balíčku.
           return db
             .collectionGroup("deckProgress")
             .where("deckId", "==", req.params.deckId)
@@ -167,14 +167,14 @@ exports.updateDeck = (req, res) => {
         }
       })
       .then(querySnapshot => {
-        // Odstraní pokroky smazaných karet ze souborů s pokroky daných uživatelů
+        // Odstraní pokroky smazaných karet ze souborů s pokroky daných uživatelů.
         querySnapshot.forEach(progressDoc => {
           let progressCards = progressDoc.data().cardArray;
 
-          // Odstraní smazané karty z progressCards pole
+          // Odstraní smazané karty z progressCards pole.
           deletedCards.forEach(deletedCard => {
             for (let i = 0; i < progressCards.length; i++) {
-              // Pokud není karta ještě smazána, zmaže ji
+              // Pokud není karta ještě smazána, zmaže ji.
               if (progressCards[i])
                 if (progressCards[i].cardId === deletedCard.cardId) {
                   delete progressCards[i];
@@ -182,16 +182,16 @@ exports.updateDeck = (req, res) => {
             }
           });
 
-          // Vytvoří pole nesmazaných karet
+          // Vytvoří pole nesmazaných karet.
           let newProgressCards = [];
           progressCards.forEach(card => {
-            // Pokud nebyla karta smazána, vloží ji do newProgressCards pole
+            // Pokud nebyla karta smazána, vloží ji do newProgressCards pole.
             if (typeof card !== undefined) {
               newProgressCards.push(card);
             }
           });
 
-          // Uloží nové pole pokroku karet
+          // Uloží nové pole pokroku karet.
           t.update(progressDoc.ref, { cardArray: newProgressCards });
         });
       });
@@ -205,18 +205,17 @@ exports.updateDeck = (req, res) => {
     });
 };
 
-// Finds which cards from firstArray are not in the secondArray (=which cards were deleted)
 /**
  * @function findDeletedCards
  * @description Porovná dvě pole a najde v prvním poli (firstArray) karty, které byly již v druhém poli (secondArray) smazány.
  * @param {Array<Object>} firstArray - Pole, ve kterém smazané karty stále jsou.
  * @param {Array<Object>} secondArray - Pole, ve kterém smazané karty již nejsou.
- * @returns {Array<Object>} deletedCards - Pole karet, které byly smazány.
+ * @returns {Array<Object>} Vrací pole karet, které byly smazány.
  * @async
  */
 function findDeletedCards(firstArray, secondArray) {
   let deletedCards = firstArray.filter(function checkInSecondArray(card1) {
-    // Search for card1 in the secondArray
+    // Najde card1 v secondArray
     let foundCard = secondArray.find(function isWantedCard(card2) {
       return card1.cardId === card2.cardId;
     });
@@ -231,9 +230,9 @@ function findDeletedCards(firstArray, secondArray) {
  * @function deleteDeck
  * @description Odstraní balíček z databáze.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
+ * @param {string} req.user.uid - ID uživatele.
  * @param {string} req.params.deckId - ID balíčku, který má být odstraněn.
- * @returns {string} successCode
+ * @returns {string} Pokud funkce proběhla úspěšně, vrací "successCode". Pokud nastala chyba, vrací errorový kód ("errorCode").
  * @async
  */
 exports.deleteDeck = (req, res) => {
@@ -241,28 +240,28 @@ exports.deleteDeck = (req, res) => {
   let deckDocRef = db.collection("decks").doc(req.params.deckId);
   let authorized;
 
-  // Spuštění databázové transakce
+  // Spuštění databázové transakce.
   db.runTransaction(t => {
     return t
       .get(deckDocRef)
       .then(doc => {
-        // Ověření, zda-li je upravující uživatel majitelem balíčku
+        // Ověření, zda-li je upravující uživatel majitelem balíčku.
         let creatorId = doc.data().creatorId;
         if (creatorId !== req.user.uid) {
-          // Není majitelem, není oprávněn balíček smazat
+          // Není majitelem, není oprávněn balíček smazat.
           authorized = false;
           return res.status(401).json();
         } else {
           authorized = true;
-          // Odstranění balíčku z databáze
+          // Odstranění balíčku z databáze.
           t.delete(deckDocRef);
 
-          // Odstranění balíčku ze seznamu uživatelem vytvořených balíčků
+          // Odstranění balíčku ze seznamu uživatelem vytvořených balíčků.
           t.update(userDocRef, {
             createdDecks: admin.firestore.FieldValue.arrayRemove(req.params.deckId)
           });
 
-          // Získání všech kolekcí, ve kterém se balíček nachází
+          // Získání všech kolekcí, ve kterém se balíček nachází.
           return db
             .collection("collections")
             .where("deckArray", "array-contains", req.params.deckId)
@@ -270,60 +269,60 @@ exports.deleteDeck = (req, res) => {
         }
       })
       .then(querySnapshot => {
-        // Odstranění balíčku z každé kolekce
+        // Odstranění balíčku z každé kolekce.
         querySnapshot.forEach(colDoc => {
           t.update(colDoc.ref, {
             deckArray: admin.firestore.FieldValue.arrayRemove(req.params.deckId)
           });
         });
 
-        // Získání všech souborů uživatelů, kteří si balíček připnuli
+        // Získání všech souborů uživatelů, kteří si balíček připnuli.
         return db
           .collection("users")
           .where("pinnedDecks", "array-contains", req.params.deckId)
           .get();
       })
       .then(querySnapshot => {
-        // Odstranění všech připnutí daného balíčku
+        // Odstranění všech připnutí daného balíčku.
         querySnapshot.forEach(userDoc => {
           t.update(userDoc.ref, {
             pinnedDecks: admin.firestore.FieldValue.arrayRemove(req.params.deckId)
           });
         });
 
-        // Získání všech souborů, ve kterých je zaznamenán pokrok učení balíčku
+        // Získání všech souborů, ve kterých je zaznamenán pokrok učení balíčku.
         return db
           .collectionGroup("deckProgress")
           .where("deckId", "==", req.params.deckId)
           .get();
       })
       .then(querySnapshot => {
-        // Smazání všech pokroků učení balíčku
+        // Smazání všech pokroků učení balíčku.
         querySnapshot.forEach(progressDoc => {
           t.delete(progressDoc.ref);
         });
       });
   })
     .then(() => {
-      // Odstranění obrázku balíčku
+      // Odstranění obrázku balíčku.
       if (authorized === true) {
         const storage = new Storage();
         const bucket = storage.bucket(config.storageBucket);
         const pngFile = bucket.file(`${req.params.deckId}.png`);
         const jpgFile = bucket.file(`${req.params.deckId}.jpg`);
 
-        // Najde .png obrázek
+        // Najde .png obrázek.
         pngFile.exists().then(data => {
           const exists = data[0];
           if (exists) {
-            // Odstraní .PNG obrázek
+            // Odstraní .PNG obrázek.
             pngFile.delete();
           } else {
-            // Najde .jpg obrázek
+            // Najde .jpg obrázek.
             jpgFile.exists().then(data => {
               const exists = data[0];
               if (exists) {
-                // Odstraní .jpg obrázek
+                // Odstraní .jpg obrázek.
                 jpgFile.delete();
               }
             });
@@ -342,7 +341,7 @@ exports.deleteDeck = (req, res) => {
 
 /**
  * @function newId
- * @description Vygeneruje nové 20 místné ID
+ * @description Vygeneruje nové 20 místné ID.
  * @returns {string} newId
  */
 function newId() {
@@ -360,7 +359,7 @@ function newId() {
  * @description Nahraje obrázek do Cloud Storage.
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {string} successCode
+ * @returns {string} Pokud funkce proběhla úspěšně, vrací "successCode". Pokud nastala chyba, vrací errorový kód ("errorCode").
  * @async
  */
 // Zdroj: https://youtu.be/ecgAwgHXYos
@@ -376,21 +375,21 @@ exports.uploadDeckImage = (req, res) => {
   let imageFileName;
 
   busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
-    // Ověření typu nahraného souboru
+    // Ověření typu nahraného souboru.
     if (mimetype !== "image/jpeg" && mimetype !== "image/png") {
       return res.status(400).json({ error: "Wrong file type submitted" });
     }
-    // Vytvoření názvu souboru
+    // Vytvoření názvu souboru.
     const imageExtension = filename.split(".")[filename.split(".").length - 1];
     imageFileName = `${req.params.deckId}.${imageExtension}`;
 
-    // Připravení souboru na nahrání
+    // Připravení souboru na nahrání.
     const filepath = path.join(os.tmpdir(), imageFileName);
     imageToBeUploaded = { filepath, mimetype };
     file.pipe(fs.createWriteStream(filepath));
   });
   busboy.on("finish", () => {
-    // Nahrání souboru do Cloud Storage
+    // Nahrání souboru do Cloud Storage.
     admin
       .storage()
       .bucket()
@@ -403,7 +402,7 @@ exports.uploadDeckImage = (req, res) => {
         }
       })
       .then(() => {
-        // Uložení adresy obrázku do souboru balíčku
+        // Uložení adresy obrázku do souboru balíčku.
         const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
 
         return db.doc(`/decks/${req.params.deckId}`).update({ deckImage: imageUrl });
@@ -425,14 +424,15 @@ exports.uploadDeckImage = (req, res) => {
  * @function pinDeck
  * @description Připne uživateli daný balíček.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
- * @param {string} req.params.deckId - ID balíčku, který má být připnut
+ * @param {string} req.user.uid - ID uživatele.
+ * @param {string} req.params.deckId - ID balíčku, který má být připnut.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
+ * @returns {string} Pokud nastala chyba, vrací errorový kód.
  * @async
  */
 exports.pinDeck = (req, res) => {
   if (req.params.deckId) {
-    // Přidá balíček do pole připnutých balíčků v souboru uživatele
+    // Přidá balíček do pole připnutých balíčků v souboru uživatele.
     db.collection("users")
       .doc(req.user.uid)
       .update({
@@ -451,14 +451,15 @@ exports.pinDeck = (req, res) => {
  * @function unpinDeck
  * @description Odepne uživateli daný balíček.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
- * @param {string} req.params.deckId - ID balíčku, který má být odepnut
+ * @param {string} req.user.uid - ID uživatele.
+ * @param {string} req.params.deckId - ID balíčku, který má být odepnut.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
+ * @returns {string} Pokud nastala chyba, vrací errorový kód.
  * @async
  */
 exports.unpinDeck = (req, res) => {
   if (req.params.deckId) {
-    // Odebere balíček z pole připnutých balíčků v souboru uživatele
+    // Odebere balíček z pole připnutých balíčků v souboru uživatele.
     db.collection("users")
       .doc(req.user.uid)
       .update({
@@ -479,21 +480,21 @@ exports.unpinDeck = (req, res) => {
  * @function getUserDecks
  * @description Získá seznam balíčků vytvořených daným uživatelem.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
+ * @param {string} req.user.uid - ID uživatele.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} userDecks - Pole balíčků, které byly vytvořeny uživatelem.
+ * @returns {Array<Object> | string} Vrací pole balíčků, které byly vytvořeny uživatelem nebo errorové kódy.
  * @async
  */
 exports.getUserDecks = (req, res) => {
   if (req.user.uid) {
-    // Získá balíčky, které uživatel vytvořil
+    // Získá balíčky, které uživatel vytvořil.
     db.collection("decks")
       .where("creatorId", "==", req.user.uid)
       .get()
       .then(querySnapshot => {
         let userDecks = [];
 
-        // Vytvoří pole balíčků
+        // Vytvoří pole balíčků.
         querySnapshot.forEach(doc => {
           exportDeck = {
             deckName: doc.data().deckName,
@@ -521,9 +522,9 @@ exports.getUserDecks = (req, res) => {
  * @function getPinnedDecks
  * @description Získá seznam balíčků připnutých daným uživatelem.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
+ * @param {string} req.user.uid - ID uživatele.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Array<Object>} userDecks - Pole balíčků, které byly připnuty uživatelem.
+ * @returns {Array<Object> | string} Vrací pole balíčků, které byly připnuty uživatelem, nebo errorové kódy.
  * @async
  */
 exports.getPinnedDecks = (req, res) => {
@@ -538,7 +539,7 @@ exports.getPinnedDecks = (req, res) => {
         let promises = [];
 
         if (pinnedDecks) {
-          // Vyhledá informace o každé připnutém balíčku
+          // Vyhledá informace o každé připnutém balíčku.
           pinnedDecks.forEach(deckId => {
             promises.push(
               db
@@ -546,7 +547,7 @@ exports.getPinnedDecks = (req, res) => {
                 .doc(deckId)
                 .get()
                 .then(doc => {
-                  // Přidá balíček do exportDecks
+                  // Přidá balíček do exportDecks.
                   let exportDeck = {
                     deckName: doc.data().deckName,
                     deckImage: doc.data().deckImage,
@@ -559,7 +560,7 @@ exports.getPinnedDecks = (req, res) => {
           });
         }
 
-        // Počká, až se dokončí forEach cyklus
+        // Počká, až se dokončí forEach cyklus.
         return Promise.all(promises);
       })
       .then(() => {
@@ -579,10 +580,10 @@ exports.getPinnedDecks = (req, res) => {
  * @function getDeck
  * @description Získá data daného balíčku.
  * @param {Object} req - Požadavek, který přišel na server.
- * @param {string} req.user.uid - ID uživatele
- * @param {string} req.params.deckId - ID daného balíčku
+ * @param {string} req.user.uid - ID uživatele.
+ * @param {string} req.params.deckId - ID daného balíčku.
  * @param {Object} res - Odpověď na požadavek, který přišel na server.
- * @returns {Object} deck - Data o daném balíčku.
+ * @returns {Object | string} Vrací data o daném balíčku nebo errorové kódy.
  * @async
  */
 exports.getDeck = (req, res) => {
@@ -593,14 +594,14 @@ exports.getDeck = (req, res) => {
       if (deckDoc.exists) {
         let deck = deckDoc.data();
 
-        // Ověření, zda-li je upravující uživatel majitelem balíčku
+        // Ověření, zda-li je upravující uživatel majitelem balíčku.
         let creatorId = deck.creatorId;
         if (deck.private === true && creatorId !== req.user.uid) {
-          // Pokud je balíček soukromý a uživatel není tvůrcem balíčku, nemá přístup k balíčku
+          // Pokud je balíček soukromý a uživatel není tvůrcem balíčku, nemá přístup k balíčku.
           console.log("Tu");
           return res.status(403).json({ errorCode: "deck/access-denied" });
         } else {
-          // Najde uživatelské jméno tvůrce tohoto balíčku
+          // Najde uživatelské jméno tvůrce tohoto balíčku.
           return db
             .collection("users")
             .doc(deck.creatorId)

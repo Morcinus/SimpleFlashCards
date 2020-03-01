@@ -3,10 +3,12 @@ const { admin, db } = require("./admin");
 /**
  * @module authMiddleware
  * @category util
- * @description Slouží k ověřování uživatele pomocí idTokenu
- * @param {Object} req - HTTP požadavek
- * @param {Object} res - HTTP odpověď na požadavek
- * @param {function} next - Callback funkce
+ * @description Slouží k ověřování uživatele pomocí idTokenu.
+ * @param {Object} req - HTTP požadavek.
+ * @param {Object} res - HTTP odpověď na požadavek.
+ * @param {function} next - Callback funkce.
+ *
+ * @returns {string} Pokud nastala chyba, vrací errový kód.
  */
 
 // Zdroj https://youtu.be/Fz1f7NLvcu4
@@ -44,6 +46,6 @@ module.exports = (req, res, next) => {
     })
     .catch(error => {
       console.error("Error while verifying token ", error);
-      return res.status(403).json(error);
+      return res.status(403).json({ errorCode: error.code });
     });
 };

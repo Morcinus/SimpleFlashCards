@@ -62,7 +62,7 @@
             <div class="column is-3" id="sidebarNav">
                 <div class="sidebar">
                     <nav>
-                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Funkce</h2><h3>Modules</h3><ul><li><a href="module-collection.html">collection</a></li><li><a href="module-collectionCards.html">collectionCards</a></li><li><a href="module-deck.html">deck</a></li><li><a href="module-deckCards.html">deckCards</a></li><li><a href="module-functions.html">functions</a></li><li><a href="module-user.html">user</a></li></ul></div><div class="category"><h2>util</h2><h3>Modules</h3><ul><li><a href="module-admin.html">admin</a></li><li><a href="module-authMiddleware.html">authMiddleware</a></li></ul></div>
+                        <h2><a href="index.html">Home</a></h2><div class="category"></div><div class="category"><h2>Funkce</h2><h3>Modules</h3><ul><li><a href="module-collection.html">collection</a></li><li><a href="module-collectionCards.html">collectionCards</a></li><li><a href="module-deck.html">deck</a></li><li><a href="module-deckCards.html">deckCards</a></li><li><a href="module-functions.html">functions</a></li><li><a href="module-user.html">user</a></li></ul></div><div class="category"><h2>Ostatní</h2><h3>Modules</h3><ul><li><a href="module-index.html">index</a></li></ul></div><div class="category"><h2>util</h2><h3>Modules</h3><ul><li><a href="module-admin.html">admin</a></li><li><a href="module-authMiddleware.html">authMiddleware</a></li></ul></div>
                     </nav>
                 </div>
             </div>
@@ -298,7 +298,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -321,7 +321,7 @@
 
   
 
-  <td class="description last"><p>Název vytvářeného balíčku</p></td>
+  <td class="description last"><p>Název vytvářeného balíčku.</p></td>
 </tr>
 
   
@@ -344,7 +344,7 @@
 
   
 
-  <td class="description last"><p>Popisek vytvářeného balíčku</p></td>
+  <td class="description last"><p>Popisek vytvářeného balíčku.</p></td>
 </tr>
 
   
@@ -367,7 +367,7 @@
 
   
 
-  <td class="description last"><p>Pole s kartami vytvářeného balíčku</p></td>
+  <td class="description last"><p>Pole s kartami vytvářeného balíčku.</p></td>
 </tr>
 
   
@@ -495,7 +495,7 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>deckId - ID vytvořeného balíčku.</p></div>
+    <div class='param-desc column is-7'><p>Vrací ID vytvořeného balíčku. Pokud nastala chyba, vrací errorový kód.</p></div>
     
     
     <div class='column is-5 has-text-left'>
@@ -619,7 +619,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -691,7 +691,7 @@
         <p class="tag-source">
             <a href="functions_deck.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line230">line 230</a>
+                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line229">line 229</a>
             </span>
         </p>
     
@@ -722,7 +722,7 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>successCode</p></div>
+    <div class='param-desc column is-7'><p>Pokud funkce proběhla úspěšně, vrací &quot;successCode&quot;. Pokud nastala chyba, vrací errorový kód (&quot;errorCode&quot;).</p></div>
     
     
     <div class='column is-5 has-text-left'>
@@ -894,7 +894,7 @@
         <p class="tag-source">
             <a href="functions_deck.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line209">line 209</a>
+                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line208">line 208</a>
             </span>
         </p>
     
@@ -925,7 +925,7 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>deletedCards - Pole karet, které byly smazány.</p></div>
+    <div class='param-desc column is-7'><p>Vrací pole karet, které byly smazány.</p></div>
     
     
     <div class='column is-5 has-text-left'>
@@ -962,7 +962,7 @@
         
         <span class="code-name">
             
-                getDeck<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Object}</span>
+                getDeck<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Object|string}</span>
             
         </span>
     </h4>
@@ -1049,7 +1049,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -1072,7 +1072,7 @@
 
   
 
-  <td class="description last"><p>ID daného balíčku</p></td>
+  <td class="description last"><p>ID daného balíčku.</p></td>
 </tr>
 
   
@@ -1146,7 +1146,7 @@
         <p class="tag-source">
             <a href="functions_deck.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line578">line 578</a>
+                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line579">line 579</a>
             </span>
         </p>
     
@@ -1177,13 +1177,16 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>deck - Data o daném balíčku.</p></div>
+    <div class='param-desc column is-7'><p>Vrací data o daném balíčku nebo errorové kódy.</p></div>
     
     
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
 <span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
 
 
     </div>
@@ -1214,7 +1217,7 @@
         
         <span class="code-name">
             
-                getPinnedDecks<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span>
+                getPinnedDecks<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Array.&lt;Object>|string}</span>
             
         </span>
     </h4>
@@ -1301,7 +1304,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -1375,7 +1378,7 @@
         <p class="tag-source">
             <a href="functions_deck.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line520">line 520</a>
+                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line521">line 521</a>
             </span>
         </p>
     
@@ -1406,13 +1409,16 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>userDecks - Pole balíčků, které byly připnuty uživatelem.</p></div>
+    <div class='param-desc column is-7'><p>Vrací pole balíčků, které byly připnuty uživatelem, nebo errorové kódy.</p></div>
     
     
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
 <span class="param-type">Array.&lt;Object></span>
+|
+
+<span class="param-type">string</span>
 
 
     </div>
@@ -1443,7 +1449,7 @@
         
         <span class="code-name">
             
-                getUserDecks<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span>
+                getUserDecks<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Array.&lt;Object>|string}</span>
             
         </span>
     </h4>
@@ -1530,7 +1536,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -1604,7 +1610,7 @@
         <p class="tag-source">
             <a href="functions_deck.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line478">line 478</a>
+                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line479">line 479</a>
             </span>
         </p>
     
@@ -1635,13 +1641,16 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>userDecks - Pole balíčků, které byly vytvořeny uživatelem.</p></div>
+    <div class='param-desc column is-7'><p>Vrací pole balíčků, které byly vytvořeny uživatelem nebo errorové kódy.</p></div>
     
     
     <div class='column is-5 has-text-left'>
         <label>Type: </label>
         
 <span class="param-type">Array.&lt;Object></span>
+|
+
+<span class="param-type">string</span>
 
 
     </div>
@@ -1679,7 +1688,7 @@
     
     
     <div class="description">
-        <p>Vygeneruje nové 20 místné ID</p>
+        <p>Vygeneruje nové 20 místné ID.</p>
     </div>
     
 
@@ -1730,7 +1739,7 @@
         <p class="tag-source">
             <a href="functions_deck.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line343">line 343</a>
+                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line342">line 342</a>
             </span>
         </p>
     
@@ -1798,7 +1807,7 @@
         
         <span class="code-name">
             
-                pinDeck<span class="signature">(req, res)</span><span class="type-signature"></span>
+                pinDeck<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {string}</span>
             
         </span>
     </h4>
@@ -1885,7 +1894,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -1908,7 +1917,7 @@
 
   
 
-  <td class="description last"><p>ID balíčku, který má být připnut</p></td>
+  <td class="description last"><p>ID balíčku, který má být připnut.</p></td>
 </tr>
 
   
@@ -1982,7 +1991,7 @@
         <p class="tag-source">
             <a href="functions_deck.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line424">line 424</a>
+                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line423">line 423</a>
             </span>
         </p>
     
@@ -2005,6 +2014,31 @@
 
 
 
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Pokud nastala chyba, vrací errorový kód.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">string</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
 
 
 
@@ -2025,7 +2059,7 @@
         
         <span class="code-name">
             
-                unpinDeck<span class="signature">(req, res)</span><span class="type-signature"></span>
+                unpinDeck<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {string}</span>
             
         </span>
     </h4>
@@ -2112,7 +2146,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -2135,7 +2169,7 @@
 
   
 
-  <td class="description last"><p>ID balíčku, který má být odepnut</p></td>
+  <td class="description last"><p>ID balíčku, který má být odepnut.</p></td>
 </tr>
 
   
@@ -2231,6 +2265,31 @@
 
 
 
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>Pokud nastala chyba, vrací errorový kód.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">string</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
 
 
 
@@ -2339,7 +2398,7 @@
 
   
 
-  <td class="description last"><p>ID uživatele</p></td>
+  <td class="description last"><p>ID uživatele.</p></td>
 </tr>
 
   
@@ -2362,7 +2421,7 @@
 
   
 
-  <td class="description last"><p>ID upravovaného balíčku</p></td>
+  <td class="description last"><p>ID upravovaného balíčku.</p></td>
 </tr>
 
   
@@ -2385,7 +2444,7 @@
 
   
 
-  <td class="description last"><p>Název upravovaného balíčku</p></td>
+  <td class="description last"><p>Název upravovaného balíčku.</p></td>
 </tr>
 
   
@@ -2408,7 +2467,7 @@
 
   
 
-  <td class="description last"><p>Popisek upravovaného balíčku</p></td>
+  <td class="description last"><p>Popisek upravovaného balíčku.</p></td>
 </tr>
 
   
@@ -2431,7 +2490,7 @@
 
   
 
-  <td class="description last"><p>Pole s kartami upravovaného balíčku</p></td>
+  <td class="description last"><p>Pole s kartami upravovaného balíčku.</p></td>
 </tr>
 
   
@@ -2559,7 +2618,7 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>successCode</p></div>
+    <div class='param-desc column is-7'><p>Pokud funkce proběhla úspěšně, vrací &quot;successCode&quot;. Pokud nastala chyba, vrací errorový kód (&quot;errorCode&quot;).</p></div>
     
     
     <div class='column is-5 has-text-left'>
@@ -2731,7 +2790,7 @@
         <p class="tag-source">
             <a href="functions_deck.js.html" class="button">View Source</a>
             <span>
-                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line358">line 358</a>
+                <a href="functions_deck.js.html">functions/deck.js</a>, <a href="functions_deck.js.html#line357">line 357</a>
             </span>
         </p>
     
@@ -2762,7 +2821,7 @@
 
 <div class="columns">
     
-    <div class='param-desc column is-7'><p>successCode</p></div>
+    <div class='param-desc column is-7'><p>Pokud funkce proběhla úspěšně, vrací &quot;successCode&quot;. Pokud nastala chyba, vrací errorový kód (&quot;errorCode&quot;).</p></div>
     
     
     <div class='column is-5 has-text-left'>
@@ -2860,7 +2919,7 @@
 
   
 
-  <td class="description last"><p>Název balíčku</p></td>
+  <td class="description last"><p>Název balíčku.</p></td>
 </tr>
 
 
@@ -2885,7 +2944,7 @@
 
   
 
-  <td class="description last"><p>Pole karet</p></td>
+  <td class="description last"><p>Pole karet.</p></td>
 </tr>
 
 
@@ -3007,7 +3066,7 @@
 
 <footer class="footer">
     <div class="content has-text-centered">
-        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Thu Feb 27 2020 14:55:52 GMT+0100 (GMT+01:00)</p>
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Sun Mar 01 2020 13:58:53 GMT+0100 (GMT+01:00)</p>
         <p class="sidebar-created-by">
             <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
             <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>

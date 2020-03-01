@@ -1,6 +1,6 @@
 {
   "source": {
-    "include": ["./functions", "./util"],
+    "include": ["./functions", "./util", "index.js"],
     "includePattern": ".js$"
   },
   "tags": {
