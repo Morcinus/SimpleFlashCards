@@ -40,7 +40,7 @@ U kolekce, stejně jako u balíčku, může uživatel nastavit, zda bude veřejn
 
 Projekt je rozdělen do dvou částí:
 
-- [firebase-functions](https://github.com/Morcinus/SimpleFlashCards/tree/master/firebase-functions) - Funkce, které komunikují s klientem a databází.
+- [firebase-functions](https://github.com/Morcinus/SimpleFlashCards/tree/master/firebase-functions) - API funkce, které zprostředkovávají komunikaci mezi klientem a databází.
 - [simpleflashcards-client](https://github.com/Morcinus/SimpleFlashCards/tree/master/simpleflashcards-client) - Samotná webová aplikace.
 
 ---
