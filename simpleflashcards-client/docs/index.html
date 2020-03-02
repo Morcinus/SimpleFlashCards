@@ -169,10 +169,7 @@
               <h1>Home</h1>
             </header>
 
-            <p>
-              Tato dokumentace je zaměřena na všechny Cloud Functions funkce, tedy na funkce, které manipulují s daty v Cloud Firestore databázi na základě
-              požadavků webové aplikace.
-            </p>
+            <p>Tato dokumentace je zaměřena na samotnou webovou aplikaci, popis jednotlivých komponentů a funkcí, které komunikují s API serveru.</p>
 
             <h2>Rozdělení Projektu Simpleflashcards:</h2>
             <p>Projekt je rozdělen do dvou částí:</p>
@@ -181,108 +178,46 @@
               <li>Samotná Simple Flashcards webová aplikace</li>
             </ul>
             <p>
-              Tato dokumentace je zaměřena na Cloud Functions. Dokumentaci pro webovou aplikaci můžete najít
-              <a href="https://morcinus.github.io/simpleflashcards-client-docs/">zde</a>.
+              Tato dokumentace je zaměřena na webovou aplikaci. Dokumentaci pro Cloud Functions můžete najít
+              <a href="https://morcinus.github.io/simpleflashcards-fb-functions-docs/">zde</a>.
             </p>
 
-            <h2>Databáze</h2>
+            <h2>Aplikace</h2>
             <p>
-              Tento projekt využívá jako databázi službu <a href="https://firebase.google.com/docs/firestore">Cloud Firestore</a>. Jedná se o NoSQL databázi.
-              Projekt využívá také službu <a href="https://firebase.google.com/docs/functions">Cloud Functions</a>. Tato služba umožňuje vytvořit API a
-              naprogramovat funce, díky kterým se dá do databáze přistupovat. V této dokumentaci je zaznamenána struktura databáze a popis jednotlivých funkcí.
+              Tento projekt je vytvořen pomocí těchto nejpodstatnějších knihoven: <a href="https://reactjs.org/">React</a>,
+              <a href="https://redux.js.org/">Redux</a>, <a href="https://www.npmjs.com/package/axios">Axios</a>,
+              <a href="https://material-ui.com/">Material UI</a>. Od toho se odvíjí struktura celé aplikace.
             </p>
 
-            <h2>Struktura databáze</h2>
-            <p>Databáze je rozdělena do 3 částí:</p>
+            <h4>React</h4>
+            <p>Aplikace je sestavena z jednotlivých komponentů. Popis každého komponentu aplikace můžete najít v této dokumentaci.</p>
+
+            <h4>Redux</h4>
+            <p>
+              Tato knihovna je klíčovou součástí této aplikace. Umožňuje přehledné předávání informací mezi danými komponenty aplikace. Díky této knihovně je
+              vytvořen tzv. store. Na tomto místě jsou uložena data aplikace. Když potřebuje např. nějaký komponent tato data získat, stačí mu přistoupit do
+              storu a nemusí je tak získávat od ostatních komponentů.
+            </p>
+
+            <h4>Axios</h4>
+            <p>Axios je knihovna, která zajišťuje komunikaci mezi klientem a serverem. Využívají ji funkce této aplikace pro komunikaci s API serveru.</p>
+
+            <h4>Material UI</h4>
+            <p>
+              Samotný vzhled aplikace je zajištěn pomocí knihovny Material UI. Tato knihovna umožňuje rychlé a přehledné vytváření komponentů s jednotným
+              vzhledem.
+            </p>
+
+            <h2>Struktura dokumentace</h2>
+            <p>Projekt je rozdělen do těchto skupin:</p>
             <ul>
-              <li>collections - Dokumenty jednotlivých kolekcí.</li>
-              <li>decks - Dokumenty jednotlivých balíčků.</li>
-              <li>users - Dokumenty uživatelů a dokumenty se zaznamenanými pokroky u daných balíčků.</li>
+              <li>Components - Zde můžete najít jednotlivé komponenty této aplikace.</li>
+              <li>Pages - Zde můžete najít komponenty aplikace, které tvoří danou stránku. K tomu využívají komponenty se složky components.</li>
+              <li>ReduxActions - Zde můžete najít veškeré funkce, které komunikují s API serveru a s Redux reducery (čímž mění hodnoty ve Redux store).</li>
+              <li>ReduxReducers - Zde můžete najít všechny Redux Reducery.</li>
+              <li>Util - Zde můžete najít Javascriptové moduly, které jsou používány ostatními částmi aplikace.</li>
+              <li>Ostatní</li>
             </ul>
-
-            <h3>collections</h3>
-            <p>
-              V této části databáze jsou uloženy všechny kolekce. Každý dokument má název podle ID dané kolekce. Tyto ID jsou automaticky generovány funkcemi z
-              Cloud Firestore. V dokumentech jsou uloženy následující informace:
-            </p>
-
-            <ul>
-              <li>[string] colName - Název kolekce, který uživatel zadal.</li>
-              <li>[string] colDescription - Popis dané kolekce, který uživatel vytvořil.</li>
-              <li>[string] creatorId - ID uživatele, který kolekci vytvořil.</li>
-              <li>[Array&lt;string&gt;] deckArray - Pole, které obsahuje seznam ID balíčků, které jsou obsaženy v dané kolekci.</li>
-            </ul>
-
-            <h3>decks</h3>
-            <p>
-              V této části databáze jsou uloženy všechny balíčky. Každý dokument má název podle ID daného balíčku. Tyto ID jsou automaticky generovány funkcemi
-              z Cloud Firestore. V dokumentech jsou uloženy následující informace:
-            </p>
-
-            <ul>
-              <li>[string] deckName - Název balíčku, který uživatel zadal.</li>
-              <li>[string] deckDescription - Popis daného balíčku, který uživatel vytvořil.</li>
-              <li>[string] deckImage - Adresa obrázku daného balíčku. Pokud uživatel žádný balíček nenahrál, je zde zapsána adresa pro výchozí obrázek.</li>
-              <li>[string] creatorId - ID uživatele, který balíček vytvořil.</li>
-              <li>[boolean] private - Informace, která udává, jestli je balíček veřejný nebo soukromý.</li>
-              <li>[Array&lt;Object&gt;] cardArray - Pole, které obsahuje objekty jednotlivých karet. Ty obsahují následující informace:</li>
-              <ul>
-                <li>[string] cardId - ID dané kartičky, které bylo vygenerováno funkcí <a href="module-deck.html#~newId">newId</a>.</li>
-                <li>[string] body1 - Text přední strany kartičky.</li>
-                <li>[string] body2 - Text zadní strany kartičky.</li>
-              </ul>
-            </ul>
-
-            <h3>users</h3>
-            <p>
-              V této části jsou uloženy všechny informace o uživatelích a jejich pokroku v učení. Každý dokument má název podle ID daného uživatele. ID jsou
-              automaticky generovány službou <a href="https://firebase.google.com/docs/auth">Firebase Authentication</a> při registraci uživatele. V
-              jednotlivých dokumentech této části databáze jsou pak uloženy následující informace:
-            </p>
-
-            <ul>
-              <li>[string] username - Uživatelské jméno.</li>
-              <li>[string] bio - Popis uživatelského profilu.</li>
-              <li>[string] email - Emailová adresa uživatele.</li>
-              <li>[Array&lt;string&gt;] createdDecks - Pole, které obsahuje ID všech balíčků, které uživatel vytvořil.</li>
-              <li>[Array&lt;string&gt;] pinnedDecks - Pole, které obsahuje ID všech balíčků, které uživatel připnul.</li>
-              <li>[Array&lt;string&gt;] createdCollections - Pole, které obsahuje ID všech kolekcí, které uživatel vytvořil.</li>
-              <li>[Array&lt;string&gt;] pinnedCollections - Pole, které obsahuje ID všech kolekcí, které uživatel připnul.</li>
-            </ul>
-
-            <h4>deckProgress</h4>
-            <p>
-              Ke každému dokumentu v této části databáze je přiřazena skupina dokumentů, která se nazývá deckProgress. Tato skupina obsahuje dokumenty, které
-              mají název podle ID balíčků, které se uživatel učil. V každém tomto dokumentu je pak seznam kartiček, které se uživatel učil společně s
-              zaznamenaným pokrokem u každé karty. V každém dokumentu jsou uloženy následující informace.
-            </p>
-            <ul>
-              <li>
-                [string] deckId - ID daného balíčku (Je identické s názvem dokumentu. V dokumentu je zapsáno, aby bylo možné dokumenty hromadně prohledávat v
-                databázi.).
-              </li>
-              <li>[Array&lt;Object&gt;] cardArray - Pole, které obsahuje objekty karet, které se uživatel učil. Ty obsahují následující informace:</li>
-              <ul>
-                <li>[string] cardId - ID dané kartičky.</li>
-                <li>[number] understandingLevel - Číslo, které udává, jak dobře uživatel rozumí dané kartičce.</li>
-              </ul>
-            </ul>
-
-            <h2>Uživatelské účty</h2>
-            <h3>Registrace</h3>
-            <p>
-              Když se uživatel zaregistruje do Aplikace, je zaregistrován do služby <a href="https://firebase.google.com/docs/auth">Firebase Authentication</a>.
-              Zde jsou pak uloženy např. přihlašovací údaje uživatele (email a heslo) nebo ID uživatele. Zároveň je při registraci vytvořen dokument v databázi
-              v části users. V tomto dokumentu se pak ukládají ostatní informace o uživateli (viz výše).
-            </p>
-            <h3>Přihlašování a odhlašování</h3>
-            <p>
-              Přihlášení uživatel probíhá takto: Klient zazádá o přihlášení. Cloud funkce získá ze služby
-              <a href="https://firebase.google.com/docs/auth">Firebase Authentication</a> idToken uživatele a ten pak odešle zpět klientovi. Tam se pak idToken
-              uloží do localStorage a je přidán do headeru dalších požadavků na server.
-            </p>
-
-            <p>Při odhlášení uživatele je idToken odstraněn z localStorage klienta a z headeru požadavků.</p>
           </div>
         </div>
       </div>
