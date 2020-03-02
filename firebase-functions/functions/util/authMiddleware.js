@@ -28,21 +28,7 @@ module.exports = (req, res, next) => {
     .then(decodedToken => {
       req.user = decodedToken;
 
-      // Najde dokument s daty uživatele v databázi
-      return db
-        .collection("users")
-        .doc(req.user.uid)
-        .get();
-    })
-    .then(doc => {
-      // Pokud existuje uživatel v databázi
-      if (doc.exists) {
-        // Přiřadí uživatelské jméno do req.user.username
-        req.user.username = doc.data().username;
-        return next();
-      } else {
-        return res.status(403).json({ errorCode: "user/user-not-found" });
-      }
+      return next();
     })
     .catch(error => {
       console.error("Error while verifying token ", error);
