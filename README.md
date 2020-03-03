@@ -34,7 +34,6 @@ Podstatnou funkcí této aplikace je možnost seskupování balíčků do tzv. k
 
 U kolekce, stejně jako u balíčku, může uživatel nastavit, zda bude veřejná či soukromá. Na základě toho k ní pak budou nebo nebudou moci přistupovat ostatní uživatelé
 
----
 
 ## Projekt
 
@@ -43,7 +42,6 @@ Projekt je rozdělen do dvou částí:
 - [firebase-functions](https://github.com/Morcinus/SimpleFlashCards/tree/master/firebase-functions) - API funkce, které zprostředkovávají komunikaci mezi klientem a databází.
 - [simpleflashcards-client](https://github.com/Morcinus/SimpleFlashCards/tree/master/simpleflashcards-client) - Samotná webová aplikace.
 
----
 
 ## Autor
 
@@ -75,7 +73,6 @@ Back-end:
 - [Firebase Authentication](https://firebase.google.com/docs/auth) - Služba, která spravuje uživatelské účty této aplikace.
 - [Firebase Hosting](https://firebase.google.com/docs/hosting) - Hosting na kterém běží tato aplikace.
 
----
 
 ## Odkazy
 
