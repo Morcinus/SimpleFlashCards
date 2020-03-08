@@ -131,15 +131,21 @@ export class createDeck extends Component {
    * @description Uloží návrh balíčku do reduceru a vymaže status aplikace v reduceru.
    */
   componentWillUnmount() {
-    let deckData = {
-      deckName: this.state.deckName,
-      deckDescription: this.state.deckDescription,
-      deckImage: this.state.deckImage,
-      deckCards: this.state.deckCards,
-      imageUrl: this.state.imageUrl,
-      private: this.state.private
-    };
-    this.props.saveDeckDraft(deckData);
+    // Pokud nebyl vytvořen balíček na serveru, uloží návrh balíčku
+    if (this.props.uiStatus.successCodes) {
+      if (!this.props.uiStatus.successCodes.includes("createDeck/deck-created")) {
+        let deckData = {
+          deckName: this.state.deckName,
+          deckDescription: this.state.deckDescription,
+          deckImage: this.state.deckImage,
+          deckCards: this.state.deckCards,
+          imageUrl: this.state.imageUrl,
+          private: this.state.private
+        };
+        this.props.saveDeckDraft(deckData);
+      }
+    }
+
     this.props.clearStatus();
   }
 
@@ -162,6 +168,7 @@ export class createDeck extends Component {
    */
   deleteDeckDraft() {
     this.setState(initialState);
+    this.setState({ deckCards: [] });
     this.props.deleteDeckDraft();
     this.handleDialogClose();
   }
@@ -192,15 +199,16 @@ export class createDeck extends Component {
   /**
    * @function componentDidUpdate
    * @memberOf createDeck
-   * @description Pokud byl balíček úspěšně vytvořen na serveru, vymaže všechna data ze state komponentu.
+   * @description Pokud byl balíček úspěšně vytvořen na serveru, vymaže všechna data ze state komponentu a z reduceru.
    * @param {Object} prevProps - Předchozí props daného komponentu.
    */
   componentDidUpdate(prevProps) {
-    // Remove data if the deck was created
     if (this.props.uiStatus.status) {
       if (this.props.uiStatus.successCodes !== prevProps.uiStatus.successCodes) {
         if (this.props.uiStatus.successCodes.includes("createDeck/deck-created")) {
           this.setState(initialState);
+          this.setState({ deckCards: [] });
+          this.props.deleteDeckDraft();
         }
       }
     }
