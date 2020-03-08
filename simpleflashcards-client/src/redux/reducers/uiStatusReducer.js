@@ -54,7 +54,7 @@ export default function(state = initialState, action) {
         successCodes: action.payload ? [...state.successCodes, action.payload] : [...state.successCodes]
       };
     case CLEAR_STATUS:
-      return initialState;
+      return { status: null, errorCodes: [], successCodes: [] };
     default:
       return state;
   }

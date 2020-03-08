@@ -11,10 +11,26 @@ import deckStudyReducer from "./reducers/deckStudyReducer";
 import colUiReducer from "./reducers/colUiReducer";
 import colStudyReducer from "./reducers/colStudyReducer";
 import editColReducer from "./reducers/editColReducer";
+import { logoutUser } from "./actions/userActions";
 
 const initialState = {};
 
-const middleware = [thunk];
+/**
+ * Store middleware, který kontroluje, jestli uživateli neskončila platnost tokenu. Pokud platnost skončila, uživatele odhlásí.
+ * @function tokenExpirationMiddleware
+ * @param {Object} store - Store aplikace.
+ * @param {Object} next - Funkce, která spustí pokračování zpracovávání dané akce.
+ * @param {Object} action - Akce, která vyvolala změnu ve store.
+ */
+const tokenExpirationMiddleware = store => next => action => {
+  if (action.payload === "auth/id-token-expired") {
+    store.dispatch(logoutUser());
+  } else {
+    next(action);
+  }
+};
+
+const middleware = [thunk, tokenExpirationMiddleware];
 
 /**
  * @category Ostatní
