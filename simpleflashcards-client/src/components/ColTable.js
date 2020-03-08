@@ -62,6 +62,12 @@ export class ColTable extends Component {
                   let data = this.props.data;
                   const index = data.indexOf(oldData);
                   data.splice(index, 1);
+
+                  // Přenastavení pořadí (indexů) balíčků
+                  for (let i = 0; i < data.length; i++) {
+                    data[i].index = i + 1;
+                  }
+
                   this.props.updateDeckArray(data);
                   resolve();
                 }

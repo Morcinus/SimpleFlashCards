@@ -89,6 +89,12 @@ export class DeckTable extends Component {
                   let data = this.props.data;
                   const index = data.indexOf(oldData);
                   data.splice(index, 1);
+
+                  // Přenastavení pořadí (indexů) karet
+                  for (let i = 0; i < data.length; i++) {
+                    data[i].index = i + 1;
+                  }
+
                   this.props.updateDeckCards(data);
                   resolve();
                 }
