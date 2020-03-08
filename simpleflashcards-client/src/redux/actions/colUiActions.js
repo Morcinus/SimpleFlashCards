@@ -17,6 +17,7 @@ import {
   CLEAR_COL_DIALOG_STATUS
 } from "../types";
 import axios from "axios";
+import { deckColNameRegex } from "../../util/other";
 
 /**
  * @category ReduxActions
@@ -235,8 +236,7 @@ export const createCollection = (colName, deckId, privateCol) => dispatch => {
 const validateUploadCollectionName = colName => {
   // CollectionName validation
   if (colName !== "") {
-    let colNameRegex = /^[a-zA-Z0-9 ]+$/;
-    if (!colName.match(colNameRegex)) {
+    if (!colName.match(deckColNameRegex)) {
       return "createCollection/invalid-collection-name";
     }
   } else {
