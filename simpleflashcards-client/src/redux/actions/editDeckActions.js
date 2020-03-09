@@ -1,6 +1,6 @@
 import { SET_EDIT_DECK_DATA, DELETE_EDIT_DECK_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS } from "../types";
 import axios from "axios";
-import { deckColNameRegex } from "../../util/other";
+import { DECK_COL_NAME_REGEX } from "../../util/other";
 
 /**
  * @category ReduxActions
@@ -118,7 +118,7 @@ const validateUploadDeckData = deckData => {
 
   // DeckName validation
   if (deckData.deckName !== "") {
-    if (!deckData.deckName.match(deckColNameRegex)) {
+    if (!deckData.deckName.match(DECK_COL_NAME_REGEX)) {
       errors.push("updateDeck/invalid-deck-name");
     }
   } else {

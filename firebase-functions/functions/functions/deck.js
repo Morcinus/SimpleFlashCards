@@ -3,7 +3,7 @@ const config = require("../util/firebaseConfig");
 
 const { Storage } = require("@google-cloud/storage");
 
-const { deckColNameRegexString } = require("../util/other");
+const { DECK_COL_NAME_REGEX_STRING } = require("../util/other");
 
 /**
  * @module deck
@@ -24,7 +24,7 @@ const validateDeckData = (deckName, cardArray) => {
 
   // Ověření názvu balíčku.
   if (deckName !== "") {
-    if (!deckName.match(new RegExp(deckColNameRegexString))) {
+    if (!deckName.match(new RegExp(DECK_COL_NAME_REGEX_STRING))) {
       errors.push("createDeck/invalid-deck-name");
     }
   } else {

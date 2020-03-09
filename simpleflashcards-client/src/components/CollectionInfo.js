@@ -23,7 +23,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Hidden from "@material-ui/core/Hidden";
 
 // Other
-import { collectionDefaultImgUrl } from "../util/other";
+import { DEFAULT_COLLECTION_IMG_URL } from "../util/other";
 
 // Redux
 import { connect } from "react-redux";
@@ -197,7 +197,7 @@ export class CollectionInfo extends Component {
                     height: "204px"
                   }}
                 >
-                  <CardMedia style={{ width: "100%", height: "100%" }} image={collectionDefaultImgUrl}></CardMedia>
+                  <CardMedia style={{ width: "100%", height: "100%" }} image={DEFAULT_COLLECTION_IMG_URL}></CardMedia>
                 </Card>
               </Grid>
 

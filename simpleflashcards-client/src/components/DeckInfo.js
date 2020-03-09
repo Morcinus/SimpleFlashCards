@@ -24,7 +24,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Hidden from "@material-ui/core/Hidden";
 
 // Other
-import defaultDeckImageUrl from "../util/other";
+import DEFAULT_DECK_IMG_URL from "../util/other";
 
 // Redux
 import { connect } from "react-redux";
@@ -212,7 +212,7 @@ export class DeckInfo extends Component {
                 >
                   <CardMedia
                     style={{ width: "100%", height: "100%" }}
-                    image={this.props.deckUi.deck.deckImage ? this.props.deckUi.deck.deckImage : defaultDeckImageUrl}
+                    image={this.props.deckUi.deck.deckImage ? this.props.deckUi.deck.deckImage : DEFAULT_DECK_IMG_URL}
                   ></CardMedia>
                 </Card>
               </Grid>

@@ -1,6 +1,6 @@
 import { SET_EDIT_COLLECTION_DATA, DELETE_EDIT_COLLECTION_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS } from "../types";
 import axios from "axios";
-import { deckColNameRegex } from "../../util/other";
+import { DECK_COL_NAME_REGEX } from "../../util/other";
 
 /**
  * @category ReduxActions
@@ -101,7 +101,7 @@ const validateUploadCollectionData = colData => {
 
   // CollectionName validation
   if (colData.colName !== "") {
-    if (!colData.colName.match(deckColNameRegex)) {
+    if (!colData.colName.match(DECK_COL_NAME_REGEX)) {
       console.log("e");
       errors.push("updateCollection/invalid-collection-name");
     }

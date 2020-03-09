@@ -23,7 +23,7 @@ import Box from "@material-ui/core/Box";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 // Other
-import { collectionDefaultImgUrl } from "../util/other";
+import { DEFAULT_COLLECTION_IMG_URL } from "../util/other";
 
 // Redux
 import { connect } from "react-redux";
@@ -168,7 +168,7 @@ export class CollectionDialog extends Component {
                 <List style={{ paddingBottom: 0 }}>
                   <ListItem style={{ paddingBottom: 0 }}>
                     <ListItemAvatar>
-                      <Avatar variant="square" src={collectionDefaultImgUrl}></Avatar>
+                      <Avatar variant="square" src={DEFAULT_COLLECTION_IMG_URL}></Avatar>
                     </ListItemAvatar>
                     <ListItemText
                       primary={
@@ -215,7 +215,7 @@ export class CollectionDialog extends Component {
                     return (
                       <ListItem key={i}>
                         <ListItemAvatar>
-                          <Avatar src={collectionDefaultImgUrl} variant="square"></Avatar>
+                          <Avatar src={DEFAULT_COLLECTION_IMG_URL} variant="square"></Avatar>
                         </ListItemAvatar>
                         <ListItemText primary={collection.colName} secondary={collection.colDescription ? collection.colDescription : null} />
                         <ListItemSecondaryAction>

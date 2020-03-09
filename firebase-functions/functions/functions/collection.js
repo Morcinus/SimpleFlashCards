@@ -1,5 +1,5 @@
 const { db, admin } = require("../util/admin");
-const { deckColNameRegexString } = require("../util/other");
+const { DECK_COL_NAME_REGEX_STRING } = require("../util/other");
 
 /**
  * @module collection
@@ -20,7 +20,7 @@ const validateCreateCollectionData = (colName, deckArray) => {
 
   // Ověření názvu kolekce.
   if (colName !== "") {
-    if (!colName.match(new RegExp(deckColNameRegexString))) {
+    if (!colName.match(new RegExp(DECK_COL_NAME_REGEX_STRING))) {
       errors.push("createCollection/invalid-collection-name");
     }
   } else {
@@ -94,7 +94,7 @@ const validateCollectionData = (colName, deckArray) => {
 
   // Ověření názvu kolekce.
   if (colName !== "") {
-    if (!colName.match(deckColNameRegexString)) {
+    if (!colName.match(DECK_COL_NAME_REGEX_STRING)) {
       errors.push("updateCollection/invalid-collection-name");
     }
   } else {

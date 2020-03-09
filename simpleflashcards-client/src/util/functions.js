@@ -11,8 +11,8 @@ import MenuBook from "@material-ui/icons/MenuBook";
 import FitnessCenter from "@material-ui/icons/FitnessCenter";
 
 // Other
-import defaultDeckImageUrl from "../util/other";
-import { collectionDefaultImgUrl } from "../util/other";
+import DEFAULT_DECK_IMG_URL from "../util/other";
+import { DEFAULT_COLLECTION_IMG_URL } from "../util/other";
 
 /**
  * @module functions
@@ -49,7 +49,7 @@ export function renderDecks(deckArray) {
           }}
         >
           <CardActionArea style={{ width: "100%", height: "100%", textAlign: "center" }} component={Link} to={`/deck/${deckArray[i].deckId}`}>
-            <CardMedia style={{ width: "100%", height: "100%" }} image={deckArray[i].deckImage ? deckArray[i].deckImage : defaultDeckImageUrl}></CardMedia>
+            <CardMedia style={{ width: "100%", height: "100%" }} image={deckArray[i].deckImage ? deckArray[i].deckImage : DEFAULT_DECK_IMG_URL}></CardMedia>
           </CardActionArea>
         </Card>
         <Typography style={textStyle}>{deckArray[i].deckName}</Typography>
@@ -88,7 +88,7 @@ export function renderCollections(collectionArray) {
           }}
         >
           <CardActionArea style={{ width: "100%", height: "100%" }} component={Link} to={`/collection/${collectionArray[i].colId}`}>
-            <CardMedia style={{ width: "100%", height: "100%" }} image={collectionDefaultImgUrl}></CardMedia>
+            <CardMedia style={{ width: "100%", height: "100%" }} image={DEFAULT_COLLECTION_IMG_URL}></CardMedia>
           </CardActionArea>
         </Card>
         <Typography style={textStyle}>{collectionArray[i].colName}</Typography>

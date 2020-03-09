@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import MaterialTable from "material-table";
 
 // Other
-import defaultDeckImageUrl from "../util/other";
+import DEFAULT_DECK_IMG_URL from "../util/other";
 
 /**
  * @class ColTable
@@ -26,7 +26,7 @@ export class ColTable extends Component {
           field: "imageUrl",
           // Vykreslí obrázky jednotlivých balíčků
           render: rowData => (
-            <img src={rowData.deckImage ? rowData.deckImage : defaultDeckImageUrl} style={{ width: "145px", height: "170px", borderRadius: 12 }} alt="" />
+            <img src={rowData.deckImage ? rowData.deckImage : DEFAULT_DECK_IMG_URL} style={{ width: "145px", height: "170px", borderRadius: 12 }} alt="" />
           )
         },
         { title: "Deck Name", field: "frontPage" }
