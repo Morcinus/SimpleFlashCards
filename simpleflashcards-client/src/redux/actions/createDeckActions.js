@@ -107,7 +107,7 @@ const validateUploadDeckData = deckData => {
   // DeckName validation
   if (deckData.deckName !== "") {
     if (!deckData.deckName.match(deckColNameRegex)) {
-      errors.push("createDeck/empty-deck-name");
+      errors.push("createDeck/invalid-deck-name");
     }
   } else {
     errors.push("createDeck/empty-deck-name");
