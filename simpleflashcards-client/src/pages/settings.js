@@ -158,7 +158,7 @@ export class settings extends Component {
                 <Divider></Divider>
 
                 <br />
-                {status == "BUSY" && <LinearProgress color="secondary" />}
+                {status === "BUSY" && <LinearProgress color="secondary" />}
                 <List subheader={<ListSubheader>Profile Settings</ListSubheader>}>
                   <ListItem>
                     <ListItemIcon>

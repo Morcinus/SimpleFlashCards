@@ -182,7 +182,7 @@ export class DeckInfo extends Component {
     } = this.props;
     return (
       <Grid>
-        {status == "BUSY" && (
+        {status === "BUSY" && (
           <React.Fragment>
             <Card
               variant="outlined"
@@ -199,7 +199,7 @@ export class DeckInfo extends Component {
             </Card>
           </React.Fragment>
         )}
-        {status == "SUCCESS" && this.props.deckUi.deck && (
+        {status === "SUCCESS" && this.props.deckUi.deck && (
           <Grid>
             <Grid className={classes.descriptionGrid} container spacing={2}>
               <Grid item>

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 // Material UI
@@ -146,7 +146,7 @@ export class deck extends Component {
                   <Divider></Divider>
                   <br />
 
-                  {status == "BUSY" && (
+                  {status === "BUSY" && (
                     <React.Fragment>
                       <LinearProgress color="secondary" />
                       <Typography variant="h5" color="secondary" align="right">
@@ -154,7 +154,7 @@ export class deck extends Component {
                       </Typography>
                     </React.Fragment>
                   )}
-                  {status == "ERROR" && errorCodes.includes("deck/deck-not-found") ? (
+                  {status === "ERROR" && errorCodes.includes("deck/deck-not-found") ? (
                     <Typography variant="h6" color="error" align="center">
                       Error 404: Deck not found!
                     </Typography>
@@ -165,7 +165,7 @@ export class deck extends Component {
                       </Typography>
                     )
                   )}
-                  {status == "SUCCESS" &&
+                  {status === "SUCCESS" &&
                     (this.state.selectedTabIndex === 1 ? (
                       <DeckCards />
                     ) : (

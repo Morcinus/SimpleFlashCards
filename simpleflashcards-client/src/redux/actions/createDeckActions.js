@@ -1,4 +1,4 @@
-import { UPDATE_DECK_DATA, DELETE_DECK_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS } from "../types";
+import { UPDATE_DECK_DATA, DELETE_DECK_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS } from "../types";
 import axios from "axios";
 import { deckColNameRegex } from "../../util/other";
 

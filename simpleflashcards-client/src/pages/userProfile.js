@@ -71,7 +71,7 @@ export class userProfile extends Component {
           <Grid item sm={8} lg={8} xl={8}>
             <Paper>
               <div style={{ padding: "25px 50px" }}>
-                {status == "BUSY" && (
+                {status === "BUSY" && (
                   <React.Fragment>
                     <LinearProgress color="secondary" />
                     <Typography variant="h5" color="secondary" align="right">
@@ -79,7 +79,7 @@ export class userProfile extends Component {
                     </Typography>
                   </React.Fragment>
                 )}
-                {status == "ERROR" &&
+                {status === "ERROR" &&
                   (errorCodes.includes("userprofile/user-not-found") ? (
                     <Typography variant="h6" color="error" align="center">
                       Error 404: User not found!
@@ -87,7 +87,7 @@ export class userProfile extends Component {
                   ) : (
                     ""
                   ))}
-                {status == "SUCCESS" && (
+                {status === "SUCCESS" && (
                   <React.Fragment>
                     <Typography variant="h5">{this.props.user.userProfile.username}</Typography>
                     <Typography variant="h6">{this.props.user.userProfile.bio}</Typography>

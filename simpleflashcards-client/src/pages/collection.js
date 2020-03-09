@@ -142,7 +142,7 @@ export class collection extends Component {
                   <Divider></Divider>
                   <br />
 
-                  {status == "BUSY" && (
+                  {status === "BUSY" && (
                     <React.Fragment>
                       <LinearProgress color="secondary" />
                       <Typography variant="h5" color="secondary" align="right">
@@ -150,7 +150,7 @@ export class collection extends Component {
                       </Typography>
                     </React.Fragment>
                   )}
-                  {status == "ERROR" && errorCodes.includes("collection/collection-not-found") ? (
+                  {status === "ERROR" && errorCodes.includes("collection/collection-not-found") ? (
                     <Typography variant="h6" color="error" align="center">
                       Error 404: Collection not found!
                     </Typography>
@@ -162,7 +162,7 @@ export class collection extends Component {
                     )
                   )}
 
-                  {status == "SUCCESS" &&
+                  {status === "SUCCESS" &&
                     (this.state.selectedTabIndex === 1 ? (
                       <CollectionDecks />
                     ) : (

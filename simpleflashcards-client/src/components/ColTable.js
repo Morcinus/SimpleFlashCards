@@ -26,7 +26,7 @@ export class ColTable extends Component {
           field: "imageUrl",
           // Vykreslí obrázky jednotlivých balíčků
           render: rowData => (
-            <img src={rowData.deckImage ? rowData.deckImage : defaultDeckImageUrl} style={{ width: "145px", height: "170px", borderRadius: 12 }} />
+            <img src={rowData.deckImage ? rowData.deckImage : defaultDeckImageUrl} style={{ width: "145px", height: "170px", borderRadius: 12 }} alt="" />
           )
         },
         { title: "Deck Name", field: "frontPage" }

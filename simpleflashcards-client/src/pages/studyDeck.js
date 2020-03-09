@@ -106,7 +106,7 @@ export class studyDeck extends Component {
         break;
       case 1:
         // Hard Button
-        understandingLevel = understandingLevel;
+        // understandingLevel = understandingLevel;
         break;
       case 2:
         // Good Button
@@ -117,7 +117,7 @@ export class studyDeck extends Component {
         understandingLevel = understandingLevel + 2;
         break;
       default:
-        understandingLevel = understandingLevel;
+      // understandingLevel = understandingLevel;
     }
 
     this.setCardSideToFront();
@@ -241,7 +241,7 @@ export class studyDeck extends Component {
                       </IconButton>
                     )}
                   </Box>
-                  {status == "BUSY" ? (
+                  {status === "BUSY" ? (
                     <Box flexGrow={1} alignSelf="flex-end">
                       <LinearProgress color="secondary" />
                       <Typography variant="h5" color="secondary" align="right">

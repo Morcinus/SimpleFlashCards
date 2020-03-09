@@ -265,7 +265,7 @@ export class editDeck extends Component {
           <Grid item xs={12} sm={10} md={10} lg={8} xl={6}>
             <Paper>
               <div className={classes.container}>
-                {status == "BUSY" && (
+                {status === "BUSY" && (
                   <React.Fragment>
                     <LinearProgress color="secondary" />
                     <Typography variant="h5" color="secondary" align="right">

@@ -15,16 +15,11 @@ import { renderDecks } from "../util/functions";
  * @extends Component
  * @category Components
  * @classdesc Tento komponent zobrazuje balíčky, které jsou obsaženy v dané kolekci.
- * @param {Object} props - Vstupní data pro daný komponent.
  *
  * @requires functions~renderDecks
  * @requires {@link module:store~reducers module:store~reducers.colUi}
  */
 export class CollectionDecks extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <Grid container direction="row" justify="flex-start" alignItems="flex-start">

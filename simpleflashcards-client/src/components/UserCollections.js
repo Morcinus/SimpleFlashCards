@@ -72,7 +72,7 @@ export class UserCollections extends Component {
     } = this.props;
     return (
       <div>
-        {status == "BUSY" && (
+        {status === "BUSY" && (
           <React.Fragment>
             <LinearProgress color="secondary" />
             <Typography variant="h5" color="secondary" align="right">
@@ -80,13 +80,13 @@ export class UserCollections extends Component {
             </Typography>
           </React.Fragment>
         )}
-        {status == "ERROR" && errorCodes.includes("collection/no-collection-found") && (
+        {status === "ERROR" && errorCodes.includes("collection/no-collection-found") && (
           <Typography variant="h6" color="error" align="center">
             You don't have any collections!
           </Typography>
         )}
         <Grid className={classes.deckGrid} container direction="row" justify="flex-start" alignItems="flex-start">
-          {status == "SUCCESS" && renderCollections(this.props.colUi.userCollections)}
+          {status === "SUCCESS" && renderCollections(this.props.colUi.userCollections)}
         </Grid>
       </div>
     );

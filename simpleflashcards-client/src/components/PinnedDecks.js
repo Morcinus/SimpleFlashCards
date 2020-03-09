@@ -72,7 +72,7 @@ export class PinnedDecks extends Component {
     } = this.props;
     return (
       <div>
-        {status == "BUSY" && (
+        {status === "BUSY" && (
           <React.Fragment>
             <LinearProgress color="secondary" />
             <Typography variant="h5" color="secondary" align="right">
@@ -80,13 +80,13 @@ export class PinnedDecks extends Component {
             </Typography>
           </React.Fragment>
         )}
-        {status == "ERROR" && errorCodes.includes("deck/no-deck-found") && (
+        {status === "ERROR" && errorCodes.includes("deck/no-deck-found") && (
           <Typography variant="h6" color="error" align="center">
             You don't have any pinned decks!
           </Typography>
         )}
         <Grid className={classes.deckGrid} container direction="row" justify="flex-start" alignItems="flex-start">
-          {status == "SUCCESS" && renderDecks(this.props.deckUi.pinnedDecks)}
+          {status === "SUCCESS" && renderDecks(this.props.deckUi.pinnedDecks)}
         </Grid>
       </div>
     );

@@ -169,7 +169,7 @@ export class CollectionInfo extends Component {
     } = this.props;
     return (
       <Grid>
-        {status == "BUSY" && (
+        {status === "BUSY" && (
           <React.Fragment>
             <Card
               variant="outlined"
@@ -186,7 +186,7 @@ export class CollectionInfo extends Component {
             </Card>
           </React.Fragment>
         )}
-        {status == "SUCCESS" && this.props.colUi.collection && (
+        {status === "SUCCESS" && this.props.colUi.collection && (
           <Grid>
             <Grid className={classes.descriptionGrid} container spacing={2}>
               <Grid item>

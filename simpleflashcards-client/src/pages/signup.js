@@ -170,9 +170,9 @@ export class signup extends Component {
                     onChange={this.handleChange}
                     fullWidth
                   />
-                  <Button type="submit" variant="contained" color="primary" className={classes.button} disabled={status == "BUSY" ? true : false}>
+                  <Button type="submit" variant="contained" color="primary" className={classes.button} disabled={status === "BUSY" ? true : false}>
                     Signup
-                    {status == "BUSY" && <CircularProgress size={30} className={classes.progress} />}
+                    {status === "BUSY" && <CircularProgress size={30} className={classes.progress} />}
                   </Button>
                   <br />
                   <small>

@@ -72,7 +72,7 @@ export class UserDecks extends Component {
     } = this.props;
     return (
       <div>
-        {status == "BUSY" && (
+        {status === "BUSY" && (
           <React.Fragment>
             <LinearProgress color="secondary" />
             <Typography variant="h5" color="secondary" align="right">
@@ -80,13 +80,13 @@ export class UserDecks extends Component {
             </Typography>
           </React.Fragment>
         )}
-        {status == "ERROR" && errorCodes.includes("deck/no-deck-found") && (
+        {status === "ERROR" && errorCodes.includes("deck/no-deck-found") && (
           <Typography variant="h6" color="error" align="center">
             You don't have any decks!
           </Typography>
         )}
         <Grid className={classes.deckGrid} container direction="row" alignItems="flex-start">
-          {status == "SUCCESS" && renderDecks(this.props.deckUi.userDecks)}
+          {status === "SUCCESS" && renderDecks(this.props.deckUi.userDecks)}
         </Grid>
       </div>
     );

@@ -8,8 +8,6 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import Typography from "@material-ui/core/Typography";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import CloseIcon from "@material-ui/icons/Close";
@@ -114,7 +112,7 @@ export class studyCollection extends Component {
         break;
       case 1:
         // Hard Button
-        understandingLevel = understandingLevel;
+        // understandingLevel = understandingLevel;
         break;
       case 2:
         // Good Button
@@ -125,7 +123,7 @@ export class studyCollection extends Component {
         understandingLevel = understandingLevel + 2;
         break;
       default:
-        understandingLevel = understandingLevel;
+      // understandingLevel = understandingLevel;
     }
 
     this.setCardSideToFront();
@@ -250,7 +248,7 @@ export class studyCollection extends Component {
                       </IconButton>
                     )}
                   </Box>
-                  {status == "BUSY" ? (
+                  {status === "BUSY" ? (
                     <Box flexGrow={1} alignSelf="flex-end">
                       <LinearProgress color="secondary" />
                       <Typography variant="h5" color="secondary" align="right">

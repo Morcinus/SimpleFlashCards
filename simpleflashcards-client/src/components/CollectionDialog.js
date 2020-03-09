@@ -145,7 +145,7 @@ export class CollectionDialog extends Component {
     return (
       <Dialog open={this.props.colUi.collectionDialogOpen} onClose={this.handleClose}>
         <DialogContent>
-          {colDialogStatus == "BUSY" && (
+          {colDialogStatus === "BUSY" && (
             <React.Fragment>
               <LinearProgress color="secondary" />
               <Typography variant="h5" color="secondary" align="right">
@@ -188,7 +188,7 @@ export class CollectionDialog extends Component {
                     </ListItemSecondaryAction>
                   </ListItem>
                 </List>
-                {colDialogStatus == "ERROR" &&
+                {colDialogStatus === "ERROR" &&
                   (colDialogErrorCodes.includes("createCollection/invalid-collection-name") ? (
                     <Typography color="error" align="center">
                       Invalid collection name!
