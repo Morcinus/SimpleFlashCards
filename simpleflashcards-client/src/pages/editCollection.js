@@ -34,9 +34,6 @@ import { clearStatus } from "../redux/actions/uiStatusActions";
  */
 const styles = theme => ({
   tableBox: {
-    // [theme.breakpoints.down("sm")]: {
-    //   padding: "25px 10px"
-    // },
     [theme.breakpoints.up("md")]: {
       display: "flex",
       justifyContent: "center"
@@ -130,7 +127,6 @@ export class editCollection extends Component {
    * @param {Object} prevProps - Předchozí props daného komponentu.
    */
   componentDidUpdate(prevProps) {
-    // Load collection data after getCollection()
     if (this.props.colEdit) {
       if (this.props.colEdit !== prevProps.colEdit) {
         let deckArray = [];
@@ -263,7 +259,7 @@ export class editCollection extends Component {
                               variant="outlined"
                               label="Enter Title"
                               name="colName"
-                              value={this.state.colName}
+                              value={this.state.colName || ""}
                               onChange={this.handleChange}
                               helperText={
                                 errorCodes.includes("updateCollection/empty-collection-name")
@@ -289,7 +285,7 @@ export class editCollection extends Component {
                               variant="outlined"
                               label="Enter Description (optional)"
                               name="colDescription"
-                              value={this.state.colDescription}
+                              value={this.state.colDescription || ""}
                               onChange={this.handleChange}
                               InputLabelProps={{
                                 shrink: true

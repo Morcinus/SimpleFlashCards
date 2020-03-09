@@ -173,7 +173,7 @@ export class settings extends Component {
                           }}
                           onChange={this.handleChange}
                           name="username"
-                          value={this.state.username}
+                          value={this.state.username || ""}
                           helperText={
                             errorCodes.includes("settings/username-already-exists")
                               ? "This username is already taken!"
@@ -212,7 +212,7 @@ export class settings extends Component {
                           }}
                           onChange={this.handleChange}
                           name="bio"
-                          value={this.state.bio}
+                          value={this.state.bio || ""}
                           helperText={
                             errorCodes.includes("settings/too-long-bio")
                               ? "Description must not be longer than 250 characters!"
@@ -253,7 +253,7 @@ export class settings extends Component {
                             }}
                             onChange={this.handleChange}
                             name="email"
-                            value={this.state.email}
+                            value={this.state.email || ""}
                             helperText={
                               errorCodes.includes("auth/invalid-email")
                                 ? "Invalid email!"

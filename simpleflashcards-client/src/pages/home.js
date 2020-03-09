@@ -74,7 +74,6 @@ export class home extends Component {
                       label={
                         <div>
                           <LibraryBooksIcon
-                            item
                             style={{
                               display: "inline-block",
                               marginBottom: "-5px",
@@ -89,7 +88,6 @@ export class home extends Component {
                       label={
                         <div>
                           <BookmarksIcon
-                            item
                             style={{
                               display: "inline-block",
                               marginBottom: "-5px",
@@ -104,7 +102,6 @@ export class home extends Component {
                       label={
                         <div>
                           <LibraryBooksIcon
-                            item
                             style={{
                               display: "inline-block",
                               marginBottom: "-5px",
@@ -119,7 +116,6 @@ export class home extends Component {
                       label={
                         <div>
                           <BookmarksIcon
-                            item
                             style={{
                               display: "inline-block",
                               marginBottom: "-5px",
@@ -158,7 +154,7 @@ export class home extends Component {
   }
 }
 
-UserDecks.propTypes = {
+home.propTypes = {
   classes: PropTypes.object.isRequired
 };
 

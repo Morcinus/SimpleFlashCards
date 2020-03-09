@@ -227,7 +227,6 @@ export class CollectionInfo extends Component {
             <Grid direction="row" container style={{ marginTop: "20px" }} spacing={1}>
               <Grid item xs={3} md={12} lg={6} container justify="center">
                 <Button
-                  item
                   variant={this.state.isPinned !== null ? (this.state.isPinned ? "contained" : "outlined") : "text"}
                   color="primary"
                   size="large"
@@ -246,7 +245,7 @@ export class CollectionInfo extends Component {
               </Grid>
 
               <Grid item xs={3} md={12} lg={6} container justify="center">
-                <Button onClick={this.handlePopoverOpen} item variant="outlined" color="primary" size="large">
+                <Button onClick={this.handlePopoverOpen} variant="outlined" color="primary" size="large">
                   <ShareIcon /> <Typography> Share</Typography>
                 </Button>
               </Grid>
@@ -279,7 +278,7 @@ export class CollectionInfo extends Component {
 
               <Grid item xs={3} md={12} lg={6} container justify="center">
                 {this.props.colUi.collection.isCreator && (
-                  <Button item variant="text" color="primary" size="large" component={Link} to={`/editCollection/${this.props.colId}`}>
+                  <Button variant="text" color="primary" size="large" component={Link} to={`/editCollection/${this.props.colId}`}>
                     <EditIcon /> <Typography> Edit Collection</Typography>
                   </Button>
                 )}

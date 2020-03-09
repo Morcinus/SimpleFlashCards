@@ -164,7 +164,6 @@ export class Navbar extends Component {
                       label={
                         <div>
                           <ExitToAppIcon
-                            item
                             style={{
                               display: "inline-block",
                               marginBottom: "-5px",
@@ -181,7 +180,6 @@ export class Navbar extends Component {
                       label={
                         <div>
                           <PersonAddIcon
-                            item
                             style={{
                               display: "inline-block",
                               marginBottom: "-5px",
@@ -216,7 +214,6 @@ export class Navbar extends Component {
                       label={
                         <div>
                           <HomeIcon
-                            item
                             style={{
                               display: "inline-block",
                               marginBottom: "-5px",
@@ -233,7 +230,6 @@ export class Navbar extends Component {
                       label={
                         <div>
                           <QueueIcon
-                            item
                             style={{
                               display: "inline-block",
                               marginBottom: "-5px",

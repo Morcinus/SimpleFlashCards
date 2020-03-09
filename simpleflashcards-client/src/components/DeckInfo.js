@@ -243,7 +243,7 @@ export class DeckInfo extends Component {
 
             <Grid direction="row" container style={{ marginTop: "20px" }} spacing={1}>
               <Grid item xs={3} md={12} lg={6} container justify="center">
-                <Button item variant={this.state.isPinned ? "contained" : "outlined"} color="primary" size="large" onClick={this.handlePinButtonClick}>
+                <Button variant={this.state.isPinned ? "contained" : "outlined"} color="primary" size="large" onClick={this.handlePinButtonClick}>
                   {this.state.isPinned ? (
                     <Fragment>
                       <BookmarkIcon /> <Typography> Pinned</Typography>
@@ -300,7 +300,7 @@ export class DeckInfo extends Component {
               </Grid>
 
               <Grid item xs={3} md={12} lg={6} container justify="center">
-                <Button item variant="text" color="primary" onClick={this.handleAddToCollection}>
+                <Button variant="text" color="primary" onClick={this.handleAddToCollection}>
                   <LibraryAddIcon style={{ marginRight: "5px" }} />
                   <Typography variant="body2">
                     Add to <br /> Collection

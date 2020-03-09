@@ -38,7 +38,7 @@ export function renderDecks(deckArray) {
 
   for (let i = 0; i < deckArray.length; i++) {
     markup.push(
-      <Grid item>
+      <Grid item key={deckArray[i].deckId}>
         <Card
           variant="outlined"
           style={{
@@ -78,7 +78,7 @@ export function renderCollections(collectionArray) {
 
   for (let i = 0; i < collectionArray.length; i++) {
     markup.push(
-      <Grid item>
+      <Grid item key={collectionArray[i].colId}>
         <Card
           variant="outlined"
           style={{
@@ -302,7 +302,7 @@ export function renderFlashCards(cardArray, cardSides, flipCardFunction) {
 
   for (let i = 0; i < cardArray.length; i++) {
     markup.push(
-      <Grid item>
+      <Grid item key={cardArray[i].cardId}>
         <Card variant="outlined" style={cardSides[i] ? backCardStyle : frontCardStyle}>
           <CardActionArea style={{ width: "100%", height: "100%", textAlign: "center" }} onClick={() => flipCardFunction(i)}>
             <Typography variant="h6" style={{ color: "#37474f" }}>
