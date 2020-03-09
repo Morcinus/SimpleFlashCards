@@ -99,9 +99,15 @@ export default function(state = initialState, action) {
     case ADD_DECK_TO_COLLECTION:
       return {
         ...state,
+        /* Kód na upravení jedné hodnoty pole
+        Zdroj: https://stackoverflow.com/a/35629785
+        Autor: Fatih Erikli
+        Datum: 09.03.2020
+        */
         userCollections: state.userCollections.map((userCollections, i) =>
           i === action.payload ? { ...userCollections, containsDeck: true } : userCollections
-        ) // Source: https://stackoverflow.com/questions/35628774/how-to-update-single-value-inside-specific-array-item-in-redux
+        )
+        /* konec citovaného kódu */
       };
     case SET_COL_DIALOG_STATUS_BUSY:
       return {
