@@ -13,6 +13,12 @@ import colStudyReducer from "./reducers/colStudyReducer";
 import editColReducer from "./reducers/editColReducer";
 import { logoutUser } from "./actions/userActions";
 
+/**
+ * @category Ostatní
+ * @module store
+ * @description Zde se ze všech reducerů vytvoří store, který uchovává všechny hodnoty.
+ */
+
 const initialState = {};
 
 /**
@@ -31,12 +37,6 @@ const tokenExpirationMiddleware = store => next => action => {
 };
 
 const middleware = [thunk, tokenExpirationMiddleware];
-
-/**
- * @category Ostatní
- * @module store
- * @description Zde se ze všech reducerů vytvoří store, který uchovává všechny hodnoty.
- */
 
 /**
  * @constant reducers

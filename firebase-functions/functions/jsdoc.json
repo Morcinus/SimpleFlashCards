@@ -11,7 +11,7 @@
     "cleverLinks": false,
     "monospaceLinks": false,
     "better-docs": {
-      "name": "Simple Flashcards Cloud Functions dokumentace",
+      "name": "Simple Flashcards backend dokumentace",
       "navigation": [
         {
           "label": "Aplikace",
@@ -22,11 +22,15 @@
           "href": "https://github.com/Morcinus/SimpleFlashCards"
         },
         {
-          "label": "Simple Flashcards Client dokumentace",
+          "label": "O aplikaci",
+          "href": "https://morcinus.github.io/SimpleFlashCards/"
+        },
+        {
+          "label": "Frontend dokumentace",
           "href": "https://morcinus.github.io/simpleflashcards-client-docs/"
         },
         {
-          "label": "Uživatelské dukumentace",
+          "label": "Uživatelská dukumentace",
           "href": "https://morcinus.github.io/simpleflashcards-user-docs/"
         }
       ]

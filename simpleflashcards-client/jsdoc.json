@@ -11,7 +11,7 @@
     "cleverLinks": false,
     "monospaceLinks": false,
     "better-docs": {
-      "name": "Simple Flashcards Client dokumentace",
+      "name": "Simple Flashcards frontend dokumentace",
       "navigation": [
         {
           "label": "Aplikace",
@@ -22,7 +22,11 @@
           "href": "https://github.com/Morcinus/SimpleFlashCards"
         },
         {
-          "label": "Simple Flashcards Cloud Functions dokumentace",
+          "label": "O aplikaci",
+          "href": "https://morcinus.github.io/SimpleFlashCards/"
+        },
+        {
+          "label": "Backend dokumentace",
           "href": "https://morcinus.github.io/simpleflashcards-fb-functions-docs/"
         },
         {
