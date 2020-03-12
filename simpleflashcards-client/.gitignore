@@ -24,3 +24,9 @@ yarn-error.log*
 
 # documentation
 /docs
+
+# vscode
+.vscode/
+
+# firebase
+.firebase/
