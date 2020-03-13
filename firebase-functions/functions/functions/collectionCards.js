@@ -1,5 +1,6 @@
 const { db } = require("../util/admin");
 const { compareUnderstandingLevels, findUnknownCards } = require("../util/functions");
+const { CARD_LIMIT } = require("../util/other");
 
 /**
  * @module collectionCards
@@ -126,7 +127,7 @@ function groupIntoArrays(cardArray) {
 
 /**
  * @function getColCardsToReview
- * @description Najde pro uživatele karty k zopakování z dané kolekce (počet karet je určen konstantou cardLimit).
+ * @description Najde pro uživatele karty k zopakování z dané kolekce (počet karet je určen konstantou CARD_LIMIT).
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele
  * @param {string} req.params.colId - ID kolekce, kterou se chce uživatel učit
@@ -135,8 +136,6 @@ function groupIntoArrays(cardArray) {
  * @async
  */
 exports.getColCardsToReview = (req, res) => {
-  const cardLimit = 20;
-
   // Najde dokument s danou kolekcí
   db.collection("collections")
     .doc(req.params.colId)
@@ -152,7 +151,7 @@ exports.getColCardsToReview = (req, res) => {
       progressCards = progressCards.sort(compareUnderstandingLevels);
 
       // Ořízne pole tak, aby nepřesahovalo limit
-      progressCards = progressCards.slice(0, cardLimit);
+      progressCards = progressCards.slice(0, CARD_LIMIT);
 
       return progressCards;
     })
@@ -177,7 +176,7 @@ exports.getColCardsToReview = (req, res) => {
 
 /**
  * @function getColUnknownCards
- * @description Najde pro uživatele karty z dané kolekce, které ještě uživatel nezná (počet karet je určen konstantou cardLimit).
+ * @description Najde pro uživatele karty z dané kolekce, které ještě uživatel nezná (počet karet je určen konstantou CARD_LIMIT).
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele.
  * @param {string} req.params.colId - ID kolekce, kterou se chce uživatel učit.
@@ -186,7 +185,6 @@ exports.getColCardsToReview = (req, res) => {
  * @async
  */
 exports.getColUnknownCards = (req, res) => {
-  const cardLimit = 5;
   let exportCardsArray = [];
 
   // Najde dokument s danou kolekcí.
@@ -247,7 +245,7 @@ exports.getColUnknownCards = (req, res) => {
             })
             .then(cardArray => {
               // Doplní exportCardsArray, dokud nedovrší limitu karet.
-              if (cardArray.length + exportCardsArray.length < cardLimit) {
+              if (cardArray.length + exportCardsArray.length < CARD_LIMIT) {
                 // Vloží všechny karty do exportCardsArray.
                 for (let j = 0; j < cardArray.length; j++) {
                   let card = cardArray[j];
@@ -256,8 +254,8 @@ exports.getColUnknownCards = (req, res) => {
                 }
                 // Karty nebudou stačit => pokračuje cyklus.
                 return;
-              } else if (cardArray.length + exportCardsArray.length >= cardLimit) {
-                for (let j = 0; j <= cardLimit - exportCardsArray.length; j++) {
+              } else if (cardArray.length + exportCardsArray.length >= CARD_LIMIT) {
+                for (let j = 0; j <= CARD_LIMIT - exportCardsArray.length; j++) {
                   // Vloží karty do exportCardsArray, dokud se nedovrší limitu.
                   let card = cardArray[j];
                   card.deckId = deckArray[i];
@@ -289,7 +287,7 @@ exports.getColUnknownCards = (req, res) => {
 
 /**
  * @function getColCardsToLearnAndReview
- * @description Najde pro uživatele karty kolekce, které ještě uživatel nezná, a karty, které by si měl zopakovat (počet karet je určen konstantou cardLimit).
+ * @description Najde pro uživatele karty kolekce, které ještě uživatel nezná, a karty, které by si měl zopakovat (počet karet je určen konstantou CARD_LIMIT).
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele.
  * @param {string} req.params.colId - ID kolekce, kterou se chce uživatel učit.
@@ -298,8 +296,7 @@ exports.getColUnknownCards = (req, res) => {
  * @async
  */
 exports.getColCardsToLearnAndReview = (req, res) => {
-  const cardLimit = 10;
-  let unknownCardsLimit = cardLimit / 2;
+  let unknownCardsLimit = CARD_LIMIT / 2;
   let progressCards = [];
   let exportCardsArray = [];
   let deckArray = [];
@@ -319,8 +316,8 @@ exports.getColCardsToLearnAndReview = (req, res) => {
       progressCards = unsortedProgressCards.sort(compareUnderstandingLevels);
 
       // Pokud není dostatek pokrokových karet, upraví unknownCardsLimit.
-      if (progressCards.length < Math.round(cardLimit / 2)) {
-        unknownCardsLimit = cardLimit - progressCards.length;
+      if (progressCards.length < Math.round(CARD_LIMIT / 2)) {
+        unknownCardsLimit = CARD_LIMIT - progressCards.length;
       }
 
       // Seskupí pokrokové karty do polí podle ID balíčků.
@@ -398,8 +395,8 @@ exports.getColCardsToLearnAndReview = (req, res) => {
     })
     .then(async () => {
       // Pokud ještě nebyl naplněn limit karet, zaplní zbývající místo v kartami, které si má uživatel zopakovat.
-      if (exportCardsArray.length < cardLimit) {
-        let progressCardsLimit = cardLimit - exportCardsArray.length;
+      if (exportCardsArray.length < CARD_LIMIT) {
+        let progressCardsLimit = CARD_LIMIT - exportCardsArray.length;
 
         // Ořízne pole tak, aby nepřesahovalo limit karet.
         let slicedProgressCards = progressCards.slice(0, progressCardsLimit);

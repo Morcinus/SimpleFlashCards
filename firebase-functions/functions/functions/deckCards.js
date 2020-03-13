@@ -1,5 +1,6 @@
 const { db } = require("../util/admin");
 const { compareUnderstandingLevels, findUnknownCards } = require("../util/functions");
+const { CARD_LIMIT } = require("../util/other");
 
 /**
  * @module deckCards
@@ -74,7 +75,7 @@ exports.setDeckCardsProgress = (req, res) => {
 
 /**
  * @function getCardsToReview
- * @description Najde pro uživatele karty k zopakování z daného balíčku (počet karet je určen konstantou cardLimit).
+ * @description Najde pro uživatele karty k zopakování z daného balíčku (počet karet je určen konstantou CARD_LIMIT).
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele.
  * @param {string} req.params.deckId - ID balíčku, který se chce uživatel učit.
@@ -83,7 +84,6 @@ exports.setDeckCardsProgress = (req, res) => {
  * @async
  */
 exports.getCardsToReview = (req, res) => {
-  const cardLimit = 20;
   let deckId = req.params.deckId;
   let progressCards = [];
 
@@ -100,7 +100,7 @@ exports.getCardsToReview = (req, res) => {
       progressCards = progressCards.sort(compareUnderstandingLevels);
 
       // Ořízne pole tak, aby nepřesahovalo limit.
-      progressCards = progressCards.slice(0, cardLimit);
+      progressCards = progressCards.slice(0, CARD_LIMIT);
 
       // Získá daný balíček.
       return db
@@ -139,7 +139,7 @@ exports.getCardsToReview = (req, res) => {
 
 /**
  * @function getDeckUnknownCards
- * @description Najde pro uživatele karty z daného balíčku, které ještě uživatel nezná (počet karet je určen konstantou cardLimit).
+ * @description Najde pro uživatele karty z daného balíčku, které ještě uživatel nezná (počet karet je určen konstantou CARD_LIMIT).
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele.
  * @param {string} req.params.deckId - ID balíčku, který se chce uživatel učit.
@@ -150,7 +150,6 @@ exports.getCardsToReview = (req, res) => {
 exports.getDeckUnknownCards = (req, res) => {
   let deckId = req.params.deckId;
   let cardArray;
-  let cardLimit = 20;
 
   // Najde daný balíček.
   db.collection("decks")
@@ -183,7 +182,7 @@ exports.getDeckUnknownCards = (req, res) => {
         unknownCards = cardArray;
       }
 
-      return unknownCards.slice(0, cardLimit);
+      return unknownCards.slice(0, CARD_LIMIT);
     })
     .then(exportCards => {
       res.status(200).json(exportCards);
@@ -196,7 +195,7 @@ exports.getDeckUnknownCards = (req, res) => {
 
 /**
  * @function getCardsToLearnAndReview
- * @description Najde pro uživatele karty, které ještě uživatel nezná a karty, které by si měl zopakovat(počet karet je určen konstantou cardLimit).
+ * @description Najde pro uživatele karty, které ještě uživatel nezná a karty, které by si měl zopakovat(počet karet je určen konstantou CARD_LIMIT).
  * @param {Object} req - Požadavek, který přišel na server.
  * @param {string} req.user.uid - ID uživatele.
  * @param {string} req.params.deckId - ID balíčku, který se chce uživatel učit.
@@ -207,7 +206,6 @@ exports.getDeckUnknownCards = (req, res) => {
 exports.getCardsToLearnAndReview = (req, res) => {
   let deckId = req.params.deckId;
   let cardArray = [];
-  let cardLimit = 20;
 
   // Najde daný balíček.
   db.collection("decks")
@@ -237,7 +235,7 @@ exports.getCardsToLearnAndReview = (req, res) => {
 
         // Pro každou kartu, kterou se má uživatel učit, získá její obsah.
         for (let i = 0; i < progressCardsArray.length; i++) {
-          if (exportCards.length < Math.round(cardLimit / 2)) {
+          if (exportCards.length < Math.round(CARD_LIMIT / 2)) {
             // Najde k pokrokové kartě příslušnou kartu
             let exportCard = cardArray.find(({ cardId }) => cardId === progressCardsArray[i].cardId);
 
@@ -258,7 +256,7 @@ exports.getCardsToLearnAndReview = (req, res) => {
 
       // Zaplní zbývající místo v exportCards kartami, které uživatel nezná.
       for (let i = 0; i < unknownCardsArray.length; i++) {
-        if (exportCards.length < cardLimit) {
+        if (exportCards.length < CARD_LIMIT) {
           exportCards.push(unknownCardsArray[i]);
         } else break;
       }
@@ -268,7 +266,7 @@ exports.getCardsToLearnAndReview = (req, res) => {
         // Pokud progressCardsArray ještě obsahuje nějaké karty.
         if (progressCardsArray.length > lastProgressCardIndex) {
           for (let i = lastProgressCardIndex; i < progressCardsArray.length; i++) {
-            if (exportCards.length < cardLimit) {
+            if (exportCards.length < CARD_LIMIT) {
               // Najde k pokrokové kartě příslušnou kartu.
               let exportCard = cardArray.find(({ cardId }) => cardId === progressCardsArray[i].cardId);
 
