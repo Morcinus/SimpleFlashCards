@@ -494,36 +494,32 @@ exports.unpinDeck = (req, res) => {
  * @async
  */
 exports.getUserDecks = (req, res) => {
-  if (req.user.uid) {
-    // Získá balíčky, které uživatel vytvořil.
-    db.collection("decks")
-      .where("creatorId", "==", req.user.uid)
-      .get()
-      .then(querySnapshot => {
-        let userDecks = [];
+  // Získá balíčky, které uživatel vytvořil.
+  db.collection("decks")
+    .where("creatorId", "==", req.user.uid)
+    .get()
+    .then(querySnapshot => {
+      let userDecks = [];
 
-        // Vytvoří pole balíčků.
-        querySnapshot.forEach(doc => {
-          exportDeck = {
-            deckName: doc.data().deckName,
-            deckImage: doc.data().deckImage,
-            deckId: doc.id
-          };
-          userDecks.push(exportDeck);
-        });
-        return userDecks;
-      })
-      .then(userDecks => {
-        if (userDecks.length > 0) {
-          res.status(200).json(userDecks);
-        } else {
-          res.status(404).json({ errorCode: "deck/no-deck-found" });
-        }
-      })
-      .catch(error => res.status(500).json({ errorCode: error.code }));
-  } else {
-    res.status(401).json();
-  }
+      // Vytvoří pole balíčků.
+      querySnapshot.forEach(doc => {
+        exportDeck = {
+          deckName: doc.data().deckName,
+          deckImage: doc.data().deckImage,
+          deckId: doc.id
+        };
+        userDecks.push(exportDeck);
+      });
+      return userDecks;
+    })
+    .then(userDecks => {
+      if (userDecks.length > 0) {
+        res.status(200).json(userDecks);
+      } else {
+        res.status(404).json({ errorCode: "deck/no-deck-found" });
+      }
+    })
+    .catch(error => res.status(500).json({ errorCode: error.code }));
 };
 
 /**
@@ -536,52 +532,48 @@ exports.getUserDecks = (req, res) => {
  * @async
  */
 exports.getPinnedDecks = (req, res) => {
-  if (req.user.uid) {
-    let exportDecks = [];
+  let exportDecks = [];
 
-    db.collection("users")
-      .doc(req.user.uid)
-      .get()
-      .then(doc => {
-        let pinnedDecks = doc.data().pinnedDecks;
-        let promises = [];
+  db.collection("users")
+    .doc(req.user.uid)
+    .get()
+    .then(doc => {
+      let pinnedDecks = doc.data().pinnedDecks;
+      let promises = [];
 
-        if (pinnedDecks) {
-          // Vyhledá informace o každé připnutém balíčku.
-          pinnedDecks.forEach(deckId => {
-            promises.push(
-              db
-                .collection("decks")
-                .doc(deckId)
-                .get()
-                .then(doc => {
-                  // Přidá balíček do exportDecks.
-                  let exportDeck = {
-                    deckName: doc.data().deckName,
-                    deckImage: doc.data().deckImage,
-                    deckId: doc.id
-                  };
+      if (pinnedDecks) {
+        // Vyhledá informace o každé připnutém balíčku.
+        pinnedDecks.forEach(deckId => {
+          promises.push(
+            db
+              .collection("decks")
+              .doc(deckId)
+              .get()
+              .then(doc => {
+                // Přidá balíček do exportDecks.
+                let exportDeck = {
+                  deckName: doc.data().deckName,
+                  deckImage: doc.data().deckImage,
+                  deckId: doc.id
+                };
 
-                  exportDecks.push(exportDeck);
-                })
-            );
-          });
-        }
+                exportDecks.push(exportDeck);
+              })
+          );
+        });
+      }
 
-        // Počká, až se dokončí forEach cyklus.
-        return Promise.all(promises);
-      })
-      .then(() => {
-        if (exportDecks.length > 0) {
-          res.status(200).json(exportDecks);
-        } else {
-          res.status(404).json({ errorCode: "deck/no-deck-found" });
-        }
-      })
-      .catch(error => res.status(500).json({ errorCode: error.code }));
-  } else {
-    res.status(401).json();
-  }
+      // Počká, až se dokončí forEach cyklus.
+      return Promise.all(promises);
+    })
+    .then(() => {
+      if (exportDecks.length > 0) {
+        res.status(200).json(exportDecks);
+      } else {
+        res.status(404).json({ errorCode: "deck/no-deck-found" });
+      }
+    })
+    .catch(error => res.status(500).json({ errorCode: error.code }));
 };
 
 /**

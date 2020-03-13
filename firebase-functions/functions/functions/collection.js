@@ -324,35 +324,31 @@ exports.unpinCollection = (req, res) => {
  * @async
  */
 exports.getUserCollections = (req, res) => {
-  if (req.user.uid) {
-    // Získá kolekce, které uživatel vytvořil.
-    db.collection("collections")
-      .where("creatorId", "==", req.user.uid)
-      .get()
-      .then(querySnapshot => {
-        let userCollections = [];
+  // Získá kolekce, které uživatel vytvořil.
+  db.collection("collections")
+    .where("creatorId", "==", req.user.uid)
+    .get()
+    .then(querySnapshot => {
+      let userCollections = [];
 
-        // Vytvoří pole kolekcí.
-        querySnapshot.forEach(doc => {
-          colData = {
-            colName: doc.data().colName,
-            colId: doc.id
-          };
-          userCollections.push(colData);
-        });
-        return userCollections;
-      })
-      .then(userCollections => {
-        if (userCollections.length > 0) {
-          res.status(200).json(userCollections);
-        } else {
-          res.status(404).json({ errorCode: "collection/no-collection-found" });
-        }
-      })
-      .catch(error => res.status(500).json({ errorCode: error.code }));
-  } else {
-    res.status(401).json();
-  }
+      // Vytvoří pole kolekcí.
+      querySnapshot.forEach(doc => {
+        colData = {
+          colName: doc.data().colName,
+          colId: doc.id
+        };
+        userCollections.push(colData);
+      });
+      return userCollections;
+    })
+    .then(userCollections => {
+      if (userCollections.length > 0) {
+        res.status(200).json(userCollections);
+      } else {
+        res.status(404).json({ errorCode: "collection/no-collection-found" });
+      }
+    })
+    .catch(error => res.status(500).json({ errorCode: error.code }));
 };
 
 /**
@@ -365,34 +361,30 @@ exports.getUserCollections = (req, res) => {
  * @async
  */
 exports.getUserCollectionsWithDeckInfo = (req, res) => {
-  if (req.user.uid) {
-    // Získá kolekce, které uživatel vytvořil
-    db.collection("collections")
-      .where("creatorId", "==", req.user.uid)
-      .get()
-      .then(querySnapshot => {
-        let userCollections = [];
+  // Získá kolekce, které uživatel vytvořil
+  db.collection("collections")
+    .where("creatorId", "==", req.user.uid)
+    .get()
+    .then(querySnapshot => {
+      let userCollections = [];
 
-        // Vytvoří pole kolekcí
-        querySnapshot.forEach(doc => {
-          colData = {
-            colName: doc.data().colName,
-            colId: doc.id
-          };
+      // Vytvoří pole kolekcí
+      querySnapshot.forEach(doc => {
+        colData = {
+          colName: doc.data().colName,
+          colId: doc.id
+        };
 
-          // Zjistí, jestli je balíček obsažen v kolekci
-          colData.containsDeck = doc.data().deckArray.includes(req.params.deckId) ? true : false;
-          userCollections.push(colData);
-        });
-        return userCollections;
-      })
-      .then(userCollections => {
-        res.status(200).json(userCollections);
-      })
-      .catch(error => res.status(500).json({ errorCode: error.code }));
-  } else {
-    res.status(401).json();
-  }
+        // Zjistí, jestli je balíček obsažen v kolekci
+        colData.containsDeck = doc.data().deckArray.includes(req.params.deckId) ? true : false;
+        userCollections.push(colData);
+      });
+      return userCollections;
+    })
+    .then(userCollections => {
+      res.status(200).json(userCollections);
+    })
+    .catch(error => res.status(500).json({ errorCode: error.code }));
 };
 
 /**
