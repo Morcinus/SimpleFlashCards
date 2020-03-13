@@ -211,7 +211,7 @@ export class CollectionInfo extends Component {
                 <br />
 
                 <Typography>
-                  Created by:
+                  Created by:{" "}
                   <MUILink to={`/user/${this.props.colUi.collection.creatorName}`} component={Link}>
                     {this.props.colUi.collection.creatorName}
                   </MUILink>

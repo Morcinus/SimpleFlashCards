@@ -228,7 +228,7 @@ export class DeckInfo extends Component {
                 <br />
 
                 <Typography>
-                  Created by:
+                  Created by:{" "}
                   <MUILink to={`/user/${this.props.deckUi.deck.creatorName}`} component={Link}>
                     {this.props.deckUi.deck.creatorName}
                   </MUILink>
