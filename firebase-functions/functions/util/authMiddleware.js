@@ -1,4 +1,4 @@
-const { admin, db } = require("./admin");
+const { admin } = require("./admin");
 
 /**
  * @module authMiddleware
@@ -10,8 +10,6 @@ const { admin, db } = require("./admin");
  *
  * @returns {string} Pokud nastala chyba, vrací errový kód.
  */
-
-// Zdroj https://youtu.be/Fz1f7NLvcu4
 module.exports = (req, res, next) => {
   // Přiřazení ID tokenu
   let idToken;

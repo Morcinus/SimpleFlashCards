@@ -1,6 +1,7 @@
 const { db, admin } = require("../util/admin");
 const config = require("../util/firebaseConfig");
 const firebase = require("firebase");
+const { EMAIL_REGEX } = require("../util/other");
 firebase.initializeApp(config);
 
 /**
@@ -20,9 +21,7 @@ function validateUserSignupData(userData) {
 
   // Ověření emailové adresy.
   if (userData.email !== "") {
-    // Regex zdroj: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
-    let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!userData.email.match(regex)) {
+    if (!userData.email.match(EMAIL_REGEX)) {
       errors.push("auth/invalid-email");
     }
   } else {
@@ -208,9 +207,7 @@ exports.getUserPersonalData = (req, res) => {
 function validateEmail(email) {
   // Ověření emailové adresy.
   if (email !== "") {
-    // Regex zdroj: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
-    let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!email.match(regex)) {
+    if (!email.match(EMAIL_REGEX)) {
       return "auth/invalid-email";
     }
   } else {

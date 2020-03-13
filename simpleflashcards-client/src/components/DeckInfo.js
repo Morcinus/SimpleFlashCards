@@ -83,7 +83,11 @@ export class DeckInfo extends Component {
    * @param {string} elementId - ID vyskakovacího okna.
    */
   handleCopyClick = elementId => {
-    // Zdroj: https://stackoverflow.com/questions/39501289/in-reactjs-how-to-copy-text-to-clipboard
+    /* Kód na zkopírování textu do schránky
+        Zdroj: https://stackoverflow.com/a/48908805
+        Autor: Kupi
+        Datum: 13.03.2020
+    */
     let textField = document.createElement("textarea");
     textField.innerText = `${window.location.href}`;
     let parentElement = document.getElementById(elementId);
@@ -91,6 +95,7 @@ export class DeckInfo extends Component {
     textField.select();
     document.execCommand("copy");
     parentElement.removeChild(textField);
+    /* konec citovaného kódu */
 
     this.setState({
       copiedLink: true

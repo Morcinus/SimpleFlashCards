@@ -363,8 +363,14 @@ function newId() {
  * @returns {string} Pokud funkce proběhla úspěšně, vrací "successCode". Pokud nastala chyba, vrací errorový kód ("errorCode").
  * @async
  */
-// Zdroj: https://youtu.be/ecgAwgHXYos
+
 exports.uploadDeckImage = (req, res) => {
+  /* Kód na nahrání obrázku do Cloud Storage
+  Tento kód je založen na následujícím návodu.
+  Zdroj: https://youtu.be/ecgAwgHXYos?t=152
+  Autor: Classed
+  Datum: 13.03.2020
+*/
   const BusBoy = require("busboy");
   const path = require("path");
   const os = require("os");
@@ -416,6 +422,7 @@ exports.uploadDeckImage = (req, res) => {
       });
   });
   busboy.end(req.rawBody);
+  /* konec citovaného kódu */
 };
 
 //#endregion

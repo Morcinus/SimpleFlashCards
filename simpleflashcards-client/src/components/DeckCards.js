@@ -41,7 +41,11 @@ export class DeckCards extends Component {
    * @param {number} index - Určuje index karty, která má být otočena.
    */
   flipCard(index) {
-    // Zdroj: https://stackoverflow.com/questions/29537299/react-how-to-update-state-item1-in-state-using-setstate
+    /* Kód na upravení jedné hodnoty pole v state komponentu
+        Zdroj: https://stackoverflow.com/a/49502115
+        Autor: mpen
+        Datum: 13.03.2020
+    */
     let cardSides = [...this.state.cardSides];
 
     let cardSide = { ...cardSides[index] };
@@ -50,6 +54,7 @@ export class DeckCards extends Component {
     cardSides[index] = cardSide;
 
     this.setState({ cardSides });
+    /* konec citovaného kódu */
   }
 
   /**

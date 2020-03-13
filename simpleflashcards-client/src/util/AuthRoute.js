@@ -17,11 +17,15 @@ import PropTypes from "prop-types";
  * @requires {@link module:store~reducers module:store~reducers.user}
  */
 
-// Zdroj: https://www.youtube.com/watch?v=vzkGTZFjbiE&list=PLMhAeHCz8S38ryyeMiBPPUnFAiWnoPvWP&index=17
+/* Kód na vytvoření AuthRoute
+  Zdroj: https://stackoverflow.com/a/43171515
+  Autor: Tyler McGinnis
+  Datum: 13.03.2020
+*/
 const AuthRoute = ({ component: Component, authenticated, ...rest }) => (
   <Route {...rest} render={props => (authenticated === true ? <Redirect to="/home"></Redirect> : <Component {...props} />)} />
 );
-
+/* konec citovaného kódu */
 AuthRoute.propTypes = {
   user: PropTypes.object.isRequired
 };
