@@ -181,7 +181,7 @@ export class CollectionDialog extends Component {
                           <DoneIcon />
                         </IconButton>
                       ) : (
-                        <IconButton edge="end" onClick={this.handleCreateCollection}>
+                        <IconButton edge="end" onClick={this.handleCreateCollection} disabled={colDialogStatus === "BUSY"}>
                           <AddBoxIcon />
                         </IconButton>
                       )}

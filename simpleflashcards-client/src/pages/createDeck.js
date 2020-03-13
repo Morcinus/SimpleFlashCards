@@ -353,10 +353,10 @@ export class createDeck extends Component {
                   <Grid item sm={12} md={3} lg={3} xl={3} container>
                     <Grid className={classes.grid} item container>
                       <Box className={classes.box}>
-                        <IconButton color="primary" variant="contained" onClick={this.handleDialogOpen}>
+                        <IconButton color="primary" variant="contained" onClick={this.handleDialogOpen} disabled={status === "BUSY"}>
                           <DeleteIcon></DeleteIcon>
                         </IconButton>
-                        <Button size="large" color="secondary" variant="contained" onClick={this.uploadDeck}>
+                        <Button size="large" color="secondary" variant="contained" onClick={this.uploadDeck} disabled={status === "BUSY"}>
                           Create
                         </Button>
                       </Box>
