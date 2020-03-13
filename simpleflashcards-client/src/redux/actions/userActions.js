@@ -10,6 +10,7 @@ import {
   SET_STATUS_SUCCESS,
   CLEAR_STATUS
 } from "../types";
+import { openErrorAlert } from "./uiStatusActions";
 import axios from "axios";
 
 /**
@@ -39,7 +40,7 @@ export const loginUser = (userData, history) => dispatch => {
       if (err.response) {
         console.error("Error:", err.response.data.errorCode);
         dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
-      }
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -61,15 +62,17 @@ export const signupUser = (newUserData, history) => dispatch => {
       history.push("/home");
     })
     .catch(err => {
-      if (err.response.data.errorCodes) {
-        err.response.data.errorCodes.forEach(errorCode => {
-          console.error("Error:", errorCode);
-          dispatch({ type: SET_STATUS_ERROR, payload: errorCode });
-        });
-      } else {
-        console.error("Error:", err.response.data.errorCode);
-        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
-      }
+      if (err.response) {
+        if (err.response.data.errorCodes) {
+          err.response.data.errorCodes.forEach(errorCode => {
+            console.error("Error:", errorCode);
+            dispatch({ type: SET_STATUS_ERROR, payload: errorCode });
+          });
+        } else {
+          console.error("Error:", err.response.data.errorCode);
+          dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+        }
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -98,8 +101,10 @@ export const getUserPersonalData = () => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -126,8 +131,10 @@ export const setUserPersonalData = (userData, history) => dispatch => {
       }
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -145,8 +152,10 @@ export const resetPassword = () => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS, payload: res.data.successCode });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -176,8 +185,10 @@ export const getUserDataByUsername = username => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -195,8 +206,10 @@ export const getUserData = () => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 

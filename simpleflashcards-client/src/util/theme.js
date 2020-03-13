@@ -31,6 +31,11 @@ export default {
       main: "#ff1a1a",
       dark: "#e60000",
       contrastText: "#fff"
+    },
+    success: {
+      light: "#81c784",
+      main: "#4caf50",
+      dark: "#388e3c"
     }
   },
   shape: {

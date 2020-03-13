@@ -8,12 +8,14 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { SET_AUTHENTICATED } from "./redux/types";
 import { logoutUser } from "./redux/actions/userActions";
+
 // Material UI
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 
 // Components
 import Navbar from "./components/Navbar";
+import GlobalErrorAlert from "./components/GlobalErrorAlert";
 import AuthRoute from "./util/AuthRoute";
 import PrivateRoute from "./util/PrivateRoute";
 
@@ -60,6 +62,7 @@ function App() {
       <MuiThemeProvider theme={theme}>
         <BrowserRouter>
           <Navbar />
+          <GlobalErrorAlert />
           <Switch>
             <Route exact path="/" render={() => <Redirect to="/login" />} />
             <AuthRoute exact path="/signup" component={signup} />

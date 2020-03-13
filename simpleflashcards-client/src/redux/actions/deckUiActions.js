@@ -9,6 +9,7 @@ import {
   SET_STATUS_ERROR,
   SET_STATUS_SUCCESS
 } from "../types";
+import { openErrorAlert } from "./uiStatusActions";
 import axios from "axios";
 
 /**
@@ -31,8 +32,10 @@ export const getUserDecks = () => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -58,8 +61,10 @@ export const getPinnedDecks = () => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -86,8 +91,10 @@ export const getDeck = deckId => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -107,8 +114,10 @@ export const clearDeck = () => dispatch => {
  */
 export const pinDeck = deckId => dispatch => {
   axios.post(`/pinDeck/${deckId}`).catch(err => {
-    console.error("Error:", err.response.data.errorCode);
-    dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    if (err.response) {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    } else dispatch(openErrorAlert());
   });
 };
 
@@ -120,7 +129,9 @@ export const pinDeck = deckId => dispatch => {
  */
 export const unpinDeck = deckId => dispatch => {
   axios.post(`/unpinDeck/${deckId}`).catch(err => {
-    console.error("Error:", err.response.data.errorCode);
-    dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    if (err.response) {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    } else dispatch(openErrorAlert());
   });
 };

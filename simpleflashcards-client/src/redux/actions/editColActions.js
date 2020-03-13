@@ -1,4 +1,5 @@
 import { SET_EDIT_COLLECTION_DATA, DELETE_EDIT_COLLECTION_DATA, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS } from "../types";
+import { openErrorAlert } from "./uiStatusActions";
 import axios from "axios";
 import { DECK_COL_NAME_REGEX } from "../../util/other";
 
@@ -54,15 +55,17 @@ export const updateCollection = (colData, colId) => dispatch => {
         dispatch({ type: SET_STATUS_SUCCESS, payload: res.data.successCode });
       })
       .catch(err => {
-        if (err.response.data.errorCodes) {
-          err.response.data.errorCodes.forEach(errorCode => {
-            console.error("Error:", errorCode);
-            dispatch({ type: SET_STATUS_ERROR, payload: errorCode });
-          });
-        } else {
-          console.error("Error:", err.response.data.errorCode);
-          dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
-        }
+        if (err.response) {
+          if (err.response.data.errorCodes) {
+            err.response.data.errorCodes.forEach(errorCode => {
+              console.error("Error:", errorCode);
+              dispatch({ type: SET_STATUS_ERROR, payload: errorCode });
+            });
+          } else {
+            console.error("Error:", err.response.data.errorCode);
+            dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+          }
+        } else dispatch(openErrorAlert());
       });
   }
 };
@@ -85,8 +88,10 @@ export const getCollection = colId => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -133,7 +138,9 @@ export const deleteCollection = colId => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS, payload: res.data.successCode });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };

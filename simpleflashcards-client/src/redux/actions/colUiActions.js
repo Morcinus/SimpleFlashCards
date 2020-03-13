@@ -16,6 +16,7 @@ import {
   SET_COL_DIALOG_STATUS_SUCCESS,
   CLEAR_COL_DIALOG_STATUS
 } from "../types";
+import { openErrorAlert } from "./uiStatusActions";
 import axios from "axios";
 import { DECK_COL_NAME_REGEX } from "../../util/other";
 
@@ -39,8 +40,10 @@ export const getUserCollections = () => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -66,8 +69,10 @@ export const getPinnedCollections = () => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -94,8 +99,10 @@ export const getUserCollectionsWithDeckInfo = deckId => dispatch => {
       dispatch({ type: SET_COL_DIALOG_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_COL_DIALOG_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_COL_DIALOG_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -114,8 +121,10 @@ export const getCollection = colId => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -135,8 +144,10 @@ export const clearCollection = () => dispatch => {
  */
 export const pinCollection = colId => dispatch => {
   axios.post(`/pinCollection/${colId}`).catch(err => {
-    console.error("Error:", err.response.data.errorCode);
-    dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    if (err.response) {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    } else dispatch(openErrorAlert());
   });
 };
 
@@ -148,8 +159,10 @@ export const pinCollection = colId => dispatch => {
  */
 export const unpinCollection = colId => dispatch => {
   axios.post(`/unpinCollection/${colId}`).catch(err => {
-    console.error("Error:", err.response.data.errorCode);
-    dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    if (err.response) {
+      console.error("Error:", err.response.data.errorCode);
+      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+    } else dispatch(openErrorAlert());
   });
 };
 
@@ -187,8 +200,10 @@ export const addDeckToCollection = (colId, deckId, index) => dispatch => {
       dispatch({ type: SET_COL_DIALOG_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_COL_DIALOG_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_COL_DIALOG_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -221,8 +236,10 @@ export const createCollection = (colName, deckId, privateCol) => dispatch => {
         dispatch({ type: SET_COL_DIALOG_STATUS_SUCCESS, payload: res.data.successCode });
       })
       .catch(err => {
-        console.error("Error:", err.response.data.errorCode);
-        dispatch({ type: SET_COL_DIALOG_STATUS_ERROR, payload: err.response.data.errorCode });
+        if (err.response) {
+          console.error("Error:", err.response.data.errorCode);
+          dispatch({ type: SET_COL_DIALOG_STATUS_ERROR, payload: err.response.data.errorCode });
+        } else dispatch(openErrorAlert());
       });
   }
 };

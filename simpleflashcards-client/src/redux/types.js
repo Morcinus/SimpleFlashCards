@@ -14,11 +14,13 @@ export const LOADING_USER = "LOADING_USER";
 export const SET_USER_PROFILE = "SET_USER_PROFILE";
 export const CLEAR_USER_PROFILE = "CLEAR_USER_DATA";
 
-// UI reducer types
+// UI status reducer types
 export const SET_STATUS_BUSY = "SET_STATUS_BUSY";
 export const SET_STATUS_ERROR = "SET_STATUS_ERROR";
 export const SET_STATUS_SUCCESS = "SET_STATUS_SUCCESS";
 export const CLEAR_STATUS = "CLEAR_STATUS";
+export const OPEN_ERROR_ALERT = "OPEN_ERROR_ALERT";
+export const CLOSE_ERROR_ALERT = "CLOSE_ERROR_ALERT";
 
 // Create Deck reducer types
 export const UPDATE_DECK_DATA = "UPDATE_DECK_DATA";

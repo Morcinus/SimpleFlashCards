@@ -1,4 +1,4 @@
-import { CLEAR_STATUS } from "../types";
+import { CLEAR_STATUS, OPEN_ERROR_ALERT, CLOSE_ERROR_ALERT } from "../types";
 /**
  * @category ReduxActions
  * @module uiStatusActions
@@ -11,4 +11,20 @@ import { CLEAR_STATUS } from "../types";
  */
 export const clearStatus = () => dispatch => {
   dispatch({ type: CLEAR_STATUS });
+};
+
+/**
+ * @function openErrorAlert
+ * @description Změní hodnotu globalErrorAlertOpen v [uiStatusReduceru]{@link module:uiStatusReducer} na true, čímž otevře globání errorové okno.
+ */
+export const openErrorAlert = () => dispatch => {
+  dispatch({ type: OPEN_ERROR_ALERT });
+};
+
+/**
+ * @function closeErrorAlert
+ * @description Změní hodnotu globalErrorAlertOpen v [uiStatusReduceru]{@link module:uiStatusReducer} na false, čímž zavře globání errorové okno.
+ */
+export const closeErrorAlert = () => dispatch => {
+  dispatch({ type: CLOSE_ERROR_ALERT });
 };

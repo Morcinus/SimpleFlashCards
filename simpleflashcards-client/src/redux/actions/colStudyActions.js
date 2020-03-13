@@ -1,4 +1,5 @@
 import { SET_STUDY_COLLECTION, CLEAR_STUDY_COLLECTION, SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS } from "../types";
+import { openErrorAlert } from "./uiStatusActions";
 import axios from "axios";
 
 /**
@@ -25,8 +26,10 @@ export const getColLearnCards = colId => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      }
     });
 };
 
@@ -49,8 +52,10 @@ export const getColCardsToLearnAndReview = colId => dispatch => {
       console.log("SUCCESS");
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -73,8 +78,10 @@ export const getColReviewCards = colId => dispatch => {
       console.log("SUCCESS");
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 
@@ -99,8 +106,10 @@ export const pushCollectionProgress = colProgressCards => dispatch => {
       dispatch({ type: SET_STATUS_SUCCESS });
     })
     .catch(err => {
-      console.error("Error:", err.response.data.errorCode);
-      dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      if (err.response) {
+        console.error("Error:", err.response.data.errorCode);
+        dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
+      } else dispatch(openErrorAlert());
     });
 };
 

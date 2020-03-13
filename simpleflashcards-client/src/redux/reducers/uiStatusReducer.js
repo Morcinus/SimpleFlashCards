@@ -1,4 +1,4 @@
-import { SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS } from "../types";
+import { SET_STATUS_BUSY, SET_STATUS_ERROR, SET_STATUS_SUCCESS, CLEAR_STATUS, OPEN_ERROR_ALERT, CLOSE_ERROR_ALERT } from "../types";
 
 // UI Status
 const BUSY = "BUSY";
@@ -18,11 +18,13 @@ const SUCCESS = "SUCCESS";
  * @property {string|null} initialState.status - Uchovává status aplikace, nabývá hodnot "BUSY", "ERROR", "SUCCESS", null.
  * @property {Array<String>} initialState.errorCodes - Uchovává error kódy.
  * @property {Array<String>} initialState.successCodes - Uchovává success kódy.
+ * @property {boolean} initialState.globalErrorAlertOpen - Určuje, jestli má být otevřené errorové okno v GlobalErrorAlert komponentu.
  */
 const initialState = {
   status: null,
   errorCodes: [],
-  successCodes: []
+  successCodes: [],
+  globalErrorAlertOpen: false
 };
 
 /**
@@ -53,8 +55,18 @@ export default function(state = initialState, action) {
         status: SUCCESS,
         successCodes: action.payload ? [...state.successCodes, action.payload] : [...state.successCodes]
       };
+    case OPEN_ERROR_ALERT:
+      return {
+        ...state,
+        globalErrorAlertOpen: true
+      };
+    case CLOSE_ERROR_ALERT:
+      return {
+        ...state,
+        globalErrorAlertOpen: false
+      };
     case CLEAR_STATUS:
-      return { status: null, errorCodes: [], successCodes: [] };
+      return { status: null, errorCodes: [], successCodes: [], globalErrorAlertOpen: false };
     default:
       return state;
   }
