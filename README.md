@@ -49,9 +49,9 @@ Projekt je rozdělen do dvou částí:
 - [Firebase Authentication](https://firebase.google.com/docs/auth) - Služba, která spravuje uživatelské účty této aplikace.
 - [Firebase Hosting](https://firebase.google.com/docs/hosting) - Hosting, na kterém běží tato aplikace.
 
-## Autor
+## Autor a licence
 
-- Jan Jeníček
+© Jan Jeníček, [MIT Licence](LICENSE)
 
 ## Odkazy
 
