@@ -33,5 +33,5 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
  * @const CARD_LIMIT
  * @description Limit karet, který udává, kolik karet maximálně se má uživateli zobrazit při učení.
  */
-const CARD_LIMIT = 5;
+const CARD_LIMIT = 10;
 module.exports = { DECK_COL_NAME_REGEX_STRING, CARD_LIMIT, EMAIL_REGEX };
