@@ -9,7 +9,6 @@ const authMiddleware = require("./util/authMiddleware");
 // Cors
 const cors = require("cors")({ origin: true });
 app.use(cors);
-app.options("*", cors);
 
 const { signup, login, resetPassword, getUserPersonalData, setUserPersonalData, getUserDataByUsername, getUserData } = require("./functions/user");
 
@@ -25,7 +24,7 @@ const {
   getUserCollections,
   getUserCollectionsWithDeckInfo,
   getPinnedCollections,
-  getCollection
+  getCollection,
 } = require("./functions/collection");
 
 const { setDeckCardsProgress, getCardsToReview, getDeckUnknownCards, getCardsToLearnAndReview } = require("./functions/deckCards");
