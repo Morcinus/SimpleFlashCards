@@ -51,7 +51,7 @@ Projekt je rozdělen do dvou částí:
 
 ## Autor a licence
 
-© Jan Jeníček, [MIT Licence](LICENSE)
+© Jan Jeníček, [Apache 2.0 Licence](LICENSE)
 
 ## Odkazy
 
