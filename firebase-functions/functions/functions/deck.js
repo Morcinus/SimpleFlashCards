@@ -61,7 +61,7 @@ exports.createDeck = (req, res) => {
 
   // Vygenerování ID pro každou kartu v balíčku.
   let cardArray = [];
-  req.body.deckCards.forEach(card => {
+  req.body.deckCards.forEach((card) => {
     let newCard = card;
     newCard.cardId = newId();
     cardArray.push(newCard);
@@ -73,26 +73,26 @@ exports.createDeck = (req, res) => {
     deckName: req.body.deckName,
     deckDescription: req.body.deckDescription ? req.body.deckDescription : null,
     cardArray: cardArray,
-    private: req.body.private
+    private: req.body.private,
   };
 
   // Přídání balíčku do databáze.
   db.collection("decks")
     .add(deckData)
-    .then(docReference => {
+    .then((docReference) => {
       // Zapsání balíčku do seznamu balíčků vytvořených daným uživatelem.
       db.collection("users")
         .doc(req.user.uid)
         .update({
-          createdDecks: admin.firestore.FieldValue.arrayUnion(docReference.id)
+          createdDecks: admin.firestore.FieldValue.arrayUnion(docReference.id),
         });
 
       return docReference.id;
     })
-    .then(deckId => {
+    .then((deckId) => {
       res.status(200).json({ deckId: deckId });
     })
-    .catch(err => {
+    .catch((err) => {
       return res.status(500).json({ errorCode: err.code });
     });
 };
@@ -122,10 +122,10 @@ exports.updateDeck = (req, res) => {
   let deletedCards = [];
 
   // Spuštění databázové transakce.
-  db.runTransaction(t => {
+  db.runTransaction((t) => {
     return t
       .get(deckDocRef)
-      .then(doc => {
+      .then((doc) => {
         // Ověření, zda-li je upravující uživatel majitelem balíčku.
         let creatorId = doc.data().creatorId;
         if (creatorId !== req.user.uid) {
@@ -134,7 +134,7 @@ exports.updateDeck = (req, res) => {
         } else {
           // Vygenerování ID pro každou kartu v balíčku.
           let cardArray = [];
-          req.body.deckCards.forEach(card => {
+          req.body.deckCards.forEach((card) => {
             if (!card.cardId) {
               let newCard = card;
               newCard.cardId = newId();
@@ -149,7 +149,7 @@ exports.updateDeck = (req, res) => {
             deckName: req.body.deckName,
             deckDescription: req.body.deckDescription ? req.body.deckDescription : null,
             cardArray: cardArray,
-            private: req.body.private
+            private: req.body.private,
           };
 
           // Upravení balíčku.
@@ -161,19 +161,16 @@ exports.updateDeck = (req, res) => {
           deletedCards = findDeletedCards(oldCardArray, newCardArray);
 
           // Najde všechny soubory, kde je zaznamenán pokrok učení tohoto balíčku.
-          return db
-            .collectionGroup("deckProgress")
-            .where("deckId", "==", req.params.deckId)
-            .get();
+          return db.collectionGroup("deckProgress").where("deckId", "==", req.params.deckId).get();
         }
       })
-      .then(querySnapshot => {
+      .then((querySnapshot) => {
         // Odstraní pokroky smazaných karet ze souborů s pokroky daných uživatelů.
-        querySnapshot.forEach(progressDoc => {
+        querySnapshot.forEach((progressDoc) => {
           let progressCards = progressDoc.data().cardArray;
 
           // Odstraní smazané karty z progressCards pole.
-          deletedCards.forEach(deletedCard => {
+          deletedCards.forEach((deletedCard) => {
             for (let i = 0; i < progressCards.length; i++) {
               // Pokud není karta ještě smazána, zmaže ji.
               if (progressCards[i])
@@ -185,7 +182,7 @@ exports.updateDeck = (req, res) => {
 
           // Vytvoří pole nesmazaných karet.
           let newProgressCards = [];
-          progressCards.forEach(card => {
+          progressCards.forEach((card) => {
             // Pokud nebyla karta smazána, vloží ji do newProgressCards pole.
             if (typeof card !== undefined) {
               newProgressCards.push(card);
@@ -200,7 +197,7 @@ exports.updateDeck = (req, res) => {
     .then(() => {
       res.status(200).json({ successCode: "updateDeck/deck-updated" });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       return res.status(500).json({ errorCode: err.code });
     });
@@ -242,10 +239,10 @@ exports.deleteDeck = (req, res) => {
   let authorized;
 
   // Spuštění databázové transakce.
-  db.runTransaction(t => {
+  db.runTransaction((t) => {
     return t
       .get(deckDocRef)
-      .then(doc => {
+      .then((doc) => {
         // Ověření, zda-li je upravující uživatel majitelem balíčku.
         let creatorId = doc.data().creatorId;
         if (creatorId !== req.user.uid) {
@@ -259,47 +256,38 @@ exports.deleteDeck = (req, res) => {
 
           // Odstranění balíčku ze seznamu uživatelem vytvořených balíčků.
           t.update(userDocRef, {
-            createdDecks: admin.firestore.FieldValue.arrayRemove(req.params.deckId)
+            createdDecks: admin.firestore.FieldValue.arrayRemove(req.params.deckId),
           });
 
           // Získání všech kolekcí, ve kterém se balíček nachází.
-          return db
-            .collection("collections")
-            .where("deckArray", "array-contains", req.params.deckId)
-            .get();
+          return db.collection("collections").where("deckArray", "array-contains", req.params.deckId).get();
         }
       })
-      .then(querySnapshot => {
+      .then((querySnapshot) => {
         // Odstranění balíčku z každé kolekce.
-        querySnapshot.forEach(colDoc => {
+        querySnapshot.forEach((colDoc) => {
           t.update(colDoc.ref, {
-            deckArray: admin.firestore.FieldValue.arrayRemove(req.params.deckId)
+            deckArray: admin.firestore.FieldValue.arrayRemove(req.params.deckId),
           });
         });
 
         // Získání všech souborů uživatelů, kteří si balíček připnuli.
-        return db
-          .collection("users")
-          .where("pinnedDecks", "array-contains", req.params.deckId)
-          .get();
+        return db.collection("users").where("pinnedDecks", "array-contains", req.params.deckId).get();
       })
-      .then(querySnapshot => {
+      .then((querySnapshot) => {
         // Odstranění všech připnutí daného balíčku.
-        querySnapshot.forEach(userDoc => {
+        querySnapshot.forEach((userDoc) => {
           t.update(userDoc.ref, {
-            pinnedDecks: admin.firestore.FieldValue.arrayRemove(req.params.deckId)
+            pinnedDecks: admin.firestore.FieldValue.arrayRemove(req.params.deckId),
           });
         });
 
         // Získání všech souborů, ve kterých je zaznamenán pokrok učení balíčku.
-        return db
-          .collectionGroup("deckProgress")
-          .where("deckId", "==", req.params.deckId)
-          .get();
+        return db.collectionGroup("deckProgress").where("deckId", "==", req.params.deckId).get();
       })
-      .then(querySnapshot => {
+      .then((querySnapshot) => {
         // Smazání všech pokroků učení balíčku.
-        querySnapshot.forEach(progressDoc => {
+        querySnapshot.forEach((progressDoc) => {
           t.delete(progressDoc.ref);
         });
       });
@@ -313,14 +301,14 @@ exports.deleteDeck = (req, res) => {
         const jpgFile = bucket.file(`${req.params.deckId}.jpg`);
 
         // Najde .png obrázek.
-        pngFile.exists().then(data => {
+        pngFile.exists().then((data) => {
           const exists = data[0];
           if (exists) {
             // Odstraní .PNG obrázek.
             pngFile.delete();
           } else {
             // Najde .jpg obrázek.
-            jpgFile.exists().then(data => {
+            jpgFile.exists().then((data) => {
               const exists = data[0];
               if (exists) {
                 // Odstraní .jpg obrázek.
@@ -334,7 +322,7 @@ exports.deleteDeck = (req, res) => {
     .then(() => {
       res.status(200).json({ successCode: "updateDeck/deck-deleted" });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       return res.status(500).json({ errorCode: err.code });
     });
@@ -404,9 +392,9 @@ exports.uploadDeckImage = (req, res) => {
         resumable: false,
         metadata: {
           metadata: {
-            contentType: imageToBeUploaded.mimetype
-          }
-        }
+            contentType: imageToBeUploaded.mimetype,
+          },
+        },
       })
       .then(() => {
         // Uložení adresy obrázku do souboru balíčku.
@@ -417,7 +405,7 @@ exports.uploadDeckImage = (req, res) => {
       .then(() => {
         return res.status(200).json({ successCode: "createDeck/image-uploaded" });
       })
-      .catch(err => {
+      .catch((err) => {
         return res.status(500).json({ errorCode: err.code });
       });
   });
@@ -444,12 +432,12 @@ exports.pinDeck = (req, res) => {
     db.collection("users")
       .doc(req.user.uid)
       .update({
-        pinnedDecks: admin.firestore.FieldValue.arrayUnion(req.params.deckId)
+        pinnedDecks: admin.firestore.FieldValue.arrayUnion(req.params.deckId),
       })
       .then(() => {
         res.status(200).json();
       })
-      .catch(error => res.status(500).json({ errorCode: error.code }));
+      .catch((error) => res.status(500).json({ errorCode: error.code }));
   } else {
     res.status(400).json();
   }
@@ -471,12 +459,12 @@ exports.unpinDeck = (req, res) => {
     db.collection("users")
       .doc(req.user.uid)
       .update({
-        pinnedDecks: admin.firestore.FieldValue.arrayRemove(req.params.deckId)
+        pinnedDecks: admin.firestore.FieldValue.arrayRemove(req.params.deckId),
       })
       .then(() => {
         res.status(200).json();
       })
-      .catch(error => res.status(500).json({ errorCode: error.code }));
+      .catch((error) => res.status(500).json({ errorCode: error.code }));
   } else {
     res.status(400).json();
   }
@@ -498,28 +486,28 @@ exports.getUserDecks = (req, res) => {
   db.collection("decks")
     .where("creatorId", "==", req.user.uid)
     .get()
-    .then(querySnapshot => {
+    .then((querySnapshot) => {
       let userDecks = [];
 
       // Vytvoří pole balíčků.
-      querySnapshot.forEach(doc => {
+      querySnapshot.forEach((doc) => {
         exportDeck = {
           deckName: doc.data().deckName,
           deckImage: doc.data().deckImage,
-          deckId: doc.id
+          deckId: doc.id,
         };
         userDecks.push(exportDeck);
       });
       return userDecks;
     })
-    .then(userDecks => {
+    .then((userDecks) => {
       if (userDecks.length > 0) {
         res.status(200).json(userDecks);
       } else {
         res.status(404).json({ errorCode: "deck/no-deck-found" });
       }
     })
-    .catch(error => res.status(500).json({ errorCode: error.code }));
+    .catch((error) => res.status(500).json({ errorCode: error.code }));
 };
 
 /**
@@ -537,24 +525,24 @@ exports.getPinnedDecks = (req, res) => {
   db.collection("users")
     .doc(req.user.uid)
     .get()
-    .then(doc => {
+    .then((doc) => {
       let pinnedDecks = doc.data().pinnedDecks;
       let promises = [];
 
       if (pinnedDecks) {
         // Vyhledá informace o každé připnutém balíčku.
-        pinnedDecks.forEach(deckId => {
+        pinnedDecks.forEach((deckId) => {
           promises.push(
             db
               .collection("decks")
               .doc(deckId)
               .get()
-              .then(doc => {
+              .then((doc) => {
                 // Přidá balíček do exportDecks.
                 let exportDeck = {
                   deckName: doc.data().deckName,
                   deckImage: doc.data().deckImage,
-                  deckId: doc.id
+                  deckId: doc.id,
                 };
 
                 exportDecks.push(exportDeck);
@@ -573,7 +561,7 @@ exports.getPinnedDecks = (req, res) => {
         res.status(404).json({ errorCode: "deck/no-deck-found" });
       }
     })
-    .catch(error => res.status(500).json({ errorCode: error.code }));
+    .catch((error) => res.status(500).json({ errorCode: error.code }));
 };
 
 /**
@@ -590,7 +578,7 @@ exports.getDeck = (req, res) => {
   db.collection("decks")
     .doc(`${req.params.deckId}`)
     .get()
-    .then(deckDoc => {
+    .then((deckDoc) => {
       if (deckDoc.exists) {
         let deck = deckDoc.data();
 
@@ -598,7 +586,6 @@ exports.getDeck = (req, res) => {
         let creatorId = deck.creatorId;
         if (deck.private === true && creatorId !== req.user.uid) {
           // Pokud je balíček soukromý a uživatel není tvůrcem balíčku, nemá přístup k balíčku.
-          console.log("Tu");
           return res.status(403).json({ errorCode: "deck/access-denied" });
         } else {
           // Najde uživatelské jméno tvůrce tohoto balíčku.
@@ -606,7 +593,7 @@ exports.getDeck = (req, res) => {
             .collection("users")
             .doc(deck.creatorId)
             .get()
-            .then(userDoc => {
+            .then((userDoc) => {
               deck.creatorName = userDoc.data().username;
               return deck;
             });
@@ -615,19 +602,19 @@ exports.getDeck = (req, res) => {
         return res.status(404).json({ errorCode: "deck/deck-not-found" });
       }
     })
-    .then(deck => {
+    .then((deck) => {
       // Zjistí, zda-li je balíček připnut uživatelem.
       return db
         .collection("users")
         .doc(req.user.uid)
         .get()
-        .then(userDoc => {
+        .then((userDoc) => {
           let pinnedDecks = userDoc.data().pinnedDecks;
 
           // Zjistí, zda-li je balíček připnut uživatelem.
           let isPinned = false;
           if (pinnedDecks) {
-            pinnedDecks.forEach(pinnedDeck => {
+            pinnedDecks.forEach((pinnedDeck) => {
               if (pinnedDeck === req.params.deckId) {
                 isPinned = true;
               }
@@ -642,10 +629,10 @@ exports.getDeck = (req, res) => {
           return deck;
         });
     })
-    .then(deck => {
+    .then((deck) => {
       res.status(200).json({ deck });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       return res.status(500).json({ errorCode: err.code });
     });

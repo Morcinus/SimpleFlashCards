@@ -8,7 +8,7 @@ import {
   SET_STATUS_BUSY,
   SET_STATUS_ERROR,
   SET_STATUS_SUCCESS,
-  CLEAR_STATUS
+  CLEAR_STATUS,
 } from "../types";
 import { openErrorAlert } from "./uiStatusActions";
 import axios from "axios";
@@ -26,17 +26,17 @@ import axios from "axios";
  * @param {Object} history - Historie prohlížeče, slouží k přesměrování na /home.
  * @async
  */
-export const loginUser = (userData, history) => dispatch => {
+export const loginUser = (userData, history) => (dispatch) => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
     .post("/login", userData)
-    .then(res => {
+    .then((res) => {
       setAuthorizationHeader(res.data.idToken);
       dispatch({ type: SET_AUTHENTICATED });
       dispatch({ type: SET_STATUS_SUCCESS });
       history.push("/home");
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         console.error("Error:", err.response.data.errorCode);
         dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
@@ -51,20 +51,20 @@ export const loginUser = (userData, history) => dispatch => {
  * @param {Object} history - Historie prohlížeče, slouží k přesměrování na /home.
  * @async
  */
-export const signupUser = (newUserData, history) => dispatch => {
+export const signupUser = (newUserData, history) => (dispatch) => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
     .post("/signup", newUserData)
-    .then(res => {
+    .then((res) => {
       setAuthorizationHeader(res.data.idToken);
       dispatch({ type: SET_AUTHENTICATED });
       dispatch({ type: SET_STATUS_SUCCESS });
       history.push("/home");
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         if (err.response.data.errorCodes) {
-          err.response.data.errorCodes.forEach(errorCode => {
+          err.response.data.errorCodes.forEach((errorCode) => {
             console.error("Error:", errorCode);
             dispatch({ type: SET_STATUS_ERROR, payload: errorCode });
           });
@@ -80,7 +80,7 @@ export const signupUser = (newUserData, history) => dispatch => {
  * @function logoutUser
  * @description Odhlásí uživatele a vymaže idToken.
  */
-export const logoutUser = () => dispatch => {
+export const logoutUser = () => (dispatch) => {
   localStorage.removeItem("FBIdToken");
   delete axios.defaults.headers.common["Authorization"];
   dispatch({ type: SET_UNAUTHENTICATED });
@@ -92,15 +92,15 @@ export const logoutUser = () => dispatch => {
  * @description Získá ze serveru osobní data uživatele a uloží je do [userReduceru]{@link module:userReducer}.
  * @async
  */
-export const getUserPersonalData = () => dispatch => {
+export const getUserPersonalData = () => (dispatch) => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
     .get("/getUserPersonalData")
-    .then(res => {
+    .then((res) => {
       dispatch({ type: SET_USER_DATA, payload: res.data });
       dispatch({ type: SET_STATUS_SUCCESS });
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         console.error("Error:", err.response.data.errorCode);
         dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
@@ -115,13 +115,12 @@ export const getUserPersonalData = () => dispatch => {
  * @param {Object} history - Historie prohlížeče, slouží k přesměrování na /login.
  * @async
  */
-export const setUserPersonalData = (userData, history) => dispatch => {
+export const setUserPersonalData = (userData, history) => (dispatch) => {
   dispatch({ type: SET_STATUS_BUSY });
 
   axios
     .post("/setUserPersonalData", userData)
-    .then(res => {
-      console.log("Success!");
+    .then((res) => {
       dispatch({ type: SET_STATUS_SUCCESS, payload: res.data.successCode });
       if (userData.username || userData.bio) {
         dispatch({ type: SET_ONE_USER_DATA, payload: userData });
@@ -130,7 +129,7 @@ export const setUserPersonalData = (userData, history) => dispatch => {
         history.push("/login");
       }
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         console.error("Error:", err.response.data.errorCode);
         dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
@@ -143,15 +142,15 @@ export const setUserPersonalData = (userData, history) => dispatch => {
  * @description Odešle na server požadavek o změnu uživatelského hesla.
  * @async
  */
-export const resetPassword = () => dispatch => {
+export const resetPassword = () => (dispatch) => {
   dispatch({ type: SET_STATUS_BUSY });
 
   axios
     .post("/resetPassword")
-    .then(res => {
+    .then((res) => {
       dispatch({ type: SET_STATUS_SUCCESS, payload: res.data.successCode });
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         console.error("Error:", err.response.data.errorCode);
         dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
@@ -164,7 +163,7 @@ export const resetPassword = () => dispatch => {
  * @description Uloží idToken do localStorage a nastaví ho jako Authorization header pro HTTP požadavky.
  * @param {string} token - IdToken daného uživatele.
  */
-const setAuthorizationHeader = token => {
+const setAuthorizationHeader = (token) => {
   const FBIDToken = `Bearer ${token}`;
   localStorage.setItem("FBIdToken", FBIDToken);
   axios.defaults.headers.common["Authorization"] = FBIDToken;
@@ -176,15 +175,15 @@ const setAuthorizationHeader = token => {
  * @param {string} username - Jméno uživatele, o kterém aplikace získává informace.
  * @async
  */
-export const getUserDataByUsername = username => dispatch => {
+export const getUserDataByUsername = (username) => (dispatch) => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
     .get(`/getUserDataByUsername/${username}`)
-    .then(res => {
+    .then((res) => {
       dispatch({ type: SET_USER_PROFILE, payload: res.data });
       dispatch({ type: SET_STATUS_SUCCESS });
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         console.error("Error:", err.response.data.errorCode);
         dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
@@ -197,15 +196,15 @@ export const getUserDataByUsername = username => dispatch => {
  * @description Získá ze serveru data o přihlášeném uživateli a uloží je do [userReduceru]{@link module:userReducer}. Tato funkce se používá při přistupování vlastní profil přihlášeného uživatele.
  * @async
  */
-export const getUserData = () => dispatch => {
+export const getUserData = () => (dispatch) => {
   dispatch({ type: SET_STATUS_BUSY });
   axios
     .get("/getUserData")
-    .then(res => {
+    .then((res) => {
       dispatch({ type: SET_USER_PROFILE, payload: res.data });
       dispatch({ type: SET_STATUS_SUCCESS });
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.response) {
         console.error("Error:", err.response.data.errorCode);
         dispatch({ type: SET_STATUS_ERROR, payload: err.response.data.errorCode });
@@ -217,6 +216,6 @@ export const getUserData = () => dispatch => {
  * @function clearUserData
  * @description Vymaže z [userReduceru]{@link module:userReducer} data o profilu uživatele.
  */
-export const clearUserData = () => dispatch => {
+export const clearUserData = () => (dispatch) => {
   dispatch({ type: CLEAR_USER_PROFILE });
 };
