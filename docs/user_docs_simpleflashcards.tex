@@ -1,0 +1,233 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{hyperref}
+\usepackage[autostyle]{csquotes}
+
+\begin{document}
+
+\title{Simple Flashcards\\Uživatelská dokumentace \\\line(1,0){250}}
+ \author{Jan Jeníček}
+ \date{}
+ \maketitle
+ \clearpage
+\tableofcontents
+\clearpage
+
+\section{O aplikaci}
+Simple Flashcards je webová aplikace určená k jednoduchému učení pojmů (např. slovíček cizího jazyka). 
+
+Jednotlivé pojmy jsou v aplikaci zobrazovány jako kartičky, které mají z jedné strany otázku a z druhé strany odpověď. Pojmy do aplikace zadávají sami uživatelé, díky čemuž má každý možnost vytvářet vlastní balíčky těchto karet.
+
+Balíčky pak uživatelé mohou sdílet, upravovat, \enquote{připínat} (čímž si uloží odkazy na balíčky ostatních) nebo je třídit do kolekcí.
+
+
+Veškeré informace a odkazy lze najít na webové stránce této aplikace: \href{https://morcinus.github.io/SimpleFlashCards/}{https://morcinus.github.io/SimpleFlashCards/}.
+
+\section{Spuštění Simple Flashcards}
+Pro použití aplikace přejděte na adresu \href{https://simpleflashcards-4aea0.firebaseapp.com/}{https://simpleflashcards-4aea0.firebaseapp.com/}.
+
+\subsection{Registrace}
+\subsubsection*{Stránka}
+V aplikaci klikněte v pravém horním rohu na tlačítko \enquote{Signup} nebo přejděte na následující adresu: \href{https://simpleflashcards-4aea0.firebaseapp.com/signup}{https://simpleflashcards-4aea0.firebaseapp.com/signup}.
+
+\subsubsection*{Vyplnění formuláře}
+Vyplňte všechna políčka registračního formuláře:
+
+\begin{itemize}
+	\item \textbf{Username} - Uživatelské jméno, pod kterým Vás budou vidět další uživatelé. 
+	\item \textbf{Email} - Na tento email se Vám budou posílat např. potvrzení změny hesla.
+	\item \textbf{Password} - Heslo, se kterým se budete přihlašovat do aplikace.
+	\item \textbf{Confirm Password} - Potvrzení hesla. Zde opište heslo znovu, aby se předešlo nežádaným překlepům.
+\end{itemize}
+
+\subsubsection*{Zaregistrování}
+Registraci potvrdíte kliknutím na tlačítko \enquote{SIGNUP} pod formulářem. Po potvrzení budete automaticky přihlášeni do aplikace.
+
+\subsection{Přihlášení}
+\subsubsection*{Stránka}
+V aplikaci klikněte v pravém horním rohu na tlačítko \enquote{Login} nebo přejděte na následující adresu:  \href{https://simpleflashcards-4aea0.firebaseapp.com/login}{https://simpleflashcards-4aea0.firebaseapp.com/login}.
+
+\subsubsection*{Vyplnění formuláře}
+Vyplňte všechna políčka přihlašovacího formuláře:
+
+\begin{itemize}
+	\item \textbf{Email } - Email, pod kterým jste zakládali Váš účet
+	\item \textbf{Password } - Heslo k vašemu Simple Flashcards účtu.
+\end{itemize}
+
+\subsubsection*{Přihlášení}
+Přihlášení potvrdíte kliknutím na tlačítko \enquote{LOGIN} pod formulářem. Po potvrzení budete přihlášeni do aplikace.
+
+\section{Balíčky}
+\subsection{K čemu slouží balíčky}
+Balíčky jsou skupiny karet. Každý balíček má svou stránku, na které je možné karty prohlížet a učit se je. Také je zde možné balíček sdílet, připínat apod. Každý uživatel může vytvářet své vlastní balíčky.
+
+\subsection{Přehled balíčků}
+Po přihlášení do aplikace můžete na domovské stránce vidět přehled balíčků. V sekci \enquote{My Decks} můžete najít všechny Vámi vytvořené balíčky. Kliknutím na balíček se přesunete na stránku daného balíčku. V sekci \enquote{Pinned Decks} můžete vidět všechny balíčky, které jste připnuli. Opět se kliknutím na balíček přesunete na jeho stránku.
+
+\subsection{Stránka balíčku}
+Každý balíček má vlastní stránku, kde se nacházejí veškeré informace o balíčku.
+
+\subsubsection*{Učení se balíčku}
+Na pravé straně obrazovky zde můžete vidět sekci pro učení se balíčku. Jsou zde na výběr 3 módy učení, které můžete spustit kliknutím na daná tlačítka.
+
+\subsubsection*{Seznam karet balíčku}
+Na pravé straně obrazovky můžete v horních záložkách přepnout stránku do sekce \enquote{Cards}. V této sekci jsou zobrazeny všechny karty daného balíčku. Můžete je zde libovolně otáčet kliknutím na danou kartičku. K hromadnému otočení karet můžete používat tlačítko v levém horním rohu s ikonou otočení.
+
+\subsubsection*{Informace o balíčku}
+Na levé straně stránky můžete najít veškeré informace o balíčku. Pod obrázkem balíčku se nachází název balíčku a hned pod ním popis balíčku. Pod popisem dále vedle nápisu \enquote{Created by: } můžete vidět uživatelské jméno autora balíčku. Kliknutím na toto jméno se přesunete na uživatelský profil autora.
+
+\subsubsection*{Připínání balíčku}
+Pokud si chcete na daný balíček uložit odkaz, můžete si balíček připnout. Pro připnutí balíčku stačí kliknout na tlačítko \enquote{Pin}. Pokud chcete balíček opět odepnout, stačí kliknout na tlačítko \enquote{Unpin}. Připnuté balíčky pak uvidíte na domovské stránce v sekci \enquote{Pinned Decks}.
+
+\subsubsection*{Sdílení balíčku}
+Balíčky můžete sdílet pomocí odkazu. Klikněte na tlačítko \enquote{Share}. Poté můžete z textového pole zkopírovat odkaz, nebo kliknout na tlačítko \enquote{Copy Link} a odkaz se Vám zkopíruje.
+
+\subsubsection*{Upravování balíčku}
+Pokud je balíček Váš, můžete ho upravit kliknutím na tlačítko \enquote{Edit Deck}. To Vás přesune na stránku, kde můžete balíček upravovat.
+
+\subsubsection*{Sdílení balíčku}
+Každý balíček můžete přidávat do Vašich kolekcí. To můžete udělat kliknutím na tlačítko \enquote{Add to collection}. Otevře se dialogové okno. Zde pak můžete buď vytvořit novou kolekci, nebo přidat balíček do existující kolekce kliknutím na tlačítko vedle názvu kolekce. Šedé tlačítko značí, že se balíček v kolekci již nachází.
+
+\section{Učení}
+\subsection{Jak se začít učit}
+Abyste se mohli začít učit daný balíček nebo kolekci, musíte být v aplikaci přihlášeni. Přejděte na stránku daného balíčku nebo kolekce, kterou se chcete učit. To můžete udělat buď pomocí odkazu, nebo můžete na domovské stránce kliknout na daný balíček či kolekci.
+
+\subsection{Módy učení}
+Jakmile budete na stránce balíčku či kolekce, nabídnou se Vám tři různé módy učení:
+\begin{itemize}
+	\item \textbf{Learn new} - V tomto módu Vám aplikace bude ukazovat kartičky z daného balíčku či kolekce, které jste ještě předtím neviděli. To je vhodné pro učení nových kartiček.
+	\item \textbf{Review old} - V tomto módu vám aplikace bude ukazovat jen kartičky, které jste se již učili. Bude ovšem vybírat ty, které vám dělají problémy nebo ty, které ještě dobře neznáte. Tento mód je tedy ideální pro opakování látky.
+	\item \textbf{Learn \& review} - Tento mód je kombinací předchozích dvou. Aplikace Vám bude ukazovat kartičky, které si máte zopakovat, i kartičky, které ještě nezáte. Tento mód je doporučený pro učení, protože kombinuje oba předchozí.
+\end{itemize}
+
+Jakmile si vyberete, jakým způsobem se chcete učit, stačí jen kliknout na tlačítko daného módu učení a aplikace Vám automaticky vybere nejvhodnější kartičky a přesune Vás na stránku učení.
+
+\subsection{Samotné učení}
+\subsubsection*{Průběh učení}
+Jakmile kliknete na některý z módů, zobrazí se Vám stránka učení. V horní liště uvidíte, jakou část kartiček jste už prošli. Když se naplní celá lišta, budete hotovi. Potom můžete přejít na stránku balíčku či kolekce a spustit daný mód znovu, nebo zkusit jiný.
+
+\subsubsection*{Otáčení kartiček a odpovídání}
+Učení probíhá tak, že se Vám zobrazí přední strana kartičky. Jakmile si odpovíte na danou otázku, klikněte na kartičku a ona se otočí. Na základě toho, jak jste odpověděli na otázku, klikněte na jedno z těchto tlačítek:
+\begin{itemize}
+	\item \textbf{Wrong  } - Na toto tlačítko klikněte, pokud jste na otázku odpověděli špatně.
+	\item \textbf{Hard } - Na toto tlačítko klikněte, pokud jste odpověděli správně, ale bylo to pro Vás těžké.
+	\item \textbf{Good } - Na toto tlačítko klikněte, pokud jste odpověděli správně. 
+	\item \textbf{Easy } - Na toto tlačítko klikněte, pokud jste odpověděli správně, ale bylo to pro Vás příliš jednoduché.
+\end{itemize}
+
+Podle toho, na které tlačítko kliknete aplikace zaznamená Váš postup a na základě toho potom bude rozhodovat, zda Vám má kartičku ukazovat častěji nebo méně často.
+
+Po tom, co projdete všechny kartičky, které Vám aplikace vybrala, se můžete křížkem v levém horním rohu vrátit na domovskou obrazovku.
+
+\subsubsection*{Ukončení učení}
+Pokud budete chtít učení v průběhu ukončit, můžete kdykoliv kliknout na křížek v levém horním rohu stránky. Postup se Vám ovšem uloží jen tehdy, když dokončíte celé učení.
+
+\section{Kolekce}
+\subsection{K čemu slouží balíčky}
+Kolekce jsou skupiny balíčků. Každá kolekce má svoji stránku, na které je možné si jednotlivé balíčky prohlížet a učit se je. Také je zde možné kolekci sdílet, připínat apod. Každý uživatel může vytvářet své vlastní kolekce a to i z cizích balíčků. Díky tomu mohou uživatelé spolupracovat při větším objemu látky a vytvářet tak kolekce pro velké množství učiva. Kolekci je možné se učit po jednotlivých balíčkách nebo celou najednou, což se hodí např. při učení jazyků.
+
+\subsection{Přehled kolekcí}
+Po přihlášení do aplikace můžete na domovské stránce vidět přehled kolekcí. V sekci \enquote{My Collections} můžete najít všechny Vámi vytvořené kolekce. Kliknutím na kolekci se přesunete na stránku dané kolekce. V sekci \enquote{Pinned Collections} můžete vidět všechny kolekce, které jste připnuli. Opět se kliknutím na kolekci přesunete na její stránku.
+
+\subsection{Stránka kolekce}
+Každá kolekce má vlastní stránku, kde se nacházejí veškeré informace o dané kolekci.
+
+\subsubsection*{Učení se kolekcí}
+Na pravé straně obrazovky zde můžete vidět sekci pro učení se kolekce. Jsou zde na výběr 3 módy učení, které můžete spustit kliknutím na daná tlačítka.
+
+\subsubsection*{Seznam balíčků v kolekci}
+Na pravé straně obrazovky můžete v horních záložkách přepnout stránku do sekce \enquote{Decks}. V této sekci jsou zobrazeny všechny balíčky dané kolekce. Kliknutím na balíček můžete přejít na stránku daného balíčku.
+
+\subsubsection*{Informace o kolekci}
+Na levé straně stránky můžete najít veškeré informace o kolekci. Pod obrázkem kolekce se nachází název kolekce a hned pod ním popis kolekce. Pod popisem dále vedle nápisu \enquote{Created by: } můžete vidět uživatelské jméno autora kolekce. Kliknutím na toto jméno se přesunete na uživatelský profil autora.
+
+\subsubsection*{Připínání kolekce}
+Pokud si chcete na danou kolekci uložit odkaz, můžete si kolekci připnout. Pro připnutí kolekce stačí kliknout na tlačítko \enquote{Pin}. Pokud chcete kolekci opět odepnout, stačí kliknout na tlačítko \enquote{Unpin}. Připnuté kolekce pak uvidíte na domovské stránce v sekci \enquote{Pinned Collections}.
+
+\subsubsection*{Sdílení kolekce}
+Kolekce můžete sdílet pomocí odkazu. Klikněte na tlačítko \enquote{Share}. Poté můžete z textového pole zkopírovat odkaz, nebo kliknout na tlačítko \enquote{Copy Link} a odkaz se Vám zkopíruje.
+
+\subsubsection*{Upravování kolekce}
+Pokud je kolekce Vaše, můžete ji upravit kliknutím na tlačítko \enquote{Edit Collection}. To Vás přesune na stránku, kde můžete kolekci upravovat.
+
+\section{Vytváření a úprava balíčků a kolekcí}
+\subsection{Vytváření balíčků}
+Pro vytvoření nového balíčku klikněte na tlačítko \enquote{Create} vpravo v navigační liště aplikace.
+\subsubsection*{Jméno a popis balíčku}
+Pro vytovření balíčku musíte zadat jméno balíčku. To můžete udělat v textovém poli \enquote{Enter Title} vlevo nahoře. Hned pod ním můžete v textovém poli \enquote{Enter Description} zadat popisek balíčku. Toto pole ovšem není povinné.
+\subsubsection*{Obrázek balíčku}
+Kliknutím na levé horní tlačítko \enquote{CHOOSE COVER} můžete nahrát obrázek, který se bude uživatelům zobrazovat, když uvidí tento balíček. Pokud žádný obrázek nenahrajete, bude se zobrazovat základní obrázek.
+\subsubsection*{Nastavení přístupnosti balíčku}
+Vpravo nahoře můžete vybrat, zda bude balíček přístupný ostatním lidem, nebo jen Vám. Pokud chcete, aby byl balíček soukromý, vyberte v \enquote{Deck visibility} možnost \enquote{Private}. Pokud chcete, aby byl balíček veřejný, vyberte možnost \enquote{Public}.
+\subsubsection*{Přidávání karet do balíčku}
+Karty můžete přidávat v tabulce \enquote{Cards} tlačítkem v pravém horním rohu tabulky. Po kliknutí na toto tlačítko vyplňte přední stranu karty (tj. otázku) ve sloupci \enquote{Front Page} a zadní stranu karty (tj. odpověď na otázku) ve sloupci \enquote{Back Page}. Potom potvrďte přidání karty tlačítkem ve sloupci \enquote{Actions}. Tam můžete také případně přidání karty zrušit.
+\subsubsection*{Upravování karet balíčku}
+Již přidané karty můžete libovolně posouvat, upravovat a odstraňovat pomocí tlačítek v tabulce \enquote{Cards} ve sloupci \enquote{Actions}.
+\subsubsection*{Odstranění návrhu balíčku}
+Pro odstranění návrhu balíčku klikněte na ikonu koše vpravo nahoře vedle tlačítka Create. Odstranění potom potvrďte stisknutím tlačítka \enquote{DELETE}.
+\subsubsection*{Uložení balíčku}
+Pro vytvoření balíčku je třeba balíček uložit stisknutím tlačítka \enquote{Create} v pravém horním rohu stránky. Pokud tak neučiníte, nebude Váš balíček uložen.
+
+\subsection{Upravení vytvořeného balíčku}
+Pokud chcete upravit balíček, který jste vytvořili, přejděte na stránku balíčku (např. z domovské obrazovky v sekci \enquote{My Decks}). Poté klikněte na tlačítko \enquote{Edit Deck} v levém dolním rohu stránky. Poté budete moci upravovat balíček stejným způsobem, jako při vytváření balíčku.
+
+\subsubsection*{Odstranění balíčku}
+Pokud chcete balíček odstranit, klikněte na tlačítko s ikonou koše vedle tlačítka \enquote{SAVE}. Smazání pak potvrďte v dialogovém oknu stisknutím tlačítka \enquote{DELETE}. Pozor, smazání balíčku nelze vzít zpět.
+
+\subsection{Vytváření kolekce}
+Pokud chcete vytvořit kolekci, přejděte na stránku balíčku, který chcete v kolekci mít. Poté klikněte na tlačítko \enquote{Add to collection} v levém dolním rohu. Otevře se dialogové okno. Zde v sekci \enquote{Add to new collection} vyplňte název kolekce. Pokud chcete, aby byla kolekce soukromá, klikněte na přepínač vedle nápisu \enquote{Make Private}. Pro dokončení vytváření kolekce klikněte na tlačítko s plusem vedle pole pro zadání jména kolekce.
+
+\subsection{Upravování kolekce}
+Pro upravení kolekce musíte být na stránce dané kolekce. Tam můžete přejít například z domovské obrazovky v sekci \enquote{My Colection}. Na stránce dané kolekce pak klikněte na tlačítko \enquote{Edit Collection} v levém dolním rohu.
+
+\subsubsection*{Jméno a popis kolekce}
+Na stránce pro úpravu kolekce pak můžete změnit jméno a popis kolekce. To můžete udělat v textových polích uprostřed stánky nahoře. Pro změnu jména změňte text v poli \enquote{Enter Title} a pro změnu popisu změňte text v poli \enquote{Enter Description}.
+\subsubsection*{Nastavení přístupnosti kolekce}
+Vpravo nahoře můžete vybrat, zda bude kolekce přístupná ostatním lidem, nebo jen Vám. Pokud chcete, aby byla kolekce soukromá, vyberte v \enquote{Collection visibility} možnost \enquote{Private}. Pokud chcete, aby byla kolece veřejná, vyberte možnost \enquote{Public}.
+\subsubsection*{Přidávání balíčků do kolekce}
+Pro přidání balíčku do kolekce jděte na stránku balíčku, který chcete přidat. Zde pak klikněte na tlačítko \enquote{Add to collection}. Otevře se dialogové okno. Zde pak klikněte v sekci \enquote{Add to existing collection} na tlačítko pro přidání vedle kolekce, do které chcete balíček přidat. Pokud je tlačítko šedivé, znamená to, že již balíček v kolekci je.
+\subsubsection*{Upravování balíčků v kolekci}
+Již přidané balíčky můžete libovolně posouvat a odstraňovat z kolekce pomocí tlačítek v tabulce \enquote{Collection Decks} ve sloupci \enquote{Actions}.
+\subsubsection*{Uložení kolekce}
+Pro uložení kolekce stiskněte tlačítko \enquote{Save} v pravém horním rohu stránky.
+\subsubsection*{Odstranění kolekce}
+Pro odstranění kolekce klikněte na ikonu koše vpravo nahoře vedle tlačítka \enquote{Save}. Odstranění potom potvrďte stisknutím tlačítka \enquote{DELETE}. Pozor, smazání kolekce nelze vzít zpět. (Pozn. Smazána bude pouze kolekce. Jednotlivé balíčky smazány nebudou.)
+
+\section{Profil a nastavení}
+\subsection{Uživatelské profily}
+Každý uživatel má svůj uživatelský profil. Na svůj profil se můžete dostat kliknutím na ikonu člověka vpravo v horní navigační liště aplikace a poté kliknutím na tlačítko \enquote{My Profile}. Na profil jiného uživatele se můžete dostat přes odkaz, nebo přes balíčky či kolekce, které uživatel vytvořil.
+
+\subsubsection*{Stránka uživatelského profilu}
+Na stránce uživatelského profilu můžete vidět jméno uživatele a pod ním popis profilu. Dále v sekci \enquote{Decks created by this user} můžete vidět všechny balíčky vytvořené tímto uživatelem a v sekci \enquote{Collections created by this user} všechny kolekce vytvořené tímto uživatelem.
+
+\subsection{Nastavení účtu}
+Do nastavení Vašeho účtu se můžete dostat kliknutím na ikonu člověka vpravo v horní navigační liště aplikace a poté kliknutím na tlačítko \enquote{Settings}.
+
+\subsubsection*{Změna uživatelského jména}
+Na stránce nastavení účtu můžete v textovém poli \enquote{Username} vidět Vaše uživatelské jméno. Pro změnu tohoto uživatelského jména jméno přepište a klikněte na tlačítko \enquote{Save}.
+
+\subsubsection*{Změna popisu profilu}
+Na stránce nastavení účtu můžete v textovém poli \enquote{Profile Description} vidět popis Vašeho uživatelského profilu. Pro změnu tohoto popisu přepište text a klikněte na tlačítko \enquote{Save}.
+
+\subsubsection*{Změna emailové adresy}
+Na stránce nastavení účtu můžete v textovém poli \enquote{Email} vidět emailovou adresu, pod kterou je účet založen. Pro změnu této adresy adresu přepište. Poté je potřeba potvrdit změnu zadáním hesla k vašemu Simple Flashcards účtu do textového pole \enquote{Confirm with password}. Po zadání hesla klikněte na tlačítko \enquote{Save}.
+
+\subsubsection*{Změna hesla}
+Pro změnu hesla klikněte na tlačítko \enquote{Reset} vedle nápisu \enquote{Password}. Bude Vám na emailovou adresu účtu poslán email s odkazem na změnu hesla. Kliknutím na odkaz v emailu pak budete přesunuti na stránku, kde můžete zadat nové heslo. Do textového pole \enquote{New password} zadejte nové heslo a změnu potvrďte kliknutím na tlačítko \enquote{Save}.
+
+\section{Odkazy}
+\begin{itemize}
+\item \textbf{Simple Flashcards} - \href{https://simpleflashcards-4aea0.firebaseapp.com}{https://simpleflashcards-4aea0.firebaseapp.com}
+\item \textbf{Stránka o aplikaci} - \href{https://morcinus.github.io/SimpleFlashCards/}{https://morcinus.github.io/SimpleFlashCards/}
+\item \textbf{Uřivatelská dokumentace} - \href{https://morcinus.github.io/simpleflashcards-user-docs/}{https://morcinus.github.io/simpleflashcards-user-docs/}
+\item \textbf{Vývojářská dokumentace pro front-end (simpleflashcards-client)} - \href{https://morcinus.github.io/simpleflashcards-client-docs/}{https://morcinus.github.io/simpleflashcards-client-docs/}
+\item \textbf{Vývojářská dokumentace pro back-end (firebase-functions)} - \href{https://morcinus.github.io/simpleflashcards-fb-functions-docs/}{https://morcinus.github.io/simpleflashcards-fb-functions-docs/}
+\item \textbf{Github} - \href{https://github.com/Morcinus/SimpleFlashCards}{https://github.com/Morcinus/SimpleFlashCards}
+\end{itemize}
+
+
+\end{document}
+

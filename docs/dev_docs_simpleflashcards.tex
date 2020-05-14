@@ -1,0 +1,299 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{hyperref}
+\usepackage[autostyle]{csquotes}
+
+\begin{document}
+
+\title{Simple Flashcards\\Vývojářská dokumentace \\\line(1,0){250}}
+ \author{Jan Jeníček}
+ \date{}
+ \maketitle
+ \clearpage
+\tableofcontents
+\clearpage
+
+\section{O aplikaci}
+
+Simple Flashcards je webová aplikace určená k jednoduchému učení pojmů (např. slovíček cizího jazyka).
+
+Projekt je rozdělen do dvou částí:
+
+\begin{itemize}
+	\item \textbf{firebase-functions } - API, které bylo vytvořeno pro komunikaci mezi Cloud Firestore databází a klientem.
+	\item \textbf{simpleflashcards-client} - Samotná Simple Flashcards webová aplikace.
+\end{itemize}
+
+Tato dokumentace je zaměřena na popis struktury projektu. Podrobný popis jednotlivých funkcí lze najít na webových stránkách této dokumentace (viz sekce Odkazy).
+
+\section{Frontend (simpleflashcards-client)}
+Tato část dokumentace je zaměřena na samotnou webovou aplikaci a popis jednotlivých komponentů a funkcí, které komunikují s API serveru. Samotná aplikace běží na hostingu služby \href{https://firebase.google.com/docs/hosting}{Firebase Hosting}.
+
+\subsection{Struktura kódu}
+Webová aplikace je rozdělena do následujících částí:
+\begin{itemize}
+	\item \textbf{Components} - Zde můžete najít jednotlivé komponenty této aplikace.
+	\item \textbf{Pages} - Zde můžete najít komponenty aplikace, které tvoří dané stránky. K tomu využívají komponenty ze složky components.
+	\item \textbf{ReduxActions } - Zde můžete najít veškeré funkce, které komunikují s API serveru a s Redux reducery (čímž mění hodnoty ve Redux store).
+	\item \textbf{ReduxReducers } - Zde můžete najít všechny Redux reducery.
+	\item \textbf{Util } - Zde můžete najít Javascriptové moduly, které jsou používány ostatními částmi aplikace.
+	\item \textbf{Ostatní } - Zde jsou ostatní moduly aplikace.
+\end{itemize}
+
+\subsection{Základní knihovny}
+Tento projekt je vytvořen pomocí těchto nejpodstatnějších knihoven: React, Redux, Axios, Material UI. Od toho se odvíjí struktura celé aplikace.
+
+\subsubsection*{React}
+Aplikace je sestavena z jednotlivých komponentů. Popis každého komponentu aplikace můžete najít v této dokumentaci v sekci Pages nebo Components.
+
+\subsubsection*{Redux}
+Tato knihovna je klíčovou součástí aplikace. Umožňuje přehledné předávání informací mezi danými komponenty aplikace. Díky této knihovně je vytvořen tzv. store. Na tomto místě jsou uložena data aplikace. Když potřebuje např. nějaký komponent tato data získat, stačí mu přistoupit do storu a nemusí je tak získávat od ostatních komponentů. Jednotlivé funkce můžete najít v této dokumentaci v sekci ReduxActions a ReduxReducers.
+
+\subsubsection*{Axios}
+Axios je knihovna, která zajišťuje komunikaci mezi klientem a serverem. Využívají ji funkce této aplikace pro komunikaci s API serveru. Tyto funkce můžete najít v sekci ReduxActions.
+
+\subsubsection*{Material UI}
+Samotný vzhled aplikace je zajištěn pomocí knihovny Material UI. Tato knihovna umožňuje rychlé a přehledné vytváření komponentů s jednotným vzhledem.
+
+\subsection{Instalace a úprava aplikace}
+Pro vlastní úpravu aplikace stačí stáhnout složku simpleflashcards-client z Githubu. V té je pak třeba spustit příkaz \verb|npm install|. Pro spuštění aplikace lokálně se pak dá použít příkaz \verb|npm start| a pro sestavení aplikace příkaz \verb|npm run build|.
+
+\subsection{Použité knihovny}
+\begin{itemize}
+\item
+  \href{https://www.npmjs.com/package/@material-ui/core}{@material-ui/core}
+\item
+  \href{https://www.npmjs.com/package/@material-ui/icons}{@material-ui/icons}
+\item
+  \href{https://www.npmjs.com/package/axios}{axios}
+\item
+  \href{https://www.npmjs.com/package/jwt-decode}{jwt-decode}
+\item
+  \href{https://www.npmjs.com/package/material-table}{material-table}
+\item
+  \href{https://www.npmjs.com/package/query-string}{query-string}
+\item
+  \href{https://www.npmjs.com/package/react}{react}
+\item
+  \href{https://www.npmjs.com/package/react-dom}{react-dom}
+\item
+  \href{https://www.npmjs.com/package/react-redux}{react-redux}
+\item
+  \href{https://www.npmjs.com/package/react-router-dom}{react-router-dom}
+\item
+  \href{https://www.npmjs.com/package/react-scripts}{react-scripts}
+\item
+  \href{https://www.npmjs.com/package/redux}{redux}
+\item
+ \href{https://www.npmjs.com/package/redux-thunk}{redux-thunk}
+\item
+  \href{https://www.npmjs.com/package/better-docs}{better-docs}
+\item
+ \href{https://www.npmjs.com/package/jsdoc}{jsdoc}
+\end{itemize}
+
+\section{Backend (firebase-functions)}
+Tato část dokumentace je zaměřena na Cloud Functions, tedy na funkce, které tvoří API projektu a manipulují s daty v Cloud Firestore databázi na základě požadavků webové aplikace. Funkce běží na serverech služby \href{https://firebase.google.com/}{Firebase}.
+
+\subsection{Struktura kódu}
+\subsubsection*{Funkce}
+\begin{itemize}
+\item \textbf{collection} - Funkce, které se starají o vytváření, upravování, připínání a odepínání kolekcí a získávání dat kolekcí.
+\item \textbf{collectionCards} - Funkce, které získávají z databáze karty na učení z dané kolekce a ukládají pokrok uživatele.
+\item \textbf{deck} - Funkce, které se starají o vytváření, upravování, připínání a odepínání balíčků a získávání dat balíčků.
+\item \textbf{deckCards} - Funkce, které získávají z databáze karty na učení z daného balíčku a ukládají pokrok uživatele.
+\item \textbf{functions} - Funkce používané dalšími moduly.
+\item \textbf{user} - Funkce spravující data uživatelů.
+\end{itemize}
+
+\subsubsection*{Ostatní}
+\begin{itemize}
+\item \textbf{index} - Javascript modul, v němž se z funkcí vytvoří API.
+\end{itemize}
+
+\subsubsection*{Util}
+\begin{itemize}
+\item \textbf{admin} - Javascript modul pro spuštění Firebase Admin SDK.
+\item \textbf{authMiddleware} - Funkce, která slouží k ověření uživatele.
+\item \textbf{other} - Konstanty používané ve funkcích.
+\end{itemize}
+
+\subsection{Databáze}
+Tento projekt využívá jako databázi službu \href{https://firebase.google.com/docs/firestore}{Cloud Firestore}. Jedná se o NoSQL databázi. Projekt využívá také službu \href{https://firebase.google.com/docs/functions}{Cloud Functions}Cloud Functions. Tato služba umožňuje vytvořit API a naprogramovat funkce, díky kterým se dá do databáze přistupovat. V této dokumentaci je zaznamenána struktura databáze a popis jednotlivých funkcí.
+
+\subsection{Struktura databáze}
+Databáze je rozdělena do 3 částí:
+\begin{itemize}
+\item \textbf{collections} - Dokumenty jednotlivých kolekcí.
+\item \textbf{decks} - Dokumenty jednotlivých balíčků.
+\item \textbf{users} - Dokumenty uživatelů a dokumenty se zaznamenanými pokroky u daných balíčků.
+\end{itemize}
+
+\subsubsection{collections}
+V této části databáze jsou uloženy všechny kolekce. Každý dokument obsahuje data jedné kolekce a má název podle ID dané kolekce. Tyto ID jsou automaticky generovány funkcemi z Cloud Firestore. V dokumentech jsou uloženy následující informace:
+
+\begin{itemize}
+\item
+  {[}string{]} colName - Název kolekce.
+\item
+  {[}string{]} colDescription - Popis kolekce, který uživatel zadal.
+  Pokud uživatel nezadal popis kolekce, má hodnotu null.
+\item
+  {[}string{]} creatorId - ID uživatele, který kolekci vytvořil.
+\item
+  {[}boolean{]} private - Informace, která udává, jestli je kolekce
+  veřejná nebo soukromá.
+\item
+  {[}Array\textless string\textgreater{]} deckArray - Pole, které
+  obsahuje ID balíčků, které jsou obsaženy v dané kolekci.
+\end{itemize}
+
+\subsubsection{decks}
+V této části databáze jsou uloženy všechny balíčky. Každý dokument
+obsahuje data jednoho balíčku a má název podle ID daného balíčku. Tyto
+ID jsou automaticky generovány funkcemi z Cloud Firestore. V dokumentech
+jsou uloženy následující informace:
+\begin{itemize}
+\item
+{[}string{]} deckName - Název balíčku.
+\item
+{[}string{]} deckDescription - Popis daného balíčku, který uživatel
+zadal. Pokud uživatel nezadal popis balíčku, má hodnotu null.
+\item
+{[}string{]} deckImage - Adresa obrázku daného balíčku. Pokud uživatel
+žádný balíček nenahrál, je zde zapsána adresa pro výchozí obrázek.
+\item
+{[}string{]} creatorId - ID uživatele, který balíček vytvořil.
+\item
+{[}boolean{]} private - Informace, která udává, jestli je balíček
+veřejný nebo soukromý.
+\item
+{[}Array\textless Object\textgreater{]} cardArray - Pole, které obsahuje
+objekty jednotlivých karet balíčku. Každý objekt obsahuje následující
+informace:
+\begin{itemize}
+\item
+  {[}string{]} cardId - ID dané kartičky, které bylo vygenerováno funkcí
+  \href{module-deck.html\#~newId}{newId}.
+\item
+  {[}string{]} body1 - Text přední strany kartičky.
+\item
+  {[}string{]} body2 - Text zadní strany kartičky.
+\end{itemize}
+\end{itemize}
+
+\subsubsection{users}
+V této části jsou uloženy všechny informace o uživatelích a jejich pokroku v učení. Každý dokument obsahuje data jednoho uživatele a má název podle ID daného uživatele. ID jsou automaticky generovány službou \href{https://firebase.google.com/docs/auth}{Firebase Authentication} při registraci uživatele. V jednotlivých dokumentech této části databáze jsou pak uloženy následující informace:
+
+\begin{itemize}
+\item
+  {[}string{]} username - Uživatelské jméno.
+\item
+  {[}string{]} bio - Popis uživatelského profilu.
+\item
+  {[}string{]} email - Emailová adresa uživatele.
+\item
+  {[}Array\textless string\textgreater{]} createdDecks - Pole, které
+  obsahuje ID všech balíčků, které uživatel vytvořil.
+\item
+  {[}Array\textless string\textgreater{]} pinnedDecks - Pole, které
+  obsahuje ID všech balíčků, které uživatel připnul.
+\item
+  {[}Array\textless string\textgreater{]} createdCollections - Pole,
+  které obsahuje ID všech kolekcí, které uživatel vytvořil.
+\item
+  {[}Array\textless string\textgreater{]} pinnedCollections - Pole,
+  které obsahuje ID všech kolekcí, které uživatel připnul.
+\end{itemize}
+
+\subsubsection{deckProgress}
+Ke každému souboru v této části databáze (users) je přiřazena skupina dokumentů, která se nazývá deckProgress. Dokumenty těchto skupin jsou určeny k uchovávání pokroku uživatele u balíčků a mají název podle ID daného balíčku. V každém dokumentu je pak uložen seznam karet balíčku, které se uživatel učil, společně se zaznamenaným pokrokem u každé karty. V každém dokumentu jsou tedy uloženy následující informace:
+
+\begin{itemize}
+\item
+{[}string{]} deckId - ID daného balíčku (Je identické s názvem
+dokumentu. V dokumentu je zapsáno, aby bylo možné dokumenty hromadně
+prohledávat v databázi.).
+\item
+{[}Array\textless Object\textgreater{]} cardArray - Pole, které obsahuje
+objekty karet balíčku, které se uživatel učil. Ty obsahují následující
+informace:
+\begin{itemize}
+\item
+  {[}string{]} cardId - ID dané kartičky.
+\item
+  {[}number{]} understandingLevel - Číslo, které udává, jak dobře
+  uživatel rozumí dané kartičce.
+\end{itemize}
+\end{itemize}
+
+\subsection{Uživatelské účty}
+\subsubsection{Registrace}
+Když se uživatel zaregistruje do aplikace, je zaregistrován do služby \href{https://firebase.google.com/docs/auth}{Firebase Authentication}. Zde jsou pak uloženy např. přihlašovací údaje uživatele (email a heslo) nebo ID uživatele. Zároveň je při registraci vytvořen dokument v databázi v části users. V tomto dokumentu se pak ukládají ostatní informace o uživateli (viz výše).
+
+\subsubsection{Přihlašování a odhlašování}
+Přihlášení uživatele probíhá takto: Klient zažádá o přihlášení. Cloud funkce získá ze služby \href{https://firebase.google.com/docs/auth}{Firebase Authentication} idToken uživatele a ten pak odešle zpět klientovi. Tam se pak idToken uloží do localStorage a je přidán do headeru dalších požadavků na server. Při zpracovávání těchto požadavků se pak vždy ověří platnost daného idTokenu. To zajišťuje funkce authMiddleware.
+
+Při odhlášení uživatele je idToken odstraněn z localStorage klienta a z headeru požadavků.
+
+\subsection{Instalace a úprava funkcí}
+Pro užití funkcí pro vlastní projekt je třeba vytvořit a nastavit nový Firebase projekt (více \href{https://firebase.google.com/docs/functions/get-started}{zde}).
+
+Po vytvoření projektu příkazem \verb|firebase init functions| stačí do adresáře projektu přidat složku functions a v této složce pak spustit příkaz  \verb|npm install|. Po případné úpravě kódu daných funkcí je třeba soubory nahrát na server příkazem  \verb|firebase deploy|.
+
+\subsection{Použité knihovny}
+\begin{itemize}
+\item
+  \href{https://www.npmjs.com/package/busboy}{busboy}
+\item
+  \href{https://www.npmjs.com/package/cors}{cors}
+\item
+  \href{https://www.npmjs.com/package/express}{express}
+\item
+  \href{https://www.npmjs.com/package/firebase}{firebase}
+\item
+  \href{https://www.npmjs.com/package/firebase-admin}{firebase-admin}
+\item
+  \href{https://www.npmjs.com/package/firebase-functions}{firebase-functions}
+\item
+  \href{https://www.npmjs.com/package/better-docs}{better-docs}
+\item
+  \href{https://www.npmjs.com/package/firebase-functions-test}{firebase-functions-test}
+\item
+  \href{https://www.npmjs.com/package/jsdoc}{jsdoc}
+\end{itemize}
+
+\section{Odkazy}
+\subsection{Simple Flashcards}
+\begin{itemize}
+\item \textbf{Simple Flashcards} - \href{https://simpleflashcards-4aea0.firebaseapp.com}{https://simpleflashcards-4aea0.firebaseapp.com}
+\item \textbf{Stránka o aplikaci} - \href{https://morcinus.github.io/SimpleFlashCards/}{https://morcinus.github.io/SimpleFlashCards/}
+\item \textbf{Uřivatelská dokumentace} - \href{https://morcinus.github.io/simpleflashcards-user-docs/}{https://morcinus.github.io/simpleflashcards-user-docs/}
+\item \textbf{Vývojářská dokumentace pro front-end (simpleflashcards-client)} - \href{https://morcinus.github.io/simpleflashcards-client-docs/}{https://morcinus.github.io/simpleflashcards-client-docs/}
+\item \textbf{Vývojářská dokumentace pro back-end (firebase-functions)} - \href{https://morcinus.github.io/simpleflashcards-fb-functions-docs/}{https://morcinus.github.io/simpleflashcards-fb-functions-docs/}
+\item \textbf{Github} - \href{https://github.com/Morcinus/SimpleFlashCards}{https://github.com/Morcinus/SimpleFlashCards}
+\end{itemize}
+
+\subsection{Využité služby}
+\begin{itemize}
+\item
+  \textbf{\href{https://cloud.google.com/firestore}{Cloud Firestore}} - NoSQL
+  databáze, ve které jsou uložena všechna data aplikace.
+\item
+  \textbf{\href{https://firebase.google.com/docs/functions}{Firebase Cloud
+  Funcitons}} - Služba, ve které jsou uložené funkce, které manipulují s
+  daty v Cloud Firestore databázi.
+\item
+  \textbf{\href{https://firebase.google.com/docs/storage}{Firebase Storage}} -
+  Místo, na které se ukládají všechny obrázky, které uživatelé nahrají
+  do aplikace.
+\item
+  \textbf{\href{https://firebase.google.com/docs/auth}{Firebase Authentication}}
+  - Služba, která spravuje uživatelské účty této aplikace.
+\item
+  \textbf{\href{https://firebase.google.com/docs/hosting}{Firebase Hosting}} -
+  Hosting, na kterém běží tato aplikace.
+\end{itemize}
+\end{document}
