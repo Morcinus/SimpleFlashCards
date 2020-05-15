@@ -44,7 +44,7 @@ Projekt je rozdělen do dvou částí:
 ## Aplikace byla sestavena pomocí
 
 - [Cloud Firestore](https://cloud.google.com/firestore) - NoSQL databáze, ve které jsou uložena všechna data aplikace.
-- [Firebase Cloud Funcitons](https://firebase.google.com/docs/functions) - Služba, ve které jsou uložené funkce, které manipulují s daty v Cloud Firestore databázi.
+- [Firebase Cloud Functions](https://firebase.google.com/docs/functions) - Služba, ve které jsou uložené funkce, které manipulují s daty v Cloud Firestore databázi.
 - [Firebase Storage](https://firebase.google.com/docs/storage) - Místo, na které se ukládají všechny obrázky, které uživatelé nahrají do aplikace.
 - [Firebase Authentication](https://firebase.google.com/docs/auth) - Služba, která spravuje uživatelské účty této aplikace.
 - [Firebase Hosting](https://firebase.google.com/docs/hosting) - Hosting, na kterém běží tato aplikace.
