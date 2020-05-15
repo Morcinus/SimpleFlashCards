@@ -1,4 +1,4 @@
-# SimpleFlashCards
+# Simple Flashcards
 
 Simple Flashcards je webová aplikace určená k jednoduchému učení pojmů (např. slovíček cizího jazyka).
 
