@@ -60,3 +60,5 @@ Projekt je rozdělen do dvou částí:
 - [Uživatelská doukumentace](https://morcinus.github.io/simpleflashcards-user-docs/)
 - [Vývojářská dokumentace pro front-end (simpleflashcards-client)](https://morcinus.github.io/simpleflashcards-client-docs/)
 - [Vývojářská dokumentace pro back-end (firebase-functions)](https://morcinus.github.io/simpleflashcards-fb-functions-docs/)
+- [PDF vývojářské dokumentace](https://morcinus.github.io/SimpleFlashCards/docs/dev_docs_simpleflashcards.pdf)
+- [PDF uživatelské dokumentace](https://morcinus.github.io/SimpleFlashCards/docs/user_docs_simpleflashcards.pdf)
