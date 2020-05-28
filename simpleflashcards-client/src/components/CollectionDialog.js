@@ -32,12 +32,12 @@ import {
   getUserCollectionsWithDeckInfo,
   clearUserCollections,
   addDeckToCollection,
-  createCollection
+  createCollection,
 } from "../redux/actions/colUiActions";
 
 const initialState = {
   newColName: "",
-  private: false
+  private: false,
 };
 
 /**
@@ -120,9 +120,9 @@ export class CollectionDialog extends Component {
    * @description Přepisuje data v state tohoto komponentu na základě změn v textových polích formuláře.
    * @param {event} event - Event, který vyvolal spuštění této funkce.
    */
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -132,15 +132,15 @@ export class CollectionDialog extends Component {
    * @description Přepisuje data v state tohoto komponentu na základě přepínání switche pro nastavení přístupnosti kolekce.
    * @param {event} event - Event, který vyvolal spuštění této funkce.
    */
-  handleSwitchChange = event => {
+  handleSwitchChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.checked
+      [event.target.name]: event.target.checked,
     });
   };
 
   render() {
     const {
-      colUi: { colDialogStatus, colDialogErrorCodes, colDialogSuccessCodes }
+      colUi: { colDialogStatus, colDialogErrorCodes, colDialogSuccessCodes },
     } = this.props;
     return (
       <Dialog open={this.props.colUi.collectionDialogOpen} onClose={this.handleClose}>
@@ -154,7 +154,7 @@ export class CollectionDialog extends Component {
             </React.Fragment>
           )}
 
-          {this.props.colUi && this.props.colUi.userCollections.length > 0 && (
+          {this.props.colUi && (
             <React.Fragment>
               <Grid container direction="row" justify="space-between" alignItems="center">
                 <Typography variant="h6">Add to new collection</Typography>
@@ -208,31 +208,33 @@ export class CollectionDialog extends Component {
                   />
                 </Box>
               </div>
-              <Typography variant="h6">Add to existing collection</Typography>
-              <div>
-                <List>
-                  {this.props.colUi.userCollections.map((collection, i) => {
-                    return (
-                      <ListItem key={i}>
-                        <ListItemAvatar>
-                          <Avatar src={DEFAULT_COLLECTION_IMG_URL} variant="square"></Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary={collection.colName} secondary={collection.colDescription ? collection.colDescription : null} />
-                        <ListItemSecondaryAction>
-                          <IconButton
-                            edge="end"
-                            id={collection.colId}
-                            onClick={() => this.handleAddToCollection(collection.colId, i)}
-                            disabled={collection.containsDeck}
-                          >
-                            <AddBoxIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    );
-                  })}
-                </List>
-              </div>
+              {this.props.colUi.userCollections.length > 0 && (
+                <div>
+                  <Typography variant="h6">Add to existing collection</Typography>
+                  <List>
+                    {this.props.colUi.userCollections.map((collection, i) => {
+                      return (
+                        <ListItem key={i}>
+                          <ListItemAvatar>
+                            <Avatar src={DEFAULT_COLLECTION_IMG_URL} variant="square"></Avatar>
+                          </ListItemAvatar>
+                          <ListItemText primary={collection.colName} secondary={collection.colDescription ? collection.colDescription : null} />
+                          <ListItemSecondaryAction>
+                            <IconButton
+                              edge="end"
+                              id={collection.colId}
+                              onClick={() => this.handleAddToCollection(collection.colId, i)}
+                              disabled={collection.containsDeck}
+                            >
+                              <AddBoxIcon />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                </div>
+              )}
             </React.Fragment>
           )}
         </DialogContent>
@@ -247,11 +249,11 @@ CollectionDialog.propTypes = {
   getUserCollectionsWithDeckInfo: PropTypes.func.isRequired,
   clearUserCollections: PropTypes.func.isRequired,
   addDeckToCollection: PropTypes.func.isRequired,
-  createCollection: PropTypes.func.isRequired
+  createCollection: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  colUi: state.colUi
+const mapStateToProps = (state) => ({
+  colUi: state.colUi,
 });
 
 const mapActionsToProps = {
@@ -259,7 +261,7 @@ const mapActionsToProps = {
   getUserCollectionsWithDeckInfo,
   clearUserCollections,
   addDeckToCollection,
-  createCollection
+  createCollection,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(CollectionDialog);
